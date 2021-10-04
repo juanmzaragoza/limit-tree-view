@@ -2,6 +2,7 @@ import {Grid} from "@mui/material";
 import DetailedHeader from "../../../shared/DetailedHeader";
 import MaterialDataGrid from "../../../shared/MaterialDataGrid";
 import * as React from "react";
+import MaterialKpi from "../../../shared/MaterialKpi";
 
 const createData = (codi, descripcio, medicio, tipoUnidad, unPres, pvpNeto, importe, costeUnit, costeTot, medicionAnt, medicionAct, pendient) => {
   return { codi, descripcio, medicio, tipoUnidad, unPres, pvpNeto, importe, costeUnit, costeTot, medicionAnt, medicionAct, pendient };
@@ -49,6 +50,14 @@ const ProjectDetailedContent = () => {
     createData('0004', 'Partida 4', 16, 'M3', 10, 10, 100, 12, 120, 2, 6, 2),
     createData('0005', 'Partida 5', 18, 'M3', 10, 10, 100, 12, 120, 2, 6, 2)
   ]);
+  const [kpis] = React.useState([
+    { field: "Producción Anterior", value:"1000" },
+    { field: "Producción Período", value:"1000" },
+    { field: "Producción año Natural", value:"1000" },
+    { field: "Producción a Origen", value:"1000" },
+    { field: "Producción Pendiente", value:"1000" },
+    { field: "Costo Teórico Anterior", value:"1000" },
+  ])
 
   return <Grid container spacing={2}>
     <Grid item xs={12}>
@@ -73,6 +82,9 @@ const ProjectDetailedContent = () => {
       <MaterialDataGrid
         columns={columns}
         rows={rows} />
+    </Grid>
+    <Grid item xs={12}>
+      <MaterialKpi content={kpis} />
     </Grid>
   </Grid>
 }
