@@ -87,15 +87,14 @@ const ProjectsTreeView = ({ onNodeSelect }) => {
   const [nodeIds, setNodeIds] = React.useState([]);
   return (
     <TreeView
-      aria-label="gmail"
-      defaultExpanded={['3']}
+      aria-label="tree"
+      defaultExpanded={['0','3']}
       defaultCollapseIcon={<ArrowDropDownIcon />}
       defaultExpandIcon={<ArrowRightIcon />}
       defaultEndIcon={<div style={{ width: 24 }} />}
       sx={{
-        height: 264,
+        height: 'auto',
         flexGrow: 1,
-        maxWidth: 400,
         overflowY: 'auto',
         textAlign: 'left'
       }}
@@ -106,68 +105,70 @@ const ProjectsTreeView = ({ onNodeSelect }) => {
       }}
       selected={nodeIds}
     >
-      <StyledTreeItem nodeId="1" labelText="Unidad Control #1" labelInfo="50.000€" labelIcon={Label} />
-      <StyledTreeItem nodeId="2" labelText="Unidad Control #2" labelInfo="140.000€" labelIcon={Label} />
-      <StyledTreeItem nodeId="3" labelText="Unidad Control #3" labelInfo="40.000€" labelIcon={Label}>
-        <StyledTreeItem
-          nodeId="5"
-          labelText="Partida #1"
-          labelIcon={SupervisorAccountIcon}
-          labelInfo="10.000€"
-          color="#1a73e8"
-          bgColor="#e8f0fe"
-        >
+      <StyledTreeItem nodeId="0" labelText="Proyecto 1" labelInfo="50.000€" labelIcon={Label} >
+        <StyledTreeItem nodeId="1" labelText="Unidad Control #1" labelInfo="50.000€" labelIcon={Label} />
+        <StyledTreeItem nodeId="2" labelText="Unidad Control #2" labelInfo="140.000€" labelIcon={Label} />
+        <StyledTreeItem nodeId="3" labelText="Unidad Control #3" labelInfo="40.000€" labelIcon={Label}>
           <StyledTreeItem
-            nodeId="9"
-            labelText="Recurso #1"
-            labelIcon={Whatshot}
-            labelInfo="6.000€"
+            nodeId="5"
+            labelText="Partida #1"
+            labelIcon={SupervisorAccountIcon}
+            labelInfo="10.000€"
             color="#1a73e8"
             bgColor="#e8f0fe"
+          >
+            <StyledTreeItem
+              nodeId="9"
+              labelText="Recurso #1"
+              labelIcon={Whatshot}
+              labelInfo="6.000€"
+              color="#1a73e8"
+              bgColor="#e8f0fe"
+            />
+            <StyledTreeItem
+              nodeId="10"
+              labelText="Recurso #2"
+              labelIcon={Whatshot}
+              labelInfo="2.000€"
+              color="#1a73e8"
+              bgColor="#e8f0fe"
+            />
+            <StyledTreeItem
+              nodeId="11"
+              labelText="Recurso #3"
+              labelIcon={Whatshot}
+              labelInfo="2.000€"
+              color="#1a73e8"
+              bgColor="#e8f0fe"
+            />
+          </StyledTreeItem>
+          <StyledTreeItem
+            nodeId="6"
+            labelText="Partida #2"
+            labelIcon={SupervisorAccountIcon}
+            labelInfo="10.000€"
+            color="#e3742f"
+            bgColor="#fcefe3"
           />
           <StyledTreeItem
-            nodeId="10"
-            labelText="Recurso #2"
-            labelIcon={Whatshot}
-            labelInfo="2.000€"
-            color="#1a73e8"
-            bgColor="#e8f0fe"
+            nodeId="7"
+            labelText="Partida #3"
+            labelIcon={SupervisorAccountIcon}
+            labelInfo="10.000€"
+            color="#a250f5"
+            bgColor="#f3e8fd"
           />
           <StyledTreeItem
-            nodeId="11"
-            labelText="Recurso #3"
-            labelIcon={Whatshot}
-            labelInfo="2.000€"
-            color="#1a73e8"
-            bgColor="#e8f0fe"
+            nodeId="8"
+            labelText="Partida #4"
+            labelIcon={SupervisorAccountIcon}
+            labelInfo="10.000€"
+            color="#3c8039"
+            bgColor="#e6f4ea"
           />
         </StyledTreeItem>
-        <StyledTreeItem
-          nodeId="6"
-          labelText="Partida #2"
-          labelIcon={SupervisorAccountIcon}
-          labelInfo="10.000€"
-          color="#e3742f"
-          bgColor="#fcefe3"
-        />
-        <StyledTreeItem
-          nodeId="7"
-          labelText="Partida #3"
-          labelIcon={SupervisorAccountIcon}
-          labelInfo="10.000€"
-          color="#a250f5"
-          bgColor="#f3e8fd"
-        />
-        <StyledTreeItem
-          nodeId="8"
-          labelText="Partida #4"
-          labelIcon={SupervisorAccountIcon}
-          labelInfo="10.000€"
-          color="#3c8039"
-          bgColor="#e6f4ea"
-        />
+        <StyledTreeItem nodeId="4" labelText="Unidad Control #4" labelInfo="40.000€" labelIcon={Label} />
       </StyledTreeItem>
-      <StyledTreeItem nodeId="4" labelText="Unidad Control #4" labelInfo="40.000€" labelIcon={Label} />
     </TreeView>
   );
 }

@@ -30,10 +30,9 @@ const Home = () =>{
                   p: 2,
                   display: 'flex',
                   flexDirection: 'column',
-                  height: 440,
+                  height: 'auto',
                 }}
               >
-                <Typography align="left" variant="h5">Tree View - Proyecto 1</Typography>
                 <ProjectsTreeView onNodeSelect={ids => setShow(!!ids.length)} />
               </Paper>
             </Grid>
