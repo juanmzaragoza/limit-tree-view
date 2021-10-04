@@ -2,7 +2,7 @@ import * as React from "react";
 import {
   Container,
   Grid,
-  Paper, Typography
+  Paper,
 } from "@mui/material";
 
 import ProjectsTreeView from "./ProjectsTreeView";
@@ -13,6 +13,26 @@ import PeriodsManagement from "./PeriodsManagement";
 
 const Home = () =>{
   const [show, setShow] = React.useState(false);
+  const [tree,] = React.useState({
+      id: 'project1',
+      labelText: 'Proyecto 1',
+      labelInfo: '20.000€',
+      nodes: [
+        { id: 'uni1', labelText: 'Unidad de control #1', labelInfo: '10.000€' },
+        { id: 'uni2', labelText: 'Unidad de control #2', labelInfo: '10.000€',
+          nodes: [
+            { id: 'part1', labelText: 'Partida #1', labelInfo: '5.000€' },
+            { id: 'part2', labelText: 'Partida #2', labelInfo: '5.000€',
+              nodes:  [
+                { id: 'recu1', labelText: 'Recurso #1', labelInfo: '2.500€' },
+                { id: 'recu2', labelText: 'Recurso #2', labelInfo: '2.500€' },
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  )
   return (
     <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={1}>
@@ -34,7 +54,9 @@ const Home = () =>{
                   height: 'auto',
                 }}
               >
-                <ProjectsTreeView onNodeSelect={ids => setShow(!!ids.length)} />
+                <ProjectsTreeView tree={tree} onNodeSelect={node => {
+                  setShow(!!node);
+                }} />
               </Paper>
             </Grid>
           </Grid>

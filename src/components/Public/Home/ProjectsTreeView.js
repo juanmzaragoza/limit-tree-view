@@ -6,11 +6,12 @@ import Box from '@mui/material/Box';
 import TreeView from '@mui/lab/TreeView';
 import TreeItem, { treeItemClasses } from '@mui/lab/TreeItem';
 import Typography from '@mui/material/Typography';
-import Whatshot from '@mui/icons-material/Whatshot';
 import Label from '@mui/icons-material/Label';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+
+import { find } from 'lodash';
 
 const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
   color: theme.palette.text.secondary,
@@ -83,12 +84,40 @@ StyledTreeItem.propTypes = {
   labelText: PropTypes.string.isRequired,
 };
 
-const ProjectsTreeView = ({ onNodeSelect }) => {
-  const [nodeIds, setNodeIds] = React.useState([]);
+const ProjectsTreeView = ({ tree, onNodeSelect }) => {
+  const [nodeIds, setNodeIds] = React.useState(null);
+
+  const renderNodes = ({ tree }) => {
+    if(tree.nodes) {
+      return <StyledTreeItem key={tree.id} nodeId={tree.id} labelText={tree.labelText} labelInfo={tree.labelInfo} labelIcon={Label} >
+        {tree.nodes.map(node => renderNodes({ tree: node}))}
+      </StyledTreeItem>
+    } else{
+      return <StyledTreeItem
+        key={tree.id}
+        nodeId={tree.id}
+        labelText={tree.labelText}
+        labelIcon={SupervisorAccountIcon}
+        labelInfo={tree.labelInfo}
+        color="#1a73e8"
+        bgColor="#e8f0fe"
+      />
+    }
+  };
+
+  const findNode = ({ nodes, nodeId }) => {
+    if(nodes.id === nodeId) {
+      return nodes;
+    } else{
+      return find(nodes.nodes,node => {
+        return findNode({ nodes: node, nodeId });
+      });
+    }
+  }
+
   return (
     <TreeView
       aria-label="tree"
-      defaultExpanded={['0','3']}
       defaultCollapseIcon={<ArrowDropDownIcon />}
       defaultExpandIcon={<ArrowRightIcon />}
       defaultEndIcon={<div style={{ width: 24 }} />}
@@ -99,76 +128,13 @@ const ProjectsTreeView = ({ onNodeSelect }) => {
         textAlign: 'left'
       }}
       onNodeSelect={(e, ids) => {
-        const selected = ids[0] === nodeIds? []:ids;
+        const selected = ids === nodeIds? null:ids;
         setNodeIds(selected);
-        onNodeSelect(selected);
+        onNodeSelect(findNode({ nodes: tree, nodeId: selected}));
       }}
       selected={nodeIds}
     >
-      <StyledTreeItem nodeId="0" labelText="Proyecto 1" labelInfo="50.000€" labelIcon={Label} >
-        <StyledTreeItem nodeId="1" labelText="Unidad Control #1" labelInfo="50.000€" labelIcon={Label} />
-        <StyledTreeItem nodeId="2" labelText="Unidad Control #2" labelInfo="140.000€" labelIcon={Label} />
-        <StyledTreeItem nodeId="3" labelText="Unidad Control #3" labelInfo="40.000€" labelIcon={Label}>
-          <StyledTreeItem
-            nodeId="5"
-            labelText="Partida #1"
-            labelIcon={SupervisorAccountIcon}
-            labelInfo="10.000€"
-            color="#1a73e8"
-            bgColor="#e8f0fe"
-          >
-            <StyledTreeItem
-              nodeId="9"
-              labelText="Recurso #1"
-              labelIcon={Whatshot}
-              labelInfo="6.000€"
-              color="#1a73e8"
-              bgColor="#e8f0fe"
-            />
-            <StyledTreeItem
-              nodeId="10"
-              labelText="Recurso #2"
-              labelIcon={Whatshot}
-              labelInfo="2.000€"
-              color="#1a73e8"
-              bgColor="#e8f0fe"
-            />
-            <StyledTreeItem
-              nodeId="11"
-              labelText="Recurso #3"
-              labelIcon={Whatshot}
-              labelInfo="2.000€"
-              color="#1a73e8"
-              bgColor="#e8f0fe"
-            />
-          </StyledTreeItem>
-          <StyledTreeItem
-            nodeId="6"
-            labelText="Partida #2"
-            labelIcon={SupervisorAccountIcon}
-            labelInfo="10.000€"
-            color="#e3742f"
-            bgColor="#fcefe3"
-          />
-          <StyledTreeItem
-            nodeId="7"
-            labelText="Partida #3"
-            labelIcon={SupervisorAccountIcon}
-            labelInfo="10.000€"
-            color="#a250f5"
-            bgColor="#f3e8fd"
-          />
-          <StyledTreeItem
-            nodeId="8"
-            labelText="Partida #4"
-            labelIcon={SupervisorAccountIcon}
-            labelInfo="10.000€"
-            color="#3c8039"
-            bgColor="#e6f4ea"
-          />
-        </StyledTreeItem>
-        <StyledTreeItem nodeId="4" labelText="Unidad Control #4" labelInfo="40.000€" labelIcon={Label} />
-      </StyledTreeItem>
+      {renderNodes({ tree })}
     </TreeView>
   );
 }
