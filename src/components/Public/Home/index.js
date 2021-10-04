@@ -30,6 +30,7 @@ const Home = () =>{
                   p: 2,
                   display: 'flex',
                   flexDirection: 'column',
+                  minHeight: '200px',
                   height: 'auto',
                 }}
               >
