@@ -30,8 +30,8 @@ const Home = () =>{
           { id: 'part1', labelText: 'Partida #1', labelInfo: '5.000€', type: PARTIDA_TYPE },
           { id: 'part2', labelText: 'Partida #2', labelInfo: '5.000€', type: PARTIDA_TYPE,
             nodes:  [
-              { id: 'recu1', labelText: 'Recurso #1', labelInfo: '2.500€' },
-              { id: 'recu2', labelText: 'Recurso #2', labelInfo: '2.500€' },
+              { id: 'recu1', labelText: 'Recurso #1', labelInfo: '2.500€', disabled: true },
+              { id: 'recu2', labelText: 'Recurso #2', labelInfo: '2.500€', disabled: true },
             ]
           }
         ]
