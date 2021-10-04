@@ -11,7 +11,7 @@ import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
-import { find } from 'lodash';
+import { forEach, isEmpty} from 'lodash';
 
 const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
   color: theme.palette.text.secondary,
@@ -109,15 +109,22 @@ const ProjectsTreeView = ({ tree, onNodeSelect }) => {
     if(nodes.id === nodeId) {
       return nodes;
     } else{
-      return find(nodes.nodes,node => {
-        return findNode({ nodes: node, nodeId });
-      });
+      let founded = {};
+      forEach(nodes.nodes, node => {
+        const n = findNode({ nodes: node, nodeId });
+        if(!isEmpty(n)) {
+          founded = n;
+          return false;
+        }
+      })
+      return founded;
     }
   }
 
   return (
     <TreeView
       aria-label="tree"
+      defaultExpanded={[tree.id]}
       defaultCollapseIcon={<ArrowDropDownIcon />}
       defaultExpandIcon={<ArrowRightIcon />}
       defaultEndIcon={<div style={{ width: 24 }} />}
