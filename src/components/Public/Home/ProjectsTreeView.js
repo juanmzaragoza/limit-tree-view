@@ -89,7 +89,12 @@ const ProjectsTreeView = ({ tree, onNodeSelect }) => {
 
   const renderNodes = ({ tree }) => {
     if(tree.nodes) {
-      return <StyledTreeItem key={tree.id} nodeId={tree.id} labelText={tree.labelText} labelInfo={tree.labelInfo} labelIcon={Label} >
+      return <StyledTreeItem
+        key={tree.id}
+        nodeId={tree.id}
+        labelText={tree.labelText}
+        labelInfo={tree.labelInfo}
+        labelIcon={Label} >
         {tree.nodes.map(node => renderNodes({ tree: node}))}
       </StyledTreeItem>
     } else{
@@ -101,6 +106,7 @@ const ProjectsTreeView = ({ tree, onNodeSelect }) => {
         labelInfo={tree.labelInfo}
         color="#1a73e8"
         bgColor="#e8f0fe"
+        disabled={tree.disabled}
       />
     }
   };
@@ -137,7 +143,9 @@ const ProjectsTreeView = ({ tree, onNodeSelect }) => {
       onNodeSelect={(e, ids) => {
         const selected = ids === nodeIds? null:ids;
         setNodeIds(selected);
-        onNodeSelect(findNode({ nodes: tree, nodeId: selected}));
+        const selectedNode = findNode({ nodes: tree, nodeId: selected });
+        if(!selectedNode.disabled)
+          onNodeSelect(findNode({ nodes: tree, nodeId: selected }));
       }}
       selected={nodeIds}
     >
