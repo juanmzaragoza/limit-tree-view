@@ -18,10 +18,9 @@ const ProjectDetailedContent = () => {
     secondary: "/totales"
   });
   const [fields,] = React.useState([
-    { field: 'Coste Real', value: '10.000€'},
-    { field: 'Coste Medio', value: '10.000€'},
-    { field: 'Coste estimado', value: '10.000€'},
-    { field: 'Presuesto capitulo', value: '10.000€'}
+    { field: 'Importe Total', value: '10.000€'},
+    { field: 'Coste Total', value: '10.000€'},
+
   ]);
   const [percentage,] = React.useState("5%");
 
