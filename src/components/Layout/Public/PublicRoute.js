@@ -68,7 +68,7 @@ const PublicRoute = ({ component: Component, path, ...rest}) => {
               ? theme.palette.grey[100]
               : theme.palette.grey[900],
           flexGrow: 1,
-          height: '85vh',
+          minHeight: '85vh',
           overflow: 'auto',
         }}
       >

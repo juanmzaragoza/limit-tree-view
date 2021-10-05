@@ -9,6 +9,7 @@ import {
 
 const DetailedHeader = ({ header, body }) => {
   return <Card sx={{ display: 'flex' }}>
+    
     <CardHeader
       title={header.title}
       subheader={header.subheader}
@@ -25,15 +26,19 @@ const DetailedHeader = ({ header, body }) => {
       }}
       className="tituloDetailHeader"
     />
-    <CardContent>
+    <CardContent  sx={{
+        width: 1000,
+      
+      }}>
       <Container>
         <Grid container spacing={1} >
+         
           {body.map(({field, value}) => {
             const line = `${field}: ${value}`
             return (
               <Grid key={line} item xs={6}>
                 <Typography
-                  component="div"
+                  component="h2"
                   variant="caption"
                   align="left"
                   className="bodyLabel"

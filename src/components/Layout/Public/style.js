@@ -10,11 +10,11 @@ const useStyles = makeStyles((theme) => createStyles({
   },
   appBarHome: {
     backdropFilter: "blur(20px)",
-    position: "fixed",
+  
     backgroundColor: "transparent",
   },
   appBar: {
-    position: "fixed",
+
     background:` linear-gradient(
       90deg,
       rgba(91, 153, 154, 1) 6%,
@@ -52,9 +52,14 @@ const useStyles = makeStyles((theme) => createStyles({
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),*/
     marginTop: "0px",
-    paddingTop: "3px",
+    paddingTop: "8px",
     paddingBottom: "3px",
-    backgroundColor: "#111111",
+    background:` linear-gradient(
+      90deg,
+      rgba(91, 153, 154, 1) 6%,
+      rgba(63, 126, 128, 1) 62%,
+      rgba(68, 104, 160, 1) 100%
+    )`
     /*[theme.breakpoints.up("sm")]: {
       paddingBottom: theme.spacing(6),
     },*/

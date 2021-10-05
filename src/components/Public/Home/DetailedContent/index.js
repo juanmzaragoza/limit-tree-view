@@ -13,7 +13,7 @@ const DetailedContent = ({ data }) => {
     [PARTIDA_TYPE]: <PartidaDetailedContent />,
   }
   return (
-    <Container maxWidth={false}>
+    <Container maxWidth={false} className="containerData">
       {(data && layout[data.type]) || "Tipo inexistente"}
     </Container>
   )

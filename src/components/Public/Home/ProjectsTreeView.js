@@ -12,7 +12,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 import { forEach, isEmpty} from 'lodash';
-import { secondaryColor } from 'utils/helper';
+import { primaryColor, secondaryColor } from 'utils/helper';
 
 const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
   color: theme.palette.text.secondary,
@@ -26,11 +26,11 @@ const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
       fontWeight: theme.typography.fontWeightRegular,
     },
     '&:hover': {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.secondary.hover,
     },
     '&.Mui-focused, &.Mui-selected, &.Mui-selected.Mui-focused': {
-      backgroundColor: `var(--tree-view-bg-color, ${theme.palette.action.selected})`,
-      color: secondaryColor,
+      backgroundColor: `var(--tree-view-bg-color,  rgba(58, 145, 152, 0.08))`,
+      color: primaryColor,
     },
     [`& .${treeItemClasses.label}`]: {
       fontWeight: 'inherit',
@@ -70,7 +70,7 @@ const StyledTreeItem = (props) => {
       }
       style={{
         '--tree-view-color': color,
-        '--tree-view-bg-color': bgColor,
+        '--tree-view-bg-color': "rgba(58, 145, 152, 0.08)",
       }}
       {...other}
     />
