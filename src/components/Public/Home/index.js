@@ -1,4 +1,6 @@
 import * as React from "react";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
 import {
   Container,
   Grid,
@@ -11,11 +13,14 @@ import DetailedContent from "./DetailedContent/index";
 import ProjectSelector from "./ProjectSelector";
 import PeriodsManagement from "./PeriodsManagement";
 
+import { getData, getIsLoading } from "redux/project-tree/selectors";
+import { loadData } from "redux/project-tree";
+
 export const PROJECT_TYPE = 'PROJECT';
 export const CONTROL_UNIT_TYPE = 'CONTROL_UNIT';
 export const PARTIDA_TYPE = 'PARTIDA';
 
-const Home = () =>{
+const Home = ({ data, loading, actions }) =>{
   const [show, setShow] = React.useState(false);
   const [node, setNode] = React.useState(null);
   const [tree,] = React.useState({
@@ -38,6 +43,11 @@ const Home = () =>{
       }
     ]
   });
+
+  React.useEffect(() => {
+    actions.getData({});
+  },[actions]);
+
   return (
     <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={1}>
@@ -59,10 +69,13 @@ const Home = () =>{
                   height: 'auto',
                 }}
               >
-                <ProjectsTreeView tree={tree} onNodeSelect={selectedNode => {
-                  setShow(!!selectedNode);
-                  setNode(selectedNode);
-                }} />
+                <ProjectsTreeView
+                  tree={tree}
+                  onNodeSelect={selectedNode => {
+                    setShow(!!selectedNode);
+                    setNode(selectedNode);
+                  }}
+                  loading={loading} />
               </Paper>
             </Grid>
           </Grid>
@@ -77,4 +90,19 @@ const Home = () =>{
   )
 }
 
-export default Home;
+const mapStateToProps = (state, props) => {
+  return {
+    data: getData(state),
+    loading: getIsLoading(state)
+  };
+};
+
+const mapDispatchToProps = (dispatch, props) => {
+  const actions = {
+    getData: bindActionCreators(loadData, dispatch)
+  };
+  return { actions };
+};
+
+const component = connect(mapStateToProps,mapDispatchToProps)(Home);
+export default component;
