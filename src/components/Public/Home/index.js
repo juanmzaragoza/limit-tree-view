@@ -1,4 +1,6 @@
 import * as React from "react";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
 import {
   Container,
   Grid,
@@ -11,33 +13,22 @@ import DetailedContent from "./DetailedContent/index";
 import ProjectSelector from "./ProjectSelector";
 import PeriodsManagement from "./PeriodsManagement";
 
-export const PROJECT_TYPE = 'PROJECT';
-export const CONTROL_UNIT_TYPE = 'CONTROL_UNIT';
-export const PARTIDA_TYPE = 'PARTIDA';
+import { getFormattedData, getIsLoading } from "redux/project-tree/selectors";
+import { loadData } from "redux/project-tree";
 
-const Home = () =>{
+const Home = ({ data, loading, actions }) =>{
   const [show, setShow] = React.useState(false);
   const [node, setNode] = React.useState(null);
-  const [tree,] = React.useState({
-    id: 'project1',
-    labelText: 'Proyecto 1',
-    labelInfo: '20.000€',
-    type: PROJECT_TYPE,
-    nodes: [
-      { id: 'uni1', labelText: 'Unidad de control #1', labelInfo: '10.000€', type: CONTROL_UNIT_TYPE },
-      { id: 'uni2', labelText: 'Unidad de control #2', labelInfo: '10.000€', type: CONTROL_UNIT_TYPE,
-        nodes: [
-          { id: 'part1', labelText: 'Partida #1', labelInfo: '5.000€', type: PARTIDA_TYPE },
-          { id: 'part2', labelText: 'Partida #2', labelInfo: '5.000€', type: PARTIDA_TYPE,
-            nodes:  [
-              { id: 'recu1', labelText: 'Recurso #1', labelInfo: '2.500€', disabled: true },
-              { id: 'recu2', labelText: 'Recurso #2', labelInfo: '2.500€', disabled: true },
-            ]
-          }
-        ]
-      }
-    ]
-  });
+
+  const [tree, setTree] = React.useState({});
+  React.useEffect(() => {
+    setTree(data);
+  },[data]);
+
+  React.useEffect(() => {
+    actions.getData({});
+  },[actions]);
+
   return (
     <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={1}>
@@ -59,10 +50,13 @@ const Home = () =>{
                   height: 'auto',
                 }}
               >
-                <ProjectsTreeView tree={tree} onNodeSelect={selectedNode => {
-                  setShow(!!selectedNode);
-                  setNode(selectedNode);
-                }} />
+                <ProjectsTreeView
+                  tree={tree}
+                  onNodeSelect={selectedNode => {
+                    setShow(!!selectedNode);
+                    setNode(selectedNode);
+                  }}
+                  loading={loading} />
               </Paper>
             </Grid>
           </Grid>
@@ -77,4 +71,19 @@ const Home = () =>{
   )
 }
 
-export default Home;
+const mapStateToProps = (state, props) => {
+  return {
+    data: getFormattedData(state),
+    loading: getIsLoading(state)
+  };
+};
+
+const mapDispatchToProps = (dispatch, props) => {
+  const actions = {
+    getData: bindActionCreators(loadData, dispatch)
+  };
+  return { actions };
+};
+
+const component = connect(mapStateToProps,mapDispatchToProps)(Home);
+export default component;

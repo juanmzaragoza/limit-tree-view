@@ -1,12 +1,13 @@
 import {createTheme, ThemeProvider} from "@mui/material";
 import { red } from "@mui/material/colors";
+import {IntlProvider} from "react-intl";
 
-import { primaryColor, secondaryColor } from "utils/helper";
 import 'App.css';
 import Routes from "router";
+import { primaryColor, secondaryColor } from "utils/helper";
+import {login} from "./utils/before-login-helper";
 
 function App() {
-
   let theme = createTheme({
     typography: {
       fontFamily: "'Poppins', 'Helvetica', sans-serif",
@@ -24,11 +25,13 @@ function App() {
       },
     },
   });
-
+  login();
   return (
     <div data-testid="App" className="App">
       <ThemeProvider theme={theme}>
-        <Routes />
+        <IntlProvider locale={'es'}>
+          <Routes />
+        </IntlProvider>
       </ThemeProvider>
     </div>
   );

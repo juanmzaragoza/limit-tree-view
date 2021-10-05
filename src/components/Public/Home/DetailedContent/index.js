@@ -1,6 +1,10 @@
 import * as React from "react";
 import { Container } from "@mui/material";
-import { CONTROL_UNIT_TYPE, PARTIDA_TYPE, PROJECT_TYPE } from "../index";
+import {
+  CONTROL_UNIT_TYPE,
+  PARTIDA_TYPE,
+  PROJECT_TYPE
+} from "constants/business-types";
 import ProjectDetailedContent from "./ProjectDetailedContent";
 import ControlUnitDetailedContent from "./ControlUnitDetailedContent";
 import PartidaDetailedContent from "./PartidaDetailedContent";
