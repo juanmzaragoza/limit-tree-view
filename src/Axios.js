@@ -20,7 +20,6 @@ Axios.interceptors.request.use(function (conf) {
 
 
 /** Handle errors */
-let key;
 Axios.interceptors.response.use(
   (response) => {
     return response;

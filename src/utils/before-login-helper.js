@@ -16,14 +16,15 @@ export const login = () => {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     }),
-  }).then(({status, data, ...rest}) => {
-    Axios.post('api/auth/refresh', {token: data.token, session:{"i":443,"e":987}}, {
-      headers: new Headers({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${data.token}'
-      }),
-    })
+  })
+    .then(({status, data, ...rest}) => {
+      Axios.post('api/auth/refresh', {token: data.token, session:{"i":443,"e":987}}, {
+        headers: new Headers({
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${data.token}`
+        }),
+      })
       .then(({status, data, ...rest}) => {
         setPlainOn('token', data.token);
       })
