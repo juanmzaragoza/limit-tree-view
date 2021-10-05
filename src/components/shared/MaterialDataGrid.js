@@ -5,6 +5,7 @@ const DetailedTable = ({
   rootStyle = { height: 400, width: '100%' },
   rows,
   columns,
+  loading,
   getRowId = (row) => row.codi,
   disableColumnMenu = true,
   autoHeight = true,
@@ -19,6 +20,7 @@ const DetailedTable = ({
             rows={rows}
             columns={columns.map(column => ({...column, flex: 1}))}
             getRowId={getRowId}
+            loading={loading}
             disableColumnMenu={disableColumnMenu}
             autoHeight={autoHeight}
             autoWidth={autoWidth}

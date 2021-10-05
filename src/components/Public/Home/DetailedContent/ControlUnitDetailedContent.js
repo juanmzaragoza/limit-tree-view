@@ -1,13 +1,18 @@
-import {Grid} from "@mui/material";
-import DetailedHeader from "../../../shared/DetailedHeader";
-import MaterialDataGrid from "../../../shared/MaterialDataGrid";
 import * as React from "react";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {Grid} from "@mui/material";
+
+import DetailedHeader from "components/shared/DetailedHeader";
+import MaterialDataGrid from "components/shared/MaterialDataGrid";
+
+import { getRows, getIsLoading } from "redux/unit-control/selectors";
 
 const createData = (codi, descripcio, medicio, tipoUnidad, unPres, pvpNeto, importe, costeUnit, costeTot, medicionAnt, medicionAct, pendient) => {
   return { codi, descripcio, medicio, tipoUnidad, unPres, pvpNeto, importe, costeUnit, costeTot, medicionAnt, medicionAct, pendient };
 }
 
-const ProjectDetailedContent = () => {
+const ControlUnitDetailedContent = ({ rows, loading }) => {
 
   const [headerProject,] = React.useState({
     title: 'Proyecto 1',
@@ -24,7 +29,7 @@ const ProjectDetailedContent = () => {
   ]);
   const [percentage,] = React.useState("5%");
 
-  const [columns,] = React.useState([
+  const [columns] = React.useState([
     { field: 'codi', headerName: 'Código', width: 120, editable: true },
     { field: 'descripcio', headerName: 'Descripció', width: 140, editable: true },
     { field: 'medicio', headerName: 'Medición',  width: 120, editable: true },
@@ -37,13 +42,6 @@ const ProjectDetailedContent = () => {
     { field: 'medicionAnt', headerName: 'Medición Anterior', type: 'number', editable: true },
     { field: 'medicionAct', headerName: 'Medición Actual', type: 'number', editable: true },
     { field: 'pendient', headerName: 'Pendiente', type: 'number', editable: true },
-  ]);
-  const [rows,] = React.useState([
-    createData('0001', 'Partida 1', 10, 'M3', 10, 10, 100, 12, 120, 2, 6, 2),
-    createData('0002', 'Partida 2', 12, 'M3', 10, 10, 100, 12, 120, 2, 6, 2),
-    createData('0003', 'Partida 3', 14, 'M3', 10, 10, 100, 12, 120, 2, 6, 2),
-    createData('0004', 'Partida 4', 16, 'M3', 10, 10, 100, 12, 120, 2, 6, 2),
-    createData('0005', 'Partida 5', 18, 'M3', 10, 10, 100, 12, 120, 2, 6, 2)
   ]);
 
   return <Grid container spacing={2}>
@@ -62,9 +60,18 @@ const ProjectDetailedContent = () => {
     <Grid item xs={12}>
       <MaterialDataGrid
         columns={columns}
-        rows={rows} />
+        rows={rows}
+        loading={loading} />
     </Grid>
   </Grid>
 }
 
-export default ProjectDetailedContent;
+const mapStateToProps = (state, props) => {
+  return {
+    rows: getRows(state),
+    loading: getIsLoading(state)
+  };
+};
+
+const component = connect(mapStateToProps,null)(ControlUnitDetailedContent);
+export default component;
