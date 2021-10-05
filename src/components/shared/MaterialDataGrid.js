@@ -14,7 +14,7 @@ const DetailedTable = ({
   return (
     <div style={rootStyle}>
       <div style={{ display: 'flex', height: '100%' }}>
-        <div style={{ flexGrow: 1 }}>
+        <div style={{ flexGrow: 1}} >
           <DataGrid
             rows={rows}
             columns={columns.map(column => ({...column, flex: 1}))}
@@ -22,7 +22,9 @@ const DetailedTable = ({
             disableColumnMenu={disableColumnMenu}
             autoHeight={autoHeight}
             autoWidth={autoWidth}
-            disableExtendRowFullWidth={disableExtendRowFullWidth} />
+            disableExtendRowFullWidth={disableExtendRowFullWidth}
+            style={{ backgroundColor: "white"}} 
+            />
         </div>
       </div>
     </div>

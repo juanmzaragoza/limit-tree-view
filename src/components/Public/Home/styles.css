@@ -22,6 +22,32 @@
 .Mui-selected:hover {
   background-color: rgba(58, 145, 152, 0.08) !important;
 }
+
+.containerProjectTree{
+  border-top: 1px solid #cdcdcd;
+}
  
+.MuiDataGrid-root .MuiDataGrid-cell.MuiDataGrid-cell--editing:focus-within {
+  outline: solid #3a9198 1px !important;
+  outline-offset: -1px !important;
+}
 
+.MuiDataGrid-root .MuiDataGrid-columnHeader:focus, .MuiDataGrid-root .MuiDataGrid-cell:focus {
+  outline: solid #3a9198 1px !important;
+}
 
+.MuiDataGrid-root .MuiDataGrid-row.Mui-selected {
+  background-color: rgba(58, 145, 152, 0.08) !important;
+}
+
+.tituloDetailHeader .MuiCardHeader-title{
+  font-size: 20px !important;
+}
+
+.tituloDetailHeader .MuiCardHeader-subheader{
+  font-size: 16px !important;
+}
+
+.bodyLabel{
+  font-size: 14px !important;
+}

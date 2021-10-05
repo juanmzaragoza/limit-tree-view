@@ -11,7 +11,8 @@ import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
-import { find } from 'lodash';
+import { forEach, isEmpty} from 'lodash';
+import { secondaryColor } from 'utils/helper';
 
 const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
   color: theme.palette.text.secondary,
@@ -29,7 +30,7 @@ const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
     },
     '&.Mui-focused, &.Mui-selected, &.Mui-selected.Mui-focused': {
       backgroundColor: `var(--tree-view-bg-color, ${theme.palette.action.selected})`,
-      color: 'var(--tree-view-color)',
+      color: secondaryColor,
     },
     [`& .${treeItemClasses.label}`]: {
       fontWeight: 'inherit',
@@ -89,7 +90,12 @@ const ProjectsTreeView = ({ tree, onNodeSelect }) => {
 
   const renderNodes = ({ tree }) => {
     if(tree.nodes) {
-      return <StyledTreeItem key={tree.id} nodeId={tree.id} labelText={tree.labelText} labelInfo={tree.labelInfo} labelIcon={Label} >
+      return <StyledTreeItem
+        key={tree.id}
+        nodeId={tree.id}
+        labelText={tree.labelText}
+        labelInfo={tree.labelInfo}
+        labelIcon={Label} >
         {tree.nodes.map(node => renderNodes({ tree: node}))}
       </StyledTreeItem>
     } else{
@@ -101,6 +107,7 @@ const ProjectsTreeView = ({ tree, onNodeSelect }) => {
         labelInfo={tree.labelInfo}
         color="#1a73e8"
         bgColor="#e8f0fe"
+        disabled={tree.disabled}
       />
     }
   };
@@ -109,15 +116,22 @@ const ProjectsTreeView = ({ tree, onNodeSelect }) => {
     if(nodes.id === nodeId) {
       return nodes;
     } else{
-      return find(nodes.nodes,node => {
-        return findNode({ nodes: node, nodeId });
-      });
+      let founded = {};
+      forEach(nodes.nodes, node => {
+        const n = findNode({ nodes: node, nodeId });
+        if(!isEmpty(n)) {
+          founded = n;
+          return false;
+        }
+      })
+      return founded;
     }
   }
 
   return (
     <TreeView
       aria-label="tree"
+      defaultExpanded={[tree.id]}
       defaultCollapseIcon={<ArrowDropDownIcon />}
       defaultExpandIcon={<ArrowRightIcon />}
       defaultEndIcon={<div style={{ width: 24 }} />}
@@ -130,7 +144,9 @@ const ProjectsTreeView = ({ tree, onNodeSelect }) => {
       onNodeSelect={(e, ids) => {
         const selected = ids === nodeIds? null:ids;
         setNodeIds(selected);
-        onNodeSelect(findNode({ nodes: tree, nodeId: selected}));
+        const selectedNode = findNode({ nodes: tree, nodeId: selected });
+        if(!selectedNode.disabled)
+          onNodeSelect(findNode({ nodes: tree, nodeId: selected }));
       }}
       selected={nodeIds}
     >
