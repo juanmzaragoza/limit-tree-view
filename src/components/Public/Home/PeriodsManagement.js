@@ -21,26 +21,23 @@ const PeriodsManagement = () => {
     { label: 'Revisado Jefe de Grupo' },
   ]);
   return (
-    <Paper
-      sx={{
-        p: 1,
-        margin: '2px'
-      }}
-    >
+
     <Grid container spacing={1} direction="row" alignItems="center" >
-      <Grid item xs={12} md={6} lg={4}>
+      <Grid item xs={12} md={12} lg={4}>
         <MaterialSelector
           id={"period"}
           items={periods}
           onChange={(e) => console.log(e)} label={"Períodos"}/>
       </Grid>
-      <Grid item xs={12} md={6} lg={5}>
+      <Grid item xs={12} md={12} lg={5}>
         <MaterialCheckbox items={statuses} />
       </Grid>
-      <Grid item xs={12} md={6} lg={3}>
+      <Grid item xs={12} md={12} lg={3}>
         <Button variant={"outlined"} >Cerrar Período</Button>
       </Grid>
-    </Grid></Paper>
+     
+      
+    </Grid>
   )
 }
 

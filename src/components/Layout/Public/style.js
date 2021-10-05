@@ -15,8 +15,12 @@ const useStyles = makeStyles((theme) => createStyles({
   },
   appBar: {
     position: "fixed",
-    // background: `url(${Header}) no-repeat right`,
-    backgroundColor: "#111",
+    background:` linear-gradient(
+      90deg,
+      rgba(91, 153, 154, 1) 6%,
+      rgba(63, 126, 128, 1) 62%,
+      rgba(68, 104, 160, 1) 100%
+    )`
   },
   toolbar: {},
   toolbarTitle: {

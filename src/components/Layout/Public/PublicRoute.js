@@ -43,7 +43,7 @@ const PublicRoute = ({ component: Component, path, ...rest}) => {
   return (
     <div>
       <CssBaseline />
-      <AppBar position="static">
+      <AppBar position="static" className={classes.appBar }>
         <Toolbar>
           <IconButton
             size="large"
@@ -55,7 +55,7 @@ const PublicRoute = ({ component: Component, path, ...rest}) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Limit - Tree View
+            Limit - Estudio de Proyectos
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>
@@ -72,7 +72,7 @@ const PublicRoute = ({ component: Component, path, ...rest}) => {
           overflow: 'auto',
         }}
       >
-        <div style={{ paddingTop: "20px" }}>
+        <div>
         <Route
           path={path}
           render={(props) => <Component {...props} />}
