@@ -1,16 +1,11 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
 import {Grid} from "@mui/material";
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
 
 import { getRows, getIsLoading } from "redux/unit-control/selectors";
-
-const createData = (codi, descripcio, medicio, tipoUnidad, unPres, pvpNeto, importe, costeUnit, costeTot, medicionAnt, medicionAct, pendient) => {
-  return { codi, descripcio, medicio, tipoUnidad, unPres, pvpNeto, importe, costeUnit, costeTot, medicionAnt, medicionAct, pendient };
-}
 
 const ControlUnitDetailedContent = ({ rows, loading }) => {
 
