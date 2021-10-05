@@ -64,8 +64,9 @@ const useStyles = makeStyles((theme) => createStyles({
       paddingBottom: theme.spacing(6),
     },*/
   },
+
   columns: {
-    justifyContent: "flex-start",
+    justifyContent: "center",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
