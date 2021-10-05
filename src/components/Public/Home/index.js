@@ -1,17 +1,23 @@
 import * as React from "react";
 import { Container, Grid, Paper } from "@mui/material";
 
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+
 import ProjectsTreeView from "./ProjectsTreeView";
 import SelectOne from "./SelectOne";
 import DetailedContent from "./DetailedContent/index";
 import ProjectSelector from "./ProjectSelector";
 import PeriodsManagement from "./PeriodsManagement";
+import { getData, getIsLoading } from "redux/project-tree/selectors";
+import { loadData } from "redux/project-tree";
 
-export const PROJECT_TYPE = "PROJECT";
-export const CONTROL_UNIT_TYPE = "CONTROL_UNIT";
-export const PARTIDA_TYPE = "PARTIDA";
+export const PROJECT_TYPE = 'PROJECT';
+export const CONTROL_UNIT_TYPE = 'CONTROL_UNIT';
+export const PARTIDA_TYPE = 'PARTIDA';
 
-const Home = () => {
+const Home = ({ data, loading, actions }) =>{
+
   const [show, setShow] = React.useState(false);
   const [node, setNode] = React.useState(null);
   const [tree] = React.useState({
@@ -62,12 +68,17 @@ const Home = () => {
       },
     ],
   });
-  return (
-    <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
+
+  React.useEffect(() => {
+    actions.getData({});
+  },[actions]);
+
+  return ( <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
       <Grid container>
         <Grid item xs={12} md={12} lg={12} >
           <ProjectSelector onChange={(e) => console.log(e)} />
         </Grid>
+
         <Grid item xs={12} md={4} lg={4} sx={{ mt: 2, mb: 3 }}>
           <Paper
             sx={{
@@ -81,6 +92,7 @@ const Home = () => {
           >
             <Grid item xs={12} md={12} lg={12}  sx={{ mb: 3 }}>
               <PeriodsManagement />
+
             </Grid>
             <Grid container spacing={1} className="containerProjectTree">
               <Grid item xs={12} md={12} lg={12} sx={{ mt: 1 }}>
@@ -90,7 +102,8 @@ const Home = () => {
                     setShow(!!selectedNode);
                     setNode(selectedNode);
                   }}
-                />
+                  loading={loading} />
+                
               </Grid>
             </Grid>
           </Paper>
@@ -106,4 +119,21 @@ const Home = () => {
   );
 };
 
-export default Home;
+
+const mapStateToProps = (state, props) => {
+  return {
+    data: getData(state),
+    loading: getIsLoading(state)
+  };
+};
+
+const mapDispatchToProps = (dispatch, props) => {
+  const actions = {
+    getData: bindActionCreators(loadData, dispatch)
+  };
+  return { actions };
+};
+
+const component = connect(mapStateToProps,mapDispatchToProps)(Home);
+export default component;
+

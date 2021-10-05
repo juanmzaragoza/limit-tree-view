@@ -1,13 +1,14 @@
 import axios from "axios";
+import {getPlainFrom} from "./utils/storage";
 
 const Axios = axios.create();
-
+const authToken = () => 'Bearer ' + getPlainFrom('token');
 Axios.defaults.baseURL = 'https://10.35.3.44:8083/';
 
 Axios.interceptors.request.use(function (conf) {
   // Do something before request is sent
   conf.headers = {
-    //"Authorization": authToken(),
+    "Authorization": authToken(),
     "Content-Type": "application/json",
   }
 
@@ -19,7 +20,6 @@ Axios.interceptors.request.use(function (conf) {
 
 
 /** Handle errors */
-let key;
 Axios.interceptors.response.use(
   (response) => {
     return response;

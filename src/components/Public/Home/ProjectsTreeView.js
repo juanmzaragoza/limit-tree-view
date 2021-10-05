@@ -10,9 +10,9 @@ import Label from '@mui/icons-material/Label';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-
 import { forEach, isEmpty} from 'lodash';
-import { primaryColor, secondaryColor } from 'utils/helper';
+import { primaryColor } from 'utils/helper';
+import MaterialSkeleton from "../../shared/MaterialSkeleton";
 
 const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
   color: theme.palette.text.secondary,
@@ -85,7 +85,7 @@ StyledTreeItem.propTypes = {
   labelText: PropTypes.string.isRequired,
 };
 
-const ProjectsTreeView = ({ tree, onNodeSelect }) => {
+const ProjectsTreeView = ({ tree, loading, onNodeSelect }) => {
   const [nodeIds, setNodeIds] = React.useState(null);
 
   const renderNodes = ({ tree }) => {
@@ -150,7 +150,8 @@ const ProjectsTreeView = ({ tree, onNodeSelect }) => {
       }}
       selected={nodeIds}
     >
-      {renderNodes({ tree })}
+      {!loading && renderNodes({ tree })}
+      {loading && <MaterialSkeleton />}
     </TreeView>
   );
 }
