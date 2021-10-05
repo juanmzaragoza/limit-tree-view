@@ -1,35 +1,56 @@
 import Axios from "Axios";
-import {getFormedURL} from "redux/common";
+import { FormattedNumber } from "react-intl";
+import {
+  CONTROL_UNIT_TYPE,
+  PARTIDA_TYPE,
+  PROJECT_TYPE
+} from "constants/business-types";
 
 //Action types
 const ADD = "ADD_TO_TREE";
 
-const TREE_SIZE = 10;
-const PROJECTS_TREE_RESULT_KEY = 'unitatsControl';
+// Constants
+const URL = 'api/fact/estudisProjecte/eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImNvZGkiOiIwMDAxIiwiZW1wcmVzYUNvZGkiOiJQUk8yIiwibnVtZXJvIjowLCJwcm9qZWN0ZUNvZGkiOiJFU1BSTzIifQ==/tree';
 
+const formatCurrency = (value) => <FormattedNumber value={value} style={"currency"} currency="EUR" />;
 //Functions
-export const loadData = ({
-  apiId = 'PROJECTS_TREE_URL_ID',
-  key = PROJECTS_TREE_RESULT_KEY,
-  size = TREE_SIZE,
-  page,
-  query = [],
-  sorting = []
-}) => {
+export const loadData = ({ url = URL }) => {
   return async dispatch => {
-    const formedURL = () => {
-      return getFormedURL({id: apiId, size : size , page, sorting, query})
-    }
-    const apiCall = () => Axios.get(formedURL());
+    const apiCall = () => Axios.get(url);
     try {
       dispatch(add({ loading: true }));
       apiCall()
         .then(({data}) => data)
-        .then(({_embedded, page}) => {
-          dispatch(add({ data: _embedded? _embedded[key]:[] }));
+        .then((_embedded) => {
+          const formattedData = {
+            id: 'project1',
+            labelText: 'Proyecto 1',
+            labelInfo: '20.000€',
+            type: PROJECT_TYPE,
+            nodes: _embedded['unitatsControl'].map(controlUnit => ({
+              id: controlUnit.id,
+              labelInfo: formatCurrency(10000000),
+              labelText: controlUnit.descripcio,
+              type: CONTROL_UNIT_TYPE,
+              nodes: controlUnit['partides'].map(partida => ({
+                id: partida.id,
+                labelText: partida.descripcio,
+                labelInfo: formatCurrency(partida.costTotal),
+                type: PARTIDA_TYPE,
+                nodes: partida['recursos']?.map(resource => ({
+                  id: resource.id,
+                  labelText: resource.descripcio,
+                  labelInfo: formatCurrency(resource.costTotal),
+                  disabled: true
+                }))
+              }))
+            }))
+          }
+          dispatch(add({ formattedData, data: _embedded }));
           dispatch(add({ loading: false }));
         })
         .catch(error => {
+          console.log(error);
           dispatch(add({ loading: false }));
         })
         .finally(() => {
@@ -51,7 +72,8 @@ export const add = (payload) => {
 
 //Reducers
 const initialState = {
-  data: false,
+  formattedData: {},
+  data: {},
   loading: false,
 };
 

@@ -13,36 +13,17 @@ import DetailedContent from "./DetailedContent/index";
 import ProjectSelector from "./ProjectSelector";
 import PeriodsManagement from "./PeriodsManagement";
 
-import { getData, getIsLoading } from "redux/project-tree/selectors";
+import { getFormattedData, getIsLoading } from "redux/project-tree/selectors";
 import { loadData } from "redux/project-tree";
-
-export const PROJECT_TYPE = 'PROJECT';
-export const CONTROL_UNIT_TYPE = 'CONTROL_UNIT';
-export const PARTIDA_TYPE = 'PARTIDA';
 
 const Home = ({ data, loading, actions }) =>{
   const [show, setShow] = React.useState(false);
   const [node, setNode] = React.useState(null);
-  const [tree,] = React.useState({
-    id: 'project1',
-    labelText: 'Proyecto 1',
-    labelInfo: '20.000€',
-    type: PROJECT_TYPE,
-    nodes: [
-      { id: 'uni1', labelText: 'Unidad de control #1', labelInfo: '10.000€', type: CONTROL_UNIT_TYPE },
-      { id: 'uni2', labelText: 'Unidad de control #2', labelInfo: '10.000€', type: CONTROL_UNIT_TYPE,
-        nodes: [
-          { id: 'part1', labelText: 'Partida #1', labelInfo: '5.000€', type: PARTIDA_TYPE },
-          { id: 'part2', labelText: 'Partida #2', labelInfo: '5.000€', type: PARTIDA_TYPE,
-            nodes:  [
-              { id: 'recu1', labelText: 'Recurso #1', labelInfo: '2.500€', disabled: true },
-              { id: 'recu2', labelText: 'Recurso #2', labelInfo: '2.500€', disabled: true },
-            ]
-          }
-        ]
-      }
-    ]
-  });
+
+  const [tree, setTree] = React.useState({});
+  React.useEffect(() => {
+    setTree(data);
+  },[data]);
 
   React.useEffect(() => {
     actions.getData({});
@@ -92,7 +73,7 @@ const Home = ({ data, loading, actions }) =>{
 
 const mapStateToProps = (state, props) => {
   return {
-    data: getData(state),
+    data: getFormattedData(state),
     loading: getIsLoading(state)
   };
 };

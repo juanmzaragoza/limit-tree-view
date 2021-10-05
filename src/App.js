@@ -1,5 +1,6 @@
 import {createTheme, ThemeProvider} from "@mui/material";
 import { red } from "@mui/material/colors";
+import {IntlProvider} from "react-intl";
 
 import 'App.css';
 import Routes from "router";
@@ -28,7 +29,9 @@ function App() {
   return (
     <div data-testid="App" className="App">
       <ThemeProvider theme={theme}>
-        <Routes />
+        <IntlProvider locale={'es'}>
+          <Routes />
+        </IntlProvider>
       </ThemeProvider>
     </div>
   );

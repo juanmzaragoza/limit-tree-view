@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import { forEach, isEmpty, remove } from 'lodash';
 
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -11,7 +12,6 @@ import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
-import { forEach, isEmpty} from 'lodash';
 import MaterialSkeleton from "../../shared/MaterialSkeleton";
 
 const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
@@ -81,12 +81,17 @@ StyledTreeItem.propTypes = {
   bgColor: PropTypes.string,
   color: PropTypes.string,
   labelIcon: PropTypes.elementType.isRequired,
-  labelInfo: PropTypes.string,
-  labelText: PropTypes.string.isRequired,
+  labelInfo: PropTypes.any,
+  labelText: PropTypes.string,
 };
 
 const ProjectsTreeView = ({ tree, loading, onNodeSelect }) => {
   const [nodeIds, setNodeIds] = React.useState(null);
+  const [expanded, setExpanded] = React.useState([]);
+
+  React.useEffect(() => {
+    if(!isEmpty(tree)) setExpanded([tree.id]);
+  },[tree]);
 
   const renderNodes = ({ tree }) => {
     if(tree.nodes) {
@@ -128,10 +133,27 @@ const ProjectsTreeView = ({ tree, loading, onNodeSelect }) => {
     }
   }
 
+  const handleOnNodeSelect = (e, ids) => {
+    const selected = ids === nodeIds? null:ids;
+    // fire action
+    setNodeIds(selected);
+    const selectedNode = findNode({ nodes: tree, nodeId: selected });
+    if(!selectedNode.disabled)
+      onNodeSelect(findNode({ nodes: tree, nodeId: selected }));
+    // update expanded
+    const found = expanded.find(id => ids === id);
+    if(found) {
+      console.log("found", found)
+      setExpanded(remove(expanded, (e) => e !== found));
+    } else{
+      setExpanded([...expanded, ids]);
+    }
+  }
+
   return (
     <TreeView
       aria-label="tree"
-      defaultExpanded={[tree.id]}
+      expanded={expanded}
       defaultCollapseIcon={<ArrowDropDownIcon />}
       defaultExpandIcon={<ArrowRightIcon />}
       defaultEndIcon={<div style={{ width: 24 }} />}
@@ -141,16 +163,10 @@ const ProjectsTreeView = ({ tree, loading, onNodeSelect }) => {
         overflowY: 'auto',
         textAlign: 'left'
       }}
-      onNodeSelect={(e, ids) => {
-        const selected = ids === nodeIds? null:ids;
-        setNodeIds(selected);
-        const selectedNode = findNode({ nodes: tree, nodeId: selected });
-        if(!selectedNode.disabled)
-          onNodeSelect(findNode({ nodes: tree, nodeId: selected }));
-      }}
+      onNodeSelect={handleOnNodeSelect}
       selected={nodeIds}
     >
-      {!loading && renderNodes({ tree })}
+      {!loading && !isEmpty(tree) && renderNodes({ tree })}
       {loading && <MaterialSkeleton />}
     </TreeView>
   );
