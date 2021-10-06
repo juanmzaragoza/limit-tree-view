@@ -24,6 +24,9 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions }) => 
   });
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
   const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
+  const getData = (params) => {
+    return `${params.value?.description || ""}`;
+  };
 
   const [columns] = React.useState([
     { field: "codi", headerName: "Código", minWidth: 150, editable: true },
@@ -41,10 +44,10 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions }) => 
       editable: true,
     },
     {
-      field: "unitatsTipus",
+      field: "unitatTipus",
       headerName: "Tipo Unidad",
-      type: "number",
-      minWidth: 150,
+      valueGetter: getData,
+      minWidth:150,
       editable: true,
     },
     {
@@ -58,6 +61,9 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions }) => 
       field: "preuNet",
       headerName: "Pvp Neto",
       type: "number",
+      valueFormatter: (params) => {
+        return formatCurrencyWithIntl(params.row.preuNet ?? 0, intl);
+      },
       minWidth: 140,
       editable: false,
     },
@@ -65,6 +71,9 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions }) => 
       field: "importTotal",
       headerName: "Importe",
       type: "number",
+      valueFormatter: (params) => {
+        return formatCurrencyWithIntl(params.row.importTotal ?? 0, intl);
+      },
       minWidth: 140,
       editable: false,
     },
@@ -72,6 +81,9 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions }) => 
       field: "costUni",
       headerName: "Coste Unitario",
       type: "number",
+      valueFormatter: (params) => {
+        return formatCurrencyWithIntl(params.row.costUni ?? 0, intl);
+      },
       minWidth: 150,
       editable: false,
     },
@@ -79,6 +91,9 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions }) => 
       field: "costTotal",
       headerName: "Coste Total",
       type: "number",
+      valueFormatter: (params) => {
+        return formatCurrencyWithIntl(params.row.costTotal ?? 0, intl);
+      },
       minWidth: 140,
       editable: false,
     },
