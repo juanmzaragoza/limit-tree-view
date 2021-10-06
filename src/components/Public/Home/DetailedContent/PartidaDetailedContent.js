@@ -15,11 +15,7 @@ import  {
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
-import { getIsLoading, getRows } from "redux/partida/selectors";
-
-/*const createData = (codi, descripcio, medicio, tipoUnidad, unPres, pvpNeto, importe, costeUnit, costeTot, medicionAnt, medicionAct, pendient) => {
-  return { codi, descripcio, medicio, tipoUnidad, unPres, pvpNeto, importe, costeUnit, costeTot, medicionAnt, medicionAct, pendient };
-}*/
+import { getIsLoading, getRows } from "redux/resource/selectors";
 
 const ProjectDetailedContent = ({ rows, loading }) => {
 
@@ -55,13 +51,6 @@ const ProjectDetailedContent = ({ rows, loading }) => {
     // { field: 'medicionAct', headerName: 'Medición Actual', type: 'number', editable: true },
     // { field: 'pendient', headerName: 'Pendiente', type: 'number', editable: true },
   ]);
-  /*const [rows,] = React.useState([
-    createData('0001', 'Partida 1', 10, 'M3', 10, 10, 100, 12, 120, 2, 6, 2),
-    createData('0002', 'Partida 2', 12, 'M3', 10, 10, 100, 12, 120, 2, 6, 2),
-    createData('0003', 'Partida 3', 14, 'M3', 10, 10, 100, 12, 120, 2, 6, 2),
-    createData('0004', 'Partida 4', 16, 'M3', 10, 10, 100, 12, 120, 2, 6, 2),
-    createData('0005', 'Partida 5', 18, 'M3', 10, 10, 100, 12, 120, 2, 6, 2)
-  ]);*/
   const [kpis] = React.useState([
     { field: "Producción Anterior", value:"1000", icon: <Engineering/> },
     { field: "Producción Período", value:"1000" , icon: <Engineering/>},
