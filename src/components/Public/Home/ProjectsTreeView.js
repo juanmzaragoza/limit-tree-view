@@ -13,7 +13,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { primaryColor } from 'utils/helper';
 
-import MaterialSkeleton from "components/shared/MaterialSkeleton";
+import MaterialSkeleton from "components/shared/MaterialSkeleton/MaterialSkeleton";
 
 const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
   color: theme.palette.text.secondary,
