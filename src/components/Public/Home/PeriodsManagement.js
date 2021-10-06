@@ -26,7 +26,7 @@ const PeriodsManagement = ({ rows, loading, project, actions }) => {
     }
   },[project]);
 
-  const getDate = (value) => value.split('T')[0];
+  const getDate = (value) => value.split('T')[0].replace(/\-/g,'/');
   React.useEffect(() => {
     setPeriods(
       rows.map(row => ({
