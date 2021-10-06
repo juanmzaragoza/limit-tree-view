@@ -7,6 +7,7 @@ import partida from "redux/partida/index.js";
 export default combineReducers({
   example,
   projectTree,
+  unitControl,
   partida
 });
 

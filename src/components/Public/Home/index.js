@@ -1,11 +1,8 @@
 import * as React from "react";
+import { Container, Grid, Paper } from "@mui/material";
+
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {
-  Container,
-  Grid,
-  Paper,
-} from "@mui/material";
 
 import ProjectsTreeView from "./ProjectsTreeView";
 import SelectOne from "./SelectOne";
@@ -17,6 +14,7 @@ import { getFormattedData, getIsLoading } from "redux/project-tree/selectors";
 import { loadData } from "redux/project-tree";
 
 const Home = ({ data, loading, actions }) =>{
+
   const [show, setShow] = React.useState(false);
   const [node, setNode] = React.useState(null);
 
@@ -29,47 +27,52 @@ const Home = ({ data, loading, actions }) =>{
     actions.getData({});
   },[actions]);
 
-  return (
-    <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
-      <Grid container spacing={1}>
-        <Grid item xs={12} md={12} lg={12}>
+  return ( <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
+      <Grid container>
+        <Grid item xs={12} md={12} lg={12} >
           <ProjectSelector onChange={(e) => console.log(e)} />
         </Grid>
-        <Grid item xs={12} md={4} lg={4}>
-          <Grid item xs={12} md={12} lg={12}>
-            <PeriodsManagement />
-          </Grid>
-          <Grid container spacing={1}>
-            <Grid item xs={12} md={12} lg={12}>
-              <Paper
-                sx={{
-                  p: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  minHeight: '200px',
-                  height: 'auto',
-                }}
-              >
+
+        <Grid item xs={12} md={4} lg={4} sx={{ mt: 2, mb: 3 }}>
+          <Paper
+            sx={{
+              p: 2,
+              display: "flex",
+              flexDirection: "column",
+              minHeight: "200px",
+              height: "auto",
+            }}
+            elevation={2}
+          >
+            <Grid item xs={12} md={12} lg={12}  sx={{ mb: 3 }}>
+              <PeriodsManagement />
+
+            </Grid>
+            <Grid container spacing={1} className="containerProjectTree">
+              <Grid item xs={12} md={12} lg={12} sx={{ mt: 1 }}>
                 <ProjectsTreeView
                   tree={tree}
-                  onNodeSelect={selectedNode => {
+                  onNodeSelect={(selectedNode) => {
                     setShow(!!selectedNode);
                     setNode(selectedNode);
                   }}
                   loading={loading} />
-              </Paper>
+                
+              </Grid>
             </Grid>
-          </Grid>
+          </Paper>
         </Grid>
+
         <Grid ></Grid>
-        <Grid item xs={12} md={8} lg={8}>
+        <Grid item xs={12} md={8} lg={8} sx={{ mt: 2, mb: 3 }}>
           {show && <DetailedContent data={node} />}
           {!show && <SelectOne />}
         </Grid>
       </Grid>
     </Container>
-  )
-}
+  );
+};
+
 
 const mapStateToProps = (state, props) => {
   return {
@@ -87,3 +90,4 @@ const mapDispatchToProps = (dispatch, props) => {
 
 const component = connect(mapStateToProps,mapDispatchToProps)(Home);
 export default component;
+

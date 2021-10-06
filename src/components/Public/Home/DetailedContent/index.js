@@ -40,7 +40,7 @@ const DetailedContent = ({ data, actions }) => {
   }
 
   return (
-    <Container maxWidth={false}>
+    <Container maxWidth={false} className="containerData">
       {(data && !!layout[data.type] && layout[data.type]()) || "Tipo inexistente"}
     </Container>
   )
