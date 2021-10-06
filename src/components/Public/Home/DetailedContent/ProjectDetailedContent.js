@@ -25,18 +25,12 @@ const ProjectDetailedContent = ({ rows }) => {
 
   const [columns,] = React.useState([
     { field: 'codi', headerName: 'Código', width: 120, editable: true },
-    { field: 'descripcio', headerName: 'Descripció', width: 140, editable: true },
-    { field: 'medicio', headerName: 'Medición',  width: 120, editable: true },
-    { field: 'tipoUnidad', headerName: 'Tipo Unidad', editable: true },
-    { field: 'unPres', headerName: 'Un. Pres', editable: true },
-    { field: 'pvpNeto', headerName: 'Pvp Neto', type: 'number', editable: true },
-    { field: 'importe', headerName: 'Importe', type: 'number', editable: true },
-    { field: 'costeUnit', headerName: 'Coste Unitario', type: 'number', editable: true },
-    { field: 'costeTot', headerName: 'Coste Total', type: 'number', editable: true },
-    { field: 'medicionAnt', headerName: 'Medición Anterior', type: 'number', editable: true },
-    { field: 'medicionAct', headerName: 'Medición Actual', type: 'number', editable: true },
-    { field: 'pendient', headerName: 'Pendiente', type: 'number', editable: true },
+    { field: 'descripcio', headerName: 'Descripción', width: 140, editable: true },
+    { field: 'importTotal', headerName: 'Importe Total',  width: 120, type: "number", editable: true },
+    { field: 'costTotal', headerName: 'Costel Total', type: "number", editable: true },
+
   ]);
+
 
   return <Grid container spacing={1}>
     <Grid item xs={12}>
