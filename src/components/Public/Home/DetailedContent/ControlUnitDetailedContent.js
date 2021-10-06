@@ -5,7 +5,7 @@ import {Grid} from "@mui/material";
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
 
-import { getRows, getIsLoading } from "redux/unit-control/selectors";
+import { getIsLoading, getRows } from "redux/partida/selectors";
 
 const ControlUnitDetailedContent = ({ rows, loading }) => {
 

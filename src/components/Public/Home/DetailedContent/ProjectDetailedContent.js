@@ -1,13 +1,12 @@
-import {Grid} from "@mui/material";
-import DetailedHeader from "../../../shared/DetailedHeader";
-import MaterialDataGrid from "../../../shared/MaterialDataGrid";
 import * as React from "react";
+import {connect} from "react-redux";
+import {Grid} from "@mui/material";
 
-const createData = (codi, descripcio, medicio, tipoUnidad, unPres, pvpNeto, importe, costeUnit, costeTot, medicionAnt, medicionAct, pendient) => {
-  return { codi, descripcio, medicio, tipoUnidad, unPres, pvpNeto, importe, costeUnit, costeTot, medicionAnt, medicionAct, pendient };
-}
+import DetailedHeader from "components/shared/DetailedHeader";
+import MaterialDataGrid from "components/shared/MaterialDataGrid";
+import { getIsLoading, getRows } from "redux/unit-control/selectors";
 
-const ProjectDetailedContent = () => {
+const ProjectDetailedContent = ({ rows }) => {
 
   const [header,] = React.useState({
     title: 'Proyecto 1',
@@ -38,13 +37,6 @@ const ProjectDetailedContent = () => {
     { field: 'medicionAct', headerName: 'Medición Actual', type: 'number', editable: true },
     { field: 'pendient', headerName: 'Pendiente', type: 'number', editable: true },
   ]);
-  const [rows,] = React.useState([
-    createData('0001', 'Partida 1', 10, 'M3', 10, 10, 100, 12, 120, 2, 6, 2),
-    createData('0002', 'Partida 2', 12, 'M3', 10, 10, 100, 12, 120, 2, 6, 2),
-    createData('0003', 'Partida 3', 14, 'M3', 10, 10, 100, 12, 120, 2, 6, 2),
-    createData('0004', 'Partida 4', 16, 'M3', 10, 10, 100, 12, 120, 2, 6, 2),
-    createData('0005', 'Partida 5', 18, 'M3', 10, 10, 100, 12, 120, 2, 6, 2)
-  ]);
 
   return <Grid container spacing={1}>
     <Grid item xs={12}>
@@ -62,4 +54,12 @@ const ProjectDetailedContent = () => {
   </Grid>
 }
 
-export default ProjectDetailedContent;
+const mapStateToProps = (state, props) => {
+  return {
+    rows: getRows(state),
+    loading: getIsLoading(state)
+  };
+};
+
+const component = connect(mapStateToProps,null)(ProjectDetailedContent);
+export default component;
