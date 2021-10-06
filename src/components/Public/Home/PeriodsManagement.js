@@ -2,7 +2,7 @@ import * as React from "react";
 import {Button, Grid} from "@mui/material";
 import MaterialSelector from "../../shared/MaterialSelector";
 import MaterialCheckbox from "../../shared/MaterialCheckbox";
-import Paper from "@mui/material/Paper";
+
 
 const PeriodsManagement = () => {
   const [periods,] = React.useState([
@@ -21,26 +21,24 @@ const PeriodsManagement = () => {
     { label: 'Revisado Jefe de Grupo' },
   ]);
   return (
-    <Paper
-      sx={{
-        p: 1,
-        margin: '2px'
-      }}
-    >
+
     <Grid container spacing={1} direction="row" alignItems="center" >
-      <Grid item xs={12} md={6} lg={4}>
+      <Grid item xs={12} md={12} lg={8}>
         <MaterialSelector
           id={"period"}
           items={periods}
           onChange={(e) => console.log(e)} label={"Períodos"}/>
       </Grid>
-      <Grid item xs={12} md={6} lg={5}>
-        <MaterialCheckbox items={statuses} />
-      </Grid>
-      <Grid item xs={12} md={6} lg={3}>
+      <Grid item xs={12} md={12} lg={4}>
         <Button variant={"outlined"} >Cerrar Período</Button>
       </Grid>
-    </Grid></Paper>
+      <Grid item xs={12} md={12} lg={12}>
+        <MaterialCheckbox items={statuses} />
+      </Grid>
+     
+     
+      
+    </Grid>
   )
 }
 

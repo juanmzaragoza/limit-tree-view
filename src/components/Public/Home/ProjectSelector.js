@@ -1,14 +1,18 @@
 import OutlinedContainer from "../../shared/OutlinedContainer/OutlinedContainer";
 import {Container} from "@mui/material";
 import {FormControl, Grid, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
+import "./styles.css"
+
 
 const ProjectSelector = ({ onChange }) => {
+
   return <OutlinedContainer title={"Proyectos"} >
     <Container maxWidth={false} >
       <Grid container spacing={4}>
         <Grid item xs={12} md={3} lg={3}>
-          <FormControl fullWidth>
+          <FormControl fullWidth >
             <InputLabel id="project-number-label">Número de proyecto</InputLabel>
+  
             <Select
               labelId="project-number-label"
               id="project-number"
@@ -16,6 +20,8 @@ const ProjectSelector = ({ onChange }) => {
               value={"p1"}
               label="Número de proyecto"
               onChange={onChange}
+             
+         
             >
               <MenuItem value={"p1"}>0001</MenuItem>
               <MenuItem value={"p2"}>0002</MenuItem>
