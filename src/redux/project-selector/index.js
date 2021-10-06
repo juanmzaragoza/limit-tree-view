@@ -4,7 +4,7 @@ import Axios from "Axios";
 const ADD = "ADD_TO_PROJECT_SELECTOR";
 
 // Constants
-const URL = "api/fact/projectes?page=0&size=5&order=codi";
+const URL = "api/fact/projectes?page=0&size=100&order=codi";
 
 //Functions
 export const loadData = ({ url = URL }) => {

@@ -46,7 +46,7 @@ const ProjectDetailedContent = ({
   ]);
 
   const getData = (params) => {
-    return `${params.value.description || ""}`;
+    return `${params.value?.description || ""}`;
   };
 
 
