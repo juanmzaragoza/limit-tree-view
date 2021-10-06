@@ -4,7 +4,8 @@ import Axios from "Axios";
 const ADD = "ADD_TO_PARTIDA";
 
 // Constants
-const URL = 'https://10.35.3.44:8083/api/fact/recursosEstudi?query=liniaEstudi.id=="eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImVtcHJlc2FDb2RpIjoiUFJPMiIsInNlcXVlbmNpYSI6MjYzMjksInByb2plY3RlQ29kaSI6IkVTUFJPMiIsImVzdHVkaVByb2plY3RlQ29kaSI6IjAwMDEiLCJlc3R1ZGlQcm9qZWN0ZU51bSI6MH0="';
+const URL = 'api/fact/recursosEstudi?query=liniaEstudi.id=="eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImVtcHJlc2FDb2RpIjoiUFJPMiIsInNlcXVlbmNpYSI6MjYzMjksInByb2plY3RlQ29kaSI6IkVTUFJPMiIsImVzdHVkaVByb2plY3RlQ29kaSI6IjAwMDEiLCJlc3R1ZGlQcm9qZWN0ZU51bSI6MH0="';
+const HEADER_URL = 'api/fact/liniesEstudi/eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImVtcHJlc2FDb2RpIjoiUFJPMiIsInNlcXVlbmNpYSI6MjYzMjksInByb2plY3RlQ29kaSI6IkVTUFJPMiIsImVzdHVkaVByb2plY3RlQ29kaSI6IjAwMDEiLCJlc3R1ZGlQcm9qZWN0ZU51bSI6MH0=';
 
 //Functions
 export const loadData = ({ url = URL }) => {
@@ -37,6 +38,30 @@ export const loadData = ({ url = URL }) => {
   };
 };
 
+export const loadHeader = ({ url = HEADER_URL }) => {
+  return async dispatch => {
+    const apiCall = () => Axios.get(url);
+    try {
+      //dispatch(add({ loading: true }));
+      apiCall()
+        .then(({data}) => data)
+        .then((_embedded) => {
+          dispatch(add({ partida: _embedded }));
+          //dispatch(add({ loading: false }));
+        })
+        .catch(error => {
+          console.log(error);
+          //dispatch(add({ loading: false }));
+        })
+        .finally(() => {
+          //dispatch(add({ loading: false }));
+        });
+    } catch (error) {
+      //dispatch(add({ loading: false }));
+    }
+  };
+}
+
 //Action creators
 export const add = (payload) => {
   return {
@@ -47,6 +72,7 @@ export const add = (payload) => {
 
 //Reducers
 const initialState = {
+  partida: {},
   rows: [],
   loading: false,
 };
