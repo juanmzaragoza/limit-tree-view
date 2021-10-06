@@ -6,7 +6,7 @@ import {Button, Grid} from "@mui/material";
 import MaterialSelector from "components/shared/MaterialSelector";
 import MaterialCheckbox from "components/shared/MaterialCheckbox";
 import { getIsLoading, getRows } from "redux/period/selectors";
-import { loadData } from "redux/period";
+import {loadData, setPeriod} from "redux/period";
 import { getSelectedProject } from "redux/project-selector/selectors";
 
 const PeriodsManagement = ({ rows, loading, project, actions }) => {
@@ -42,10 +42,11 @@ const PeriodsManagement = ({ rows, loading, project, actions }) => {
         <MaterialSelector
           id={"period"}
           items={periods}
-          onChange={(e) => console.log(e)}
+          onChange={(e) => actions.setPeriod({ period: e })}
           disabled={disabled}
           label={"Períodos"}
           loading={loading}
+          selectFirstDefault
         />
       </Grid>
       <Grid item xs={12} md={12} lg={4}>
@@ -68,7 +69,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch, props) => {
   const actions = {
-    loadData: bindActionCreators(loadData, dispatch)
+    loadData: bindActionCreators(loadData, dispatch),
+    setPeriod: bindActionCreators(setPeriod, dispatch),
   };
   return { actions };
 };

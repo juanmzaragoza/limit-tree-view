@@ -31,6 +31,12 @@ export const loadData = ({ url = URL, projectCodi }) => {
   };
 };
 
+export const setPeriod = ({ period }) => {
+  return async dispatch => {
+    dispatch(add({ selectedPeriod: period }));
+  }
+}
+
 //Action creators
 export const add = (payload) => {
   return {
@@ -43,6 +49,7 @@ export const add = (payload) => {
 const initialState = {
   rows: [],
   loading: false,
+  selectedPeriod: null
 };
 
 const reducer = (state = initialState, action) => {
