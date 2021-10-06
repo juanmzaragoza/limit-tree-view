@@ -4,7 +4,7 @@ import {Grid} from "@mui/material";
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
-import { getIsLoading, getRows } from "redux/unit-control/selectors";
+import { getIsLoading, getRows } from "redux/project/selectors";
 
 const ProjectDetailedContent = ({ rows }) => {
 
