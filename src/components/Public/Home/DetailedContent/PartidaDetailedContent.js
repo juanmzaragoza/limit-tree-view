@@ -1,6 +1,8 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import {Grid} from "@mui/material";
+import {useIntl} from "react-intl";
+import {bindActionCreators} from "redux";
 
 import MaterialCardPartidaIndicator from "components/shared/MaterialCardPartidaIndicator";
 import  {
@@ -13,29 +15,27 @@ import  {
   StackedLineChart,
 } from '@mui/icons-material';
 
+import { formatCurrencyWithIntl } from "utils/formats";
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
-import { getIsLoading, getRows } from "redux/partida/selectors";
+import { getIsLoading, getPartida, getRows } from "redux/partida/selectors";
+import { loadHeader } from "redux/partida";
+import { getUnitControl } from "redux/unit-control/selectors";
 
-const ProjectDetailedContent = ({ rows, loading }) => {
-
+const ProjectDetailedContent = ({ rows, loading, unitControl, partida, actions }) => {
+  const intl = useIntl();
   const [headerProject,] = React.useState({
     title: 'Proyecto 1',
     subheader: 'Capítulo 1',
   });
-  const [headerControlUnit,] = React.useState({
-    title: 'Unidad de control #1',
-  });
-  const [headerPartida,] = React.useState({
-    title: 'Partida 1.1',
-    subheader: 'Capítulo 1',
-  });
+  const [headerControlUnit, setHeaderControlUnit] = React.useState({});
+  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
+  const [headerPartida, setHeaderPartida] = React.useState({});
+  const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
   const [fields,] = React.useState([
     { field: 'Importe Total', value: '10.000€'},
     { field: 'Coste Total', value: '10.000€'},
-
   ]);
-  const [percentage,] = React.useState("5%");
 
   const [columns,] = React.useState([
     { field: 'codi', headerName: 'Código', width: 120, editable: true },
@@ -82,27 +82,43 @@ const ProjectDetailedContent = ({ rows, loading }) => {
     { field: "Obra Pendiente Período", value:"1000", icon: <Construction/> },
     { field: "Obra Pendiente año Natural", value:"1000", icon: <Construction/> },
     { field: "Obra Pendiente Origen", value:"1000", icon: <Construction/> },
-    
-  ])
+  ]);
+
+  React.useEffect(() => {
+    actions.loadHeader({});
+  },[]);
+  
+  React.useEffect(() => {
+    setHeaderControlUnit({ title: unitControl.descripcio });
+    setHeaderControlUnitFields( [
+      { field: 'Importe Total', value: formatCurrencyWithIntl(unitControl.importTotal?? 0, intl)},
+      { field: 'Coste Total', value: formatCurrencyWithIntl(unitControl.costTotal?? 0, intl)},
+    ])
+  },[unitControl, intl]);
+
+  React.useEffect(() => {
+    setHeaderPartida({ title: partida.descripcio });
+    setHeaderPartidaFields( [
+      { field: 'Importe Total', value: formatCurrencyWithIntl(partida.importTotal?? 0, intl)},
+      { field: 'Coste Total', value: formatCurrencyWithIntl(partida.costTotal?? 0, intl)},
+    ]);
+  },[partida, intl]);
 
   return <Grid container spacing={1}>
     <Grid item xs={12}>
       <DetailedHeader
         header={headerProject}
-        body={fields}
-        endInformation={percentage} />
+        body={fields} />
     </Grid>
     <Grid item xs={6}>
       <DetailedHeader
         header={headerControlUnit}
-        body={fields}
-        endInformation={percentage} />
+        body={headerControlUnitFields} />
     </Grid>
     <Grid item xs={6}>
       <DetailedHeader
         header={headerPartida}
-        body={fields}
-        endInformation={percentage} />
+        body={headerPartidaFields} />
     </Grid>
     <Grid item xs={12}>
       <MaterialDataGrid
@@ -119,9 +135,18 @@ const ProjectDetailedContent = ({ rows, loading }) => {
 const mapStateToProps = (state, props) => {
   return {
     rows: getRows(state),
-    loading: getIsLoading(state)
+    loading: getIsLoading(state),
+    unitControl: getUnitControl(state),
+    partida: getPartida(state)
   };
 };
 
-const component = connect(mapStateToProps,null)(ProjectDetailedContent);
+const mapDispatchToProps = (dispatch, props) => {
+  const actions = {
+    loadHeader: bindActionCreators(loadHeader, dispatch)
+  };
+  return { actions };
+};
+
+const component = connect(mapStateToProps,mapDispatchToProps)(ProjectDetailedContent);
 export default component;

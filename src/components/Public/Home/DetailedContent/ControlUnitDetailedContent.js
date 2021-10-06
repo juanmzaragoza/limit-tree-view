@@ -122,7 +122,7 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions }) => 
       { field: 'Importe Total', value: formatCurrencyWithIntl(unitControl.importTotal?? 0, intl)},
       { field: 'Coste Total', value: formatCurrencyWithIntl(unitControl.costTotal?? 0, intl)},
     ])
-  },[unitControl]);
+  },[unitControl, intl]);
 
   return <Grid container spacing={1}>
     <Grid item xs={6}>
