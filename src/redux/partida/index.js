@@ -1,7 +1,7 @@
 import Axios from "Axios";
 
 //Action types
-const ADD = "ADD_TO_RESOURCE";
+const ADD = "ADD_TO_PARTIDA";
 
 // Constants
 const URL = 'https://10.35.3.44:8083/api/fact/recursosEstudi?query=liniaEstudi.id=="eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImVtcHJlc2FDb2RpIjoiUFJPMiIsInNlcXVlbmNpYSI6MjYzMjksInByb2plY3RlQ29kaSI6IkVTUFJPMiIsImVzdHVkaVByb2plY3RlQ29kaSI6IjAwMDEiLCJlc3R1ZGlQcm9qZWN0ZU51bSI6MH0="';

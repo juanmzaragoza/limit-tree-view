@@ -1,10 +1,10 @@
 import Axios from "Axios";
-import { FormattedNumber } from "react-intl";
 import {
   CONTROL_UNIT_TYPE,
   PARTIDA_TYPE,
   PROJECT_TYPE
 } from "constants/business-types";
+import { formatCurrency } from "utils/formats";
 
 //Action types
 const ADD = "ADD_TO_TREE";
@@ -12,7 +12,6 @@ const ADD = "ADD_TO_TREE";
 // Constants
 const URL = 'api/fact/estudisProjecte/eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImNvZGkiOiIwMDAxIiwiZW1wcmVzYUNvZGkiOiJQUk8yIiwibnVtZXJvIjowLCJwcm9qZWN0ZUNvZGkiOiJFU1BSTzIifQ==/tree';
 
-const formatCurrency = (value) => <FormattedNumber value={value} style={"currency"} currency="EUR" />;
 //Functions
 export const loadData = ({ url = URL }) => {
   return async dispatch => {
