@@ -4,7 +4,8 @@ import Axios from "Axios";
 const ADD = "ADD_TO_UC";
 
 // Constants
-const URL = 'api/fact/unitatsControlEstudi?query=estudiProjecte.id=="eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImNvZGkiOiIwMDAxIiwiZW1wcmVzYUNvZGkiOiJQUk8yIiwibnVtZXJvIjowLCJwcm9qZWN0ZUNvZGkiOiJFU1BSTzIifQ=="';
+const URL = 'api/fact/liniesEstudi?query=unitatControlEstudi.id=="eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImVtcHJlc2FDb2RpIjoiUFJPMiIsInNlcXVlbmNpYSI6Mjg1NCwicHJvamVjdGVDb2RpIjoiRVNQUk8yIiwiZXN0dWRpUHJvamVjdGVDb2RpIjoiMDAwMSIsImVzdHVkaVByb2plY3RlTnVtIjowfQ=="';
+const HEADER_URL = 'api/fact/unitatsControlEstudi/eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImVtcHJlc2FDb2RpIjoiUFJPMiIsInNlcXVlbmNpYSI6Mjg1NCwicHJvamVjdGVDb2RpIjoiRVNQUk8yIiwiZXN0dWRpUHJvamVjdGVDb2RpIjoiMDAwMSIsImVzdHVkaVByb2plY3RlTnVtIjowfQ==';
 
 //Functions
 export const loadData = ({ url = URL }) => {
@@ -15,7 +16,7 @@ export const loadData = ({ url = URL }) => {
       apiCall()
         .then(({data}) => data)
         .then(({ _embedded }) => {
-          dispatch(add({ rows: _embedded['unitatControlEstudis'] }));
+          dispatch(add({ rows: _embedded['liniaEstudis'] }));
           dispatch(add({ loading: false }));
         })
         .catch(error => {
@@ -31,6 +32,30 @@ export const loadData = ({ url = URL }) => {
   };
 };
 
+export const loadHeader = ({ url = HEADER_URL }) => {
+  return async dispatch => {
+    const apiCall = () => Axios.get(url);
+    try {
+      //dispatch(add({ loading: true }));
+      apiCall()
+        .then(({data}) => data)
+        .then((_embedded) => {
+          dispatch(add({ unitControl: _embedded }));
+          //dispatch(add({ loading: false }));
+        })
+        .catch(error => {
+          console.log(error);
+          //dispatch(add({ loading: false }));
+        })
+        .finally(() => {
+          //dispatch(add({ loading: false }));
+        });
+    } catch (error) {
+      //dispatch(add({ loading: false }));
+    }
+  };
+}
+
 //Action creators
 export const add = (payload) => {
   return {
@@ -41,6 +66,7 @@ export const add = (payload) => {
 
 //Reducers
 const initialState = {
+  unitControl: {},
   rows: [],
   loading: false,
 };

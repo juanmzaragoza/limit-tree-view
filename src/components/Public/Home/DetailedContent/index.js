@@ -13,9 +13,9 @@ import ProjectDetailedContent from "./ProjectDetailedContent";
 import ControlUnitDetailedContent from "./ControlUnitDetailedContent";
 import PartidaDetailedContent from "./PartidaDetailedContent";
 
-import { loadData as loadUnitControlData } from "redux/unit-control";
-import { loadData as loadPartidaData } from "redux/partida";
-import { loadData as loadResourceData } from "redux/resource";
+import { loadData as loadUnitControlData } from "redux/project";
+import { loadData as loadPartidaData } from "redux/unit-control";
+import { loadData as loadResourceData } from "redux/partida";
 
 const DetailedContent = ({ data, actions }) => {
 

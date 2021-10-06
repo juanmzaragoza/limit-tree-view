@@ -4,7 +4,7 @@ import Axios from "Axios";
 const ADD = "ADD_TO_PARTIDA";
 
 // Constants
-const URL = 'https://10.35.3.44:8083/api/fact/liniesEstudi?query=unitatControlEstudi.id=="eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImVtcHJlc2FDb2RpIjoiUFJPMiIsInNlcXVlbmNpYSI6Mjg1NCwicHJvamVjdGVDb2RpIjoiRVNQUk8yIiwiZXN0dWRpUHJvamVjdGVDb2RpIjoiMDAwMSIsImVzdHVkaVByb2plY3RlTnVtIjowfQ=="';
+const URL = 'https://10.35.3.44:8083/api/fact/recursosEstudi?query=liniaEstudi.id=="eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImVtcHJlc2FDb2RpIjoiUFJPMiIsInNlcXVlbmNpYSI6MjYzMjksInByb2plY3RlQ29kaSI6IkVTUFJPMiIsImVzdHVkaVByb2plY3RlQ29kaSI6IjAwMDEiLCJlc3R1ZGlQcm9qZWN0ZU51bSI6MH0="';
 
 //Functions
 export const loadData = ({ url = URL }) => {
@@ -15,7 +15,13 @@ export const loadData = ({ url = URL }) => {
       apiCall()
         .then(({data}) => data)
         .then(({ _embedded }) => {
-          dispatch(add({ rows: _embedded['liniaEstudis'] }));
+          dispatch(add({ rows: _embedded['recursEstudis']
+            .map((resource, index) => {
+              if(!resource.codi)
+                resource.codi = "hardcoded"+index;
+                return resource;
+            })
+          }));
           dispatch(add({ loading: false }));
         })
         .catch(error => {

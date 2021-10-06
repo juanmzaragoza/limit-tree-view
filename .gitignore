@@ -27,3 +27,5 @@ yarn-error.log*
 
 # deployment
 .firebase/
+
+/yarn.lock
