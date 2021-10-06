@@ -5,6 +5,7 @@ const DetailedTable = ({
   rootStyle = { height: 400, width: '100%' },
   rows,
   columns,
+  loading,
   getRowId = (row) => row.codi,
   disableColumnMenu = true,
   autoHeight = true,
@@ -14,15 +15,19 @@ const DetailedTable = ({
   return (
     <div style={rootStyle}>
       <div style={{ display: 'flex', height: '100%' }}>
-        <div style={{ flexGrow: 1 }}>
+        <div style={{ flexGrow: 1}}>
           <DataGrid
             rows={rows}
             columns={columns.map(column => ({...column, flex: 1}))}
             getRowId={getRowId}
+            loading={loading}
             disableColumnMenu={disableColumnMenu}
             autoHeight={autoHeight}
             autoWidth={autoWidth}
-            disableExtendRowFullWidth={disableExtendRowFullWidth} />
+            disableExtendRowFullWidth={disableExtendRowFullWidth}
+            style={{ backgroundColor: "white"}} 
+            classsName="bodyLabel"
+            />
         </div>
       </div>
     </div>

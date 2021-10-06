@@ -18,10 +18,9 @@ const ProjectDetailedContent = () => {
     secondary: "/totales"
   });
   const [fields,] = React.useState([
-    { field: 'Coste Real', value: '10.000€'},
-    { field: 'Coste Medio', value: '10.000€'},
-    { field: 'Coste estimado', value: '10.000€'},
-    { field: 'Presuesto capitulo', value: '10.000€'}
+    { field: 'Importe Total', value: '10.000€'},
+    { field: 'Coste Total', value: '10.000€'},
+
   ]);
   const [percentage,] = React.useState("5%");
 
@@ -47,7 +46,7 @@ const ProjectDetailedContent = () => {
     createData('0005', 'Partida 5', 18, 'M3', 10, 10, 100, 12, 120, 2, 6, 2)
   ]);
 
-  return <Grid container spacing={2}>
+  return <Grid container spacing={1}>
     <Grid item xs={12}>
       <DetailedHeader
         header={header}
