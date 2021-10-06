@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Container } from "@mui/material";
 import {
+  CircularProgress,
   FormControl,
   Grid,
   InputLabel,
@@ -51,11 +52,14 @@ const ProjectSelector = ({ onChange, rows, loading, actions }) => {
                 label="Número de proyecto"
                 onChange={handleChange}
               >
-                {items.map((item, index) => (
+                {!loading && items.map((item, index) => (
                   <MenuItem key={index} value={item.value}>
                     {item.name}
                   </MenuItem>
                 ))}
+                {loading && <MenuItem style={{display: "flex", justifyContent: "center"}}>
+                  <CircularProgress size={30} />
+                </MenuItem>}
               </Select>
             </FormControl>
           </Grid>

@@ -6,13 +6,21 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 
-export default function MaterialSelector({ id, label, items, onChange}) {
-  const [value, setValue] = React.useState(undefined);
+export default function MaterialSelector({ id, label, items, onChange, selectFirstDefault }) {
+  const [value, setValue] = React.useState('');
+
+  React.useEffect(() => {
+    if(selectFirstDefault && items.length > 0) {
+      setValue(items[0].value);
+      onChange(items[0].value);
+    }
+  },[items, selectFirstDefault, onChange]);
 
   const handleChange = (event) => {
     setValue(event.target.value);
     onChange(event.target.value);
   };
+
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
