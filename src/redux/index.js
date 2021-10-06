@@ -3,12 +3,14 @@ import example from "redux/example/index.js";
 import projectTree from "redux/project-tree/index.js";
 import unitControl from "redux/unit-control/index.js";
 import partida from "redux/partida/index.js";
+import resource from "redux/resource/index.js";
 
 export default combineReducers({
   example,
   projectTree,
   unitControl,
-  partida
+  partida,
+  resource,
 });
 
 //Global action to reset the store
