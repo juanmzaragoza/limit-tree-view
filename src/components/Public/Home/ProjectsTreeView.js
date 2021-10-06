@@ -143,7 +143,6 @@ const ProjectsTreeView = ({ tree, loading, onNodeSelect }) => {
     // update expanded
     const found = expanded.find(id => ids === id);
     if(found) {
-      console.log("found", found)
       setExpanded(remove(expanded, (e) => e !== found));
     } else{
       setExpanded([...expanded, ids]);

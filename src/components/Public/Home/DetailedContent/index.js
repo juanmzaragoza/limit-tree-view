@@ -13,7 +13,8 @@ import ProjectDetailedContent from "./ProjectDetailedContent";
 import ControlUnitDetailedContent from "./ControlUnitDetailedContent";
 import PartidaDetailedContent from "./PartidaDetailedContent";
 
-import {loadData} from "redux/unit-control";
+import { loadData as loadUnitControlData } from "redux/unit-control";
+import { loadData as loadPartidaData } from "redux/partida";
 
 const DetailedContent = ({ data, actions }) => {
 
@@ -22,7 +23,8 @@ const DetailedContent = ({ data, actions }) => {
   },[data]);
 
   const loader = {
-    [CONTROL_UNIT_TYPE]: () => actions.getUnitControlData({})
+    [CONTROL_UNIT_TYPE]: () => actions.getUnitControlData({}),
+    [PARTIDA_TYPE]: () => actions.getPartidaData({}),
   }
 
   const layout = {
@@ -46,7 +48,8 @@ const DetailedContent = ({ data, actions }) => {
 
 const mapDispatchToProps = (dispatch, props) => {
   const actions = {
-    getUnitControlData: bindActionCreators(loadData, dispatch)
+    getUnitControlData: bindActionCreators(loadUnitControlData, dispatch),
+    getPartidaData: bindActionCreators(loadPartidaData, dispatch),
   };
   return { actions };
 };
