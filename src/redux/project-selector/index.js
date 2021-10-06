@@ -33,7 +33,7 @@ export const loadData = ({ url = URL }) => {
 
 export const setProject = ({ project }) => {
   return async dispatch => {
-    dispatch(add({ project }));
+    dispatch(add({ selectedProject: project }));
   }
 }
 
