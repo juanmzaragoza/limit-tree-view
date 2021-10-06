@@ -5,6 +5,7 @@ import project from "redux/project/index.js";
 import unitControl from "redux/unit-control/index.js";
 import partida from "redux/partida/index.js";
 import projectSelector from "redux/project-selector/index.js";
+import period from "redux/period/index.js";
 
 export default combineReducers({
   example,
@@ -12,7 +13,8 @@ export default combineReducers({
   project,
   unitControl,
   partida,
-  projectSelector
+  projectSelector,
+  period
 });
 
 //Global action to reset the store

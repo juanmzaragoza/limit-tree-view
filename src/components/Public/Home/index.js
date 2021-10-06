@@ -12,20 +12,22 @@ import PeriodsManagement from "./PeriodsManagement";
 
 import { getFormattedData, getIsLoading } from "redux/project-tree/selectors";
 import { loadData } from "redux/project-tree";
+import { getSelectedPeriod } from "redux/period/selectors";
 
-const Home = ({ data, loading, actions }) =>{
-
+const Home = ({ data, loading, selectedPeriod, actions }) =>{
   const [show, setShow] = React.useState(false);
   const [node, setNode] = React.useState(null);
-
   const [tree, setTree] = React.useState({});
+
   React.useEffect(() => {
     setTree(data);
   },[data]);
 
   React.useEffect(() => {
-    actions.getData({});
-  },[actions]);
+    if(selectedPeriod?.id){
+      actions.getData({ periodId: selectedPeriod.id });
+    }
+  },[actions, selectedPeriod]);
 
   return ( <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
       <Grid container>
@@ -77,7 +79,8 @@ const Home = ({ data, loading, actions }) =>{
 const mapStateToProps = (state, props) => {
   return {
     data: getFormattedData(state),
-    loading: getIsLoading(state)
+    loading: getIsLoading(state),
+    selectedPeriod: getSelectedPeriod(state)
   };
 };
 

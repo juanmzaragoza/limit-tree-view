@@ -13,6 +13,8 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { primaryColor } from 'utils/helper';
 
+import "./styles.css";
+
 import MaterialSkeleton from "components/shared/MaterialSkeleton/MaterialSkeleton";
 
 const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
@@ -150,6 +152,8 @@ const ProjectsTreeView = ({ tree, loading, onNodeSelect }) => {
     }
   }
 
+  const renderEmptyTree = () => <div className="empty-tree-root">No existen elementos en el árbol</div>
+
   return (
     <TreeView
       aria-label="tree"
@@ -167,6 +171,7 @@ const ProjectsTreeView = ({ tree, loading, onNodeSelect }) => {
       selected={nodeIds}
     >
       {!loading && !isEmpty(tree) && renderNodes({ tree })}
+      {!loading && isEmpty(tree) && renderEmptyTree()}
       {loading && <MaterialSkeleton />}
     </TreeView>
   );

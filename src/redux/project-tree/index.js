@@ -10,12 +10,12 @@ import { formatCurrency } from "utils/formats";
 const ADD = "ADD_TO_TREE";
 
 // Constants
-const URL = 'api/fact/estudisProjecte/eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImNvZGkiOiIwMDAxIiwiZW1wcmVzYUNvZGkiOiJQUk8yIiwibnVtZXJvIjowLCJwcm9qZWN0ZUNvZGkiOiJFU1BSTzIifQ==/tree';
+const URL = 'api/fact/estudisProjecte/{id}/tree';
 
 //Functions
-export const loadData = ({ url = URL }) => {
+export const loadData = ({ url = URL, periodId }) => {
   return async dispatch => {
-    const apiCall = () => Axios.get(url);
+    const apiCall = () => Axios.get(url.replace('{id}',periodId));
     try {
       dispatch(add({ loading: true }));
       apiCall()

@@ -1,21 +1,21 @@
 import Axios from "Axios";
 
 //Action types
-const ADD = "ADD_TO_PROJECT_SELECTOR";
+const ADD = "ADD_TO_PERIODS";
 
 // Constants
-const URL = "api/fact/projectes?page=0&size=100&order=codi";
+const URL = 'api/fact/estudisProjecte?query=projecte.codi=={codi}&sort=numero,desc';
 
 //Functions
-export const loadData = ({ url = URL }) => {
+export const loadData = ({ url = URL, projectCodi }) => {
   return async dispatch => {
-    const apiCall = () => Axios.get(url);
+    const apiCall = () => Axios.get(url.replace('{codi}',projectCodi));
     try {
       dispatch(add({ loading: true }));
       apiCall()
         .then(({data}) => data)
         .then(({ _embedded }) => {
-          dispatch(add({ rows: _embedded['projectes'] }));
+          dispatch(add({ rows: _embedded?.estudiProjectes?? [] }));
           dispatch(add({ loading: false }));
         })
         .catch(error => {
@@ -31,9 +31,9 @@ export const loadData = ({ url = URL }) => {
   };
 };
 
-export const setProject = ({ project }) => {
+export const setPeriod = ({ period }) => {
   return async dispatch => {
-    dispatch(add({ selectedProject: project }));
+    dispatch(add({ selectedPeriod: period }));
   }
 }
 
@@ -49,7 +49,7 @@ export const add = (payload) => {
 const initialState = {
   rows: [],
   loading: false,
-  selectedProject: null
+  selectedPeriod: null
 };
 
 const reducer = (state = initialState, action) => {
