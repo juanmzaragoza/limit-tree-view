@@ -23,8 +23,8 @@ const DetailedContent = ({ data, actions }) => {
   },[data]);
 
   const loader = {
-    [CONTROL_UNIT_TYPE]: () => actions.getUnitControlData({}),
-    [PARTIDA_TYPE]: () => actions.getPartidaData({}),
+    [PROJECT_TYPE]: () => actions.getUnitControlData({}),
+    [CONTROL_UNIT_TYPE]: () => actions.getPartidaData({}),
   }
 
   const layout = {
