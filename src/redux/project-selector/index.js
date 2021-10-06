@@ -31,6 +31,12 @@ export const loadData = ({ url = URL }) => {
   };
 };
 
+export const setProject = ({ project }) => {
+  return async dispatch => {
+    dispatch(add({ project }));
+  }
+}
+
 //Action creators
 export const add = (payload) => {
   return {
@@ -43,6 +49,7 @@ export const add = (payload) => {
 const initialState = {
   rows: [],
   loading: false,
+  selectedProject: null
 };
 
 const reducer = (state = initialState, action) => {

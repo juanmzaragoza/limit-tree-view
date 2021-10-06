@@ -17,7 +17,7 @@ const Home = ({ data, loading, actions }) =>{
   const [show, setShow] = React.useState(false);
   const [node, setNode] = React.useState(null);
   const [tree, setTree] = React.useState({});
-  
+
   React.useEffect(() => {
     setTree(data);
   },[data]);

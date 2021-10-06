@@ -14,7 +14,7 @@ import {
 
 import OutlinedContainer from "components/shared/OutlinedContainer/OutlinedContainer";
 import { getIsLoading, getRows } from "redux/project-selector/selectors";
-import { loadData } from "redux/project-selector";
+import { loadData, setProject } from "redux/project-selector";
 
 import "./styles.css";
 
@@ -32,7 +32,7 @@ const ProjectSelector = ({ onChange, rows, loading, actions }) => {
 
   const handleChange = (e) => {
     setProject(e.target.value);
-    onChange(e.target.value);
+    actions.setProject({ project: e.target.value });
   };
 
   return (
@@ -118,6 +118,7 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch, props) => {
   const actions = {
     loadData: bindActionCreators(loadData, dispatch),
+    setProject: bindActionCreators(setProject, dispatch),
   };
   return { actions };
 };
