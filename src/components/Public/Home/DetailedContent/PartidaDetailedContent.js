@@ -15,7 +15,7 @@ import  {
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
-import { getIsLoading, getRows } from "redux/resource/selectors";
+import { getIsLoading, getRows } from "redux/partida/selectors";
 
 const ProjectDetailedContent = ({ rows, loading }) => {
 

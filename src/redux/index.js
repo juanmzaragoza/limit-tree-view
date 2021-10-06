@@ -1,16 +1,16 @@
 import { combineReducers } from "redux";
 import example from "redux/example/index.js";
 import projectTree from "redux/project-tree/index.js";
+import project from "redux/project/index.js";
 import unitControl from "redux/unit-control/index.js";
 import partida from "redux/partida/index.js";
-import resource from "redux/resource/index.js";
 
 export default combineReducers({
   example,
   projectTree,
+  project,
   unitControl,
   partida,
-  resource,
 });
 
 //Global action to reset the store

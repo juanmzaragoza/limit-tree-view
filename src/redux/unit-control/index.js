@@ -1,10 +1,10 @@
 import Axios from "Axios";
 
 //Action types
-const ADD = "ADD_TO_UC";
+const ADD = "ADD_TO_PARTIDA";
 
 // Constants
-const URL = 'api/fact/unitatsControlEstudi?query=estudiProjecte.id=="eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImNvZGkiOiIwMDAxIiwiZW1wcmVzYUNvZGkiOiJQUk8yIiwibnVtZXJvIjowLCJwcm9qZWN0ZUNvZGkiOiJFU1BSTzIifQ=="';
+const URL = 'https://10.35.3.44:8083/api/fact/liniesEstudi?query=unitatControlEstudi.id=="eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImVtcHJlc2FDb2RpIjoiUFJPMiIsInNlcXVlbmNpYSI6Mjg1NCwicHJvamVjdGVDb2RpIjoiRVNQUk8yIiwiZXN0dWRpUHJvamVjdGVDb2RpIjoiMDAwMSIsImVzdHVkaVByb2plY3RlTnVtIjowfQ=="';
 
 //Functions
 export const loadData = ({ url = URL }) => {
@@ -15,7 +15,7 @@ export const loadData = ({ url = URL }) => {
       apiCall()
         .then(({data}) => data)
         .then(({ _embedded }) => {
-          dispatch(add({ rows: _embedded['unitatControlEstudis'] }));
+          dispatch(add({ rows: _embedded['liniaEstudis'] }));
           dispatch(add({ loading: false }));
         })
         .catch(error => {

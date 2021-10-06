@@ -1,14 +1,15 @@
 import * as React from "react";
-import {connect} from "react-redux";
-import {Grid} from "@mui/material";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { Grid } from "@mui/material";
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
 
-import { getIsLoading, getRows } from "redux/partida/selectors";
+import { getIsLoading, getRows } from "redux/unit-control/selectors";
+import { loadData } from "redux/unit-control";
 
-const ControlUnitDetailedContent = ({ rows, loading }) => {
-
+const ControlUnitDetailedContent = ({ rows, loading, actions }) => {
   const [headerProject,] = React.useState({
     title: 'Proyecto 1',
     subheader: 'Capítulo 1',
@@ -19,10 +20,7 @@ const ControlUnitDetailedContent = ({ rows, loading }) => {
   const [fields,] = React.useState([
     { field: 'Importe Total', value: '10.000€'},
     { field: 'Coste Total', value: '10.000€'},
-
   ]);
-  const [percentage,] = React.useState("5%");
-
   const [columns] = React.useState([
     { field: 'codi', headerName: 'Código', width: 120, editable: true },
     { field: 'descripcio', headerName: 'Descripció', width: 140, editable: true },
@@ -38,18 +36,20 @@ const ControlUnitDetailedContent = ({ rows, loading }) => {
     { field: 'pendient', headerName: 'Pendiente', type: 'number', editable: true },
   ]);
 
+  React.useEffect(() => {
+    actions.loadHeader({});
+  },[]);
+
   return <Grid container spacing={1}>
     <Grid item xs={6}>
       <DetailedHeader
         header={headerProject}
-        body={fields}
-        endInformation={percentage} />
+        body={fields} />
     </Grid>
     <Grid item xs={6}>
       <DetailedHeader
         header={headerControlUnit}
-        body={fields}
-        endInformation={percentage} />
+        body={fields} />
     </Grid>
     <Grid item xs={12}>
       <MaterialDataGrid
@@ -67,5 +67,12 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const component = connect(mapStateToProps,null)(ControlUnitDetailedContent);
+const mapDispatchToProps = (dispatch, props) => {
+  const actions = {
+    loadHeader: bindActionCreators(loadData, dispatch)
+  };
+  return { actions };
+};
+
+const component = connect(mapStateToProps,mapDispatchToProps)(ControlUnitDetailedContent);
 export default component;

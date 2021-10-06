@@ -1,10 +1,10 @@
 import Axios from "Axios";
 
 //Action types
-const ADD = "ADD_TO_RESOURCE";
+const ADD = "ADD_TO_PROJECT";
 
 // Constants
-const URL = 'https://10.35.3.44:8083/api/fact/recursosEstudi?query=liniaEstudi.id=="eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImVtcHJlc2FDb2RpIjoiUFJPMiIsInNlcXVlbmNpYSI6MjYzMjksInByb2plY3RlQ29kaSI6IkVTUFJPMiIsImVzdHVkaVByb2plY3RlQ29kaSI6IjAwMDEiLCJlc3R1ZGlQcm9qZWN0ZU51bSI6MH0="';
+const URL = 'api/fact/unitatsControlEstudi?query=estudiProjecte.id=="eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImNvZGkiOiIwMDAxIiwiZW1wcmVzYUNvZGkiOiJQUk8yIiwibnVtZXJvIjowLCJwcm9qZWN0ZUNvZGkiOiJFU1BSTzIifQ=="';
 
 //Functions
 export const loadData = ({ url = URL }) => {
@@ -15,13 +15,7 @@ export const loadData = ({ url = URL }) => {
       apiCall()
         .then(({data}) => data)
         .then(({ _embedded }) => {
-          dispatch(add({ rows: _embedded['recursEstudis']
-            .map((resource, index) => {
-              if(!resource.codi)
-                resource.codi = "hardcoded"+index;
-                return resource;
-            })
-          }));
+          dispatch(add({ rows: _embedded['unitatControlEstudis'] }));
           dispatch(add({ loading: false }));
         })
         .catch(error => {
