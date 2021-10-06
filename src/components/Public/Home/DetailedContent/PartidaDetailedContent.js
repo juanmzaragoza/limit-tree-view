@@ -2,6 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import {Grid} from "@mui/material";
 import {useIntl} from "react-intl";
+import {bindActionCreators} from "redux";
 
 import MaterialCardPartidaIndicator from "components/shared/MaterialCardPartidaIndicator";
 import  {
@@ -14,13 +15,14 @@ import  {
   StackedLineChart,
 } from '@mui/icons-material';
 
+import { formatCurrencyWithIntl } from "utils/formats";
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
-import { getIsLoading, getRows } from "redux/partida/selectors";
+import { getIsLoading, getPartida, getRows } from "redux/partida/selectors";
+import { loadHeader } from "redux/partida";
 import { getUnitControl } from "redux/unit-control/selectors";
-import {formatCurrencyWithIntl} from "utils/formats";
 
-const ProjectDetailedContent = ({ rows, loading, unitControl }) => {
+const ProjectDetailedContent = ({ rows, loading, unitControl, partida, actions }) => {
   const intl = useIntl();
   const [headerProject,] = React.useState({
     title: 'Proyecto 1',
@@ -28,10 +30,8 @@ const ProjectDetailedContent = ({ rows, loading, unitControl }) => {
   });
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
   const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
-  const [headerPartida,] = React.useState({
-    title: 'Partida 1.1',
-    subheader: 'Capítulo 1',
-  });
+  const [headerPartida, setHeaderPartida] = React.useState({});
+  const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
   const [fields,] = React.useState([
     { field: 'Importe Total', value: '10.000€'},
     { field: 'Coste Total', value: '10.000€'},
@@ -85,12 +85,24 @@ const ProjectDetailedContent = ({ rows, loading, unitControl }) => {
   ]);
 
   React.useEffect(() => {
+    actions.loadHeader({});
+  },[]);
+  
+  React.useEffect(() => {
     setHeaderControlUnit({ title: unitControl.descripcio });
     setHeaderControlUnitFields( [
       { field: 'Importe Total', value: formatCurrencyWithIntl(unitControl.importTotal?? 0, intl)},
       { field: 'Coste Total', value: formatCurrencyWithIntl(unitControl.costTotal?? 0, intl)},
     ])
   },[unitControl, intl]);
+
+  React.useEffect(() => {
+    setHeaderPartida({ title: partida.descripcio });
+    setHeaderPartidaFields( [
+      { field: 'Importe Total', value: formatCurrencyWithIntl(partida.importTotal?? 0, intl)},
+      { field: 'Coste Total', value: formatCurrencyWithIntl(partida.costTotal?? 0, intl)},
+    ]);
+  },[partida, intl]);
 
   return <Grid container spacing={1}>
     <Grid item xs={12}>
@@ -106,7 +118,7 @@ const ProjectDetailedContent = ({ rows, loading, unitControl }) => {
     <Grid item xs={6}>
       <DetailedHeader
         header={headerPartida}
-        body={fields} />
+        body={headerPartidaFields} />
     </Grid>
     <Grid item xs={12}>
       <MaterialDataGrid
@@ -124,9 +136,17 @@ const mapStateToProps = (state, props) => {
   return {
     rows: getRows(state),
     loading: getIsLoading(state),
-    unitControl: getUnitControl(state)
+    unitControl: getUnitControl(state),
+    partida: getPartida(state)
   };
 };
 
-const component = connect(mapStateToProps,null)(ProjectDetailedContent);
+const mapDispatchToProps = (dispatch, props) => {
+  const actions = {
+    loadHeader: bindActionCreators(loadHeader, dispatch)
+  };
+  return { actions };
+};
+
+const component = connect(mapStateToProps,mapDispatchToProps)(ProjectDetailedContent);
 export default component;
