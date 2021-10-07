@@ -16,15 +16,17 @@ import PartidaDetailedContent from "./PartidaDetailedContent";
 import { loadData as loadUnitControlData } from "redux/project";
 import { loadData as loadPartidaData } from "redux/unit-control";
 import { loadData as loadResourceData } from "redux/partida";
+import * as API from "redux/api";
 
 const DetailedContent = ({ data, actions }) => {
 
   React.useEffect(() => {
     (!isEmpty(data) && !!loader[data.type] && loader[data.type]()) || console.log("Tipo inexistente");
+    console.log(data);
   },[data]);
 
   const loader = {
-    [PROJECT_TYPE]: () => actions.getUnitControlData({}),
+    [PROJECT_TYPE]: () => actions.getUnitControlData({url: API.UNIT_CONTROL_URL, keyFilter: "estudiProjecte.id", id: data.id}),
     [CONTROL_UNIT_TYPE]: () => actions.getPartidaData({}),
     [PARTIDA_TYPE]: () => actions.getResources({}),
   }

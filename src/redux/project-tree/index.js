@@ -22,7 +22,7 @@ export const loadData = ({ url = URL, periodId }) => {
         .then(({data}) => data)
         .then((_embedded) => {
           const formattedData = {
-            id: 'project1',
+            id: _embedded.id,
             labelText: 'Proyecto 1',
             labelInfo: '20.000€',
             type: PROJECT_TYPE,
