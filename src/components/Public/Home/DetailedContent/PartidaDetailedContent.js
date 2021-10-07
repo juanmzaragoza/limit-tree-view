@@ -324,10 +324,10 @@ const ProjectDetailedContent = ({
         <Tabs
           value={tabIndex}
           onChange={(e, index) => setTabIndex(index)}
-          centered
+
         >
-          <Tab icon={<LineWeight />} label={"Recursos"} />
-          <Tab icon={<DragIndicator />} label={"Indicadores"} />
+          <Tab label={"Recursos"} className="tabsIndicators tabsIndicators1"    />
+          <Tab label={"Indicadores"} className="tabsIndicators tabsIndicators2"/>
         </Tabs>
       </Grid>
  
