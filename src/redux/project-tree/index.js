@@ -8,6 +8,7 @@ import { formatCurrency } from "utils/formats";
 
 //Action types
 const ADD = "ADD_TO_TREE";
+const RESET = "RESET_TREE";
 
 // Constants
 const URL = 'api/fact/estudisProjecte/{id}/tree';
@@ -69,6 +70,12 @@ export const add = (payload) => {
   };
 }
 
+export const reset = () => {
+  return {
+    type: RESET
+  }
+}
+
 //Reducers
 const initialState = {
   formattedData: {},
@@ -80,6 +87,7 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD:
       return { ...state, ...action.payload };
+    case RESET:
     case "RESET":
       return initialState;
     default:
