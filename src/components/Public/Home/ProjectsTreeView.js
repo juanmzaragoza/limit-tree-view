@@ -101,7 +101,7 @@ const ProjectsTreeView = ({ tree, loading, onNodeSelect }) => {
 
   const previousTree = usePrevious(tree);
   React.useEffect(() => {
-    if(!isEmpty(tree) && !isEqual(previousTree.id,tree.id)) setExpanded([tree.id]);
+    if(!isEmpty(tree) && !isEqual(previousTree?.id,tree?.id)) setExpanded([tree.id]);
   },[tree]);
 
   const renderNodes = ({ tree }) => {
