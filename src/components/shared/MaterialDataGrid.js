@@ -10,7 +10,8 @@ const DetailedTable = ({
   disableColumnMenu = true,
   autoHeight = true,
   autoWidth = true,
-  disableExtendRowFullWidth = true
+  disableExtendRowFullWidth = true,
+  onCellEditCommit = (params, event, details) => {}
 }) => {
   return (
     <div style={rootStyle}>
@@ -27,7 +28,8 @@ const DetailedTable = ({
             disableExtendRowFullWidth={disableExtendRowFullWidth}
             style={{ backgroundColor: "white"}} 
             classsName="bodyLabel"
-            />
+            onCellEditCommit={onCellEditCommit}
+          />
         </div>
       </div>
     </div>
