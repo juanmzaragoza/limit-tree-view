@@ -5,9 +5,11 @@ import {Button, Grid} from "@mui/material";
 
 import MaterialSelector from "components/shared/MaterialSelector";
 import MaterialCheckbox from "components/shared/MaterialCheckbox";
+
+import { loadData, setPeriod } from "redux/period";
 import { getIsLoading, getRows } from "redux/period/selectors";
-import {loadData, setPeriod} from "redux/period";
 import { getSelectedProject } from "redux/project-selector/selectors";
+import { reset as resetTree } from "redux/project-tree";
 
 const PeriodsManagement = ({ rows, loading, project, actions }) => {
   const [periods, setPeriods] = React.useState([]);
@@ -21,6 +23,7 @@ const PeriodsManagement = ({ rows, loading, project, actions }) => {
 
   React.useEffect(() => {
     if(isProjectSelected()) {
+      actions.resetTree();
       actions.loadData({ projectCodi: project.codi });
       setDisabled(false);
     }
@@ -71,6 +74,7 @@ const mapDispatchToProps = (dispatch, props) => {
   const actions = {
     loadData: bindActionCreators(loadData, dispatch),
     setPeriod: bindActionCreators(setPeriod, dispatch),
+    resetTree: bindActionCreators(resetTree, dispatch),
   };
   return { actions };
 };
