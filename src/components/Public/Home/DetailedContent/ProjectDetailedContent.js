@@ -55,7 +55,7 @@ const ProjectDetailedContent = ({ rows, project, tree }) => {
         value: formatCurrencyWithIntl(tree.costTotal ?? 0, intl),
       },
     ]);
-  }, [project, intl]);
+  }, [project, intl, tree.importTotal, tree.costTotal]);
 
   return (
     <Grid container spacing={1}>

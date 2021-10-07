@@ -40,10 +40,6 @@ const ProjectDetailedContent = ({
   const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
   const [headerPartida, setHeaderPartida] = React.useState({});
   const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
-  const [fields] = React.useState([
-    { field: "Importe Total", value: "10.000€" },
-    { field: "Coste Total", value: "10.000€" },
-  ]);
 
   const getData = (params) => {
     return `${params.value?.description || ""}`;
