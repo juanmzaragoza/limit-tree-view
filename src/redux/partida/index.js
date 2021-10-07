@@ -8,9 +8,12 @@ const URL = 'api/fact/recursosEstudi?query=liniaEstudi.id=="eyJpZGVudGlmaWNhZG9y
 const HEADER_URL = 'api/fact/liniesEstudi/eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImVtcHJlc2FDb2RpIjoiUFJPMiIsInNlcXVlbmNpYSI6MjYzMjksInByb2plY3RlQ29kaSI6IkVTUFJPMiIsImVzdHVkaVByb2plY3RlQ29kaSI6IjAwMDEiLCJlc3R1ZGlQcm9qZWN0ZU51bSI6MH0=';
 
 //Functions
-export const loadData = ({ url = URL }) => {
+export const loadData = ({ url = URL, keyFilter, id }) => {
+  const formedURL = () => {
+    return `${url}${keyFilter ? `?query=${keyFilter}=="${id}"` : ""}`;
+  };
   return async dispatch => {
-    const apiCall = () => Axios.get(url);
+    const apiCall = () => Axios.get(formedURL());
     try {
       dispatch(add({ loading: true }));
       apiCall()
@@ -38,9 +41,12 @@ export const loadData = ({ url = URL }) => {
   };
 };
 
-export const loadHeader = ({ url = HEADER_URL }) => {
+export const loadHeader = ({ url = HEADER_URL, id }) => {
+  const formedURL = () => {
+    return `${url}/${id}`;
+  };
   return async dispatch => {
-    const apiCall = () => Axios.get(url);
+    const apiCall = () => Axios.get(formedURL());
     try {
       //dispatch(add({ loading: true }));
       apiCall()

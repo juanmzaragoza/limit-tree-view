@@ -24,13 +24,13 @@ const PeriodsManagement = ({ rows, loading, project, actions }) => {
       actions.loadData({ projectCodi: project.codi });
       setDisabled(false);
     }
-  },[project]);
+  },[project, isProjectSelected]);
 
-  const getDate = (value) => value.split('T')[0].replace(/\-/g,'/');
+  const getDate = (value) => value.split('T')[0].replace(/-/g,'/');
   React.useEffect(() => {
     setPeriods(
       rows.map(row => ({
-        label: `${row.codi} - ${getDate(row.diaInici)} ${row.diaFi? `- ${getDate(row.diaFi)}`:""}`,
+        label: `${row.numero} - ${getDate(row.diaInici)} ${row.diaFi? `- ${getDate(row.diaFi)}`:""}`,
         value: row
       }))
     );
