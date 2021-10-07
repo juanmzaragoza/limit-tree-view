@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { Grid } from "@mui/material";
+import { Grid, Tab, Tabs } from "@mui/material";
 import { useIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 
@@ -9,8 +9,10 @@ import {
   Assignment,
   CallMissedOutgoing,
   Construction,
+  DragIndicator,
   Engineering,
   Euro,
+  LineWeight,
   StackedBarChart,
   StackedLineChart,
 } from "@mui/icons-material";
@@ -23,6 +25,7 @@ import { loadHeader } from "redux/partida";
 import { getUnitControl } from "redux/unit-control/selectors";
 import * as API from "redux/api";
 import { getData } from "redux/project-tree/selectors";
+
 
 const ProjectDetailedContent = ({
   rows,
@@ -37,7 +40,9 @@ const ProjectDetailedContent = ({
   const [headerProject, setHeaderProject] = React.useState({});
   const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
-  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
+  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState(
+    []
+  );
   const [headerPartida, setHeaderPartida] = React.useState({});
   const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
   const [fields] = React.useState([
@@ -48,17 +53,23 @@ const ProjectDetailedContent = ({
   const getData = (params) => {
     return `${params.value?.description || ""}`;
   };
+  const [tabIndex, setTabIndex] = React.useState(0);
 
 
   const [columns] = React.useState([
-    { field: "codi", headerName: "Código",  type: "number", editable: false },
+    { field: "codi", headerName: "Código", type: "number", editable: false },
     {
       field: "descripcio",
       headerName: "Descripción",
       width: 140,
       editable: true,
     },
-    { field: "unitats", headerName: "Medición", type: "number", editable: true },
+    {
+      field: "unitats",
+      headerName: "Medición",
+      type: "number",
+      editable: true,
+    },
     {
       field: "unitatTipus",
       headerName: "Tipo Unidad",
@@ -85,90 +96,168 @@ const ProjectDetailedContent = ({
     },
   ]);
 
-  const [indicadores,setIndicadores] = React.useState();
+  const [indicadores, setIndicadores] = React.useState();
 
   React.useEffect(() => {
-  setIndicadores([
-    { field: "Producción Anterior", value: partida.produccioAnterior , icon: <Engineering /> },
-    { field: "Producción Período", value: partida?.produccioPeriode, icon: <Engineering /> },
-    { field: "Producción año Natural", value: partida.produccioAny, icon: <Engineering /> },
-    { field: "Producción a Origen", value: partida.produccioOrigen, icon: <Engineering /> },
-    { field: "Producción Pendiente", value: partida.produccioPendent, icon: <Engineering /> },
-    {
-      field: "Coste Teórico Anterior",
-      value: partida.costTeoricAnterior,
-      icon: <StackedLineChart />,
-    },
-    {
-      field: "Coste Teórico Pendiente",
-      value:  partida.costTeoricPeriode,
-      icon: <StackedLineChart />,
-    },
-    {
-      field: "Coste Teórico Año Natural",
-      value:  partida.costTeoricAny,
-      icon: <StackedLineChart />,
-    },
-    {
-      field: "Coste Teórico Origen",
-      value:  partida.costTeoricOrigen,
-      icon: <StackedLineChart />,
-    },
-    {
-      field: "Coste Teórico Pendiente",
-      value:  partida.costTeoricPendent,
-      icon: <StackedLineChart />,
-    },
-    { field: "Coste Real Anterior", value:  partida.costRealAnterior, icon: <StackedBarChart /> },
-    { field: "Coste Real Pendiente", value:  partida.costRealPeriode, icon: <StackedBarChart /> },
-    {
-      field: "Coste Real año Natural",
-      value:  partida.costRealAny,
-      icon: <StackedBarChart />,
-    },
-    { field: "Coste Real Origen", value: partida.costRealOrigen, icon: <StackedBarChart /> },
-    { field: "Beneficio Anterior", value: partida.beneficiAnterior, icon: <Euro /> },
-    { field: "Beneficio Período", value: partida.beneficiPeriode, icon: <Euro /> },
-    { field: "Beneficio año Natural", value: partida.beneficiAny, icon: <Euro /> },
-    { field: "Beneficio Origen", value: partida.beneficiOrigen, icon: <Euro /> },
-    {
-      field: "Desviación Anterior",
-      value: partida.desviacioCostAnterior,
-      icon: <CallMissedOutgoing />,
-    },
-    {
-      field: "Desviación Período",
-      value: partida.desviacioPeriode,
-      icon: <CallMissedOutgoing />,
-    },
-    {
-      field: "Desviación año Natural",
-      value: partida.desviacioAny,
-      icon: <CallMissedOutgoing />,
-    },
-    { field: "Desviación Origen", value: partida.desviacioOrigen, icon: <CallMissedOutgoing /> },
-    { field: "Facturación Anterior", value: partida.beneficiOrigen, icon: <Assignment /> },
-    { field: "Facturación Período", value: partida.beneficiOrigen, icon: <Assignment /> },
-    { field: "Facturación año Natural", value: partida.beneficiOrigen, icon: <Assignment /> },
-    { field: "Facturación Origen", value: partida.beneficiOrigen, icon: <Assignment /> },
-    { field: "Obra Pendiente Anterior", value: partida.obraPendentFacturar, icon: <Construction /> },
-    { field: "Obra Pendiente Período", value: partida.obraPendent, icon: <Construction /> },
-    {
-      field: "Obra Pendiente año Natural",
-      value: partida.beneficiOrigen,
-      icon: <Construction />,
-    },
-    { field: "Obra Pendiente Origen", value: partida.beneficiOrigen, icon: <Construction /> },
-  ]);
-
-  },[partida]);
+    setIndicadores([
+      {
+        field: "Producción Anterior",
+        value: partida.produccioAnterior,
+        icon: <Engineering />,
+      },
+      {
+        field: "Producción Período",
+        value: partida?.produccioPeriode,
+        icon: <Engineering />,
+      },
+      {
+        field: "Producción año Natural",
+        value: partida.produccioAny,
+        icon: <Engineering />,
+      },
+      {
+        field: "Producción a Origen",
+        value: partida.produccioOrigen,
+        icon: <Engineering />,
+      },
+      {
+        field: "Producción Pendiente",
+        value: partida.produccioPendent,
+        icon: <Engineering />,
+      },
+      {
+        field: "Coste Teórico Anterior",
+        value: partida.costTeoricAnterior,
+        icon: <StackedLineChart />,
+      },
+      {
+        field: "Coste Teórico Pendiente",
+        value: partida.costTeoricPeriode,
+        icon: <StackedLineChart />,
+      },
+      {
+        field: "Coste Teórico Año Natural",
+        value: partida.costTeoricAny,
+        icon: <StackedLineChart />,
+      },
+      {
+        field: "Coste Teórico Origen",
+        value: partida.costTeoricOrigen,
+        icon: <StackedLineChart />,
+      },
+      {
+        field: "Coste Teórico Pendiente",
+        value: partida.costTeoricPendent,
+        icon: <StackedLineChart />,
+      },
+      {
+        field: "Coste Real Anterior",
+        value: partida.costRealAnterior,
+        icon: <StackedBarChart />,
+      },
+      {
+        field: "Coste Real Pendiente",
+        value: partida.costRealPeriode,
+        icon: <StackedBarChart />,
+      },
+      {
+        field: "Coste Real año Natural",
+        value: partida.costRealAny,
+        icon: <StackedBarChart />,
+      },
+      {
+        field: "Coste Real Origen",
+        value: partida.costRealOrigen,
+        icon: <StackedBarChart />,
+      },
+      {
+        field: "Beneficio Anterior",
+        value: partida.beneficiAnterior,
+        icon: <Euro />,
+      },
+      {
+        field: "Beneficio Período",
+        value: partida.beneficiPeriode,
+        icon: <Euro />,
+      },
+      {
+        field: "Beneficio año Natural",
+        value: partida.beneficiAny,
+        icon: <Euro />,
+      },
+      {
+        field: "Beneficio Origen",
+        value: partida.beneficiOrigen,
+        icon: <Euro />,
+      },
+      {
+        field: "Desviación Anterior",
+        value: partida.desviacioCostAnterior,
+        icon: <CallMissedOutgoing />,
+      },
+      {
+        field: "Desviación Período",
+        value: partida.desviacioPeriode,
+        icon: <CallMissedOutgoing />,
+      },
+      {
+        field: "Desviación año Natural",
+        value: partida.desviacioAny,
+        icon: <CallMissedOutgoing />,
+      },
+      {
+        field: "Desviación Origen",
+        value: partida.desviacioOrigen,
+        icon: <CallMissedOutgoing />,
+      },
+      {
+        field: "Facturación Anterior",
+        value: partida.beneficiOrigen,
+        icon: <Assignment />,
+      },
+      {
+        field: "Facturación Período",
+        value: partida.beneficiOrigen,
+        icon: <Assignment />,
+      },
+      {
+        field: "Facturación año Natural",
+        value: partida.beneficiOrigen,
+        icon: <Assignment />,
+      },
+      {
+        field: "Facturación Origen",
+        value: partida.beneficiOrigen,
+        icon: <Assignment />,
+      },
+      {
+        field: "Obra Pendiente Anterior",
+        value: partida.obraPendentFacturar,
+        icon: <Construction />,
+      },
+      {
+        field: "Obra Pendiente Período",
+        value: partida.obraPendent,
+        icon: <Construction />,
+      },
+      {
+        field: "Obra Pendiente año Natural",
+        value: partida.beneficiOrigen,
+        icon: <Construction />,
+      },
+      {
+        field: "Obra Pendiente Origen",
+        value: partida.beneficiOrigen,
+        icon: <Construction />,
+      },
+    ]);
+  }, [partida]);
 
   React.useEffect(() => {
-    actions.loadHeader({url : API.PARTIDA_URL, id: props.id});
+    actions.loadHeader({ url: API.PARTIDA_URL, id: props.id });
   }, [props.id]);
 
   React.useEffect(() => {
-
     setHeaderControlUnit({ title: unitControl.descripcio });
     setHeaderControlUnitFields([
       {
@@ -180,7 +269,7 @@ const ProjectDetailedContent = ({
         value: formatCurrencyWithIntl(unitControl.costTotal ?? 0, intl),
       },
     ]);
-  }, [ unitControl, intl]);
+  }, [unitControl, intl]);
 
   React.useEffect(() => {
     setHeaderPartida({ title: partida.descripcio });
@@ -198,12 +287,17 @@ const ProjectDetailedContent = ({
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
-    setHeaderProjectFields( [
-      { field: 'Importe Total', value: formatCurrencyWithIntl(tree.importTotal?? 0, intl)},
-      { field: 'Coste Total', value: formatCurrencyWithIntl(tree.costTotal?? 0, intl)},
-    ])
-  },[tree, intl]);
-
+    setHeaderProjectFields([
+      {
+        field: "Importe Total",
+        value: formatCurrencyWithIntl(tree.importTotal ?? 0, intl),
+      },
+      {
+        field: "Coste Total",
+        value: formatCurrencyWithIntl(tree.costTotal ?? 0, intl),
+      },
+    ]);
+  }, [tree, intl]);
 
   return (
     <Grid container spacing={1}>
@@ -220,11 +314,21 @@ const ProjectDetailedContent = ({
         <DetailedHeader header={headerPartida} body={headerPartidaFields} />
       </Grid>
       <Grid item xs={12}>
+      <Tabs value={tabIndex} onChange={(e, index) => setTabIndex(index)} centered>
+        <Tab  icon={<LineWeight />}  label={"Recursos"} />
+        <Tab  icon={<DragIndicator />}  label={"Indicadores"} />
+      </Tabs>
+      </Grid>
+      {tabIndex === 0 &&  <Grid item xs={12}>
         <MaterialDataGrid columns={columns} rows={rows} loading={loading} />
-      </Grid>
-      <Grid item xs={12}>
-        <MaterialCardPartidaIndicator title="Indicadores" content={indicadores} />
-      </Grid>
+      </Grid>}
+      {tabIndex === 1 &&  <Grid item xs={12}>
+        <MaterialCardPartidaIndicator
+          title="Indicadores"
+          content={indicadores}
+        />
+      </Grid>}
+      
     </Grid>
   );
 };
@@ -235,7 +339,7 @@ const mapStateToProps = (state, props) => {
     loading: getIsLoading(state),
     unitControl: getUnitControl(state),
     partida: getPartida(state),
-    tree: getData(state)
+    tree: getData(state),
   };
 };
 
