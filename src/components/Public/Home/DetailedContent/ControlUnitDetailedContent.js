@@ -3,9 +3,11 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Grid } from "@mui/material";
 import { useIntl } from "react-intl";
+import { Assignment } from "@mui/icons-material";
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
+import MaterialCardPartidaIndicator from "components/shared/MaterialCardPartidaIndicator";
 
 import { formatCurrencyWithIntl } from "utils/formats";
 import {
@@ -16,10 +18,6 @@ import {
 import { loadHeader, updatePartida } from "redux/unit-control";
 import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
-import { getSelectedPeriod } from "redux/period/selectors";
-
-import { Assignment } from "@mui/icons-material";
-import MaterialCardPartidaIndicator from "components/shared/MaterialCardPartidaIndicator";
 import { getSelectedPeriod } from "redux/period/selectors";
 
 const ControlUnitDetailedContent = ({
