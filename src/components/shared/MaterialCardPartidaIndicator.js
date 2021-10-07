@@ -1,6 +1,5 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
-import Typography from "@mui/material/Typography";
 import { Avatar, CardHeader, Grid } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import { primaryColor } from "utils/helper";
