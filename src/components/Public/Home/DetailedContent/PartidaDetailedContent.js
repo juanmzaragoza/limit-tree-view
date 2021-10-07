@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import { Grid, Tab, Tabs } from "@mui/material";
 import { useIntl } from "react-intl";
 import { bindActionCreators } from "redux";
-
-import MaterialCardPartidaIndicator from "components/shared/MaterialCardPartidaIndicator";
 import {
   Assignment,
   CallMissedOutgoing,
@@ -17,15 +15,21 @@ import {
   StackedLineChart,
 } from "@mui/icons-material";
 
+import MaterialCardPartidaIndicator from "components/shared/MaterialCardPartidaIndicator";
 import { formatCurrencyWithIntl } from "utils/formats";
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
-import { getIsLoading, getPartida, getRows } from "redux/partida/selectors";
-import { loadHeader } from "redux/partida";
-import { getUnitControl } from "redux/unit-control/selectors";
-import * as API from "redux/api";
-import { getData } from "redux/project-tree/selectors";
 
+import * as API from "redux/api";
+import { loadHeader, update } from "redux/partida";
+import { getIsLoading, getPartida, getRows } from "redux/partida/selectors";
+
+import { loadHeader as loadUnitControlHeader } from "redux/unit-control";
+import { getUnitControl } from "redux/unit-control/selectors";
+
+import { loadData as loadTreeData } from "redux/project-tree";
+import { getData } from "redux/project-tree/selectors";
+import { getSelectedPeriod } from "../../../../redux/period/selectors";
 
 const ProjectDetailedContent = ({
   rows,
@@ -33,6 +37,7 @@ const ProjectDetailedContent = ({
   unitControl,
   partida,
   tree,
+  selectedPeriod,
   actions,
   ...props
 }) => {
@@ -45,19 +50,14 @@ const ProjectDetailedContent = ({
   );
   const [headerPartida, setHeaderPartida] = React.useState({});
   const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
-  const [fields] = React.useState([
-    { field: "Importe Total", value: "10.000€" },
-    { field: "Coste Total", value: "10.000€" },
-  ]);
 
-  const getData = (params) => {
-    return `${params.value?.description || ""}`;
-  };
+  const getData = (params) => `${params.value?.description || ""}`;
+
   const [tabIndex, setTabIndex] = React.useState(0);
 
-
   const [columns] = React.useState([
-    { field: "codi", headerName: "Código", type: "number", editable: false },
+    { field: "codi", headerName: "Código", type: "number" },
+
     {
       field: "descripcio",
       headerName: "Descripción",
@@ -74,7 +74,6 @@ const ProjectDetailedContent = ({
       field: "unitatTipus",
       headerName: "Tipo Unidad",
       valueGetter: getData,
-      editable: true,
     },
     {
       field: "costUnitat",
@@ -92,13 +91,12 @@ const ProjectDetailedContent = ({
       valueFormatter: (params) => {
         return formatCurrencyWithIntl(params.row.costTotal ?? 0, intl);
       },
-      editable: false,
     },
   ]);
 
   const [indicadores, setIndicadores] = React.useState();
-
   React.useEffect(() => {
+   
     setIndicadores([
       {
         field: "Producción Anterior",
@@ -125,6 +123,7 @@ const ProjectDetailedContent = ({
         value: partida.produccioPendent,
         icon: <Engineering />,
       },
+
       {
         field: "Coste Teórico Anterior",
         value: partida.costTeoricAnterior,
@@ -132,21 +131,28 @@ const ProjectDetailedContent = ({
       },
       {
         field: "Coste Teórico Pendiente",
+
         value: partida.costTeoricPeriode,
+
         icon: <StackedLineChart />,
       },
       {
         field: "Coste Teórico Año Natural",
+
         value: partida.costTeoricAny,
+
         icon: <StackedLineChart />,
       },
       {
         field: "Coste Teórico Origen",
+
         value: partida.costTeoricOrigen,
+
         icon: <StackedLineChart />,
       },
       {
         field: "Coste Teórico Pendiente",
+
         value: partida.costTeoricPendent,
         icon: <StackedLineChart />,
       },
@@ -190,6 +196,7 @@ const ProjectDetailedContent = ({
         value: partida.beneficiOrigen,
         icon: <Euro />,
       },
+
       {
         field: "Desviación Anterior",
         value: partida.desviacioCostAnterior,
@@ -205,6 +212,7 @@ const ProjectDetailedContent = ({
         value: partida.desviacioAny,
         icon: <CallMissedOutgoing />,
       },
+
       {
         field: "Desviación Origen",
         value: partida.desviacioOrigen,
@@ -240,11 +248,13 @@ const ProjectDetailedContent = ({
         value: partida.obraPendent,
         icon: <Construction />,
       },
+
       {
         field: "Obra Pendiente año Natural",
         value: partida.beneficiOrigen,
         icon: <Construction />,
       },
+
       {
         field: "Obra Pendiente Origen",
         value: partida.beneficiOrigen,
@@ -253,8 +263,10 @@ const ProjectDetailedContent = ({
     ]);
   }, [partida]);
 
-  React.useEffect(() => {
+  const loadHeader = () =>
     actions.loadHeader({ url: API.PARTIDA_URL, id: props.id });
+  React.useEffect(() => {
+    loadHeader();
   }, [props.id]);
 
   React.useEffect(() => {
@@ -287,6 +299,7 @@ const ProjectDetailedContent = ({
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
+
     setHeaderProjectFields([
       {
         field: "Importe Total",
@@ -298,6 +311,21 @@ const ProjectDetailedContent = ({
       },
     ]);
   }, [tree, intl]);
+
+  const handleCellChange = async (params, event, details) => {
+    const { id, field, value } = params;
+    const data = rows.find((row) => row.id === id);
+    data[field] = value;
+    try {
+      await actions.updateResource({ id, data });
+      // update related data
+      loadHeader();
+      actions.loadUnitControlHeader({ id: unitControl.id });
+      actions.loadTreeData({ periodId: selectedPeriod.id });
+    } catch (e) {
+      // handle errors
+    }
+  };
 
   return (
     <Grid container spacing={1}>
@@ -314,21 +342,33 @@ const ProjectDetailedContent = ({
         <DetailedHeader header={headerPartida} body={headerPartidaFields} />
       </Grid>
       <Grid item xs={12}>
-      <Tabs value={tabIndex} onChange={(e, index) => setTabIndex(index)} centered>
-        <Tab  icon={<LineWeight />}  label={"Recursos"} />
-        <Tab  icon={<DragIndicator />}  label={"Indicadores"} />
-      </Tabs>
+        <Tabs
+          value={tabIndex}
+          onChange={(e, index) => setTabIndex(index)}
+          centered
+        >
+          <Tab icon={<LineWeight />} label={"Recursos"} />
+          <Tab icon={<DragIndicator />} label={"Indicadores"} />
+        </Tabs>
       </Grid>
-      {tabIndex === 0 &&  <Grid item xs={12}>
-        <MaterialDataGrid columns={columns} rows={rows} loading={loading} />
-      </Grid>}
-      {tabIndex === 1 &&  <Grid item xs={12}>
-        <MaterialCardPartidaIndicator
-          title="Indicadores"
-          content={indicadores}
-        />
-      </Grid>}
-      
+ 
+      {tabIndex === 0 && (
+        <Grid item xs={12}>
+          <MaterialDataGrid           columns={columns}
+          getRowId={(row) => row.id}
+          rows={rows}
+          loading={loading}
+          onCellEditCommit={handleCellChange}/>
+        </Grid>
+      )}
+      {tabIndex === 1 && (
+        <Grid item xs={12}>
+          <MaterialCardPartidaIndicator
+            title="Indicadores"
+            content={indicadores}
+          />
+        </Grid>
+      )}
     </Grid>
   );
 };
@@ -340,12 +380,16 @@ const mapStateToProps = (state, props) => {
     unitControl: getUnitControl(state),
     partida: getPartida(state),
     tree: getData(state),
+    selectedPeriod: getSelectedPeriod(state),
   };
 };
 
 const mapDispatchToProps = (dispatch, props) => {
   const actions = {
     loadHeader: bindActionCreators(loadHeader, dispatch),
+    updateResource: bindActionCreators(update, dispatch),
+    loadUnitControlHeader: bindActionCreators(loadUnitControlHeader, dispatch),
+    loadTreeData: bindActionCreators(loadTreeData, dispatch),
   };
   return { actions };
 };
