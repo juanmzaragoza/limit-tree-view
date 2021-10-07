@@ -16,7 +16,6 @@ import PartidaDetailedContent from "./PartidaDetailedContent";
 import { loadData as loadUnitControlData } from "redux/project";
 import { loadData as loadPartidaData } from "redux/unit-control";
 import { loadData as loadResourceData } from "redux/partida";
-import * as API from "redux/api";
 
 const DetailedContent = ({ data, actions }) => {
 
@@ -25,9 +24,9 @@ const DetailedContent = ({ data, actions }) => {
   },[data]);
 
   const loader = {
-    [PROJECT_TYPE]: () => actions.getUnitControlData({url: API.UNIT_CONTROL_URL, keyFilter: "estudiProjecte.id", id: data.id}),
-    [CONTROL_UNIT_TYPE]: () => actions.getPartidaData({url: API.PARTIDA_URL, keyFilter: "unitatControlEstudi.id", id: data.id}),
-    [PARTIDA_TYPE]: () => actions.getResources({url: API.RECURSOS_URL, keyFilter: "liniaEstudi.id", id: data.id}),
+    [PROJECT_TYPE]: () => actions.getUnitControlData({ id: data.id }),
+    [CONTROL_UNIT_TYPE]: () => actions.getPartidaData({ id: data.id }),
+    [PARTIDA_TYPE]: () => actions.getResources({ id: data.id }),
   }
 
   const layout = {

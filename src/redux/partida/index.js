@@ -5,17 +5,14 @@ const ADD = "ADD_TO_PARTIDA";
 const REPLACE = "REPLACE_TO_PARTIDA";
 
 // Constants
-const URL = 'api/fact/recursosEstudi?query=liniaEstudi.id=="eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImVtcHJlc2FDb2RpIjoiUFJPMiIsInNlcXVlbmNpYSI6MjYzMjksInByb2plY3RlQ29kaSI6IkVTUFJPMiIsImVzdHVkaVByb2plY3RlQ29kaSI6IjAwMDEiLCJlc3R1ZGlQcm9qZWN0ZU51bSI6MH0="';
-const HEADER_URL = 'api/fact/liniesEstudi/eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImVtcHJlc2FDb2RpIjoiUFJPMiIsInNlcXVlbmNpYSI6MjYzMjksInByb2plY3RlQ29kaSI6IkVTUFJPMiIsImVzdHVkaVByb2plY3RlQ29kaSI6IjAwMDEiLCJlc3R1ZGlQcm9qZWN0ZU51bSI6MH0=';
+const URL = 'api/fact/recursosEstudi?query=liniaEstudi.id=="{id}"';
+const HEADER_URL = 'api/fact/liniesEstudi';
 const UPDATE_RESOURCE = 'api/fact/recursosEstudi';
 
 //Functions
-export const loadData = ({ url = URL, keyFilter, id }) => {
-  const formedURL = () => {
-    return `${url}${keyFilter ? `?query=${keyFilter}=="${id}"` : ""}`;
-  };
+export const loadData = ({ url = URL, id }) => {
   return async dispatch => {
-    const apiCall = () => Axios.get(formedURL());
+    const apiCall = () => Axios.get(url.replace('{id}',id));
     try {
       dispatch(add({ loading: true }));
       apiCall()
@@ -44,9 +41,7 @@ export const loadData = ({ url = URL, keyFilter, id }) => {
 };
 
 export const loadHeader = ({ url = HEADER_URL, id }) => {
-  const formedURL = () => {
-    return `${url}/${id}`;
-  };
+  const formedURL = () => `${url}/${id}`;
   return async dispatch => {
     const apiCall = () => Axios.get(formedURL());
     try {

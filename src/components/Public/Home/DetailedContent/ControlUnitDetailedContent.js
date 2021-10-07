@@ -3,7 +3,6 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Grid } from "@mui/material";
 import {useIntl} from "react-intl";
-import * as API from "redux/api";
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
 
@@ -13,8 +12,8 @@ import {
   getUnitControl
 } from "redux/unit-control/selectors";
 import { loadHeader } from "redux/unit-control";
-import { formatCurrencyWithIntl } from "../../../../utils/formats";
 import { getData } from "redux/project-tree/selectors";
+import { formatCurrencyWithIntl } from "utils/formats";
 
 const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, project, tree, ...props }) => {
   const intl = useIntl();
@@ -23,10 +22,8 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, proje
   const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
   const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
-  const getData = (params) => {
-    return `${params.value?.description || ""}`;
-  };
 
+  const getData = (params) => `${params.value?.description || ""}`;
   const [columns] = React.useState([
     { field: "codi", headerName: "Código", minWidth: 150, editable: true },
     {
@@ -127,7 +124,7 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, proje
   ]);
 
   React.useEffect(() => {
-    actions.loadHeader({url : API.UNIT_CONTROL_URL, id: props.id});
+    actions.loadHeader({ id: props.id });
   }, [props.id]);
 
   React.useEffect(() => {

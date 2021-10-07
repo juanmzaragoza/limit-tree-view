@@ -20,7 +20,6 @@ import { formatCurrencyWithIntl } from "utils/formats";
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
 
-import * as API from "redux/api";
 import { loadHeader, update } from "redux/partida";
 import { getIsLoading, getPartida, getRows } from "redux/partida/selectors";
 
@@ -263,8 +262,7 @@ const ProjectDetailedContent = ({
     ]);
   }, [partida]);
 
-  const loadHeader = () =>
-    actions.loadHeader({ url: API.PARTIDA_URL, id: props.id });
+  const loadHeader = () => actions.loadHeader({ id: props.id });
   React.useEffect(() => {
     loadHeader();
   }, [props.id]);
