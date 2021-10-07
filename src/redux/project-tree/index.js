@@ -24,11 +24,11 @@ export const loadData = ({ url = URL, periodId }) => {
           const formattedData = {
             id: _embedded.id,
             labelText: 'Proyecto 1',
-            labelInfo: '20.000€',
+            labelInfo: formatCurrency(_embedded.costTotal),
             type: PROJECT_TYPE,
             nodes: _embedded['unitatsControl'].map(controlUnit => ({
               id: controlUnit.id,
-              labelInfo: formatCurrency(10000000),
+              labelInfo: formatCurrency(controlUnit.costTotal),
               labelText: controlUnit.descripcio,
               type: CONTROL_UNIT_TYPE,
               nodes: controlUnit['partides'].map(partida => ({
