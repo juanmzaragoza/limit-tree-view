@@ -2,22 +2,32 @@ import * as React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Grid } from "@mui/material";
-import {useIntl} from "react-intl";
+import { useIntl } from "react-intl";
+
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
 
+import { formatCurrencyWithIntl } from "utils/formats";
 import {
   getIsLoading,
   getRows,
   getUnitControl
 } from "redux/unit-control/selectors";
-import { loadHeader } from "redux/unit-control";
+import { loadHeader, updatePartida } from "redux/unit-control";
 import { getData } from "redux/project-tree/selectors";
-import { formatCurrencyWithIntl } from "utils/formats";
+import {getSelectedPeriod} from "redux/period/selectors";
 
-const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, project, tree, ...props }) => {
+const ControlUnitDetailedContent = ({
+  rows,
+  loading,
+  unitControl,
+  actions,
+  project,
+  tree,
+  selectedPeriod,
+  ...props
+}) => {
   const intl = useIntl();
-
   const [headerProject, setHeaderProject] = React.useState({});
   const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
@@ -25,7 +35,7 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, proje
 
   const getData = (params) => `${params.value?.description || ""}`;
   const [columns] = React.useState([
-    { field: "codi", headerName: "Código", minWidth: 150, editable: true },
+    { field: "codi", headerName: "Código", minWidth: 150 },
     {
       field: "descripcio",
       headerName: "Descripció",
@@ -43,8 +53,7 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, proje
       field: "unitatTipus",
       headerName: "Tipo Unidad",
       valueGetter: getData,
-      minWidth:150,
-      editable: true,
+      minWidth: 150,
     },
     {
       field: "unitatsPress",
@@ -57,29 +66,21 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, proje
       field: "preuNet",
       headerName: "Pvp Neto",
       type: "number",
-      valueFormatter: (params) => {
-        return formatCurrencyWithIntl(params.row.preuNet ?? 0, intl);
-      },
+      valueFormatter: (params) => formatCurrencyWithIntl(params.row.preuNet ?? 0, intl),
       minWidth: 140,
-      editable: false,
     },
     {
       field: "importTotal",
       headerName: "Importe",
       type: "number",
-      valueFormatter: (params) => {
-        return formatCurrencyWithIntl(params.row.importTotal ?? 0, intl);
-      },
+      valueFormatter: (params) => formatCurrencyWithIntl(params.row.importTotal ?? 0, intl),
       minWidth: 140,
-      editable: false,
     },
     {
       field: "costUni",
       headerName: "Coste Unitario",
       type: "number",
-      valueFormatter: (params) => {
-        return formatCurrencyWithIntl(params.row.costUni ?? 0, intl);
-      },
+      valueFormatter: (params) => formatCurrencyWithIntl(params.row.costUni ?? 0, intl),
       minWidth: 150,
       editable: false,
     },
@@ -87,18 +88,14 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, proje
       field: "costTotal",
       headerName: "Coste Total",
       type: "number",
-      valueFormatter: (params) => {
-        return formatCurrencyWithIntl(params.row.costTotal ?? 0, intl);
-      },
+      valueFormatter: (params) => formatCurrencyWithIntl(params.row.costTotal ?? 0, intl),
       minWidth: 140,
-      editable: false,
     },
     {
       field: "unitatsAnterior",
       headerName: "Medición Anterior",
       type: "number",
       minWidth: 170,
-      editable: false,
     },
     {
       field: "unitatsActual",
@@ -119,12 +116,12 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, proje
       headerName: "Medición Pendiente",
       type: "number",
       minWidth: 170,
-      editable: true,
     },
   ]);
 
+  const loadHeader = () => actions.loadHeader({ id: props.id });
   React.useEffect(() => {
-    actions.loadHeader({ id: props.id });
+    loadHeader();
   }, [props.id]);
 
   React.useEffect(() => {
@@ -144,6 +141,20 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, proje
     ])
   },[tree, intl]);
 
+  const handleCellChange = async (params, event, details) => {
+    const {id, field, value} = params;
+    const data = rows.find(row => row.id === id);
+    data[field] = value;
+    try {
+      await actions.updatePartida({ id, data });
+      // update related data
+      loadHeader();
+      actions.loadTreeData({ periodId: selectedPeriod.id });
+    } catch (e) {
+      // handle errors
+    }
+  };
+
   return <Grid container spacing={1}>
     <Grid item xs={6}>
       <DetailedHeader
@@ -158,8 +169,10 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, proje
     <Grid item xs={12}>
       <MaterialDataGrid
         columns={columns}
+        getRowId={(row) => row.id}
         rows={rows}
-        loading={loading} />
+        loading={loading}
+        onCellEditCommit={handleCellChange} />
     </Grid>
   </Grid>
 }
@@ -170,13 +183,15 @@ const mapStateToProps = (state, props) => {
     rows: getRows(state),
     loading: getIsLoading(state),
     unitControl: getUnitControl(state),
-    tree: getData(state)
+    tree: getData(state),
+    selectedPeriod: getSelectedPeriod(state),
   };
 };
 
 const mapDispatchToProps = (dispatch, props) => {
   const actions = {
-    loadHeader: bindActionCreators(loadHeader, dispatch)
+    loadHeader: bindActionCreators(loadHeader, dispatch),
+    updatePartida: bindActionCreators(updatePartida, dispatch),
   };
   return { actions };
 };

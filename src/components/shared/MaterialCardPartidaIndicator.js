@@ -25,8 +25,7 @@ export default function MaterialCardPartidaIndicator({ title, content }) {
   const theme = cardUseStyles();
   const intl = useIntl();
   return (
-    <>
-  
+    <React.Fragment>
       <Grid container spacing={2}>
         {content?.map(({ field, value, icon }, index) => {
           return (
@@ -59,6 +58,6 @@ export default function MaterialCardPartidaIndicator({ title, content }) {
           );
         })}
       </Grid>
-    </>
+    </React.Fragment>
   );
 }
