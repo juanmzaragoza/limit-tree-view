@@ -14,14 +14,13 @@ import {
 } from "redux/unit-control/selectors";
 import { loadHeader } from "redux/unit-control";
 import { formatCurrencyWithIntl } from "../../../../utils/formats";
+import { getData } from "redux/project-tree/selectors";
 
-
-const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, ...props }) => {
+const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, project, tree, ...props }) => {
   const intl = useIntl();
-  const [headerProject,] = React.useState({
-    title: 'Proyecto 1',
-    subheader: 'Capítulo 1',
-  });
+
+  const [headerProject, setHeaderProject] = React.useState({});
+  const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
   const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
   const getData = (params) => {
@@ -139,11 +138,20 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, ...pr
     ])
   },[unitControl, intl]);
 
+
+  React.useEffect(() => {
+    setHeaderProject({ title: tree.descripcio });
+    setHeaderProjectFields( [
+      { field: 'Importe Total', value: formatCurrencyWithIntl(tree.importTotal?? 0, intl)},
+      { field: 'Coste Total', value: formatCurrencyWithIntl(tree.costTotal?? 0, intl)},
+    ])
+  },[tree, intl]);
+
   return <Grid container spacing={1}>
     <Grid item xs={6}>
       <DetailedHeader
         header={headerProject}
-        body={headerControlUnitFields} />
+        body={headerProjectFields} />
     </Grid>
     <Grid item xs={6}>
       <DetailedHeader
@@ -164,7 +172,8 @@ const mapStateToProps = (state, props) => {
   return {
     rows: getRows(state),
     loading: getIsLoading(state),
-    unitControl: getUnitControl(state)
+    unitControl: getUnitControl(state),
+    tree: getData(state)
   };
 };
 

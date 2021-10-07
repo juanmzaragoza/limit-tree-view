@@ -22,20 +22,20 @@ import { getIsLoading, getPartida, getRows } from "redux/partida/selectors";
 import { loadHeader } from "redux/partida";
 import { getUnitControl } from "redux/unit-control/selectors";
 import * as API from "redux/api";
+import { getData } from "redux/project-tree/selectors";
 
 const ProjectDetailedContent = ({
   rows,
   loading,
   unitControl,
   partida,
+  tree,
   actions,
   ...props
 }) => {
   const intl = useIntl();
-  const [headerProject] = React.useState({
-    title: "Proyecto 1",
-    subheader: "Capítulo 1",
-  });
+  const [headerProject, setHeaderProject] = React.useState({});
+  const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
   const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
   const [headerPartida, setHeaderPartida] = React.useState({});
@@ -190,10 +190,19 @@ const ProjectDetailedContent = ({
     ]);
   }, [partida, intl]);
 
+  React.useEffect(() => {
+    setHeaderProject({ title: tree.descripcio });
+    setHeaderProjectFields( [
+      { field: 'Importe Total', value: formatCurrencyWithIntl(tree.importTotal?? 0, intl)},
+      { field: 'Coste Total', value: formatCurrencyWithIntl(tree.costTotal?? 0, intl)},
+    ])
+  },[tree, intl]);
+
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
-        <DetailedHeader header={headerProject} body={fields} />
+        <DetailedHeader header={headerProject} body={headerProjectFields} />
       </Grid>
       <Grid item xs={6}>
         <DetailedHeader
@@ -220,6 +229,7 @@ const mapStateToProps = (state, props) => {
     loading: getIsLoading(state),
     unitControl: getUnitControl(state),
     partida: getPartida(state),
+    tree: getData(state)
   };
 };
 

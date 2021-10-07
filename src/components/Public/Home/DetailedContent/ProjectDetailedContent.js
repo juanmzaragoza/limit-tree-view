@@ -8,8 +8,9 @@ import MaterialDataGrid from "components/shared/MaterialDataGrid";
 import { getIsLoading, getRows } from "redux/project/selectors";
 import { getSelectedProject } from "redux/project-selector/selectors";
 import { formatCurrencyWithIntl } from "utils/formats";
+import { getData } from "redux/project-tree/selectors";
 
-const ProjectDetailedContent = ({ rows, project }) => {
+const ProjectDetailedContent = ({ rows, project, tree }) => {
   const intl = useIntl();
   const [headerProject, setHeaderProject] = React.useState({});
   const [projectFields, setProjectFields] = React.useState([]);
@@ -43,16 +44,15 @@ const ProjectDetailedContent = ({ rows, project }) => {
   ]);
 
   React.useEffect(() => {
-    console.log(project)
     setHeaderProject({ title: project.nom });
     setProjectFields([
       {
         field: "Importe Total",
-        value: formatCurrencyWithIntl(project.importTotal ?? 0, intl),
+        value: formatCurrencyWithIntl(tree.importTotal ?? 0, intl),
       },
       {
         field: "Coste Total",
-        value: formatCurrencyWithIntl(project.costTotal ?? 0, intl),
+        value: formatCurrencyWithIntl(tree.costTotal ?? 0, intl),
       },
     ]);
   }, [project, intl]);
@@ -76,7 +76,8 @@ const mapStateToProps = (state, props) => {
   return {
     rows: getRows(state),
     loading: getIsLoading(state),
-    project: getSelectedProject(state)
+    project: getSelectedProject(state),
+    tree: getData(state)
   };
 };
 
