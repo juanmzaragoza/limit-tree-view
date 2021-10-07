@@ -6,14 +6,13 @@
   border-bottom: 2px solid #3a9198 !important;
 }
 
-.MuiPaper-elevation8{
+.MuiPaper-elevation8 {
   top: 170px !important;
 }
 
 .MuiPaper-elevation1 {
   top: 312px !important;
 }
-
 
 .css-q8fate-MuiButtonBase-root-MuiMenuItem-root.Mui-selected {
   background-color: white !important;
@@ -23,16 +22,17 @@
   background-color: rgba(58, 145, 152, 0.08) !important;
 }
 
-.containerProjectTree{
+.containerProjectTree {
   border-top: 1px solid #cdcdcd;
 }
- 
+
 .MuiDataGrid-root .MuiDataGrid-cell.MuiDataGrid-cell--editing:focus-within {
   outline: solid #3a9198 1px !important;
   outline-offset: -1px !important;
 }
 
-.MuiDataGrid-root .MuiDataGrid-columnHeader:focus, .MuiDataGrid-root .MuiDataGrid-cell:focus {
+.MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
+.MuiDataGrid-root .MuiDataGrid-cell:focus {
   outline: solid #3a9198 1px !important;
 }
 
@@ -40,23 +40,61 @@
   background-color: rgba(58, 145, 152, 0.08) !important;
 }
 
-.tituloDetailHeader .MuiCardHeader-title{
+.tituloDetailHeader .MuiCardHeader-title {
   font-size: 20px !important;
 }
 
-.tituloDetailHeader .MuiCardHeader-subheader{
+.tituloDetailHeader .MuiCardHeader-subheader {
   font-size: 16px !important;
 }
 
-.bodyLabel{
+.bodyLabel {
   font-size: 14px !important;
 }
 
-.containerData{
+.containerData {
   padding-right: 0 !important;
 }
 
 .empty-tree-root {
   display: flex;
   justify-content: center;
+}
+
+.tabsIndicators {
+  background-color: white !important;
+  color: gray !important;
+  padding: 5px !important;
+  border: 1px solid rgba(224, 224, 224, 1) !important;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+.tabsIndicators1 {
+  border-top-left-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+
+}
+.tabsIndicators2 {
+  border-top-right-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+}
+
+.tabsIndicators.Mui-selected {
+  background-color: #3a9198 !important;
+  color: white !important;
+}
+.tabsIndicators.Mui-selected:hover {
+  background-color: #3a9198 !important;
+  color: white !important;
+  opacity: 0.9 !important;
+}
+
+.tabsIndicators:hover {
+  color: #3a9198 !important;
+}
+
+.css-1l3106v-MuiTabs-indicator {
+  display: none !important;
+  position: unset;
 }

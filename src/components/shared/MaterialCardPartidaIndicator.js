@@ -1,6 +1,6 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
-import { Avatar, CardHeader, Grid } from "@mui/material";
+import { Avatar, CardHeader, Grid, Typography } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import { primaryColor } from "utils/helper";
 import { formatCurrencyWithIntl } from "utils/formats";
@@ -25,8 +25,16 @@ export default function MaterialCardPartidaIndicator({ title, content }) {
   const theme = cardUseStyles();
   const intl = useIntl();
   return (
-    <>
-  
+    
+    <React.Fragment>
+      {title && (
+        <Grid item xs={12} sx={{ mb: 3 }}>
+          <Typography variant={"h5"}>{title}</Typography>
+        </Grid>
+      )}
+
+    
+
       <Grid container spacing={2}>
         {content?.map(({ field, value, icon }, index) => {
           return (
@@ -59,6 +67,6 @@ export default function MaterialCardPartidaIndicator({ title, content }) {
           );
         })}
       </Grid>
-    </>
+    </React.Fragment>
   );
 }

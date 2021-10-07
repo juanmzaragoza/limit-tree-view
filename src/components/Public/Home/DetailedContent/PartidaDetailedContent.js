@@ -217,26 +217,7 @@ const ProjectDetailedContent = ({
         value: partida.desviacioOrigen,
         icon: <CallMissedOutgoing />,
       },
-      {
-        field: "Facturación Anterior",
-        value: partida.beneficiOrigen,
-        icon: <Assignment />,
-      },
-      {
-        field: "Facturación Período",
-        value: partida.beneficiOrigen,
-        icon: <Assignment />,
-      },
-      {
-        field: "Facturación año Natural",
-        value: partida.beneficiOrigen,
-        icon: <Assignment />,
-      },
-      {
-        field: "Facturación Origen",
-        value: partida.beneficiOrigen,
-        icon: <Assignment />,
-      },
+     
       {
         field: "Obra Pendiente Anterior",
         value: partida.obraPendentFacturar,
@@ -343,10 +324,10 @@ const ProjectDetailedContent = ({
         <Tabs
           value={tabIndex}
           onChange={(e, index) => setTabIndex(index)}
-          centered
+
         >
-          <Tab icon={<LineWeight />} label={"Recursos"} />
-          <Tab icon={<DragIndicator />} label={"Indicadores"} />
+          <Tab label={"Recursos"} className="tabsIndicators tabsIndicators1"    />
+          <Tab label={"Indicadores"} className="tabsIndicators tabsIndicators2"/>
         </Tabs>
       </Grid>
  
@@ -362,7 +343,6 @@ const ProjectDetailedContent = ({
       {tabIndex === 1 && (
         <Grid item xs={12}>
           <MaterialCardPartidaIndicator
-            title="Indicadores"
             content={indicadores}
           />
         </Grid>
