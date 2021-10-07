@@ -1,6 +1,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { forEach, isEmpty, remove } from 'lodash';
+import {
+  forEach,
+  isEmpty,
+  isEqual,
+  remove
+} from 'lodash';
 
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -11,11 +16,13 @@ import Label from '@mui/icons-material/Label';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import { primaryColor } from 'utils/helper';
-
-import "./styles.css";
 
 import MaterialSkeleton from "components/shared/MaterialSkeleton/MaterialSkeleton";
+
+import { primaryColor } from 'utils/helper';
+import {usePrevious} from "utils/helper-hooks";
+
+import "./styles.css";
 
 const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
   color: theme.palette.text.secondary,
@@ -92,8 +99,9 @@ const ProjectsTreeView = ({ tree, loading, onNodeSelect }) => {
   const [nodeIds, setNodeIds] = React.useState(null);
   const [expanded, setExpanded] = React.useState([]);
 
+  const previousTree = usePrevious(tree);
   React.useEffect(() => {
-    if(!isEmpty(tree)) setExpanded([tree.id]);
+    if(!isEmpty(tree) && !isEqual(previousTree.id,tree.id)) setExpanded([tree.id]);
   },[tree]);
 
   const renderNodes = ({ tree }) => {
