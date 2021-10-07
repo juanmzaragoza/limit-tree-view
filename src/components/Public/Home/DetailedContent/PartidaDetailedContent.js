@@ -4,13 +4,10 @@ import { Grid, Tab, Tabs } from "@mui/material";
 import { useIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import {
-  Assignment,
   CallMissedOutgoing,
   Construction,
-  DragIndicator,
   Engineering,
   Euro,
-  LineWeight,
   StackedBarChart,
   StackedLineChart,
 } from "@mui/icons-material";
@@ -22,13 +19,11 @@ import MaterialDataGrid from "components/shared/MaterialDataGrid";
 
 import { loadHeader, update } from "redux/partida";
 import { getIsLoading, getPartida, getRows } from "redux/partida/selectors";
-
 import { loadHeader as loadUnitControlHeader } from "redux/unit-control";
 import { getUnitControl } from "redux/unit-control/selectors";
-
 import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
-import { getSelectedPeriod } from "../../../../redux/period/selectors";
+import { getSelectedPeriod } from "redux/period/selectors";
 
 const ProjectDetailedContent = ({
   rows,
