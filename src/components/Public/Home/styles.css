@@ -88,5 +88,5 @@
 
 .css-1l3106v-MuiTabs-indicator {
   display: none !important;
-  position: unset;
+  position: unset !important;
 }
