@@ -24,7 +24,7 @@ const PeriodsManagement = ({ rows, loading, project, actions }) => {
       actions.loadData({ projectCodi: project.codi });
       setDisabled(false);
     }
-  },[project, isProjectSelected]);
+  },[project]);
 
   const getDate = (value) => value.split('T')[0].replace(/-/g,'/');
   React.useEffect(() => {
