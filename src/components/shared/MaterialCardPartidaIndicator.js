@@ -4,6 +4,8 @@ import Typography from "@mui/material/Typography";
 import { Avatar, CardHeader, Grid } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import { primaryColor } from "utils/helper";
+import { formatCurrencyWithIntl } from "utils/formats";
+import { useIntl } from "react-intl";
 
 const cardUseStyles = makeStyles((theme) => ({
   card: {
@@ -22,6 +24,7 @@ const cardUseStyles = makeStyles((theme) => ({
 
 export default function MaterialCardPartidaIndicator({ title, content }) {
   const theme = cardUseStyles();
+  const intl = useIntl();
   return (
     <>
       {title && (
@@ -30,7 +33,7 @@ export default function MaterialCardPartidaIndicator({ title, content }) {
         </Grid>
       )}
       <Grid container spacing={2}>
-        {content.map(({ field, value, icon }, index) => {
+        {content?.map(({ field, value, icon }, index) => {
           return (
             <Grid item xs={4} className={theme.cardContent} key={index}>
               <Card className={theme.card}>
@@ -48,7 +51,7 @@ export default function MaterialCardPartidaIndicator({ title, content }) {
                     )
                   }
                   title={field}
-                  subheader={value}
+                  subheader={value === undefined ? "---" :  formatCurrencyWithIntl(value, intl) }
                   titleTypographyProps={{ fontSize: "18px" }}
                   subheaderTypographyProps={{
                     fontSize: "18px",

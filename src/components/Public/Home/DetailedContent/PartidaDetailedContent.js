@@ -84,78 +84,84 @@ const ProjectDetailedContent = ({
       editable: false,
     },
   ]);
-  const [kpis] = React.useState([
-    { field: "Producción Anterior", value: "1000", icon: <Engineering /> },
-    { field: "Producción Período", value: "1000", icon: <Engineering /> },
-    { field: "Producción año Natural", value: "1000", icon: <Engineering /> },
-    { field: "Producción a Origen", value: "1000", icon: <Engineering /> },
-    { field: "Producción Pendiente", value: "1000", icon: <Engineering /> },
+
+  const [indicadores,setIndicadores] = React.useState();
+
+  React.useEffect(() => {
+  setIndicadores([
+    { field: "Producción Anterior", value: partida.produccioAnterior , icon: <Engineering /> },
+    { field: "Producción Período", value: partida?.produccioPeriode, icon: <Engineering /> },
+    { field: "Producción año Natural", value: partida.produccioAny, icon: <Engineering /> },
+    { field: "Producción a Origen", value: partida.produccioOrigen, icon: <Engineering /> },
+    { field: "Producción Pendiente", value: partida.produccioPendent, icon: <Engineering /> },
     {
       field: "Coste Teórico Anterior",
-      value: "1000",
+      value: partida.costTeoricAnterior,
       icon: <StackedLineChart />,
     },
     {
       field: "Coste Teórico Pendiente",
-      value: "1000",
+      value:  partida.costTeoricPeriode,
       icon: <StackedLineChart />,
     },
     {
       field: "Coste Teórico Año Natural",
-      value: "1000",
+      value:  partida.costTeoricAny,
       icon: <StackedLineChart />,
     },
     {
       field: "Coste Teórico Origen",
-      value: "1000",
+      value:  partida.costTeoricOrigen,
       icon: <StackedLineChart />,
     },
     {
       field: "Coste Teórico Pendiente",
-      value: "1000",
+      value:  partida.costTeoricPendent,
       icon: <StackedLineChart />,
     },
-    { field: "Coste Real Anterior", value: "1000", icon: <StackedBarChart /> },
-    { field: "Coste Real Pendiente", value: "1000", icon: <StackedBarChart /> },
+    { field: "Coste Real Anterior", value:  partida.costRealAnterior, icon: <StackedBarChart /> },
+    { field: "Coste Real Pendiente", value:  partida.costRealPeriode, icon: <StackedBarChart /> },
     {
       field: "Coste Real año Natural",
-      value: "1000",
+      value:  partida.costRealAny,
       icon: <StackedBarChart />,
     },
-    { field: "Coste Real Origen", value: "1000", icon: <StackedBarChart /> },
-    { field: "Beneficio Anterior", value: "1000", icon: <Euro /> },
-    { field: "Beneficio Período", value: "1000", icon: <Euro /> },
-    { field: "Beneficio año Natural", value: "1000", icon: <Euro /> },
-    { field: "Beneficio Origen", value: "1000", icon: <Euro /> },
+    { field: "Coste Real Origen", value: partida.costRealOrigen, icon: <StackedBarChart /> },
+    { field: "Beneficio Anterior", value: partida.beneficiAnterior, icon: <Euro /> },
+    { field: "Beneficio Período", value: partida.beneficiPeriode, icon: <Euro /> },
+    { field: "Beneficio año Natural", value: partida.beneficiAny, icon: <Euro /> },
+    { field: "Beneficio Origen", value: partida.beneficiOrigen, icon: <Euro /> },
     {
       field: "Desviación Anterior",
-      value: "1000",
+      value: partida.desviacioCostAnterior,
       icon: <CallMissedOutgoing />,
     },
     {
       field: "Desviación Período",
-      value: "1000",
+      value: partida.desviacioPeriode,
       icon: <CallMissedOutgoing />,
     },
     {
       field: "Desviación año Natural",
-      value: "1000",
+      value: partida.desviacioAny,
       icon: <CallMissedOutgoing />,
     },
-    { field: "Desviación Origen", value: "1000", icon: <CallMissedOutgoing /> },
-    { field: "Facturación Anterior", value: "1000", icon: <Assignment /> },
-    { field: "Facturación Período", value: "1000", icon: <Assignment /> },
-    { field: "Facturación año Natural", value: "1000", icon: <Assignment /> },
-    { field: "Facturación Origen", value: "1000", icon: <Assignment /> },
-    { field: "Obra Pendiente Anterior", value: "1000", icon: <Construction /> },
-    { field: "Obra Pendiente Período", value: "1000", icon: <Construction /> },
+    { field: "Desviación Origen", value: partida.desviacioOrigen, icon: <CallMissedOutgoing /> },
+    { field: "Facturación Anterior", value: partida.beneficiOrigen, icon: <Assignment /> },
+    { field: "Facturación Período", value: partida.beneficiOrigen, icon: <Assignment /> },
+    { field: "Facturación año Natural", value: partida.beneficiOrigen, icon: <Assignment /> },
+    { field: "Facturación Origen", value: partida.beneficiOrigen, icon: <Assignment /> },
+    { field: "Obra Pendiente Anterior", value: partida.obraPendentFacturar, icon: <Construction /> },
+    { field: "Obra Pendiente Período", value: partida.obraPendent, icon: <Construction /> },
     {
       field: "Obra Pendiente año Natural",
-      value: "1000",
+      value: partida.beneficiOrigen,
       icon: <Construction />,
     },
-    { field: "Obra Pendiente Origen", value: "1000", icon: <Construction /> },
+    { field: "Obra Pendiente Origen", value: partida.beneficiOrigen, icon: <Construction /> },
   ]);
+
+  },[partida]);
 
   React.useEffect(() => {
     actions.loadHeader({url : API.PARTIDA_URL, id: props.id});
@@ -217,7 +223,7 @@ const ProjectDetailedContent = ({
         <MaterialDataGrid columns={columns} rows={rows} loading={loading} />
       </Grid>
       <Grid item xs={12}>
-        <MaterialCardPartidaIndicator title="Indicadores" content={kpis} />
+        <MaterialCardPartidaIndicator title="Indicadores" content={indicadores} />
       </Grid>
     </Grid>
   );
