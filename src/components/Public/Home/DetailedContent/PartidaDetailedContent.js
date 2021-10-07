@@ -218,26 +218,7 @@ const ProjectDetailedContent = ({
         value: partida.desviacioOrigen,
         icon: <CallMissedOutgoing />,
       },
-      {
-        field: "Facturación Anterior",
-        value: partida.beneficiOrigen,
-        icon: <Assignment />,
-      },
-      {
-        field: "Facturación Período",
-        value: partida.beneficiOrigen,
-        icon: <Assignment />,
-      },
-      {
-        field: "Facturación año Natural",
-        value: partida.beneficiOrigen,
-        icon: <Assignment />,
-      },
-      {
-        field: "Facturación Origen",
-        value: partida.beneficiOrigen,
-        icon: <Assignment />,
-      },
+     
       {
         field: "Obra Pendiente Anterior",
         value: partida.obraPendentFacturar,
@@ -364,7 +345,6 @@ const ProjectDetailedContent = ({
       {tabIndex === 1 && (
         <Grid item xs={12}>
           <MaterialCardPartidaIndicator
-            title="Indicadores"
             content={indicadores}
           />
         </Grid>

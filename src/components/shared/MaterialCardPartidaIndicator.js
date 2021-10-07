@@ -27,7 +27,11 @@ export default function MaterialCardPartidaIndicator({ title, content }) {
   const intl = useIntl();
   return (
     <>
-  
+      {title && (
+        <Grid item xs={12} sx={{ mb: 3 }}>
+          <Typography variant={"h5"}>{title}</Typography>
+        </Grid>
+      )}
       <Grid container spacing={2}>
         {content?.map(({ field, value, icon }, index) => {
           return (

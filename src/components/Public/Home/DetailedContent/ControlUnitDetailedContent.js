@@ -15,6 +15,8 @@ import {
 import { loadHeader } from "redux/unit-control";
 import { formatCurrencyWithIntl } from "../../../../utils/formats";
 import { getData } from "redux/project-tree/selectors";
+import { Assignment } from "@mui/icons-material";
+import MaterialCardPartidaIndicator from "components/shared/MaterialCardPartidaIndicator";
 
 const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, project, tree, ...props }) => {
   const intl = useIntl();
@@ -126,6 +128,34 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, proje
     },
   ]);
 
+  const [indicadores, setIndicadores] = React.useState();
+  React.useEffect(() => {
+   
+    setIndicadores([
+      {
+        field: "Facturación Anterior",
+        value: unitControl.facturacioRealAnterior,
+        icon: <Assignment />,
+      },
+      {
+        field: "Facturación Período",
+        value: unitControl.facturacioRealPeriode,
+        icon: <Assignment />,
+      },
+      {
+        field: "Facturación año Natural",
+        value: unitControl.facturacioRealAny,
+        icon: <Assignment />,
+      },
+      {
+        field: "Facturación Origen",
+        value: unitControl.facturacioRealOrigen,
+        icon: <Assignment />,
+      },
+
+    ]);
+  }, [unitControl]);
+
   React.useEffect(() => {
     actions.loadHeader({url : API.UNIT_CONTROL_URL, id: props.id});
   }, [props.id]);
@@ -164,6 +194,12 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, proje
         rows={rows}
         loading={loading} />
     </Grid>
+    <Grid item xs={12}>
+          <MaterialCardPartidaIndicator
+            title="Indicadores"
+            content={indicadores}
+          />
+        </Grid>
   </Grid>
 }
 
