@@ -27,7 +27,7 @@ const DetailedContent = ({ data, actions }) => {
   const loader = {
     [PROJECT_TYPE]: () => actions.getUnitControlData({url: API.UNIT_CONTROL_URL, keyFilter: "estudiProjecte.id", id: data.id}),
     [CONTROL_UNIT_TYPE]: () => actions.getPartidaData({url: API.PARTIDA_URL, keyFilter: "unitatControlEstudi.id", id: data.id}),
-    [PARTIDA_TYPE]: () => actions.getResources({}),
+    [PARTIDA_TYPE]: () => actions.getResources({url: API.RECURSOS_URL, keyFilter: "liniaEstudi.id", id: data.id}),
   }
 
   const layout = {
@@ -38,7 +38,7 @@ const DetailedContent = ({ data, actions }) => {
       return <ControlUnitDetailedContent id={data.id}/>;
     },
     [PARTIDA_TYPE]: () => {
-      return <PartidaDetailedContent />;
+      return <PartidaDetailedContent id={data.id}/>;
     },
   }
 

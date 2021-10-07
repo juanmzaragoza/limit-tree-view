@@ -21,6 +21,7 @@ import MaterialDataGrid from "components/shared/MaterialDataGrid";
 import { getIsLoading, getPartida, getRows } from "redux/partida/selectors";
 import { loadHeader } from "redux/partida";
 import { getUnitControl } from "redux/unit-control/selectors";
+import * as API from "redux/api";
 
 const ProjectDetailedContent = ({
   rows,
@@ -28,6 +29,7 @@ const ProjectDetailedContent = ({
   unitControl,
   partida,
   actions,
+  ...props
 }) => {
   const intl = useIntl();
   const [headerProject] = React.useState({
@@ -156,10 +158,11 @@ const ProjectDetailedContent = ({
   ]);
 
   React.useEffect(() => {
-    actions.loadHeader({});
-  }, []);
+    actions.loadHeader({url : API.PARTIDA_URL, id: props.id});
+  }, [props.id]);
 
   React.useEffect(() => {
+
     setHeaderControlUnit({ title: unitControl.descripcio });
     setHeaderControlUnitFields([
       {
@@ -171,7 +174,7 @@ const ProjectDetailedContent = ({
         value: formatCurrencyWithIntl(unitControl.costTotal ?? 0, intl),
       },
     ]);
-  }, [unitControl, intl]);
+  }, [ unitControl, intl]);
 
   React.useEffect(() => {
     setHeaderPartida({ title: partida.descripcio });
