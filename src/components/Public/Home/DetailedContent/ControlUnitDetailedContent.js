@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Grid } from "@mui/material";
 import {useIntl} from "react-intl";
-
+import * as API from "redux/api";
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
 
@@ -16,7 +16,7 @@ import { loadHeader } from "redux/unit-control";
 import { formatCurrencyWithIntl } from "../../../../utils/formats";
 
 
-const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions }) => {
+const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions, ...props }) => {
   const intl = useIntl();
   const [headerProject,] = React.useState({
     title: 'Proyecto 1',
@@ -128,8 +128,8 @@ const ControlUnitDetailedContent = ({ rows, loading, unitControl, actions }) => 
   ]);
 
   React.useEffect(() => {
-    actions.loadHeader({});
-  }, []);
+    actions.loadHeader({url : API.UNIT_CONTROL_URL, id: props.id});
+  }, [props.id]);
 
   React.useEffect(() => {
     setHeaderControlUnit({ title: unitControl.descripcio });

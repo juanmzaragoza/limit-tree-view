@@ -22,12 +22,11 @@ const DetailedContent = ({ data, actions }) => {
 
   React.useEffect(() => {
     (!isEmpty(data) && !!loader[data.type] && loader[data.type]()) || console.log("Tipo inexistente");
-    console.log(data);
   },[data]);
 
   const loader = {
     [PROJECT_TYPE]: () => actions.getUnitControlData({url: API.UNIT_CONTROL_URL, keyFilter: "estudiProjecte.id", id: data.id}),
-    [CONTROL_UNIT_TYPE]: () => actions.getPartidaData({}),
+    [CONTROL_UNIT_TYPE]: () => actions.getPartidaData({url: API.PARTIDA_URL, keyFilter: "unitatControlEstudi.id", id: data.id}),
     [PARTIDA_TYPE]: () => actions.getResources({}),
   }
 
@@ -36,7 +35,7 @@ const DetailedContent = ({ data, actions }) => {
       return <ProjectDetailedContent />;
     },
     [CONTROL_UNIT_TYPE]: () => {
-      return <ControlUnitDetailedContent />;
+      return <ControlUnitDetailedContent id={data.id}/>;
     },
     [PARTIDA_TYPE]: () => {
       return <PartidaDetailedContent />;
