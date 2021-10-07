@@ -15,22 +15,21 @@ const ProjectDetailedContent = ({ rows, project }) => {
   const [projectFields, setProjectFields] = React.useState([]);
 
   const [columns] = React.useState([
-    { field: "codi", headerName: "Código", width: 120, editable: true },
+    { field: "codi", headerName: "Código", editable: false },
     {
       field: "descripcio",
       headerName: "Descripción",
-      width: 140,
+
       editable: true,
     },
     {
       field: "importTotal",
       headerName: "Importe Total",
-      width: 120,
       type: "number",
       valueFormatter: (params) => {
         return formatCurrencyWithIntl(params.row.importTotal ?? 0, intl);
       },
-      editable: true,
+      editable: false,
     },
     {
       field: "costTotal",
@@ -39,7 +38,7 @@ const ProjectDetailedContent = ({ rows, project }) => {
       valueFormatter: (params) => {
         return formatCurrencyWithIntl(params.row.costTotal ?? 0, intl);
       },
-      editable: true,
+      editable: false,
     },
   ]);
 
