@@ -51,7 +51,7 @@ const ProjectDetailedContent = ({
 
 
   const [columns] = React.useState([
-    { field: "codi", headerName: "Código",  type: "number", editable: true },
+    { field: "codi", headerName: "Código",  type: "number", editable: false },
     {
       field: "descripcio",
       headerName: "Descripción",
@@ -81,7 +81,7 @@ const ProjectDetailedContent = ({
       valueFormatter: (params) => {
         return formatCurrencyWithIntl(params.row.costTotal ?? 0, intl);
       },
-      editable: true,
+      editable: false,
     },
   ]);
   const [kpis] = React.useState([
