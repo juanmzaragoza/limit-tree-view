@@ -30,7 +30,7 @@ const PeriodsManagement = ({ rows, loading, project, actions }) => {
   React.useEffect(() => {
     setPeriods(
       rows.map(row => ({
-        label: `${row.codi} - ${getDate(row.diaInici)} ${row.diaFi? `- ${getDate(row.diaFi)}`:""}`,
+        label: `${row.numero} - ${getDate(row.diaInici)} ${row.diaFi? `- ${getDate(row.diaFi)}`:""}`,
         value: row
       }))
     );
