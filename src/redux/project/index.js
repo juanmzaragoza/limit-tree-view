@@ -4,16 +4,12 @@ import Axios from "Axios";
 const ADD = "ADD_TO_PROJECT";
 
 // Constants
-const URL =
-  'api/fact/unitatsControlEstudi?query=estudiProjecte.id=="eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImNvZGkiOiIwMDAxIiwiZW1wcmVzYUNvZGkiOiJQUk8yIiwibnVtZXJvIjowLCJwcm9qZWN0ZUNvZGkiOiJFU1BSTzIifQ=="';
+const URL = 'api/fact/unitatsControlEstudi?query=estudiProjecte.id=="{id}"';
 
 //Functions
-export const loadData = ({ url = URL, keyFilter, id }) => {
-  const formedURL = () => {
-    return `${url}${keyFilter ? `?query=${keyFilter}=="${id}"` : ""}`;
-  };
+export const loadData = ({ url = URL, id }) => {
   return async (dispatch) => {
-    const apiCall = () => Axios.get(formedURL());
+    const apiCall = () => Axios.get(url.replace('{id}',id));
     try {
       dispatch(add({ loading: true }));
       apiCall()

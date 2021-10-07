@@ -4,16 +4,13 @@ import Axios from "Axios";
 const ADD = "ADD_TO_UC";
 
 // Constants
-const URL = 'api/fact/liniesEstudi?query=unitatControlEstudi.id=="eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImVtcHJlc2FDb2RpIjoiUFJPMiIsInNlcXVlbmNpYSI6Mjg1NCwicHJvamVjdGVDb2RpIjoiRVNQUk8yIiwiZXN0dWRpUHJvamVjdGVDb2RpIjoiMDAwMSIsImVzdHVkaVByb2plY3RlTnVtIjowfQ=="';
-const HEADER_URL = 'api/fact/unitatsControlEstudi/eyJpZGVudGlmaWNhZG9yQ29kaSI6IkxJTSIsImVtcHJlc2FDb2RpIjoiUFJPMiIsInNlcXVlbmNpYSI6Mjg1NCwicHJvamVjdGVDb2RpIjoiRVNQUk8yIiwiZXN0dWRpUHJvamVjdGVDb2RpIjoiMDAwMSIsImVzdHVkaVByb2plY3RlTnVtIjowfQ==';
+const URL = 'api/fact/liniesEstudi?query=unitatControlEstudi.id=="{id}"';
+const HEADER_URL = 'api/fact/unitatsControlEstudi';
 
 //Functions
-export const loadData = ({ url = URL, keyFilter, id  }) => {
-  const formedURL = () => {
-    return `${url}${keyFilter ? `?query=${keyFilter}=="${id}"` : ""}`;
-  };
+export const loadData = ({ url = URL, id  }) => {
   return async dispatch => {
-    const apiCall = () => Axios.get(formedURL());
+    const apiCall = () => Axios.get(url.replace('{id}',id));
     try {
       dispatch(add({ loading: true }));
       apiCall()
