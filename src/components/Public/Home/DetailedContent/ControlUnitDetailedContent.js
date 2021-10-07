@@ -14,7 +14,9 @@ import {
   getUnitControl,
 } from "redux/unit-control/selectors";
 import { loadHeader, updatePartida } from "redux/unit-control";
+import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
+import { getSelectedPeriod } from "redux/period/selectors";
 
 import { Assignment } from "@mui/icons-material";
 import MaterialCardPartidaIndicator from "components/shared/MaterialCardPartidaIndicator";
@@ -246,6 +248,7 @@ const mapDispatchToProps = (dispatch, props) => {
   const actions = {
     loadHeader: bindActionCreators(loadHeader, dispatch),
     updatePartida: bindActionCreators(updatePartida, dispatch),
+    loadTreeData: bindActionCreators(loadTreeData, dispatch),
   };
   return { actions };
 };
