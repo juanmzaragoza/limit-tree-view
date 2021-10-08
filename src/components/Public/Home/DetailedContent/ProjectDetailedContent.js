@@ -9,6 +9,8 @@ import { getIsLoading, getRows } from "redux/project/selectors";
 import { getSelectedProject } from "redux/project-selector/selectors";
 import { formatCurrencyWithIntl } from "utils/formats";
 import { getData } from "redux/project-tree/selectors";
+import MaterialCardPartidaIndicator from "components/shared/MaterialCardPartidaIndicator";
+import { Assignment } from "@mui/icons-material";
 
 const ProjectDetailedContent = ({ rows, project, tree }) => {
   const intl = useIntl();
@@ -43,6 +45,8 @@ const ProjectDetailedContent = ({ rows, project, tree }) => {
     },
   ]);
 
+  const [indicadores, setIndicadores] = React.useState();
+
   React.useEffect(() => {
     setHeaderProject({ title: project.nom });
     setProjectFields([
@@ -55,18 +59,44 @@ const ProjectDetailedContent = ({ rows, project, tree }) => {
         value: formatCurrencyWithIntl(tree.costTotal ?? 0, intl),
       },
     ]);
+
+    setIndicadores([
+      {
+        field: "Facturación Anterior",
+        value: project.facturacioRealAnterior,
+        icon: <Assignment />,
+      },
+      {
+        field: "Facturación Período",
+        value: project.facturacioRealPeriode,
+        icon: <Assignment />,
+      },
+      {
+        field: "Facturación año Natural",
+        value: project.facturacioRealAny,
+        icon: <Assignment />,
+      },
+      {
+        field: "Facturación a Origen",
+        value: project.facturacioRealOrigen,
+        icon: <Assignment />,
+      },
+    ]);
   }, [project, intl]);
 
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
-        <DetailedHeader
-          header={headerProject}
-          body={projectFields}
-        />
+        <DetailedHeader header={headerProject} body={projectFields} />
       </Grid>
       <Grid item xs={12}>
         <MaterialDataGrid columns={columns} rows={rows} />
+      </Grid>
+      <Grid item xs={12}>
+        <MaterialCardPartidaIndicator
+          title={"Indicadores"}
+          content={indicadores}
+        />
       </Grid>
     </Grid>
   );
@@ -77,7 +107,7 @@ const mapStateToProps = (state, props) => {
     rows: getRows(state),
     loading: getIsLoading(state),
     project: getSelectedProject(state),
-    tree: getData(state)
+    tree: getData(state),
   };
 };
 

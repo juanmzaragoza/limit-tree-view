@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 
 const DetailedTable = ({
-  rootStyle = { height: 400, width: '100%' },
+  rootStyle = {  width: '100%' },
   rows,
   columns,
   loading,
