@@ -25,7 +25,7 @@ export default function MaterialSelector({
       setValue(items[0].value);
       onChange(items[0].value);
     }
-  },[items, selectFirstDefault, onChange]);
+  },[items, selectFirstDefault]);
 
   const handleChange = (event) => {
     setValue(event.target.value);

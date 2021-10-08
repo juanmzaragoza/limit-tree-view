@@ -20,6 +20,7 @@ const PeriodsManagement = ({
   loading,
   project,
   actions,
+  periodSelected
 }) => {
   const [periods, setPeriods] = React.useState([]);
   const [tancat, setTancat] = React.useState(false);
@@ -51,6 +52,10 @@ const PeriodsManagement = ({
     );
   }, [rows]);
 
+  React.useEffect(() => {
+    actions.resetTree();
+  },[periodSelected]);
+
   return (
     <Grid container spacing={1} direction="row" alignItems="center">
       <Grid item xs={12} md={12} lg={8}>
@@ -58,7 +63,6 @@ const PeriodsManagement = ({
           id={"period"}
           items={periods}
           onChange={(e) => {
-            actions.resetTree();
             actions.setPeriod({ period: e });
             setTancat(e.tancat);
           }}
