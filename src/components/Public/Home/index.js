@@ -32,7 +32,7 @@ const Home = ({ data, loading, selectedPeriod, actions }) =>{
   return ( <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
       <Grid container>
         <Grid item xs={12} md={12} lg={12} >
-          <ProjectSelector onChange={(e) => console.log(e)} />
+          <ProjectSelector />
         </Grid>
 
         <Grid item xs={12} md={4} lg={4} sx={{ mt: 2, mb: 3 }}>
