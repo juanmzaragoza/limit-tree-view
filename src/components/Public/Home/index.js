@@ -27,6 +27,8 @@ const Home = ({ data, loading, selectedPeriod, actions }) =>{
     if(selectedPeriod?.id){
       actions.getData({ periodId: selectedPeriod.id });
     }
+    setShow(false);
+    setNode(null);
   },[actions, selectedPeriod]);
 
   return ( <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
