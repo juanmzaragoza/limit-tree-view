@@ -20,6 +20,9 @@ import "./styles.css";
 const ProjectSelector = ({ onChange = () => {}, rows, loading, actions }) => {
   const [items, setItems] = React.useState([]);
   const [project, setProject] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [client, setClient] = React.useState("");
+  const [status, setStatus] = React.useState("");
 
   React.useEffect(() => {
     actions.loadData({});
@@ -28,6 +31,12 @@ const ProjectSelector = ({ onChange = () => {}, rows, loading, actions }) => {
   React.useEffect(() => {
     setItems(rows.map((row) => ({ name: row.codi, value: row })));
   }, [rows]);
+
+  React.useEffect(() => {
+    setName(project?.nom ?? "");
+    setClient(project.client?.description  ?? "");
+    setStatus(project?.estat ?? "");
+  },[project]);
 
   const handleChange = (e,v,d) => {
     const value = v?.value;
@@ -70,39 +79,39 @@ const ProjectSelector = ({ onChange = () => {}, rows, loading, actions }) => {
           <Grid item xs={3}>
             <FormControl fullWidth>
               <TextField
-                disabled
-                id="outlined-basic"
+                id="name"
                 label="Proyecto"
+                disabled
                 InputLabelProps={{
                   shrink: true,
                 }}
-                value={project?.nom}
+                value={name}
               />
             </FormControl>
           </Grid>
           <Grid item xs={4}>
             <FormControl fullWidth>
               <TextField
-                id="outlined-basic"
+                id="client"
                 label="Cliente"
                 disabled
                 InputLabelProps={{
                   shrink: true,
                 }}
-                value={project.client ? project.client?.description  : "" }
+                value={client}
               />
             </FormControl>
           </Grid>
           <Grid item xs={3}>
             <FormControl fullWidth>
               <TextField
-                id="outlined-basic"
+                id="status"
                 label="Estado"
                 disabled
                 InputLabelProps={{
                   shrink: true,
                 }}
-                value={project.estat ? project.estat : ""}
+                value={status}
               />
             </FormControl>
           </Grid>

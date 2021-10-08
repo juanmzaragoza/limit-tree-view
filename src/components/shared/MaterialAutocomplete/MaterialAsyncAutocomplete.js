@@ -14,7 +14,7 @@ const MaterialAsyncAutocomplete = ({
   onChange = () => {},
   onSearch = () => {}
 }) => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const [active, setActive] = useState(true);
@@ -73,11 +73,11 @@ const MaterialAsyncAutocomplete = ({
         onClose={() => {
           setOpen(false);
         }}
-        isOptionEqualToValue={(option, value) => isEqual(option, value)}
         getOptionLabel={(option) => {
           if(!option) return "";
           return option.label;
         }}
+        isOptionEqualToValue={(option, value) => isEqual(option, value)}
         onChange={handleChange}
         onInputChange={handleInputChange}
         options={options}

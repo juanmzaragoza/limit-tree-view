@@ -12,9 +12,8 @@ import Home from "components/Public/Home";
 const Routes = () => (
   <Router history={createBrowserHistory()}>
     <Switch>
-      {/* <Redirect from="/" to={PATHNAME.HOME} exact /> */}
       <Public path={PATHNAME.INDEX} component={Home} exact />
-      <Public path={PATHNAME.HOME} component={Home} exact />
+      <Redirect from="*" to={PATHNAME.INDEX} />
     </Switch>
   </Router>
 
