@@ -5,9 +5,11 @@ import Checkbox from "@mui/material/Checkbox";
 export default function MaterialCheckbox({ items }) {
   return (
     <>
-      {items.map((item, key) => (
-        <FormControlLabel key={key} control={<Checkbox />} label={item.label} />
-      ))}
+      {items.map((item, key) => {
+      return(
+        <FormControlLabel key={key} control={<Checkbox checked={`${item.value ? "true" : ""}`}/>} label={item.label} />
+      );
+  })}
     </>
   );
 }

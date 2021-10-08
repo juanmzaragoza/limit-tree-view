@@ -1,4 +1,6 @@
 import Axios from "Axios";
+import { isEmpty } from "lodash";
+import { buildQuery } from "redux/common";
 
 //Action types
 const ADD = "ADD_TO_PROJECT_SELECTOR";
@@ -7,9 +9,10 @@ const ADD = "ADD_TO_PROJECT_SELECTOR";
 const URL = "api/fact/projectes?page=0&size=100&order=codi";
 
 //Functions
-export const loadData = ({ url = URL }) => {
+export const loadData = ({ url = URL, query }) => {
   return async dispatch => {
-    const apiCall = () => Axios.get(url);
+    const q = buildQuery({ query });
+    const apiCall = () => Axios.get(`${url}${isEmpty(q)? "":`&${q}`}`);
     try {
       dispatch(add({ loading: true }));
       apiCall()
