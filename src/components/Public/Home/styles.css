@@ -86,7 +86,10 @@
   color: #3a9198 !important;
 }
 
+
 .css-1l3106v-MuiTabs-indicator {
   display: none !important;
   position: unset !important;
+  left: 0 !important;
+  width: 0 !important;
 }
