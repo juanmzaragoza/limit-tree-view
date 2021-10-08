@@ -5,7 +5,7 @@ const ADD = "ADD_TO_PERIODS";
 
 // Constants
 const URL = 'api/fact/estudisProjecte?query=projecte.codi=={codi}&sort=numero,desc';
-
+const ADD_PERIOD = 'api/fact/estudisProjecte/{id}/action/{codiAction}'
 //Functions
 export const loadData = ({ url = URL, projectCodi }) => {
   return async dispatch => {
@@ -37,7 +37,30 @@ export const setPeriod = ({ period }) => {
   }
 }
 
-
+export const addPeriord = ({ url = ADD_PERIOD , id, codiAccio, data }) => {
+  return async (dispatch) => {
+    const apiCall = () => Axios.post(url.replace('{id}',id).replace('{codiAction}',codiAccio));
+    return new Promise((resolve, reject) => {
+      try {
+        dispatch(add({ loading: true }));
+        Axios.post(apiCall(), JSON.stringify(data))
+          .then(({ status, data, ...rest }) => {
+            dispatch(add({ loading: false }));
+            resolve({ status, data, ...rest });
+          })
+          .catch((error) => {
+            console.log(error);
+            dispatch(add({ loading: false }));
+            reject(error);
+          });
+      } catch (error) {
+        console.log(error);
+        dispatch(add({ loading: false }));
+        reject(error);
+      }
+    })
+  };
+}
 
 //Action creators
 export const add = (payload) => {

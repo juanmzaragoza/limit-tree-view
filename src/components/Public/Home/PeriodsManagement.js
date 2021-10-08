@@ -18,7 +18,7 @@ import {
 import MaterialSelector from "components/shared/MaterialSelector";
 import MaterialCheckbox from "components/shared/MaterialCheckbox";
 
-import { loadData, setPeriod } from "redux/period";
+import { loadData, setPeriod, addPeriord } from "redux/period";
 import {
   getIsLoading,
   getRows,
@@ -26,7 +26,6 @@ import {
 } from "redux/period/selectors";
 import { getSelectedProject } from "redux/project-selector/selectors";
 import { reset as resetTree } from "redux/project-tree";
-import { submit } from "redux/example";
 
 const PeriodsManagement = ({
   rows,
@@ -45,13 +44,14 @@ const PeriodsManagement = ({
   const isProjectSelected = () => !!(project && project.codi);
   const [disabled, setDisabled] = React.useState(!isProjectSelected());
   const [open, setOpen] = React.useState(false);
-  const [fechaFin,setFechaFin] = React.useState();
+  const [fechaFin, setFechaFin] = React.useState();
 
   React.useEffect(() => {
     if (isProjectSelected()) {
       actions.resetTree();
       actions.loadData({ projectCodi: project.codi });
       setDisabled(false);
+      console.log(project)
     }
   }, [project]);
 
@@ -67,9 +67,8 @@ const PeriodsManagement = ({
     );
   }, [rows]);
 
-
-  const add = () => {
-console.log(fechaFin);
+  const closePeriod = () => {
+    actions.add({ id: project.id , codiAccio: "ACCIO_TANCAR", data: [fechaFin] });
   };
 
   return (
@@ -106,28 +105,26 @@ console.log(fechaFin);
           <DialogTitle>Cerrar Periodo</DialogTitle>
           <DialogContent>
             <DialogContentText sx={{ mt: 1 }}>
-              
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={12}>
-                    <TextField
-                      id="date"
-                      label="Fecha Final"
-                      type="date"
-                      sx={{ width: 220 }}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      onChange={(e)=> setFechaFin(e.target.value)}
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    id="date"
+                    label="Fecha Final"
+                    type="date"
+                    sx={{ width: 220 }}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    onChange={(e) => setFechaFin(e.target.value)}
+                  />
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox />}
+                      label="Abrir nuevo periodo?"
                     />
-                    <FormGroup>
-                      <FormControlLabel
-                        control={<Checkbox />}
-                        label="Abrir nuevo periodo?"
-                      />
-                    </FormGroup>
-                  </Grid>
+                  </FormGroup>
                 </Grid>
-            
+              </Grid>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -138,10 +135,9 @@ console.log(fechaFin);
             >
               Cancelar
             </Button>
-            <Button 
+            <Button
               onClick={(e) => {
-           
-                add(e)
+                closePeriod(e);
               }}
             >
               Cerrar Peridodo
@@ -170,6 +166,7 @@ const mapDispatchToProps = (dispatch, props) => {
     loadData: bindActionCreators(loadData, dispatch),
     setPeriod: bindActionCreators(setPeriod, dispatch),
     resetTree: bindActionCreators(resetTree, dispatch),
+    add: bindActionCreators(addPeriord, dispatch),
   };
   return { actions };
 };
