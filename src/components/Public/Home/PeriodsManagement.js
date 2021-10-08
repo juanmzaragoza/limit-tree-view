@@ -51,7 +51,7 @@ const PeriodsManagement = ({
       }))
     );
   }, [rows]);
-  console.log(tancat);
+
   return (
     <Grid container spacing={1} direction="row" alignItems="center">
       <Grid item xs={12} md={12} lg={8}>
