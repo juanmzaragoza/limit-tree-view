@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Button, Grid } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField } from "@mui/material";
 
 import MaterialSelector from "components/shared/MaterialSelector";
 import MaterialCheckbox from "components/shared/MaterialCheckbox";
@@ -14,6 +14,7 @@ import {
 } from "redux/period/selectors";
 import { getSelectedProject } from "redux/project-selector/selectors";
 import { reset as resetTree } from "redux/project-tree";
+
 
 const PeriodsManagement = ({
   rows,
@@ -31,7 +32,9 @@ const PeriodsManagement = ({
   ]);
   const isProjectSelected = () => !!(project && project.codi);
   const [disabled, setDisabled] = React.useState(!isProjectSelected());
+  const [open, setOpen] = React.useState(false);
 
+ 
   React.useEffect(() => {
     if (isProjectSelected()) {
       actions.resetTree();
@@ -68,7 +71,37 @@ const PeriodsManagement = ({
         />
       </Grid>
       <Grid item xs={12} md={12} lg={4}>
-        <Button variant={"outlined"}>Cerrar Período</Button>
+        <Button variant={"outlined"} onClick={()=>{setOpen(true)}}>Cerrar Período</Button>
+        <Dialog open={open} onClose={()=>{setOpen(false)}}>
+        <DialogTitle>Cerrar Periodo</DialogTitle>
+        <DialogContent >
+          <DialogContentText sx={{mt:1}}>
+          <TextField
+        id="date"
+        label="Fecha Final"
+        type="date"
+        defaultValue={new Date().getDate()}
+        sx={{ width: 220 }}
+        InputLabelProps={{
+          shrink: true,
+        }}
+      />
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Email Address"
+            type="email"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={()=>{setOpen(false)}}>Cancelar</Button>
+          <Button onClick={()=>{setOpen(false)}}>Cerrar</Button>
+        </DialogActions>
+      </Dialog>
       </Grid>
       <Grid item xs={12} md={12} lg={12}>
         <MaterialCheckbox items={statuses} />
