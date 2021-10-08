@@ -66,6 +66,15 @@ const ControlUnitDetailedContent = ({
       editable: true,
     },
     {
+      field: "preu",
+      headerName: "Pvp Bruto",
+      type: "number",
+      valueFormatter: (params) =>
+        formatCurrencyWithIntl(params.row.preu ?? 0, intl),
+      minWidth: 140,
+      editable: true,
+    },
+    {
       field: "preuNet",
       headerName: "Pvp Neto",
       type: "number",
