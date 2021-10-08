@@ -19,12 +19,11 @@ const PeriodsManagement = ({
   rows,
   loading,
   project,
-  periodSelected,
   actions,
 }) => {
   const [periods, setPeriods] = React.useState([]);
   const [tancat, setTancat] = React.useState(false);
-  const [statuses, setStatuses] = React.useState([
+  const [statuses] = React.useState([
     { label: "Cerrado", value: tancat },
     { label: "Revisado Jefe de Obra", value: false },
     { label: "Revisado Jefe de Grupo", value: false },
@@ -58,9 +57,11 @@ const PeriodsManagement = ({
         <MaterialSelector
           id={"period"}
           items={periods}
-          onChange={(e) =>
-            actions.setPeriod({ period: e }) + setTancat(e.tancat)
-          }
+          onChange={(e) => {
+            actions.resetTree();
+            actions.setPeriod({ period: e });
+            setTancat(e.tancat);
+          }}
           disabled={disabled}
           label={"Períodos"}
           loading={loading}
