@@ -3,11 +3,14 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FormControlLabel,
+  FormGroup,
   Grid,
   TextField,
 } from "@mui/material";
@@ -23,6 +26,7 @@ import {
 } from "redux/period/selectors";
 import { getSelectedProject } from "redux/project-selector/selectors";
 import { reset as resetTree } from "redux/project-tree";
+import { submit } from "redux/example";
 
 const PeriodsManagement = ({
   rows,
@@ -41,6 +45,7 @@ const PeriodsManagement = ({
   const isProjectSelected = () => !!(project && project.codi);
   const [disabled, setDisabled] = React.useState(!isProjectSelected());
   const [open, setOpen] = React.useState(false);
+  const [fechaFin,setFechaFin] = React.useState();
 
   React.useEffect(() => {
     if (isProjectSelected()) {
@@ -61,6 +66,11 @@ const PeriodsManagement = ({
       }))
     );
   }, [rows]);
+
+
+  const add = () => {
+console.log(fechaFin);
+  };
 
   return (
     <Grid container spacing={1} direction="row" alignItems="center">
@@ -96,14 +106,9 @@ const PeriodsManagement = ({
           <DialogTitle>Cerrar Periodo</DialogTitle>
           <DialogContent>
             <DialogContentText sx={{ mt: 1 }}>
-              <form
-                noValidate
-                onSubmit={(e) => {
-                  e.preventDefault();
-                }}
-              >
+              
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={12} >
+                  <Grid item xs={12} sm={12}>
                     <TextField
                       id="date"
                       label="Fecha Final"
@@ -112,19 +117,17 @@ const PeriodsManagement = ({
                       InputLabelProps={{
                         shrink: true,
                       }}
+                      onChange={(e)=> setFechaFin(e.target.value)}
                     />
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Email Address"
-                      type="email"
-                      fullWidth
-                      variant="standard"
-                    />
+                    <FormGroup>
+                      <FormControlLabel
+                        control={<Checkbox />}
+                        label="Abrir nuevo periodo?"
+                      />
+                    </FormGroup>
                   </Grid>
                 </Grid>
-              </form>
+            
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -135,12 +138,13 @@ const PeriodsManagement = ({
             >
               Cancelar
             </Button>
-            <Button
-              onClick={() => {
-                setOpen(false);
+            <Button 
+              onClick={(e) => {
+           
+                add(e)
               }}
             >
-              Cerrar
+              Cerrar Peridodo
             </Button>
           </DialogActions>
         </Dialog>
