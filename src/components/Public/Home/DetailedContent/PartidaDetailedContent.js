@@ -1,29 +1,26 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { Grid, Tab, Tabs } from "@mui/material";
 import { useIntl } from "react-intl";
 import { bindActionCreators } from "redux";
-import {
-  CallMissedOutgoing,
-  Construction,
-  Engineering,
-  Euro,
-  StackedBarChart,
-  StackedLineChart,
-} from "@mui/icons-material";
+import { isEmpty } from "lodash";
+import { Grid, Tab, Tabs } from "@mui/material";
+import { Engineering } from "@mui/icons-material";
 
-import MaterialCardPartidaIndicator from "components/shared/MaterialCardPartidaIndicator";
 import { formatCurrencyWithIntl } from "utils/formats";
+import MaterialCardPartidaIndicator from "components/shared/MaterialCardPartidaIndicator";
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
 
-import { loadHeader, update } from "redux/partida";
-import { getIsLoading, getPartida, getRows } from "redux/partida/selectors";
+import { loadHeader, loadKpis, resetKpis, update } from "redux/partida";
+import { getIsLoading, getKpis, getPartida, getRows } from "redux/partida/selectors";
 import { loadHeader as loadUnitControlHeader } from "redux/unit-control";
 import { getUnitControl } from "redux/unit-control/selectors";
 import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
+
+const RESOURCES_TAB_INDEX = 0;
+const KPIS_TAB_INDEX = 1;
 
 const ProjectDetailedContent = ({
   rows,
@@ -32,6 +29,7 @@ const ProjectDetailedContent = ({
   partida,
   tree,
   selectedPeriod,
+  kpis,
   actions,
   ...props
 }) => {
@@ -44,11 +42,10 @@ const ProjectDetailedContent = ({
   );
   const [headerPartida, setHeaderPartida] = React.useState({});
   const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
+  const [tabIndex, setTabIndex] = React.useState(RESOURCES_TAB_INDEX);
+  const [indicadores, setIndicadores] = React.useState();
 
   const getData = (params) => `${params.value?.description || ""}`;
-
-  const [tabIndex, setTabIndex] = React.useState(0);
-
   const [columns] = React.useState([
     { field: "codi", headerName: "Código", type: "number" },
 
@@ -88,155 +85,24 @@ const ProjectDetailedContent = ({
     },
   ]);
 
-  const [indicadores, setIndicadores] = React.useState();
+  const onChangeIndexExecutor = {
+    [RESOURCES_TAB_INDEX]: () => {},
+    [KPIS_TAB_INDEX]: () => {
+      partida.id && actions.loadKpis({ id: partida.id });
+    }
+  }
   React.useEffect(() => {
-   
-    setIndicadores([
-      {
-        field: "Producción Anterior",
-        value: partida.produccioAnterior,
+    onChangeIndexExecutor[tabIndex]();
+  }, [tabIndex, partida]);
+
+  React.useEffect(() => {
+    setIndicadores(
+      kpis.map(kpi => ({
+        ...kpi,
         icon: <Engineering />,
-      },
-      {
-        field: "Producción Período",
-        value: partida?.produccioPeriode,
-        icon: <Engineering />,
-      },
-      {
-        field: "Producción año Natural",
-        value: partida.produccioAny,
-        icon: <Engineering />,
-      },
-      {
-        field: "Producción a Origen",
-        value: partida.produccioOrigen,
-        icon: <Engineering />,
-      },
-      {
-        field: "Producción Pendiente",
-        value: partida.produccioPendent,
-        icon: <Engineering />,
-      },
-
-      {
-        field: "Coste Teórico Anterior",
-        value: partida.costTeoricAnterior,
-        icon: <StackedLineChart />,
-      },
-      {
-        field: "Coste Teórico Pendiente",
-
-        value: partida.costTeoricPeriode,
-
-        icon: <StackedLineChart />,
-      },
-      {
-        field: "Coste Teórico Año Natural",
-
-        value: partida.costTeoricAny,
-
-        icon: <StackedLineChart />,
-      },
-      {
-        field: "Coste Teórico Origen",
-
-        value: partida.costTeoricOrigen,
-
-        icon: <StackedLineChart />,
-      },
-      {
-        field: "Coste Teórico Pendiente",
-
-        value: partida.costTeoricPendent,
-        icon: <StackedLineChart />,
-      },
-      {
-        field: "Coste Real Anterior",
-        value: partida.costRealAnterior,
-        icon: <StackedBarChart />,
-      },
-      {
-        field: "Coste Real Pendiente",
-        value: partida.costRealPeriode,
-        icon: <StackedBarChart />,
-      },
-      {
-        field: "Coste Real año Natural",
-        value: partida.costRealAny,
-        icon: <StackedBarChart />,
-      },
-      {
-        field: "Coste Real Origen",
-        value: partida.costRealOrigen,
-        icon: <StackedBarChart />,
-      },
-      {
-        field: "Beneficio Anterior",
-        value: partida.beneficiAnterior,
-        icon: <Euro />,
-      },
-      {
-        field: "Beneficio Período",
-        value: partida.beneficiPeriode,
-        icon: <Euro />,
-      },
-      {
-        field: "Beneficio año Natural",
-        value: partida.beneficiAny,
-        icon: <Euro />,
-      },
-      {
-        field: "Beneficio Origen",
-        value: partida.beneficiOrigen,
-        icon: <Euro />,
-      },
-
-      {
-        field: "Desviación Anterior",
-        value: partida.desviacioCostAnterior,
-        icon: <CallMissedOutgoing />,
-      },
-      {
-        field: "Desviación Período",
-        value: partida.desviacioPeriode,
-        icon: <CallMissedOutgoing />,
-      },
-      {
-        field: "Desviación año Natural",
-        value: partida.desviacioAny,
-        icon: <CallMissedOutgoing />,
-      },
-
-      {
-        field: "Desviación Origen",
-        value: partida.desviacioOrigen,
-        icon: <CallMissedOutgoing />,
-      },
-     
-      {
-        field: "Obra Pendiente Anterior",
-        value: partida.obraPendentFacturar,
-        icon: <Construction />,
-      },
-      {
-        field: "Obra Pendiente Período",
-        value: partida.obraPendent,
-        icon: <Construction />,
-      },
-
-      {
-        field: "Obra Pendiente año Natural",
-        value: partida.beneficiOrigen,
-        icon: <Construction />,
-      },
-
-      {
-        field: "Obra Pendiente Origen",
-        value: partida.beneficiOrigen,
-        icon: <Construction />,
-      },
-    ]);
-  }, [partida]);
+      }))
+    )
+  },[kpis]);
 
   const loadHeader = () => actions.loadHeader({ id: props.id });
   React.useEffect(() => {
@@ -319,29 +185,28 @@ const ProjectDetailedContent = ({
         <Tabs
           value={tabIndex}
           onChange={(e, index) => setTabIndex(index)}
-
         >
-          <Tab label={"Recursos"} className="tabsIndicators tabsIndicators1"    />
-          <Tab label={"Indicadores"} className="tabsIndicators tabsIndicators2"/>
+          <Tab label={"Recursos"} className="tabsIndicators tabsIndicators1" />
+          <Tab label={"Indicadores"} className="tabsIndicators tabsIndicators2" />
         </Tabs>
       </Grid>
- 
-      {tabIndex === 0 && (
-        <Grid item xs={12}>
-          <MaterialDataGrid           columns={columns}
-          getRowId={(row) => row.id}
-          rows={rows}
-          loading={loading}
-          onCellEditCommit={handleCellChange}/>
-        </Grid>
-      )}
-      {tabIndex === 1 && (
-        <Grid item xs={12}>
+
+      <Grid item xs={12}>
+        {tabIndex === RESOURCES_TAB_INDEX && (
+          <MaterialDataGrid
+            columns={columns}
+            getRowId={(row) => row.id}
+            rows={rows}
+            loading={loading}
+            onCellEditCommit={handleCellChange} />
+        )}
+        {tabIndex === KPIS_TAB_INDEX && (
           <MaterialCardPartidaIndicator
+            loading={isEmpty(indicadores)}
             content={indicadores}
-          />
-        </Grid>
-      )}
+            onUnmount={() => actions.resetKpis()}/>
+        )}
+      </Grid>
     </Grid>
   );
 };
@@ -354,6 +219,7 @@ const mapStateToProps = (state, props) => {
     partida: getPartida(state),
     tree: getData(state),
     selectedPeriod: getSelectedPeriod(state),
+    kpis: getKpis(state)
   };
 };
 
@@ -363,6 +229,8 @@ const mapDispatchToProps = (dispatch, props) => {
     updateResource: bindActionCreators(update, dispatch),
     loadUnitControlHeader: bindActionCreators(loadUnitControlHeader, dispatch),
     loadTreeData: bindActionCreators(loadTreeData, dispatch),
+    loadKpis: bindActionCreators(loadKpis, dispatch),
+    resetKpis: bindActionCreators(resetKpis, dispatch),
   };
   return { actions };
 };
