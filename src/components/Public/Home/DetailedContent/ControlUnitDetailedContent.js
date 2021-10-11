@@ -45,15 +45,10 @@ const ControlUnitDetailedContent = ({
       minWidth: 200,
       editable: true,
     },
-    {
-      field: "unitatsAnterior",
-      headerName: "Medición Anterior",
-      type: "number",
-      minWidth: 170,
-    },
+ 
     {
       field: "unitatsActual",
-      headerName: "Medición Actual",
+      headerName: "Medición Periodo",
       type: "number",
       minWidth: 170,
       editable: true,
@@ -65,12 +60,7 @@ const ControlUnitDetailedContent = ({
       minWidth: 170,
       editable: true,
     },
-    {
-      field: "obraPendent",
-      headerName: "Medición Pendiente",
-      type: "number",
-      minWidth: 170,
-    },
+   
     {
       field: "unitats",
       headerName: "Medición",
@@ -83,6 +73,18 @@ const ControlUnitDetailedContent = ({
       headerName: "Tipo Unidad",
       valueGetter: getData,
       minWidth: 150,
+    },
+    {
+      field: "unitatsAnterior",
+      headerName: "Medición Anterior",
+      type: "number",
+      minWidth: 260,
+    },
+    {
+      field: "obraPendent",
+      headerName: "Obra pendiente",
+      type: "number",
+      minWidth: 220,
     },
     {
       field: "unitatsPress",
