@@ -5,7 +5,7 @@ const ADD = "ADD_TO_UC";
 const REPLACE = "REPLACE_TO_UC";
 
 // Constants
-const URL = 'api/fact/liniesEstudi?query=unitatControlEstudi.id=="{id}"';
+const URL = 'api/fact/liniesEstudi?query=unitatControlEstudi.id=="{id}"&sort=codi';
 const HEADER_URL = 'api/fact/unitatsControlEstudi';
 const UPDATE_PARTIDA = 'api/fact/liniesEstudi';
 
