@@ -186,7 +186,7 @@ const PeriodsManagement = ({
                         fullWidth
                       />
                     </Grid>
-                    <Grid item lg={2} sm={12}>
+                    <Grid item lg={3} sm={12}>
                       <TextField
                         id="estudiProjecte"
                         label="Num Periodo"
@@ -202,7 +202,7 @@ const PeriodsManagement = ({
                         fullWidth
                       />
                     </Grid>
-                    <Grid item lg={5} sm={12}>
+                    <Grid item lg={4} sm={12}>
                       <TextField
                         id="estudiProjecte"
                         label="Fecha Inicio"
