@@ -100,6 +100,7 @@ const MaterialAsyncAutocomplete = ({
             }}
           />
         )}
+        autoComplete={false}
       />
     </React.Fragment>
   );

@@ -4,7 +4,7 @@ import Axios from "Axios";
 const ADD = "ADD_TO_PROJECT";
 
 // Constants
-const URL = 'api/fact/unitatsControlEstudi?query=estudiProjecte.id=="{id}"';
+const URL = 'api/fact/unitatsControlEstudi?query=estudiProjecte.id=="{id}"&sort=codi';
 
 //Functions
 export const loadData = ({ url = URL, id }) => {

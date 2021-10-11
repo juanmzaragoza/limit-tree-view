@@ -5,7 +5,7 @@ const ADD = "ADD_TO_PARTIDA";
 const REPLACE = "REPLACE_TO_PARTIDA";
 
 // Constants
-const URL = 'api/fact/recursosEstudi?query=liniaEstudi.id=="{id}"';
+const URL = 'api/fact/recursosEstudi?query=liniaEstudi.id=="{id}"&sort=codi';
 const HEADER_URL = 'api/fact/liniesEstudi';
 const UPDATE_RESOURCE = 'api/fact/recursosEstudi';
 

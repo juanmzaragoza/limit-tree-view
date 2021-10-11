@@ -258,7 +258,7 @@ const ProjectDetailedContent = ({
   }, [unitControl, intl]);
 
   React.useEffect(() => {
-    setHeaderPartida({ title: partida.descripcio });
+    setHeaderPartida({ title: partida.descripcioReduc });
     setHeaderPartidaFields([
       {
         field: "Importe Total",

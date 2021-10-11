@@ -48,7 +48,7 @@ const ProjectDetailedContent = ({ rows, project, tree }) => {
   const [indicadores, setIndicadores] = React.useState();
 
   React.useEffect(() => {
-    setHeaderProject({ title: project.nom });
+    setHeaderProject({ title: tree.descripcio });
     setProjectFields([
       {
         field: "Importe Total",

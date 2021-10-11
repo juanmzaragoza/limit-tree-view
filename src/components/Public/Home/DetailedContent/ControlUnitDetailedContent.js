@@ -40,7 +40,7 @@ const ControlUnitDetailedContent = ({
   const [columns] = React.useState([
     { field: "codi", headerName: "Código", minWidth: 150 },
     {
-      field: "descripcio",
+      field: "descripcioReduc",
       headerName: "Descripció",
       minWidth: 200,
       editable: true,
@@ -63,7 +63,7 @@ const ControlUnitDetailedContent = ({
    
     {
       field: "unitats",
-      headerName: "Medición",
+      headerName: "Unidades Medición",
       type: "number",
       minWidth: 140,
       editable: true,
@@ -135,7 +135,7 @@ const ControlUnitDetailedContent = ({
         formatCurrencyWithIntl(params.row.costTotal ?? 0, intl),
       minWidth: 140,
     },
-   
+
   ]);
 
   const loadHeader = () => actions.loadHeader({ id: props.id });
