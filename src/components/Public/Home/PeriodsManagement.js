@@ -96,9 +96,6 @@ const PeriodsManagement = ({
       }
     }
 
-    console.log(close);
-  
-
     setOpen(false);
     setRecargar(true);
     setAbrirPeriodo(false);
@@ -146,6 +143,7 @@ const PeriodsManagement = ({
         />
       </Grid>
       <Grid item xs={12} md={12} lg={4}>
+       
         {tancat ? (
           <Button variant={"outlined"} onClick={(e) => openPeriod()}>
             Abrir Período

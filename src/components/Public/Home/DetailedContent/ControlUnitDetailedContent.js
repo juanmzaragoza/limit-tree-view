@@ -46,6 +46,32 @@ const ControlUnitDetailedContent = ({
       editable: true,
     },
     {
+      field: "unitatsAnterior",
+      headerName: "Medición Anterior",
+      type: "number",
+      minWidth: 170,
+    },
+    {
+      field: "unitatsActual",
+      headerName: "Medición Actual",
+      type: "number",
+      minWidth: 170,
+      editable: true,
+    },
+    {
+      field: "medicioOrigen",
+      headerName: "Medición Origen",
+      type: "number",
+      minWidth: 170,
+      editable: true,
+    },
+    {
+      field: "obraPendent",
+      headerName: "Medición Pendiente",
+      type: "number",
+      minWidth: 170,
+    },
+    {
       field: "unitats",
       headerName: "Medición",
       type: "number",
@@ -107,32 +133,7 @@ const ControlUnitDetailedContent = ({
         formatCurrencyWithIntl(params.row.costTotal ?? 0, intl),
       minWidth: 140,
     },
-    {
-      field: "unitatsAnterior",
-      headerName: "Medición Anterior",
-      type: "number",
-      minWidth: 170,
-    },
-    {
-      field: "unitatsActual",
-      headerName: "Medición Actual",
-      type: "number",
-      minWidth: 170,
-      editable: true,
-    },
-    {
-      field: "medicioOrigen",
-      headerName: "Medición Origen",
-      type: "number",
-      minWidth: 170,
-      editable: true,
-    },
-    {
-      field: "obraPendent",
-      headerName: "Medición Pendiente",
-      type: "number",
-      minWidth: 170,
-    },
+   
   ]);
 
   const loadHeader = () => actions.loadHeader({ id: props.id });
