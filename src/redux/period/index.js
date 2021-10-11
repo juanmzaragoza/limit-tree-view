@@ -2,6 +2,7 @@ import Axios from "Axios";
 
 //Action types
 const ADD = "ADD_TO_PERIODS";
+const RESET =  "RESET_PERIOD";
 
 // Constants
 const URL =
@@ -68,6 +69,39 @@ export const addPeriord = ({ url = ADD_PERIOD, id, codiAccio, data }) => {
   };
 };
 
+export const openNewPeriod = ({ url = ADD_PERIOD, id, codiAccio }) => {
+  return async (dispatch) => {
+    const formedURL = () => {
+      return `${url}/${id}/action/${codiAccio}`;
+      };
+      
+    return new Promise((resolve, reject) => {
+      try {
+        dispatch(add({ loading: true }));
+        Axios.post(
+          formedURL(),
+        )
+          .then(({ status, data, ...rest }) => {
+            dispatch(add({ loading: false }));
+            resolve({ status, data, ...rest });
+          })
+          .catch((error) => {
+            console.log(error);
+            dispatch(add({ loading: false }));
+            reject(error);
+          });
+      } catch (error) {
+        console.log(error);
+        dispatch(add({ loading: false }));
+        reject(error);
+      }
+    });
+  };
+};
+
+
+
+
 //Action creators
 export const add = (payload) => {
   return {
@@ -75,6 +109,12 @@ export const add = (payload) => {
     payload,
   };
 };
+
+export const reset = () => {
+  return {
+    type: RESET
+  }
+}
 
 //Reducers
 const initialState = {
@@ -87,7 +127,7 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD:
       return { ...state, ...action.payload };
-    case "RESET":
+    case RESET:
       return initialState;
     default:
       return state;

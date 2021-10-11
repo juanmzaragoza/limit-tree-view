@@ -128,7 +128,7 @@ const ControlUnitDetailedContent = ({
       editable: true,
     },
     {
-      field: "pendent",
+      field: "obraPendent",
       headerName: "Medición Pendiente",
       type: "number",
       minWidth: 170,
