@@ -6,7 +6,7 @@ import { buildQuery } from "redux/common";
 const ADD = "ADD_TO_PROJECT_SELECTOR";
 
 // Constants
-const URL = "api/fact/projectes?page=0&size=100&order=codi";
+const URL = "api/fact/projectes?page=0&size=40&sort=codi";
 
 //Functions
 export const loadData = ({ url = URL, query }) => {

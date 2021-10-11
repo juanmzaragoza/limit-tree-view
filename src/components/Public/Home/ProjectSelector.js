@@ -29,7 +29,7 @@ const ProjectSelector = ({ onChange = () => {}, rows, loading, actions }) => {
   }, []);
 
   React.useEffect(() => {
-    setItems(rows.map((row) => ({ name: row.codi, value: row })));
+    setItems(rows.map((row) => ({ name: `${row.codi} - ${row.nom}`, value: row })));
   }, [rows]);
 
   React.useEffect(() => {
@@ -55,7 +55,12 @@ const ProjectSelector = ({ onChange = () => {}, rows, loading, actions }) => {
     if(!isEmpty(v)){
       query = [{
         columnName: 'codi',
-        value: `%${v}%`,
+        value: `*${v}*`,
+        exact: true
+      },
+      {
+        columnName: 'nom',
+        value: `*${v}*`,
         exact: true
       }];
     }
