@@ -80,20 +80,24 @@ const PeriodsManagement = ({
         value: row,
       }))
     );
-    console.log(rows)
-    console.log(hayPeriodo)
+
   }, [rows]);
 
-  const closePeriod = () => {
-    actions.add({
+  const closePeriod = async() => {
+   const close =  await actions.add({
       id: periodSelected.id,
       codiAccio: "ETP_TANCAR",
       data: fechaFin,
     });
 
-    if (abrirPeriodo) {
-      openNew();
+    if(close.request.status === 200){
+      if (abrirPeriodo) {
+        openNew();
+      }
     }
+
+    console.log(close);
+  
 
     setOpen(false);
     setRecargar(true);
