@@ -30,16 +30,16 @@ export const loadData = ({ url = URL, periodId }) => {
             nodes: _embedded['unitatsControl'].map(controlUnit => ({
               id: controlUnit.id,
               labelInfo: formatCurrency(controlUnit.costTotal),
-              labelText: controlUnit.descripcio,
+              labelText: `${controlUnit.codi} - ${controlUnit.descripcio}`,
               type: CONTROL_UNIT_TYPE,
               nodes: controlUnit['partides'].map(partida => ({
                 id: partida.id,
-                labelText: partida.descripcioReduc,
+                labelText: `${partida.codi} - ${partida.descripcioReduc}`,
                 labelInfo: formatCurrency(partida.costTotal),
                 type: PARTIDA_TYPE,
                 nodes: partida['recursos']?.map(resource => ({
                   id: resource.id,
-                  labelText: resource.descripcio,
+                  labelText:  `${resource.codi} - ${resource.descripcio}`,
                   labelInfo: formatCurrency(resource.costTotal),
                   disabled: true
                 }))
