@@ -24,7 +24,7 @@ export const loadData = ({ url = URL, periodId }) => {
         .then((_embedded) => {
           const formattedData = {
             id: _embedded.id,
-            labelText: 'Proyecto 1',
+            labelText: _embedded.descripcio,
             labelInfo: formatCurrency(_embedded.costTotal),
             type: PROJECT_TYPE,
             nodes: _embedded['unitatsControl'].map(controlUnit => ({
