@@ -31,12 +31,12 @@ const PeriodsManagement = ({
   rows,
   loading,
   project,
-  periodSelected,
   actions,
+  periodSelected
 }) => {
   const [periods, setPeriods] = React.useState([]);
   const [tancat, setTancat] = React.useState(false);
-  const [statuses, setStatuses] = React.useState([
+  const [statuses] = React.useState([
     { label: "Cerrado", value: tancat },
     { label: "Revisado Jefe de Obra", value: false },
     { label: "Revisado Jefe de Grupo", value: false },
@@ -67,9 +67,15 @@ const PeriodsManagement = ({
     );
   }, [rows]);
 
+
   const closePeriod = () => {
     actions.add({ id: project.id , codiAccio: "ACCIO_TANCAR", data: [fechaFin] });
   };
+
+  React.useEffect(() => {
+    actions.resetTree();
+  },[periodSelected]);
+
 
   return (
     <Grid container spacing={1} direction="row" alignItems="center">
@@ -77,9 +83,10 @@ const PeriodsManagement = ({
         <MaterialSelector
           id={"period"}
           items={periods}
-          onChange={(e) =>
-            actions.setPeriod({ period: e }) + setTancat(e.tancat)
-          }
+          onChange={(e) => {
+            actions.setPeriod({ period: e });
+            setTancat(e.tancat);
+          }}
           disabled={disabled}
           label={"Períodos"}
           loading={loading}

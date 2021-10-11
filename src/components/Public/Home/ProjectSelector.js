@@ -3,24 +3,26 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Container } from "@mui/material";
 import {
-  CircularProgress,
   FormControl,
   Grid,
-  InputLabel,
-  MenuItem,
-  Select,
   TextField,
 } from "@material-ui/core";
+import {isEmpty} from "lodash";
 
 import OutlinedContainer from "components/shared/OutlinedContainer/OutlinedContainer";
+import MaterialAsyncAutocomplete from "components/shared/MaterialAutocomplete/MaterialAsyncAutocomplete";
 import { getIsLoading, getRows } from "redux/project-selector/selectors";
 import { loadData, setProject } from "redux/project-selector";
+import { resetAll } from "redux/app";
 
 import "./styles.css";
 
-const ProjectSelector = ({ onChange, rows, loading, actions }) => {
+const ProjectSelector = ({ onChange = () => {}, rows, loading, actions }) => {
   const [items, setItems] = React.useState([]);
   const [project, setProject] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [client, setClient] = React.useState("");
+  const [status, setStatus] = React.useState("");
 
   React.useEffect(() => {
     actions.loadData({});
@@ -30,10 +32,35 @@ const ProjectSelector = ({ onChange, rows, loading, actions }) => {
     setItems(rows.map((row) => ({ name: row.codi, value: row })));
   }, [rows]);
 
-  const handleChange = (e) => {
-    setProject(e.target.value);
-    actions.setProject({ project: e.target.value });
+  React.useEffect(() => {
+    setName(project?.nom ?? "");
+    setClient(project.client?.description  ?? "");
+    setStatus(project?.estat ?? "");
+  },[project]);
+
+  const handleChange = (e,v,d) => {
+    const value = v?.value;
+    if(value) {
+      setProject(value);
+      actions.setProject({ project: value });
+      onChange(value);
+    } else{
+      setProject("");
+      actions.resetAll();
+    }
   };
+
+  const handleSearch = (e,v,d) => {
+    let query = [];
+    if(!isEmpty(v)){
+      query = [{
+        columnName: 'codi',
+        value: `%${v}%`,
+        exact: true
+      }];
+    }
+    actions.loadData({ query });
+  }
 
   return (
     <OutlinedContainer title={"Proyectos"}>
@@ -41,64 +68,50 @@ const ProjectSelector = ({ onChange, rows, loading, actions }) => {
         <Grid container spacing={4}>
           <Grid item xs={12} md={3} lg={2}>
             <FormControl fullWidth>
-              <InputLabel id="project-number-label">
-                Número de proyecto
-              </InputLabel>
-              <Select
-                labelId="project-number-label"
-                id="project-number"
-                name="project-number"
-                value={project}
+              <MaterialAsyncAutocomplete
                 label="Número de proyecto"
+                loading={loading}
+                items={items.map((item) => ({ label: item.name, value: item.value }))}
                 onChange={handleChange}
-              >
-                {!loading && items.map((item, index) => (
-                  <MenuItem key={index} value={item.value}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-                {loading && <MenuItem style={{display: "flex", justifyContent: "center"}}>
-                  <CircularProgress size={30} />
-                </MenuItem>}
-              </Select>
+                onSearch={handleSearch} />
             </FormControl>
           </Grid>
           <Grid item xs={3}>
             <FormControl fullWidth>
               <TextField
-                disabled
-                id="outlined-basic"
+                id="name"
                 label="Proyecto"
+                disabled
                 InputLabelProps={{
                   shrink: true,
                 }}
-                value={project.nom}
+                value={name}
               />
             </FormControl>
           </Grid>
           <Grid item xs={4}>
             <FormControl fullWidth>
               <TextField
-                id="outlined-basic"
+                id="client"
                 label="Cliente"
                 disabled
                 InputLabelProps={{
                   shrink: true,
                 }}
-                value={project.client ? project.client?.description  : "" }
+                value={client}
               />
             </FormControl>
           </Grid>
           <Grid item xs={3}>
             <FormControl fullWidth>
               <TextField
-                id="outlined-basic"
+                id="status"
                 label="Estado"
                 disabled
                 InputLabelProps={{
                   shrink: true,
                 }}
-                value={project.estat ? project.estat : ""}
+                value={status}
               />
             </FormControl>
           </Grid>
@@ -119,6 +132,7 @@ const mapDispatchToProps = (dispatch, props) => {
   const actions = {
     loadData: bindActionCreators(loadData, dispatch),
     setProject: bindActionCreators(setProject, dispatch),
+    resetAll: bindActionCreators(resetAll, dispatch),
   };
   return { actions };
 };
