@@ -10,7 +10,7 @@ export const buildQuery = ({ query = [] }) => {
             ? `${columnName}==${value}`
             : `${columnName}=ic='*${value}*'`
         )
-        .join(";")}`
+        .join(",")}`
     : "";
 };
 
