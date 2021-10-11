@@ -5,9 +5,9 @@ const ADD = "ADD_TO_UC";
 const REPLACE = "REPLACE_TO_UC";
 
 // Constants
-const URL = 'api/fact/liniesEstudi?query=unitatControlEstudi.id=="{id}"';
+const URL = 'api/fact/liniesEstudi?query=unitatControlEstudi.id=="{id}"&sort=codi';
 const HEADER_URL = 'api/fact/unitatsControlEstudi';
-const UPDATE_PARTIDA = 'api/fact/liniesEstudi';
+const UPDATE_PARTIDA_URL = 'api/fact/liniesEstudi';
 
 //Functions
 export const loadData = ({ url = URL, id  }) => {
@@ -18,7 +18,7 @@ export const loadData = ({ url = URL, id  }) => {
       apiCall()
         .then(({data}) => data)
         .then(({ _embedded }) => {
-          dispatch(add({ rows: _embedded['liniaEstudis'] }));
+          dispatch(add({ rows: _embedded?.liniaEstudis ?? [] }));
           dispatch(add({ loading: false }));
         })
         .catch(error => {
@@ -61,7 +61,7 @@ export const loadHeader = ({ url = HEADER_URL, id  }) => {
   };
 }
 
-export const updatePartida = ({ url = UPDATE_PARTIDA, id, data }) => {
+export const updatePartida = ({ url = UPDATE_PARTIDA_URL, id, data }) => {
   return async (dispatch) => {
     return new Promise((resolve, reject) => {
       try {

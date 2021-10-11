@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
-import {Skeleton} from "@mui/material";
-import {Avatar, Typography} from "@material-ui/core";
+import { Skeleton } from "@mui/material";
+import { Avatar, Typography } from "@material-ui/core";
 
 const MaterialHeaderSkeleton = () => {
   return <Box sx={{ width: '100%' }}>

@@ -29,7 +29,7 @@ const ProjectSelector = ({ onChange = () => {}, rows, loading, actions }) => {
   }, []);
 
   React.useEffect(() => {
-    setItems(rows.map((row) => ({ name: row.codi, value: row })));
+    setItems(rows.map((row) => ({ name: `${row.codi} - ${row.nom}`, value: row })));
   }, [rows]);
 
   React.useEffect(() => {
@@ -41,12 +41,14 @@ const ProjectSelector = ({ onChange = () => {}, rows, loading, actions }) => {
   const handleChange = (e,v,d) => {
     const value = v?.value;
     if(value) {
+      actions.resetAll();
+      actions.loadData({});
       setProject(value);
       actions.setProject({ project: value });
       onChange(value);
     } else{
       setProject("");
-      actions.resetAll();
+      
     }
   };
 
@@ -55,7 +57,12 @@ const ProjectSelector = ({ onChange = () => {}, rows, loading, actions }) => {
     if(!isEmpty(v)){
       query = [{
         columnName: 'codi',
-        value: `%${v}%`,
+        value: `*${v}*`,
+        exact: true
+      },
+      {
+        columnName: 'nom',
+        value: `*${v}*`,
         exact: true
       }];
     }
@@ -69,6 +76,7 @@ const ProjectSelector = ({ onChange = () => {}, rows, loading, actions }) => {
           <Grid item xs={12} md={3} lg={2}>
             <FormControl fullWidth>
               <MaterialAsyncAutocomplete
+                id="project-number-selector"
                 label="Número de proyecto"
                 loading={loading}
                 items={items.map((item) => ({ label: item.name, value: item.value }))}

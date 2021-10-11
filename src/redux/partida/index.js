@@ -3,11 +3,13 @@ import Axios from "Axios";
 //Action types
 const ADD = "ADD_TO_PARTIDA";
 const REPLACE = "REPLACE_TO_PARTIDA";
+const RESET_KPIS = "RESET_KPIS_TO_PARTIDA";
 
 // Constants
-const URL = 'api/fact/recursosEstudi?query=liniaEstudi.id=="{id}"';
+const URL = 'api/fact/recursosEstudi?query=liniaEstudi.id=="{id}"&sort=codi';
 const HEADER_URL = 'api/fact/liniesEstudi';
-const UPDATE_RESOURCE = 'api/fact/recursosEstudi';
+const UPDATE_RESOURCE_URL = 'api/fact/recursosEstudi';
+const LOAD_KPIS_URL = 'api/fact/liniesEstudi/{id}/indicadors';
 
 //Functions
 export const loadData = ({ url = URL, id }) => {
@@ -18,7 +20,7 @@ export const loadData = ({ url = URL, id }) => {
       apiCall()
         .then(({data}) => data)
         .then(({ _embedded }) => {
-          dispatch(add({ rows: _embedded['recursEstudis']
+          dispatch(add({ rows: _embedded?.recursEstudis
             .map((resource, index) => {
               if(!resource.codi)
                 resource.codi = "hardcoded"+index;
@@ -65,7 +67,7 @@ export const loadHeader = ({ url = HEADER_URL, id }) => {
   };
 }
 
-export const update = ({ url = UPDATE_RESOURCE, id, data }) => {
+export const update = ({ url = UPDATE_RESOURCE_URL, id, data }) => {
   return async (dispatch) => {
     return new Promise((resolve, reject) => {
       try {
@@ -91,6 +93,32 @@ export const update = ({ url = UPDATE_RESOURCE, id, data }) => {
   };
 }
 
+export const loadKpis = ({ url = LOAD_KPIS_URL, id }) => {
+  return async dispatch => {
+    const apiCall = () => Axios.get(url.replace('{id}',id));
+    try {
+      apiCall()
+        .then(({data}) => data)
+        .then((data) => {
+          dispatch(add({
+            kpis: Object.keys(data).map((key, index) => {
+              return {
+                field: key,
+                value: data[key]
+              }
+            })
+          }));
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+        });
+    } catch (error) {
+    }
+  };
+};
+
 //Action creators
 export const add = (payload) => {
   return {
@@ -106,11 +134,18 @@ export const replace = (payload) => {
   }
 }
 
+export const resetKpis = () => {
+  return {
+    type: RESET_KPIS
+  }
+}
+
 //Reducers
 const initialState = {
   partida: {},
   rows: [],
   loading: false,
+  kpis: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -119,7 +154,9 @@ const reducer = (state = initialState, action) => {
       return { ...state, ...action.payload };
     case REPLACE:
       const changedRows = state.rows.map(row => row.id === action.payload.id? action.payload:row)
-      return { ...state,rows: changedRows };
+      return { ...state, rows: changedRows };
+    case RESET_KPIS:
+      return { ...state, kpis: [] };
     case "RESET":
       return initialState;
     default:

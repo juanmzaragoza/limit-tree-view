@@ -7,7 +7,7 @@ export default function MaterialCheckbox({ items }) {
     <>
       {items.map((item, key) => {
       return(
-        <FormControlLabel key={key} control={<Checkbox checked={`${item.value ? "true" : ""}`}/>} label={item.label} />
+        <FormControlLabel key={key} control={<Checkbox />} label={item.label} />
       );
   })}
     </>

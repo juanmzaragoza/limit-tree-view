@@ -40,14 +40,30 @@ const ControlUnitDetailedContent = ({
   const [columns] = React.useState([
     { field: "codi", headerName: "Código", minWidth: 150 },
     {
-      field: "descripcio",
+      field: "descripcioReduc",
       headerName: "Descripció",
       minWidth: 200,
       editable: true,
     },
+ 
+    {
+      field: "unitatsActual",
+      headerName: "Medición Periodo",
+      type: "number",
+      minWidth: 170,
+      editable: true,
+    },
+    {
+      field: "medicioOrigen",
+      headerName: "Medición Origen",
+      type: "number",
+      minWidth: 170,
+      editable: true,
+    },
+   
     {
       field: "unitats",
-      headerName: "Medición",
+      headerName: "Unidades Medición",
       type: "number",
       minWidth: 140,
       editable: true,
@@ -57,6 +73,18 @@ const ControlUnitDetailedContent = ({
       headerName: "Tipo Unidad",
       valueGetter: getData,
       minWidth: 150,
+    },
+    {
+      field: "unitatsAnterior",
+      headerName: "Medición Anterior",
+      type: "number",
+      minWidth: 260,
+    },
+    {
+      field: "obraPendent",
+      headerName: "Obra pendiente",
+      type: "number",
+      minWidth: 220,
     },
     {
       field: "unitatsPress",
@@ -107,32 +135,7 @@ const ControlUnitDetailedContent = ({
         formatCurrencyWithIntl(params.row.costTotal ?? 0, intl),
       minWidth: 140,
     },
-    {
-      field: "unitatsAnterior",
-      headerName: "Medición Anterior",
-      type: "number",
-      minWidth: 170,
-    },
-    {
-      field: "unitatsActual",
-      headerName: "Medición Actual",
-      type: "number",
-      minWidth: 170,
-      editable: true,
-    },
-    {
-      field: "medicioOrigen",
-      headerName: "Medición Origen",
-      type: "number",
-      minWidth: 170,
-      editable: true,
-    },
-    {
-      field: "pendent",
-      headerName: "Medición Pendiente",
-      type: "number",
-      minWidth: 170,
-    },
+
   ]);
 
   const loadHeader = () => actions.loadHeader({ id: props.id });
