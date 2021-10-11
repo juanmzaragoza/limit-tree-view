@@ -1,18 +1,23 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { useIntl } from "react-intl";
+import { bindActionCreators } from "redux";
 import { Grid } from "@mui/material";
+import { Assignment } from "@mui/icons-material";
+import { isEmpty } from "lodash";
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
-import { getIsLoading, getRows } from "redux/project/selectors";
-import { getSelectedProject } from "redux/project-selector/selectors";
-import { formatCurrencyWithIntl } from "utils/formats";
-import { getData } from "redux/project-tree/selectors";
 import MaterialCardPartidaIndicator from "components/shared/MaterialCardPartidaIndicator";
-import { Assignment } from "@mui/icons-material";
+import { formatCurrencyWithIntl } from "utils/formats";
 
-const ProjectDetailedContent = ({ rows, project, tree }) => {
+import { loadKpis, resetKpis } from "redux/project";
+import { getIsLoading, getKpis, getRows } from "redux/project/selectors";
+import { getSelectedProject } from "redux/project-selector/selectors";
+import { getData } from "redux/project-tree/selectors";
+import {getSelectedPeriod} from "redux/period/selectors";
+
+const ProjectDetailedContent = ({ rows, project, tree, period, kpis, actions }) => {
   const intl = useIntl();
   const [headerProject, setHeaderProject] = React.useState({});
   const [projectFields, setProjectFields] = React.useState([]);
@@ -59,30 +64,20 @@ const ProjectDetailedContent = ({ rows, project, tree }) => {
         value: formatCurrencyWithIntl(tree.costTotal ?? 0, intl),
       },
     ]);
-
-    setIndicadores([
-      {
-        field: "Facturación Anterior",
-        value: project.facturacioRealAnterior,
-        icon: <Assignment />,
-      },
-      {
-        field: "Facturación Período",
-        value: project.facturacioRealPeriode,
-        icon: <Assignment />,
-      },
-      {
-        field: "Facturación año Natural",
-        value: project.facturacioRealAny,
-        icon: <Assignment />,
-      },
-      {
-        field: "Facturación a Origen",
-        value: project.facturacioRealOrigen,
-        icon: <Assignment />,
-      },
-    ]);
   }, [project, intl]);
+
+  React.useEffect(() => {
+    period.id && actions.loadKpis({ id: period.id });
+  },[period]);
+
+  React.useEffect(() => {
+    setIndicadores(
+      kpis.map(kpi => ({
+        ...kpi,
+        icon: <Assignment />,
+      }))
+    )
+  },[kpis]);
 
   return (
     <Grid container spacing={1}>
@@ -95,8 +90,9 @@ const ProjectDetailedContent = ({ rows, project, tree }) => {
       <Grid item xs={12}>
         <MaterialCardPartidaIndicator
           title={"Indicadores"}
+          loading={isEmpty(indicadores)}
           content={indicadores}
-        />
+          onUnmount={() => actions.resetKpis()} />
       </Grid>
     </Grid>
   );
@@ -107,9 +103,19 @@ const mapStateToProps = (state, props) => {
     rows: getRows(state),
     loading: getIsLoading(state),
     project: getSelectedProject(state),
+    period: getSelectedPeriod(state),
     tree: getData(state),
+    kpis: getKpis(state)
   };
 };
 
-const component = connect(mapStateToProps, null)(ProjectDetailedContent);
+const mapDispatchToProps = (dispatch, props) => {
+  const actions = {
+    loadKpis: bindActionCreators(loadKpis, dispatch),
+    resetKpis: bindActionCreators(resetKpis, dispatch),
+  };
+  return { actions };
+}
+
+const component = connect(mapStateToProps, mapDispatchToProps)(ProjectDetailedContent);
 export default component;

@@ -2,9 +2,11 @@ import Axios from "Axios";
 
 //Action types
 const ADD = "ADD_TO_PROJECT";
+const RESET_KPIS = "RESET_KPIS_TO_PROJECT";
 
 // Constants
 const URL = 'api/fact/unitatsControlEstudi?query=estudiProjecte.id=="{id}"&sort=codi';
+const LOAD_KPIS_URL = 'api/fact/estudisProjecte/{id}/indicadors';
 
 //Functions
 export const loadData = ({ url = URL, id }) => {
@@ -31,6 +33,32 @@ export const loadData = ({ url = URL, id }) => {
   };
 };
 
+export const loadKpis = ({ url = LOAD_KPIS_URL, id }) => {
+  return async dispatch => {
+    const apiCall = () => Axios.get(url.replace('{id}',id));
+    try {
+      apiCall()
+        .then(({data}) => data)
+        .then(({ indicadorsPartides }) => {
+          dispatch(add({
+            kpis: Object.keys(indicadorsPartides).map((key, index) => {
+              return {
+                field: key,
+                value: indicadorsPartides[key]
+              }
+            })
+          }));
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+        });
+    } catch (error) {
+    }
+  };
+};
+
 //Action creators
 export const add = (payload) => {
   return {
@@ -39,16 +67,25 @@ export const add = (payload) => {
   };
 };
 
+export const resetKpis = () => {
+  return {
+    type: RESET_KPIS
+  }
+};
+
 //Reducers
 const initialState = {
   rows: [],
   loading: false,
+  kpis: []
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD:
       return { ...state, ...action.payload };
+    case RESET_KPIS:
+      return { ...state, kpis: [] };
     case "RESET":
       return initialState;
     default:
