@@ -32,7 +32,7 @@ const PeriodsManagement = ({
   loading,
   project,
   actions,
-  periodSelected
+  periodSelected,
 }) => {
   const [periods, setPeriods] = React.useState([]);
   const [tancat, setTancat] = React.useState(false);
@@ -51,7 +51,7 @@ const PeriodsManagement = ({
       actions.resetTree();
       actions.loadData({ projectCodi: project.codi });
       setDisabled(false);
-      console.log(project)
+      console.log(project);
     }
   }, [project]);
 
@@ -67,15 +67,17 @@ const PeriodsManagement = ({
     );
   }, [rows]);
 
-
   const closePeriod = () => {
-    actions.add({ id: project.id , codiAccio: "ACCIO_TANCAR", data: [fechaFin] });
+    actions.add({
+      id: periodSelected.id,
+      codiAccio: "ETP_TANCAR",
+      data: fechaFin,
+    });
   };
 
   React.useEffect(() => {
     actions.resetTree();
-  },[periodSelected]);
-
+  }, [periodSelected]);
 
   return (
     <Grid container spacing={1} direction="row" alignItems="center">
@@ -107,13 +109,55 @@ const PeriodsManagement = ({
           onClose={() => {
             setOpen(false);
           }}
-          width={1000}
+          width={"1000px"}
         >
           <DialogTitle>Cerrar Periodo</DialogTitle>
           <DialogContent>
             <DialogContentText sx={{ mt: 1 }}>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={12}>
+                <Grid item lg={12} sm={12}>
+                  <TextField
+                    id="estudiProjecte"
+                    label="Estudio Proyecto"
+                    type="input"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    disabled
+                    defaultValue={periodSelected  ? `${periodSelected?.descripcio} (${periodSelected?.codi})` : ""}
+                    variant="standard"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item lg={2} sm={12}>
+                  <TextField
+                    id="estudiProjecte"
+                    label="Num Periodo"
+                    type="input"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    disabled
+                    defaultValue={`${periodSelected ? periodSelected?.numero : ""}`}
+                    variant="standard"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item lg={5} sm={12}>
+                  <TextField
+                    id="estudiProjecte"
+                    label="Fecha Inicio"
+                    type="input"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    disabled
+                    defaultValue={`${periodSelected?.diaInici ? getDate(periodSelected?.diaInici)  : ""}`}
+                    variant="standard"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item lg={5} sm={12}>
                   <TextField
                     id="date"
                     label="Fecha Final"
@@ -124,6 +168,9 @@ const PeriodsManagement = ({
                     }}
                     onChange={(e) => setFechaFin(e.target.value)}
                   />
+                </Grid>
+
+                <Grid item lg={12} sm={12}>
                   <FormGroup>
                     <FormControlLabel
                       control={<Checkbox />}
