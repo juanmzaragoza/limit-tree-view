@@ -41,12 +41,14 @@ const ProjectSelector = ({ onChange = () => {}, rows, loading, actions }) => {
   const handleChange = (e,v,d) => {
     const value = v?.value;
     if(value) {
+      actions.resetAll();
+      actions.loadData({});
       setProject(value);
       actions.setProject({ project: value });
       onChange(value);
     } else{
       setProject("");
-      actions.resetAll();
+      
     }
   };
 
