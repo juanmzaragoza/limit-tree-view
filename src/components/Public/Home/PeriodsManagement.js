@@ -62,14 +62,13 @@ const PeriodsManagement = ({
       actions.loadData({ projectCodi: project.codi });
       setDisabled(false);
     }
-   
   }, [project]);
 
   const getDate = (value) => value.split("T")[0].replace(/-/g, "/");
   React.useEffect(() => {
-    if(rows.length === 0){
-      setHayPeriodo(true)
-    }else{
+    if (rows.length === 0) {
+      setHayPeriodo(true);
+    } else {
       setHayPeriodo(false);
     }
     setPeriods(
@@ -80,17 +79,16 @@ const PeriodsManagement = ({
         value: row,
       }))
     );
-
   }, [rows]);
 
-  const closePeriod = async() => {
-   const close =  await actions.add({
+  const closePeriod = async () => {
+    const close = await actions.add({
       id: periodSelected.id,
       codiAccio: "ETP_TANCAR",
       data: fechaFin,
     });
 
-    if(close.request.status === 200){
+    if (close.request.status === 200) {
       if (abrirPeriodo) {
         openNew();
       }
@@ -108,6 +106,7 @@ const PeriodsManagement = ({
     });
 
     setAbrirPeriodo(false);
+    setRecargar(true);
   };
 
   const openPeriod = () => {
@@ -117,8 +116,6 @@ const PeriodsManagement = ({
     });
     setRecargar(true);
   };
-
-
 
   React.useEffect(() => {
     actions.loadData({ projectCodi: project?.codi });
@@ -143,8 +140,10 @@ const PeriodsManagement = ({
         />
       </Grid>
       <Grid item xs={12} md={12} lg={4}>
-       
-        {tancat ? (
+        {hayPeriodo ? <Button variant={"outlined"}>
+            Crear Período
+          </Button> :
+        tancat ? (
           <Button variant={"outlined"} onClick={(e) => openPeriod()}>
             Abrir Período
           </Button>
@@ -155,7 +154,6 @@ const PeriodsManagement = ({
               onClick={() => {
                 setOpen(true);
               }}
-             
             >
               Cerrar Período
             </Button>
@@ -275,7 +273,7 @@ const PeriodsManagement = ({
       </Grid>
 
       <Grid item xs={12} md={12} lg={12}>
-        {hayPeriodo  ? (
+        {hayPeriodo ? (
           ""
         ) : tancat === true ? (
           <Chip
