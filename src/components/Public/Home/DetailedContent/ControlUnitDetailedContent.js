@@ -111,27 +111,27 @@ const ControlUnitDetailedContent = ({
       field: "unitatsAnterior",
       headerName: "Medición obra realizada anterior",
       type: "number",
-      minWidth: 170,
+      minWidth: 260,
     },
     {
       field: "unitatsActual",
       headerName: "Medición obra hecha a periodo",
       type: "number",
-      minWidth: 170,
+      minWidth: 260,
       editable: true,
     },
     {
       field: "medicioOrigen",
       headerName: "Medicio obra hecha a origen",
       type: "number",
-      minWidth: 170,
+      minWidth: 250,
       editable: true,
     },
     {
       field: "obraPendent",
       headerName: "Obra pendiente de hacer",
       type: "number",
-      minWidth: 170,
+      minWidth: 220,
     },
   ]);
 
