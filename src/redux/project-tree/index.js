@@ -34,7 +34,7 @@ export const loadData = ({ url = URL, periodId }) => {
               type: CONTROL_UNIT_TYPE,
               nodes: controlUnit['partides'].map(partida => ({
                 id: partida.id,
-                labelText: partida.descripcio,
+                labelText: partida.descripcioReduc,
                 labelInfo: formatCurrency(partida.costTotal),
                 type: PARTIDA_TYPE,
                 nodes: partida['recursos']?.map(resource => ({

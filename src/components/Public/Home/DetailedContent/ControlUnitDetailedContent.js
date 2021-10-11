@@ -40,7 +40,7 @@ const ControlUnitDetailedContent = ({
   const [columns] = React.useState([
     { field: "codi", headerName: "Código", minWidth: 150 },
     {
-      field: "descripcio",
+      field: "descripcioReduc",
       headerName: "Descripció",
       minWidth: 200,
       editable: true,
