@@ -67,7 +67,7 @@ const PeriodsManagement = ({
   }, [rows]);
 
   const closePeriod = async () => {
-    const close = await actions.add({
+    const close = await actions.addPeriod({
       id: periodSelected.id,
       codiAccio: "ETP_TANCAR",
       data: dateEnd,
@@ -144,7 +144,7 @@ const PeriodsManagement = ({
       </Button>;
     }
   };
-  
+
   return (
     <Grid container spacing={1} direction="row" alignItems="center">
       <Grid item xs={12} md={12} lg={8}>
@@ -196,8 +196,8 @@ const mapDispatchToProps = (dispatch, props) => {
     loadData: bindActionCreators(loadData, dispatch),
     setPeriod: bindActionCreators(setPeriod, dispatch),
     resetTree: bindActionCreators(resetTree, dispatch),
-    add: bindActionCreators(addPeriord, dispatch),
     resetPeriod: bindActionCreators(resetPeriod, dispatch),
+    addPeriod: bindActionCreators(addPeriord, dispatch),
     openNewPeriod: bindActionCreators(openNewPeriod, dispatch),
   };
   return { actions };
