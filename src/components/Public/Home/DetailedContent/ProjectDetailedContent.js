@@ -15,19 +15,19 @@ import { loadKpis, resetKpis } from "redux/project";
 import { getIsLoading, getKpis, getRows } from "redux/project/selectors";
 import { getSelectedProject } from "redux/project-selector/selectors";
 import { getData } from "redux/project-tree/selectors";
-import {getSelectedPeriod} from "redux/period/selectors";
+import { getSelectedPeriod } from "redux/period/selectors";
+
+import { isPeriodOpen } from "./common";
 
 const ProjectDetailedContent = ({ rows, project, tree, period, kpis, actions }) => {
   const intl = useIntl();
   const [headerProject, setHeaderProject] = React.useState({});
   const [projectFields, setProjectFields] = React.useState([]);
-
   const [columns] = React.useState([
     { field: "codi", headerName: "Código", editable: false },
     {
       field: "descripcio",
       headerName: "Descripción",
-
       editable: true,
     },
     {
@@ -49,8 +49,7 @@ const ProjectDetailedContent = ({ rows, project, tree, period, kpis, actions }) 
       editable: false,
     },
   ]);
-
-  const [indicadores, setIndicadores] = React.useState();
+  const [indicadores, setIndicadores] = React.useState([]);
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
@@ -85,7 +84,10 @@ const ProjectDetailedContent = ({ rows, project, tree, period, kpis, actions }) 
         <DetailedHeader header={headerProject} body={projectFields} />
       </Grid>
       <Grid item xs={12}>
-        <MaterialDataGrid columns={columns} rows={rows} />
+        <MaterialDataGrid
+          columns={columns}
+          rows={rows}
+          disableInlineEdition={!isPeriodOpen({ period })} />
       </Grid>
       <Grid item xs={12}>
         <MaterialCardPartidaIndicator

@@ -19,6 +19,8 @@ import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
+import { isPeriodOpen } from "./common";
+
 const RESOURCES_TAB_INDEX = 0;
 const KPIS_TAB_INDEX = 1;
 
@@ -198,7 +200,8 @@ const ProjectDetailedContent = ({
             getRowId={(row) => row.id}
             rows={rows}
             loading={loading}
-            onCellEditCommit={handleCellChange} />
+            onCellEditCommit={handleCellChange}
+            disableInlineEdition={!isPeriodOpen({ period: selectedPeriod })}/>
         )}
         {tabIndex === KPIS_TAB_INDEX && (
           <MaterialCardPartidaIndicator

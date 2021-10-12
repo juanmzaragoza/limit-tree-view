@@ -7,11 +7,12 @@ const DetailedTable = ({
   columns,
   loading,
   getRowId = (row) => row.codi,
-  disableColumnMenu = true,
   autoHeight = true,
   autoWidth = true,
+  onCellEditCommit = (params, event, details) => {},
+  disableColumnMenu = true,
   disableExtendRowFullWidth = true,
-  onCellEditCommit = (params, event, details) => {}
+  disableInlineEdition = false
 }) => {
   return (
     <div style={rootStyle}>
@@ -19,7 +20,11 @@ const DetailedTable = ({
         <div style={{ flexGrow: 1}}>
           <DataGrid
             rows={rows}
-            columns={columns.map(column => ({...column, flex: 1}))}
+            columns={columns.map(column => ({
+              ...column,
+              flex: 1,
+              editable: disableInlineEdition? false:column.editable
+            }))}
             getRowId={getRowId}
             loading={loading}
             disableColumnMenu={disableColumnMenu}

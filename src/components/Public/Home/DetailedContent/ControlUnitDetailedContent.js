@@ -18,6 +18,8 @@ import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
+import { isPeriodOpen } from "./common";
+
 const ControlUnitDetailedContent = ({
   rows,
   loading,
@@ -204,6 +206,8 @@ const ControlUnitDetailedContent = ({
           rows={rows}
           loading={loading}
           onCellEditCommit={handleCellChange}
+          disableInlineEdition={!isPeriodOpen({ period: selectedPeriod })}
+
         />
       </Grid>
     </Grid>
