@@ -18,6 +18,11 @@ import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
+import {
+  getPartidaColumnsByPeriod,
+  isPeriodOpen
+} from "./common";
+
 const ControlUnitDetailedContent = ({
   rows,
   loading,
@@ -35,108 +40,7 @@ const ControlUnitDetailedContent = ({
   const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState(
     []
   );
-
-  const getData = (params) => `${params.value?.description || ""}`;
-  const [columns] = React.useState([
-    { field: "codi", headerName: "Código", minWidth: 150 },
-    {
-      field: "descripcioReduc",
-      headerName: "Descripció",
-      minWidth: 200,
-      editable: true,
-    },
- 
-    {
-      field: "unitatsActual",
-      headerName: "Medición Periodo",
-      type: "number",
-      minWidth: 170,
-      editable: true,
-    },
-    {
-      field: "medicioOrigen",
-      headerName: "Medición Origen",
-      type: "number",
-      minWidth: 170,
-      editable: true,
-    },
-   
-    {
-      field: "unitats",
-      headerName: "Unidades Medición",
-      type: "number",
-      minWidth: 140,
-      editable: true,
-    },
-    {
-      field: "unitatTipus",
-      headerName: "Tipo Unidad",
-      valueGetter: getData,
-      minWidth: 150,
-    },
-    {
-      field: "unitatsAnterior",
-      headerName: "Medición Anterior",
-      type: "number",
-      minWidth: 260,
-    },
-    {
-      field: "obraPendent",
-      headerName: "Obra pendiente",
-      type: "number",
-      minWidth: 220,
-    },
-    {
-      field: "unitatsPress",
-      headerName: "Un. Pres",
-      type: "number",
-      minWidth: 140,
-      editable: true,
-    },
-    {
-      field: "preu",
-      headerName: "Pvp Bruto",
-      type: "number",
-      valueFormatter: (params) =>
-        formatCurrencyWithIntl(params.row.preu ?? 0, intl),
-      minWidth: 140,
-      editable: true,
-    },
-    {
-      field: "preuNet",
-      headerName: "Pvp Neto",
-      type: "number",
-      valueFormatter: (params) =>
-        formatCurrencyWithIntl(params.row.preuNet ?? 0, intl),
-      minWidth: 140,
-    },
-    {
-      field: "importTotal",
-      headerName: "Importe",
-      type: "number",
-      valueFormatter: (params) =>
-        formatCurrencyWithIntl(params.row.importTotal ?? 0, intl),
-      minWidth: 140,
-    },
-    {
-      field: "costUni",
-      headerName: "Coste Unitario",
-      type: "number",
-      valueFormatter: (params) =>
-        formatCurrencyWithIntl(params.row.costUni ?? 0, intl),
-      minWidth: 150,
-      editable: false,
-    },
-    {
-      field: "costTotal",
-      headerName: "Coste Total",
-      type: "number",
-      valueFormatter: (params) =>
-        formatCurrencyWithIntl(params.row.costTotal ?? 0, intl),
-      minWidth: 140,
-    },
-
-  ]);
+  const [columns] = React.useState(getPartidaColumnsByPeriod({ period: selectedPeriod, intl }));
 
   const loadHeader = () => actions.loadHeader({ id: props.id });
 
@@ -204,6 +108,8 @@ const ControlUnitDetailedContent = ({
           rows={rows}
           loading={loading}
           onCellEditCommit={handleCellChange}
+          disableInlineEdition={!isPeriodOpen({ period: selectedPeriod })}
+
         />
       </Grid>
     </Grid>

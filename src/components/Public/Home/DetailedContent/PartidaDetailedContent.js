@@ -19,6 +19,8 @@ import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
+import {getResourceColumnsByPeriod, isPeriodOpen} from "./common";
+
 const RESOURCES_TAB_INDEX = 0;
 const KPIS_TAB_INDEX = 1;
 
@@ -44,46 +46,7 @@ const ProjectDetailedContent = ({
   const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
   const [tabIndex, setTabIndex] = React.useState(RESOURCES_TAB_INDEX);
   const [indicadores, setIndicadores] = React.useState();
-
-  const getData = (params) => `${params.value?.description || ""}`;
-  const [columns] = React.useState([
-    { field: "codi", headerName: "Código", type: "number" },
-
-    {
-      field: "descripcio",
-      headerName: "Descripción",
-      width: 140,
-      editable: true,
-    },
-    {
-      field: "unitats",
-      headerName: "Medición",
-      type: "number",
-      editable: true,
-    },
-    {
-      field: "unitatTipus",
-      headerName: "Tipo Unidad",
-      valueGetter: getData,
-    },
-    {
-      field: "costUnitat",
-      headerName: "Coste Unitario",
-      type: "number",
-      valueFormatter: (params) => {
-        return formatCurrencyWithIntl(params.row.costUnitat ?? 0, intl);
-      },
-      editable: true,
-    },
-    {
-      field: "costTotal",
-      headerName: "Coste Total",
-      type: "number",
-      valueFormatter: (params) => {
-        return formatCurrencyWithIntl(params.row.costTotal ?? 0, intl);
-      },
-    },
-  ]);
+  const [columns] = React.useState(getResourceColumnsByPeriod({ period: selectedPeriod, intl }));
 
   const onChangeIndexExecutor = {
     [RESOURCES_TAB_INDEX]: () => {},
@@ -198,7 +161,8 @@ const ProjectDetailedContent = ({
             getRowId={(row) => row.id}
             rows={rows}
             loading={loading}
-            onCellEditCommit={handleCellChange} />
+            onCellEditCommit={handleCellChange}
+            disableInlineEdition={!isPeriodOpen({ period: selectedPeriod })}/>
         )}
         {tabIndex === KPIS_TAB_INDEX && (
           <MaterialCardPartidaIndicator

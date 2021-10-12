@@ -7,7 +7,7 @@ import Select from '@mui/material/Select';
 import {CircularProgress} from "@material-ui/core";
 
 
-export default function MaterialSelector({
+const MaterialSelector = ({
   id,
   label,
   items,
@@ -15,7 +15,7 @@ export default function MaterialSelector({
   selectFirstDefault,
   disabled = false,
   loading = false
-}) {
+}) => {
   const [value, setValue] = React.useState('');
   const [elements, setElements] = React.useState([]);
 
@@ -56,4 +56,6 @@ export default function MaterialSelector({
       </FormControl>
     </Box>
   );
-}
+};
+
+export default MaterialSelector;
