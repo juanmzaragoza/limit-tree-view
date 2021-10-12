@@ -41,6 +41,9 @@ export const addPeriord = ({ url = ADD_PERIOD_URL, id, codiAccio, data }) => {
         dispatch(add({ loading: true }));
         Axios.post(formedURL())
           .then(({ status, data, ...rest }) => {
+            if(status !== 200) {
+              return reject({ message: "No se pude agregar perído" });
+            }
             dispatch(add({ loading: false }));
             resolve({ status, data, ...rest });
           })

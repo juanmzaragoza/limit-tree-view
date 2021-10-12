@@ -43,7 +43,7 @@ const PeriodsManagement = ({
   const [dateEnd, setDateEnd] = React.useState();
   const [reload, setReload] = React.useState(false);
   const [isEmptyRows, setIsEmptyRows] = React.useState(false);
-  const [isPeriodOpen, setIsPeriodOpen] = React.useState(false);
+  const [openNewPeriod, setOpenNewPeriod] = React.useState(false);
 
   React.useEffect(() => {
     if (isProjectSelected()) {
@@ -67,38 +67,35 @@ const PeriodsManagement = ({
   }, [rows]);
 
   const closePeriod = async () => {
-    const close = await actions.addPeriod({
-      id: periodSelected.id,
-      codiAccio: "ETP_TANCAR",
-      data: dateEnd,
-    });
-    if (close.request.status === 200 && isPeriodOpen) {
+    const codiAccio = "ETP_TANCAR";
+    const data = dateEnd;
+    try {
+      await actions.addPeriod({ id: periodSelected.id, codiAccio, data });
       openNew();
+      setOpen(false);
+      // TODO(): estas haciendo lo mismo que en openNew()
+      //setReload(true);
+      //setOpenNewPeriod(false);
+    } catch (e) {
+      //handle error
     }
-    setOpen(false);
-    setReload(true);
-    setIsPeriodOpen(false);
   };
 
   const openNew = () => {
-    actions.openNewPeriod({
-      id: periodSelected.id,
-      codiAccio: "ETP_NOUPER",
-    });
-    setIsPeriodOpen(false);
+    const codiAccio = "ETP_NOUPER";
+    actions.openNewPeriod({ id: periodSelected.id, codiAccio });
+    setOpenNewPeriod(false);
     setReload(true);
   };
 
   const openPeriod = () => {
-    actions.openNewPeriod({
-      id: periodSelected.id,
-      codiAccio: "ETP_OBRIR",
-    });
+    const codiAccio = "ETP_OBRIR";
+    actions.openNewPeriod({ id: periodSelected.id, codiAccio });
     setReload(true);
   };
 
   React.useEffect(() => {
-    actions.loadData({ projectCodi: project?.codi });
+    reload && actions.loadData({ projectCodi: project?.codi });
     setReload(false);
   }, [reload]);
 
@@ -169,8 +166,8 @@ const PeriodsManagement = ({
           periodSelected={periodSelected}
           getDate={getDate}
           setDateEnd={setDateEnd}
-          isPeriodOpen={isPeriodOpen}
-          setIsPeriodOpen={setIsPeriodOpen}
+          isPeriodOpen={openNewPeriod}
+          setIsPeriodOpen={setOpenNewPeriod}
           onClosePeriod={closePeriod}
         />
       </Grid>
