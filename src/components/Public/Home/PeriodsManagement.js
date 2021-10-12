@@ -15,6 +15,7 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
+import { Lock, LockOpen } from "@mui/icons-material";
 
 import MaterialSelector from "components/shared/MaterialSelector";
 import MaterialCheckbox from "components/shared/MaterialCheckbox";
@@ -33,7 +34,6 @@ import {
 } from "redux/period/selectors";
 import { getSelectedProject } from "redux/project-selector/selectors";
 import { reset as resetTree } from "redux/project-tree";
-import { Lock, LockOpen } from "@mui/icons-material";
 
 const PeriodsManagement = ({
   rows,
@@ -132,6 +132,28 @@ const PeriodsManagement = ({
         sx={{ mr: 2, fontSize: "14px" }}
       />
     }
+  };
+
+  const renderChangePeriodButton = () => {
+    if(isEmptyRows) {
+      return <Button variant={"outlined"}>
+        Crear Período
+      </Button>;
+    }
+    if(tancat) {
+      return <Button variant={"outlined"} onClick={(e) => openPeriod()}>
+        Abrir Período
+      </Button>;
+    } else{
+      return <Button
+        variant={"outlined"}
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
+        Cerrar Período
+      </Button>;
+    }
   }
   return (
     <Grid container spacing={1} direction="row" alignItems="center">
@@ -150,136 +172,118 @@ const PeriodsManagement = ({
         />
       </Grid>
       <Grid item xs={12} md={12} lg={4}>
-        {isEmptyRows ? <Button variant={"outlined"}>
-            Crear Período
-          </Button> :
-        tancat ? (
-          <Button variant={"outlined"} onClick={(e) => openPeriod()}>
-            Abrir Período
-          </Button>
-        ) : (
-          <React.Fragment>
+        { renderChangePeriodButton() }
+        <Dialog
+          open={open}
+          onClose={() => {
+            setOpen(false);
+          }}
+          width={"1000px"}
+        >
+          <DialogTitle>Cerrar Periodo</DialogTitle>
+          <DialogContent>
+            <DialogContentText sx={{ mt: 1 }}>
+              <Grid container spacing={2}>
+                <Grid item lg={12} sm={12}>
+                  <TextField
+                    id="estudiProjecte"
+                    label="Estudio Proyecto"
+                    type="input"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    disabled
+                    defaultValue={
+                      periodSelected
+                        ? `${periodSelected?.descripcio} (${periodSelected?.codi})`
+                        : ""
+                    }
+                    variant="standard"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item lg={3} sm={12}>
+                  <TextField
+                    id="estudiProjecte"
+                    label="Num Periodo"
+                    type="input"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    disabled
+                    defaultValue={`${
+                      periodSelected ? periodSelected?.numero : ""
+                    }`}
+                    variant="standard"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item lg={4} sm={12}>
+                  <TextField
+                    id="estudiProjecte"
+                    label="Fecha Inicio"
+                    type="input"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    disabled
+                    defaultValue={`${
+                      periodSelected?.diaInici
+                        ? getDate(periodSelected?.diaInici)
+                        : ""
+                    }`}
+                    variant="standard"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item lg={5} sm={12}>
+                  <TextField
+                    id="date"
+                    label="Fecha Final"
+                    type="date"
+                    sx={{ width: 220 }}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    onChange={(e) => setDateEnd(e.target.value)}
+                  />
+                </Grid>
+
+                <Grid item lg={12} sm={12}>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          defaultChecked={isPeriodOpen}
+                          onChange={(e) => {
+                            setIsPeriodOpen(e.target.checked);
+                          }}
+                        />
+                      }
+                      label="Abrir nuevo periodo?"
+                    />
+                  </FormGroup>
+                </Grid>
+              </Grid>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
             <Button
-              variant={"outlined"}
               onClick={() => {
-                setOpen(true);
-              }}
-            >
-              Cerrar Período
-            </Button>
-            <Dialog
-              open={open}
-              onClose={() => {
                 setOpen(false);
               }}
-              width={"1000px"}
             >
-              <DialogTitle>Cerrar Periodo</DialogTitle>
-              <DialogContent>
-                <DialogContentText sx={{ mt: 1 }}>
-                  <Grid container spacing={2}>
-                    <Grid item lg={12} sm={12}>
-                      <TextField
-                        id="estudiProjecte"
-                        label="Estudio Proyecto"
-                        type="input"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        disabled
-                        defaultValue={
-                          periodSelected
-                            ? `${periodSelected?.descripcio} (${periodSelected?.codi})`
-                            : ""
-                        }
-                        variant="standard"
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item lg={3} sm={12}>
-                      <TextField
-                        id="estudiProjecte"
-                        label="Num Periodo"
-                        type="input"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        disabled
-                        defaultValue={`${
-                          periodSelected ? periodSelected?.numero : ""
-                        }`}
-                        variant="standard"
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item lg={4} sm={12}>
-                      <TextField
-                        id="estudiProjecte"
-                        label="Fecha Inicio"
-                        type="input"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        disabled
-                        defaultValue={`${
-                          periodSelected?.diaInici
-                            ? getDate(periodSelected?.diaInici)
-                            : ""
-                        }`}
-                        variant="standard"
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item lg={5} sm={12}>
-                      <TextField
-                        id="date"
-                        label="Fecha Final"
-                        type="date"
-                        sx={{ width: 220 }}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        onChange={(e) => setDateEnd(e.target.value)}
-                      />
-                    </Grid>
-
-                    <Grid item lg={12} sm={12}>
-                      <FormGroup>
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              defaultChecked={isPeriodOpen}
-                              onChange={(e) => {
-                                setIsPeriodOpen(e.target.checked);
-                              }}
-                            />
-                          }
-                          label="Abrir nuevo periodo?"
-                        />
-                      </FormGroup>
-                    </Grid>
-                  </Grid>
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={() => {
-                    setOpen(false);
-                  }}
-                >
-                  Cancelar
-                </Button>
-                <Button
-                  onClick={(e) => {
-                    closePeriod(e);
-                  }}
-                >
-                  Cerrar Peridodo
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </React.Fragment>
-        )}
+              Cancelar
+            </Button>
+            <Button
+              onClick={(e) => {
+                closePeriod(e);
+              }}
+            >
+              Cerrar Peridodo
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Grid>
       <Grid item xs={12} md={12} lg={12}>
         { renderPeriodStatus() }
