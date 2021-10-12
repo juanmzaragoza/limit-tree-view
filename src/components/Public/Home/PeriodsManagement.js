@@ -51,10 +51,10 @@ const PeriodsManagement = ({
   const isProjectSelected = () => !!(project && project.codi);
   const [disabled, setDisabled] = React.useState(!isProjectSelected());
   const [open, setOpen] = React.useState(false);
-  const [fechaFin, setFechaFin] = React.useState();
-  const [recargar, setRecargar] = React.useState(false);
-  const [hayPeriodo, setHayPeriodo] = React.useState();
-  const [abrirPeriodo, setAbrirPeriodo] = React.useState(false);
+  const [dateEnd, setDateEnd] = React.useState();
+  const [reload, setReload] = React.useState(false);
+  const [isEmptyRows, setIsEmptyRows] = React.useState(false);
+  const [isPeriodOpen, setIsPeriodOpen] = React.useState(false);
 
   React.useEffect(() => {
     if (isProjectSelected()) {
@@ -66,11 +66,7 @@ const PeriodsManagement = ({
 
   const getDate = (value) => value.split("T")[0].replace(/-/g, "/");
   React.useEffect(() => {
-    if (rows.length === 0) {
-      setHayPeriodo(true);
-    } else {
-      setHayPeriodo(false);
-    }
+    setIsEmptyRows(rows.length === 0);
     setPeriods(
       rows.map((row) => ({
         label: `${row.numero} - ${getDate(row.diaInici)} ${
@@ -85,18 +81,14 @@ const PeriodsManagement = ({
     const close = await actions.add({
       id: periodSelected.id,
       codiAccio: "ETP_TANCAR",
-      data: fechaFin,
+      data: dateEnd,
     });
-
-    if (close.request.status === 200) {
-      if (abrirPeriodo) {
-        openNew();
-      }
+    if (close.request.status === 200 && isPeriodOpen) {
+      openNew();
     }
-
     setOpen(false);
-    setRecargar(true);
-    setAbrirPeriodo(false);
+    setReload(true);
+    setIsPeriodOpen(false);
   };
 
   const openNew = () => {
@@ -104,9 +96,8 @@ const PeriodsManagement = ({
       id: periodSelected.id,
       codiAccio: "ETP_NOUPER",
     });
-
-    setAbrirPeriodo(false);
-    setRecargar(true);
+    setIsPeriodOpen(false);
+    setReload(true);
   };
 
   const openPeriod = () => {
@@ -114,14 +105,34 @@ const PeriodsManagement = ({
       id: periodSelected.id,
       codiAccio: "ETP_OBRIR",
     });
-    setRecargar(true);
+    setReload(true);
   };
 
   React.useEffect(() => {
     actions.loadData({ projectCodi: project?.codi });
-    setRecargar(false);
-  }, [recargar]);
+    setReload(false);
+  }, [reload]);
 
+  const renderPeriodStatus = () => {
+    if(isEmptyRows) return "";
+    if(tancat) {
+      return <Chip
+        variant="filled"
+        label="Cerrado"
+        color="warning"
+        icon={<Lock />}
+        sx={{ mr: 2, fontSize: "14px" }}
+      />
+    } else{
+      return <Chip
+        variant="filled"
+        label="Abierto"
+        color="success"
+        icon={<LockOpen />}
+        sx={{ mr: 2, fontSize: "14px" }}
+      />
+    }
+  }
   return (
     <Grid container spacing={1} direction="row" alignItems="center">
       <Grid item xs={12} md={12} lg={8}>
@@ -136,11 +147,10 @@ const PeriodsManagement = ({
           label={"Períodos"}
           loading={loading}
           selectFirstDefault
-          tancat={tancat}
         />
       </Grid>
       <Grid item xs={12} md={12} lg={4}>
-        {hayPeriodo ? <Button variant={"outlined"}>
+        {isEmptyRows ? <Button variant={"outlined"}>
             Crear Período
           </Button> :
         tancat ? (
@@ -148,7 +158,7 @@ const PeriodsManagement = ({
             Abrir Período
           </Button>
         ) : (
-          <>
+          <React.Fragment>
             <Button
               variant={"outlined"}
               onClick={() => {
@@ -229,7 +239,7 @@ const PeriodsManagement = ({
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        onChange={(e) => setFechaFin(e.target.value)}
+                        onChange={(e) => setDateEnd(e.target.value)}
                       />
                     </Grid>
 
@@ -238,9 +248,9 @@ const PeriodsManagement = ({
                         <FormControlLabel
                           control={
                             <Checkbox
-                              defaultChecked={abrirPeriodo}
+                              defaultChecked={isPeriodOpen}
                               onChange={(e) => {
-                                setAbrirPeriodo(e.target.checked);
+                                setIsPeriodOpen(e.target.checked);
                               }}
                             />
                           }
@@ -268,30 +278,11 @@ const PeriodsManagement = ({
                 </Button>
               </DialogActions>
             </Dialog>
-          </>
+          </React.Fragment>
         )}
       </Grid>
-
       <Grid item xs={12} md={12} lg={12}>
-        {hayPeriodo ? (
-          ""
-        ) : tancat === true ? (
-          <Chip
-            variant="filled"
-            label="Cerrado"
-            color="warning"
-            icon={<Lock />}
-            sx={{ mr: 2, fontSize: "14px" }}
-          />
-        ) : (
-          <Chip
-            variant="filled"
-            label="Abierto"
-            color="success"
-            icon={<LockOpen />}
-            sx={{ mr: 2, fontSize: "14px" }}
-          />
-        )}
+        { renderPeriodStatus() }
         <MaterialCheckbox items={statuses} />
       </Grid>
     </Grid>
