@@ -1,20 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {
-  Button,
-  Checkbox,
-  Chip,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  TextField,
-} from "@mui/material";
+import { Button, Chip, Grid } from "@mui/material";
 import { Lock, LockOpen } from "@mui/icons-material";
 
 import MaterialSelector from "components/shared/MaterialSelector";
@@ -34,6 +21,8 @@ import {
 } from "redux/period/selectors";
 import { getSelectedProject } from "redux/project-selector/selectors";
 import { reset as resetTree } from "redux/project-tree";
+
+import ClosePeriodDialog from "./ClosePeriodDialog";
 
 const PeriodsManagement = ({
   rows,
@@ -154,7 +143,8 @@ const PeriodsManagement = ({
         Cerrar Período
       </Button>;
     }
-  }
+  };
+  
   return (
     <Grid container spacing={1} direction="row" alignItems="center">
       <Grid item xs={12} md={12} lg={8}>
@@ -162,7 +152,7 @@ const PeriodsManagement = ({
           id={"period"}
           items={periods}
           onChange={(e) => {
-            actions.setPeriod({ period: e });
+            actions.setPeriod({period: e});
             setTancat(e.tancat);
           }}
           disabled={disabled}
@@ -172,122 +162,21 @@ const PeriodsManagement = ({
         />
       </Grid>
       <Grid item xs={12} md={12} lg={4}>
-        { renderChangePeriodButton() }
-        <Dialog
+        {renderChangePeriodButton()}
+        <ClosePeriodDialog
           open={open}
-          onClose={() => {
-            setOpen(false);
-          }}
-          width={"1000px"}
-        >
-          <DialogTitle>Cerrar Periodo</DialogTitle>
-          <DialogContent>
-            <DialogContentText sx={{ mt: 1 }}>
-              <Grid container spacing={2}>
-                <Grid item lg={12} sm={12}>
-                  <TextField
-                    id="estudiProjecte"
-                    label="Estudio Proyecto"
-                    type="input"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    disabled
-                    defaultValue={
-                      periodSelected
-                        ? `${periodSelected?.descripcio} (${periodSelected?.codi})`
-                        : ""
-                    }
-                    variant="standard"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item lg={3} sm={12}>
-                  <TextField
-                    id="estudiProjecte"
-                    label="Num Periodo"
-                    type="input"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    disabled
-                    defaultValue={`${
-                      periodSelected ? periodSelected?.numero : ""
-                    }`}
-                    variant="standard"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item lg={4} sm={12}>
-                  <TextField
-                    id="estudiProjecte"
-                    label="Fecha Inicio"
-                    type="input"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    disabled
-                    defaultValue={`${
-                      periodSelected?.diaInici
-                        ? getDate(periodSelected?.diaInici)
-                        : ""
-                    }`}
-                    variant="standard"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item lg={5} sm={12}>
-                  <TextField
-                    id="date"
-                    label="Fecha Final"
-                    type="date"
-                    sx={{ width: 220 }}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    onChange={(e) => setDateEnd(e.target.value)}
-                  />
-                </Grid>
-
-                <Grid item lg={12} sm={12}>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          defaultChecked={isPeriodOpen}
-                          onChange={(e) => {
-                            setIsPeriodOpen(e.target.checked);
-                          }}
-                        />
-                      }
-                      label="Abrir nuevo periodo?"
-                    />
-                  </FormGroup>
-                </Grid>
-              </Grid>
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                setOpen(false);
-              }}
-            >
-              Cancelar
-            </Button>
-            <Button
-              onClick={(e) => {
-                closePeriod(e);
-              }}
-            >
-              Cerrar Peridodo
-            </Button>
-          </DialogActions>
-        </Dialog>
+          onClose={() => setOpen(false)}
+          periodSelected={periodSelected}
+          getDate={getDate}
+          setDateEnd={setDateEnd}
+          isPeriodOpen={isPeriodOpen}
+          setIsPeriodOpen={setIsPeriodOpen}
+          onClosePeriod={closePeriod}
+        />
       </Grid>
       <Grid item xs={12} md={12} lg={12}>
-        { renderPeriodStatus() }
-        <MaterialCheckbox items={statuses} />
+        {renderPeriodStatus()}
+        <MaterialCheckbox items={statuses}/>
       </Grid>
     </Grid>
   );
