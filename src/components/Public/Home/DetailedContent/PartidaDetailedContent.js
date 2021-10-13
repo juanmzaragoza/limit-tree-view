@@ -65,9 +65,7 @@ const ProjectDetailedContent = ({
   const [headerProject, setHeaderProject] = React.useState({});
   const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
-  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState(
-    []
-  );
+  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
   const [headerPartida, setHeaderPartida] = React.useState({});
   const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
   const [tabIndex, setTabIndex] = React.useState(KPIS_TAB_INDEX);
@@ -370,7 +368,9 @@ const ProjectDetailedContent = ({
   return (
     <Grid container spacing={1}>
       <Grid item xs={4}>
-        <DetailedHeader header={headerProject} body={headerProjectFields}   colorBack={"rgba(58, 145, 152, 0.30)"}
+        <DetailedHeader
+          header={headerProject} body={headerProjectFields}
+          colorBackground={"rgba(58, 145, 152, 0.30)"}
           icon={<BusinessIcon />}
           iconColor={primaryColor}
           breakpoints={detailedHeaderBreakpoints} />
@@ -379,26 +379,24 @@ const ProjectDetailedContent = ({
         <DetailedHeader
           header={headerControlUnit}
           body={headerControlUnitFields}
-          colorBack={"rgba(255, 177, 27, 0.30)"}
+          colorBackground={"rgba(255, 177, 27, 0.30)"}
           icon={<EmojiEvents />}
           iconColor={"#ffb11b"}
           breakpoints={detailedHeaderBreakpoints} />
       </Grid>
       <Grid item xs={4}>
-        <DetailedHeader header={headerPartida} body={headerPartidaFields}
-          colorBack={"rgba(162, 80, 245, 0.30)"}
+        <DetailedHeader
+          header={headerPartida}
+          body={headerPartidaFields}
+          colorBackground={"rgba(162, 80, 245, 0.30)"}
           icon={<CatchingPokemon />}
           iconColor={"#a250f5"}
           breakpoints={detailedHeaderBreakpoints} />
       </Grid>
       <Grid item xs={12}>
         <Tabs value={tabIndex} onChange={(e, index) => setTabIndex(index)}>
-        <Tab
-            label={"Indicadores"}
-            className="tabsIndicators tabsIndicators1"
-          />
+          <Tab label={"Indicadores"} className="tabsIndicators tabsIndicators1" />
           <Tab label={"Recursos"} className="tabsIndicators tabsIndicators2" />
-         
         </Tabs>
       </Grid>
 

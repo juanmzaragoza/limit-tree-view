@@ -119,7 +119,7 @@ const ProjectDetailedContent = ({
         <DetailedHeader
           header={headerProject}
           body={projectFields}
-          colorBack={"rgba(58, 145, 152, 0.30)"}
+          colorBackground={"rgba(58, 145, 152, 0.30)"}
           icon={<BusinessIcon />}
           iconColor={primaryColor}
           breakpoints={detailedHeaderBreakpoints}

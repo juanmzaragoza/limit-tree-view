@@ -45,9 +45,7 @@ const ControlUnitDetailedContent = ({
   const [headerProject, setHeaderProject] = React.useState({});
   const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
-  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState(
-    []
-  );
+  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
   const [columns] = React.useState(getPartidaColumnsByPeriod({ period: selectedPeriod, intl }));
 
   const loadHeader = () => actions.loadHeader({ id: props.id });
@@ -148,7 +146,9 @@ const ControlUnitDetailedContent = ({
   return (
     <Grid container spacing={1}>
       <Grid item xs={6}>
-        <DetailedHeader header={headerProject} body={headerProjectFields}   colorBack={"rgba(58, 145, 152, 0.30)"}
+        <DetailedHeader
+          header={headerProject} body={headerProjectFields}
+          colorBackground={"rgba(58, 145, 152, 0.30)"}
           icon={<Business />}
           iconColor={primaryColor}
           breakpoints={detailedHeaderBreakpoints} />
@@ -157,7 +157,7 @@ const ControlUnitDetailedContent = ({
         <DetailedHeader
           header={headerControlUnit}
           body={headerControlUnitFields}
-          colorBack={"rgba(255, 177, 27, 0.30)"}
+          colorBackground={"rgba(255, 177, 27, 0.30)"}
           icon={<EmojiEvents />}
           iconColor={"#ffb11b"}
           breakpoints={detailedHeaderBreakpoints}

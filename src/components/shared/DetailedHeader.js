@@ -15,7 +15,7 @@ import { useIntl } from "react-intl";
 const DetailedHeader = ({
   header,
   body,
-  colorBack,
+  colorBackground,
   icon,
   iconColor,
   breakpoints = { xs: 6 },
@@ -50,7 +50,7 @@ const DetailedHeader = ({
         }}
         sx={{
           maxHeight: "60px",
-          backgroundColor: colorBack,
+          backgroundColor: colorBackground,
         }}
         className="tituloDetailHeader"
       />
