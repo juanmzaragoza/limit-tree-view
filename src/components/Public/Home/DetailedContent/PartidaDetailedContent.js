@@ -4,25 +4,38 @@ import { useIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import { isEmpty } from "lodash";
 import { Grid, Tab, Tabs } from "@mui/material";
-import { Engineering } from "@mui/icons-material";
+import {
+  Engineering,
+  StackedLineChart,
+  StackedBarChart,
+  Euro,
+  CallMissedOutgoing,
+  Construction,
+} from "@mui/icons-material";
 
 import { formatCurrencyWithIntl } from "utils/formats";
-import MaterialCardPartidaIndicator from "components/shared/MaterialCardPartidaIndicator";
+import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
 
 import { loadHeader, loadKpis, resetKpis, update } from "redux/partida";
-import { getIsLoading, getKpis, getPartida, getRows } from "redux/partida/selectors";
+import {
+  getIsLoading,
+  getKpis,
+  getPartida,
+  getRows,
+} from "redux/partida/selectors";
 import { loadHeader as loadUnitControlHeader } from "redux/unit-control";
 import { getUnitControl } from "redux/unit-control/selectors";
 import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
-import {getResourceColumnsByPeriod, isPeriodOpen} from "./common";
+import { getResourceColumnsByPeriod, isPeriodOpen } from "./common";
 
-const RESOURCES_TAB_INDEX = 0;
-const KPIS_TAB_INDEX = 1;
+const KPIS_TAB_INDEX = 0;
+const RESOURCES_TAB_INDEX = 1;
+
 
 const ProjectDetailedContent = ({
   rows,
@@ -44,28 +57,185 @@ const ProjectDetailedContent = ({
   );
   const [headerPartida, setHeaderPartida] = React.useState({});
   const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
-  const [tabIndex, setTabIndex] = React.useState(RESOURCES_TAB_INDEX);
+  const [tabIndex, setTabIndex] = React.useState(KPIS_TAB_INDEX);
   const [indicadores, setIndicadores] = React.useState();
-  const [columns] = React.useState(getResourceColumnsByPeriod({ period: selectedPeriod, intl }));
+  const [columns] = React.useState(
+    getResourceColumnsByPeriod({ period: selectedPeriod, intl })
+  );
 
   const onChangeIndexExecutor = {
     [RESOURCES_TAB_INDEX]: () => {},
     [KPIS_TAB_INDEX]: () => {
       partida.id && actions.loadKpis({ id: partida.id });
-    }
-  }
+    },
+  };
   React.useEffect(() => {
     onChangeIndexExecutor[tabIndex]();
   }, [tabIndex, partida]);
 
   React.useEffect(() => {
     setIndicadores(
-      kpis.map(kpi => ({
-        ...kpi,
-        icon: <Engineering />,
-      }))
-    )
-  },[kpis]);
+      [
+        {
+          title: "Produccion",
+          icon: <Engineering />,
+          lg: 2,
+          indicators: [
+            {
+              field: "Producción Anterior",
+              value: kpis.produccioAnterior,
+            },
+            {
+              field: "Producción Periodo",
+              value: kpis.produccioPeriode,
+            },
+            {
+              field: "Producción Año Natural",
+              value: kpis.produccioAny,
+            },
+            {
+              field: "Producción a Origen",
+              value: kpis.produccioOrigen,
+            },
+            {
+              field: "Producción Pendiente",
+              value: kpis.produccioPendent,
+            },
+          ],
+        },
+        {
+          title: "Coste Teórico",
+          icon: <StackedLineChart />,
+          lg: 2,
+          indicators: [
+            {
+              field: "Coste Teórico Anterior",
+              value: kpis.costTeoricAnterior,
+            },
+            {
+              field: "Coste Teórico Pendiente",
+              value: kpis.costTeoricPeriode,
+            },
+            {
+              field: "Coste Teórico Año Natural",
+              value: kpis.costTeoricAny,
+            },
+            {
+              field: "Coste Teórico a Origen",
+              value: kpis.costTeoricOrigen,
+            },
+            {
+              field: "Coste Teórico Pendiente",
+              value: kpis.costTeoricPendent,
+            },
+          ],
+        },
+        {
+          title: "Coste Real",
+          icon: <StackedBarChart />,
+          lg: 3,
+          indicators: [
+            {
+              field: "Coste Real Anterior",
+              value: kpis.costRealAnterior,
+              icon: <StackedBarChart />,
+            },
+            {
+              field: "Coste Real Pendiente",
+              value: kpis.costRealPeriode,
+              icon: <StackedBarChart />,
+            },
+            {
+              field: "Coste Real año Natural",
+              value: kpis.costRealAny,
+              icon: <StackedBarChart />,
+            },
+            {
+              field: "Coste Real Origen",
+              value: kpis.costRealOrigen,
+              icon: <StackedBarChart />,
+            },
+          ],
+        },
+        {
+          title: "Beneficios",
+          icon: <Euro />,
+          lg: 3,
+          indicators: [
+            {
+              field: "Beneficio Anterior",
+              value: kpis.beneficiAnterior,
+            },
+            {
+              field: "Beneficio Período",
+              value: kpis.beneficiPeriode,
+            },
+            {
+              field: "Beneficio año Natural",
+              value: kpis.beneficiAny,
+            },
+            {
+              field: "Beneficio Origen",
+              value: kpis.beneficiOrigen,
+            },
+          ],
+        },
+        {
+          title: "Desviación",
+          icon: <CallMissedOutgoing />,
+          lg: 3,
+          indicators: [
+            {
+              field: "Desviación Anterior",
+              value: kpis.desviacioCostAnterior,
+            },
+            {
+              field: "Desviación Período",
+              value: kpis.desviacioPeriode,
+            },
+            {
+              field: "Desviación año Natural",
+              value: kpis.desviacioAny,
+            },
+
+            {
+              field: "Desviación Origen",
+              value: kpis.desviacioOrigen,
+            },
+          ],
+        },
+        {
+          title: "Obra Pendiente Periodo",
+          icon: <Construction />,
+          lg: 3,
+          indicators: [
+            {
+              field: "Obra Pendiente Anterior",
+              value: kpis.obraPendentFacturar,
+            },
+            {
+              field: "Obra Pendiente Período",
+              value: kpis.obraPendent,
+            },
+            {
+              field: "Obra Pendiente año Natural",
+              value: kpis.beneficiOrigen,
+            },
+            {
+              field: "Obra Pendiente Origen",
+              value: kpis.beneficiOrigen,
+            },
+          ],
+        },
+      ]
+
+      // kpis.map(kpi => ({
+
+      //   ...kpi,
+      //   icon: <Engineering />,
+      // }))
+    );
+  }, [kpis]);
 
   const loadHeader = () => actions.loadHeader({ id: props.id });
   React.useEffect(() => {
@@ -145,12 +315,13 @@ const ProjectDetailedContent = ({
         <DetailedHeader header={headerPartida} body={headerPartidaFields} />
       </Grid>
       <Grid item xs={12}>
-        <Tabs
-          value={tabIndex}
-          onChange={(e, index) => setTabIndex(index)}
-        >
-          <Tab label={"Recursos"} className="tabsIndicators tabsIndicators1" />
-          <Tab label={"Indicadores"} className="tabsIndicators tabsIndicators2" />
+        <Tabs value={tabIndex} onChange={(e, index) => setTabIndex(index)}>
+        <Tab
+            label={"Indicadores"}
+            className="tabsIndicators tabsIndicators1"
+          />
+          <Tab label={"Recursos"} className="tabsIndicators tabsIndicators2" />
+         
         </Tabs>
       </Grid>
 
@@ -162,13 +333,21 @@ const ProjectDetailedContent = ({
             rows={rows}
             loading={loading}
             onCellEditCommit={handleCellChange}
-            disableInlineEdition={!isPeriodOpen({ period: selectedPeriod })}/>
+            disableInlineEdition={!isPeriodOpen({ period: selectedPeriod })}
+          />
         )}
         {tabIndex === KPIS_TAB_INDEX && (
-          <MaterialCardPartidaIndicator
-            loading={isEmpty(indicadores)}
-            content={indicadores}
-            onUnmount={() => actions.resetKpis()}/>
+          // <MaterialCardPartidaIndicator
+          //   loading={isEmpty(indicadores)}
+          //   content={indicadores}
+          //   onUnmount={() => actions.resetKpis()}/>
+          <Grid container spacing={2}>
+            <MaterialCardIndicator
+              loading={isEmpty(indicadores)}
+              content={indicadores}
+              onUnmount={() => actions.resetKpis()}
+            />
+          </Grid>
         )}
       </Grid>
     </Grid>
@@ -183,7 +362,7 @@ const mapStateToProps = (state, props) => {
     partida: getPartida(state),
     tree: getData(state),
     selectedPeriod: getSelectedPeriod(state),
-    kpis: getKpis(state)
+    kpis: getKpis(state),
   };
 };
 

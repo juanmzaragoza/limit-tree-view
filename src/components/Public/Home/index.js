@@ -8,7 +8,7 @@ import ProjectsTreeView from "./ProjectsTreeView";
 import SelectOne from "./SelectOne";
 import DetailedContent from "./DetailedContent/index";
 import ProjectSelector from "./ProjectSelector";
-import PeriodsManagement from "./PeriodsManagement";
+import PeriodsManagement from "./PeriodsManagement/index";
 
 import { getFormattedData, getIsLoading } from "redux/project-tree/selectors";
 import { loadData } from "redux/project-tree";
