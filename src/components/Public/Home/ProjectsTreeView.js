@@ -12,14 +12,12 @@ import Box from '@mui/material/Box';
 import TreeView from '@mui/lab/TreeView';
 import TreeItem, { treeItemClasses } from '@mui/lab/TreeItem';
 import Typography from '@mui/material/Typography';
-import Label from '@mui/icons-material/Label';
-import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 import MaterialSkeleton from "components/shared/MaterialSkeleton/MaterialSkeleton";
 
-import { primaryColor } from 'utils/helper';
+import {entitiesStyles, primaryColor} from 'utils/helper';
 import {usePrevious} from "utils/helper-hooks";
 
 import "./styles.css";
@@ -69,7 +67,7 @@ const StyledTreeItem = (props) => {
     <StyledTreeItemRoot
       label={
         <Box sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
-          <Box component={LabelIcon} color="inherit" sx={{ mr: 1 }} />
+          <Box component={props => LabelIcon} color="inherit" sx={{ mr: 1 }} />
           <Typography variant="body2" sx={{ fontWeight: 'inherit', flexGrow: 1 }}>
             {labelText}
           </Typography>
@@ -80,7 +78,7 @@ const StyledTreeItem = (props) => {
       }
       style={{
         '--tree-view-color': color,
-        '--tree-view-bg-color': "rgba(58, 145, 152, 0.08)",
+        '--tree-view-bg-color': bgColor,
       }}
       {...other}
     />
@@ -108,24 +106,28 @@ const ProjectsTreeView = ({ tree, loading, onNodeSelect }) => {
   },[tree]);
 
   const renderNodes = ({ tree }) => {
+    const { type } = tree;
     if(tree.nodes) {
       return <StyledTreeItem
         key={tree.id}
         nodeId={tree.id}
         labelText={tree.labelText}
         labelInfo={tree.labelInfo}
-        labelIcon={Label} >
-        {tree.nodes.map(node => renderNodes({ tree: node}))}
+        color={entitiesStyles[type].iconColor}
+        bgColor={entitiesStyles[type].colorBackground}
+        labelIcon={entitiesStyles[type].icon}
+      >
+        {tree.nodes.map(node => renderNodes({ tree: node }))}
       </StyledTreeItem>
     } else{
       return <StyledTreeItem
         key={tree.id}
         nodeId={tree.id}
         labelText={tree.labelText}
-        labelIcon={SupervisorAccountIcon}
         labelInfo={tree.labelInfo}
-        color="#1a73e8"
-        bgColor="#e8f0fe"
+        color={entitiesStyles[type].iconColor}
+        bgColor={entitiesStyles[type].colorBackground}
+        labelIcon={entitiesStyles[type].icon}
         disabled={tree.disabled}
       />
     }

@@ -3,7 +3,6 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { useIntl } from "react-intl";
 import { Grid } from "@mui/material";
-import { Business, EmojiEvents } from '@mui/icons-material'
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
@@ -12,8 +11,7 @@ import {
   getIsLoading,
   getRows,
   getUnitControl,
-  getKpis as
-  getKpisUC 
+  getKpis as getKpisUC
 } from "redux/unit-control/selectors";
 import { loadHeader, updatePartida, loadKpis } from "redux/unit-control";
 import { loadData as loadTreeData } from "redux/project-tree";
@@ -21,7 +19,11 @@ import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 import { getKpis } from "redux/project/selectors";
 
-import {entitiesStyles, primaryColor} from "utils/helper";
+import { entitiesStyles } from "utils/helper";
+import {
+  CONTROL_UNIT_TYPE,
+  PROJECT_TYPE
+} from "constants/business-types";
 
 import {
   getKpisColorValue,
@@ -149,7 +151,7 @@ const ControlUnitDetailedContent = ({
         <DetailedHeader
           header={headerProject} body={headerProjectFields}
           breakpoints={detailedHeaderBreakpoints}
-          {...entitiesStyles['project']}
+          {...entitiesStyles[PROJECT_TYPE]}
         />
       </Grid>
       <Grid item xs={6}>
@@ -157,7 +159,7 @@ const ControlUnitDetailedContent = ({
           header={headerControlUnit}
           body={headerControlUnitFields}
           breakpoints={detailedHeaderBreakpoints}
-          {...entitiesStyles['project']}
+          {...entitiesStyles[CONTROL_UNIT_TYPE]}
         />
       </Grid>
       <Grid item xs={12}>

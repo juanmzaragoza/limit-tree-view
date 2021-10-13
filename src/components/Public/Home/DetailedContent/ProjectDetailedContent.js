@@ -5,7 +5,6 @@ import { bindActionCreators } from "redux";
 import { isEmpty } from "lodash";
 
 import { Grid } from "@mui/material";
-import BusinessIcon from "@mui/icons-material/Business";
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
@@ -18,8 +17,9 @@ import { getSelectedProject } from "redux/project-selector/selectors";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
-import {entitiesStyles, primaryColor} from "utils/helper";
+import { entitiesStyles } from "utils/helper";
 import { formatCurrencyWithIntl } from "utils/formats";
+import { PROJECT_TYPE } from "constants/business-types";
 
 import { getKpisColorValue, isPeriodOpen } from "./common";
 
@@ -117,7 +117,7 @@ const ProjectDetailedContent = ({
           header={headerProject}
           body={projectFields}
           breakpoints={detailedHeaderBreakpoints}
-          {...entitiesStyles['project']}
+          {...entitiesStyles[PROJECT_TYPE]}
         />
       </Grid>
       <Grid item xs={4}>

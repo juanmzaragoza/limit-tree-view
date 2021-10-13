@@ -11,8 +11,6 @@ import {
   Euro,
   CallMissedOutgoing,
   Construction,
-  CatchingPokemon,
-  EmojiEvents
 } from "@mui/icons-material";
 
 import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
@@ -28,21 +26,22 @@ import {
 } from "redux/partida/selectors";
 import { getKpis as getKpisProjecte } from "redux/project/selectors";
 import { loadHeader as loadUnitControlHeader } from "redux/unit-control";
-import { getUnitControl } from "redux/unit-control/selectors";
+import { getUnitControl, getKpis as getKpisUC  } from "redux/unit-control/selectors";
 import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
-import { getKpisColorValue, getResourceColumnsByPeriod, isPeriodOpen } from "./common";
-import BusinessIcon from '@mui/icons-material/Business';
-import { entitiesStyles, primaryColor } from "utils/helper";
+import { entitiesStyles } from "utils/helper";
 import {
-  getKpis as
-  getKpisUC 
-} from "redux/unit-control/selectors";
+  CONTROL_UNIT_TYPE,
+  PARTIDA_TYPE,
+  PROJECT_TYPE
+} from "constants/business-types";
+
+import { getKpisColorValue, getResourceColumnsByPeriod, isPeriodOpen } from "./common";
+
 const KPIS_TAB_INDEX = 0;
 const RESOURCES_TAB_INDEX = 1;
-
 
 const ProjectDetailedContent = ({
   rows,
@@ -368,7 +367,7 @@ const ProjectDetailedContent = ({
           header={headerProject}
           body={headerProjectFields}
           breakpoints={detailedHeaderBreakpoints}
-          {...entitiesStyles['project']}
+          {...entitiesStyles[PROJECT_TYPE]}
         />
       </Grid>
       <Grid item xs={4}>
@@ -376,7 +375,7 @@ const ProjectDetailedContent = ({
           header={headerControlUnit}
           body={headerControlUnitFields}
           breakpoints={detailedHeaderBreakpoints}
-          {...entitiesStyles['controlUnit']}
+          {...entitiesStyles[CONTROL_UNIT_TYPE]}
         />
       </Grid>
       <Grid item xs={4}>
@@ -384,7 +383,7 @@ const ProjectDetailedContent = ({
           header={headerPartida}
           body={headerPartidaFields}
           breakpoints={detailedHeaderBreakpoints}
-          {...entitiesStyles['partida']}
+          {...entitiesStyles[PARTIDA_TYPE]}
         />
       </Grid>
       <Grid item xs={12}>
