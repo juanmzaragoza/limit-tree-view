@@ -59,7 +59,7 @@ const DetailedHeader = ({
           <Grid container spacing={1}>
             {body.map(({ field, value, colorValue = "inherit" }) => {
               const line = `${field}: ${value}`;
-              const size = colorValue != "inherit" ? "20px" : "";
+              const size = colorValue !== "inherit" ? "20px" : "";
               return (
                 <Grid key={line} item xs={breakPoint}>
                   <Typography

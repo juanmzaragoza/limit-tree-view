@@ -7,7 +7,6 @@ import { useIntl } from "react-intl";
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
 
-import { formatCurrencyWithIntl } from "utils/formats";
 import {
   getIsLoading,
   getRows,
@@ -54,7 +53,6 @@ const ControlUnitDetailedContent = ({
 
   React.useEffect(() => {
     loadHeader();
-    console.log(kpisUnitatControl)
   }, [props.id]);
 
   React.useEffect(() => {

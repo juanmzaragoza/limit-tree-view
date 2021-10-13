@@ -101,7 +101,10 @@ const ProjectsTreeView = ({ tree, loading, onNodeSelect }) => {
 
   const previousTree = usePrevious(tree);
   React.useEffect(() => {
-    if(!isEmpty(tree) && !isEqual(previousTree?.id,tree?.id)) setExpanded([tree.id]);
+    if(!isEmpty(tree) && !isEqual(previousTree?.id,tree?.id)) {
+      setExpanded([tree.id]);
+      handleOnNodeSelect({},tree.id);
+    }
   },[tree]);
 
   const renderNodes = ({ tree }) => {
@@ -144,19 +147,24 @@ const ProjectsTreeView = ({ tree, loading, onNodeSelect }) => {
     }
   }
 
-  const handleOnNodeSelect = (e, ids) => {
-    const selected = ids === nodeIds? null:ids;
+  const processOnNodeSelected = (selectedId) => {
+    const selected = selectedId === nodeIds ? null : selectedId;
     // fire action
     setNodeIds(selected);
-    const selectedNode = findNode({ nodes: tree, nodeId: selected });
-    if(!selectedNode.disabled)
-      onNodeSelect(findNode({ nodes: tree, nodeId: selected }));
+    const selectedNode = findNode({nodes: tree, nodeId: selected});
+    if (!selectedNode.disabled)
+      onNodeSelect(selectedNode);
+  }
+
+  const handleOnNodeSelect = (e, ids) => {
     // update expanded
     const found = expanded.find(id => ids === id);
     if(found) {
       setExpanded(remove(expanded, (e) => e !== found));
+      processOnNodeSelected(null);
     } else{
       setExpanded([...expanded, ids]);
+      processOnNodeSelected(ids);
     }
   }
 
