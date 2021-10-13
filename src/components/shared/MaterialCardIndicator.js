@@ -24,7 +24,7 @@ const cardUseStyles = makeStyles((theme) => ({
     maxWidth: "100%",
   },
   cardHeader: {
-    backgroundColor: "rgba(58, 145, 152, 0.08)",
+    backgroundColor: "rgba(58, 145, 152, 0.20)",
   },
   avatar: {
     alignContent: "center",

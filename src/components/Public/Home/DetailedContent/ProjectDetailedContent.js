@@ -18,8 +18,19 @@ import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
 import { isPeriodOpen } from "./common";
+import BusinessIcon from "@mui/icons-material/Business";
+import { primaryColor } from "utils/helper";
+import CardTotal from "components/shared/CardTotal";
 
-const ProjectDetailedContent = ({ rows, project, tree, period, kpis, actions }) => {
+
+const ProjectDetailedContent = ({
+  rows,
+  project,
+  tree,
+  period,
+  kpis,
+  actions,
+}) => {
   const intl = useIntl();
   const [headerProject, setHeaderProject] = React.useState({});
   const [projectFields, setProjectFields] = React.useState([]);
@@ -53,48 +64,83 @@ const ProjectDetailedContent = ({ rows, project, tree, period, kpis, actions }) 
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
+
     setProjectFields([
       {
-        field: "Importe Total",
-        value: formatCurrencyWithIntl(tree.importTotal ?? 0, intl),
+        field: "Beneficio Origen",
+        value: kpis.beneficiOrigen,
       },
       {
-        field: "Coste Total",
-        value: formatCurrencyWithIntl(tree.costTotal ?? 0, intl),
+        field: "Beneficio Año",
+        value: kpis.beneficiAny,
+        colorValue: kpis?.beneficiAny >= 0 ? "green" : "red",
+      },
+      {
+        field: "Desviación Origen",
+        value: kpis.desviacioOrigen,
+      },
+      {
+        field: "Desviación Año",
+        value: kpis.desviacioAny,
+        colorValue: kpis?.desviacioAny >= 0 ? "green" : "red",
+      },
+      {
+        field: "Obra Pendiente Origen",
+        value: kpis.obraPendentOrigen,
+  
+      },
+
+      {
+        field: "Obra Pendiente Año",
+        value: kpis.obraPendentAny,
+        colorValue: kpis?.obraPendentAny >= 0 ? "green" : "red",
       },
     ]);
-  }, [project, intl]);
+  }, [kpis, project, intl]);
 
   React.useEffect(() => {
     period.id && actions.loadKpis({ id: period.id });
-  },[period]);
+  }, [period]);
 
-  React.useEffect(() => {
-    setIndicadores(
-      kpis.map(kpi => ({
-        ...kpi,
-        icon: <Assignment />,
-      }))
-    )
-  },[kpis]);
+
+
+  const content = [
+    { field: "Importe Total", value: tree.importTotal },
+    {
+      field: "Coste Total",
+      value: tree.costTotal,
+    },
+  ];
 
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
-        <DetailedHeader header={headerProject} body={projectFields} />
+        <DetailedHeader
+          header={headerProject}
+          body={projectFields}
+          colorBack={"rgba(58, 145, 152, 0.30)"}
+          icon={<BusinessIcon />}
+          iconColor={primaryColor}
+          breakPoint={2}
+        />
+      </Grid>
+      <Grid item xs={4}>
+        <CardTotal body={content} />
       </Grid>
       <Grid item xs={12}>
         <MaterialDataGrid
           columns={columns}
           rows={rows}
-          disableInlineEdition={!isPeriodOpen({ period })} />
+          disableInlineEdition={!isPeriodOpen({ period })}
+        />
       </Grid>
       <Grid item xs={12}>
         <MaterialCardPartidaIndicator
           title={"Indicadores"}
           loading={isEmpty(indicadores)}
           content={indicadores}
-          onUnmount={() => actions.resetKpis()} />
+         
+        />
       </Grid>
     </Grid>
   );
@@ -107,7 +153,7 @@ const mapStateToProps = (state, props) => {
     project: getSelectedProject(state),
     period: getSelectedPeriod(state),
     tree: getData(state),
-    kpis: getKpis(state)
+    kpis: getKpis(state),
   };
 };
 
@@ -117,7 +163,10 @@ const mapDispatchToProps = (dispatch, props) => {
     resetKpis: bindActionCreators(resetKpis, dispatch),
   };
   return { actions };
-}
+};
 
-const component = connect(mapStateToProps, mapDispatchToProps)(ProjectDetailedContent);
+const component = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProjectDetailedContent);
 export default component;
