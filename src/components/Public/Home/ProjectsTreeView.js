@@ -58,7 +58,7 @@ const StyledTreeItem = (props) => {
   const {
     bgColor = primaryColor,
     color = primaryColor,
-    labelIcon: LabelIcon = <LabelIcon />,
+    labelIcon = <LabelIcon />,
     labelInfo,
     labelText,
     ...other
@@ -68,7 +68,7 @@ const StyledTreeItem = (props) => {
     <StyledTreeItemRoot
       label={
         <Box sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
-          <Box component={props => LabelIcon} color="inherit" sx={{ mr: 1 }} />
+          <Box component={props => labelIcon} color="inherit" sx={{ mr: 1 }} />
           <Typography variant="body2" sx={{ fontWeight: 'inherit', flexGrow: 1 }}>
             {labelText}
           </Typography>
