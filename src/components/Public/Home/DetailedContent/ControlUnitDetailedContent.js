@@ -21,7 +21,7 @@ import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 import { getKpis } from "redux/project/selectors";
 
-import { greenColor, primaryColor, redColor } from "utils/helper";
+import { primaryColor } from "utils/helper";
 
 import {
   getKpisColorValue,
@@ -144,13 +144,14 @@ const ControlUnitDetailedContent = ({
     unitControl.id && actions.loadKpis({ id: unitControl.id });
   }, [unitControl]);
 
+  const detailedHeaderBreakpoints = { xs: 4 };
   return (
     <Grid container spacing={1}>
       <Grid item xs={6}>
         <DetailedHeader header={headerProject} body={headerProjectFields}   colorBack={"rgba(58, 145, 152, 0.30)"}
           icon={<Business />}
           iconColor={primaryColor}
-          breakPoint={4} />
+          breakpoints={detailedHeaderBreakpoints} />
       </Grid>
       <Grid item xs={6}>
         <DetailedHeader
@@ -159,7 +160,7 @@ const ControlUnitDetailedContent = ({
           colorBack={"rgba(255, 177, 27, 0.30)"}
           icon={<EmojiEvents />}
           iconColor={"#ffb11b"}
-          breakPoint={4}
+          breakpoints={detailedHeaderBreakpoints}
         />
       </Grid>
       <Grid item xs={12}>
@@ -170,7 +171,6 @@ const ControlUnitDetailedContent = ({
           loading={loading}
           onCellEditCommit={handleCellChange}
           disableInlineEdition={!isPeriodOpen({ period: selectedPeriod })}
-
         />
       </Grid>
     </Grid>

@@ -18,7 +18,7 @@ const DetailedHeader = ({
   colorBack,
   icon,
   iconColor,
-  breakPoint = 6,
+  breakpoints = { xs: 6 },
 }) => {
   const intl = useIntl();
   const renderSkeleton = () => <MaterialHeaderSkeleton />;
@@ -61,7 +61,7 @@ const DetailedHeader = ({
               const line = `${field}: ${value}`;
               const size = colorValue !== "inherit" ? "20px" : "";
               return (
-                <Grid key={line} item xs={breakPoint}>
+                <Grid key={line} item xs={breakpoints.xs} >
                   <Typography
                     component="h2"
                     variant="caption"

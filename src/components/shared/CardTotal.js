@@ -1,14 +1,11 @@
 import React from "react";
 import {
-  Avatar,
   Card,
   CardContent,
-  CardHeader,
   Container,
   Grid,
   Typography,
 } from "@mui/material";
-import MaterialHeaderSkeleton from "./MaterialSkeleton/MaterialHeaderSkeleton";
 import { formatCurrencyWithIntl } from "utils/formats";
 import { useIntl } from "react-intl";
 

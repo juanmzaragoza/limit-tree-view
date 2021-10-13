@@ -112,6 +112,7 @@ const ProjectDetailedContent = ({
     },
   ];
 
+  const detailedHeaderBreakpoints = { xs: 2 };
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
@@ -121,7 +122,7 @@ const ProjectDetailedContent = ({
           colorBack={"rgba(58, 145, 152, 0.30)"}
           icon={<BusinessIcon />}
           iconColor={primaryColor}
-          breakPoint={2}
+          breakpoints={detailedHeaderBreakpoints}
         />
       </Grid>
       <Grid item xs={4}>

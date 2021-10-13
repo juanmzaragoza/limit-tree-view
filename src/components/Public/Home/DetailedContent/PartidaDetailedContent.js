@@ -15,7 +15,6 @@ import {
   EmojiEvents
 } from "@mui/icons-material";
 
-import { formatCurrencyWithIntl } from "utils/formats";
 import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
@@ -320,7 +319,6 @@ const ProjectDetailedContent = ({
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
-
     setHeaderProjectFields([
       {
         field: "Beneficio Origen",
@@ -345,7 +343,6 @@ const ProjectDetailedContent = ({
         value: kpisProjecte.obraPendentOrigen,
         colorValue: getKpisColorValue({ value: kpisProjecte?.obraPendentOrigen >= 0 }),
       },
-
       {
         field: " Pendiente Año",
         value: kpisProjecte.obraPendentAny,
@@ -369,13 +366,14 @@ const ProjectDetailedContent = ({
     }
   };
 
+  const detailedHeaderBreakpoints = { xs: 4 };
   return (
     <Grid container spacing={1}>
       <Grid item xs={4}>
         <DetailedHeader header={headerProject} body={headerProjectFields}   colorBack={"rgba(58, 145, 152, 0.30)"}
           icon={<BusinessIcon />}
           iconColor={primaryColor}
-          breakPoint={4} />
+          breakpoints={detailedHeaderBreakpoints} />
       </Grid>
       <Grid item xs={4}>
         <DetailedHeader
@@ -384,14 +382,14 @@ const ProjectDetailedContent = ({
           colorBack={"rgba(255, 177, 27, 0.30)"}
           icon={<EmojiEvents />}
           iconColor={"#ffb11b"}
-          breakPoint={4}/>
+          breakpoints={detailedHeaderBreakpoints} />
       </Grid>
       <Grid item xs={4}>
         <DetailedHeader header={headerPartida} body={headerPartidaFields}
-        colorBack={"rgba(162, 80, 245, 0.30)"}
-        icon={<CatchingPokemon />}
-        iconColor={"#a250f5"}
-        breakPoint={4} />
+          colorBack={"rgba(162, 80, 245, 0.30)"}
+          icon={<CatchingPokemon />}
+          iconColor={"#a250f5"}
+          breakpoints={detailedHeaderBreakpoints} />
       </Grid>
       <Grid item xs={12}>
         <Tabs value={tabIndex} onChange={(e, index) => setTabIndex(index)}>
@@ -416,10 +414,6 @@ const ProjectDetailedContent = ({
           />
         )}
         {tabIndex === KPIS_TAB_INDEX && (
-          // <MaterialCardPartidaIndicator
-          //   loading={isEmpty(indicadores)}
-          //   content={indicadores}
-          //   onUnmount={() => actions.resetKpis()}/>
           <Grid container spacing={2}>
             <MaterialCardIndicator
               loading={isEmpty(indicadores)}
