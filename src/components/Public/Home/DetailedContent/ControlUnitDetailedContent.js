@@ -21,7 +21,7 @@ import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 import { getKpis } from "redux/project/selectors";
 
-import { primaryColor } from "utils/helper";
+import {entitiesStyles, primaryColor} from "utils/helper";
 
 import {
   getKpisColorValue,
@@ -148,19 +148,16 @@ const ControlUnitDetailedContent = ({
       <Grid item xs={6}>
         <DetailedHeader
           header={headerProject} body={headerProjectFields}
-          colorBackground={"rgba(58, 145, 152, 0.30)"}
-          icon={<Business />}
-          iconColor={primaryColor}
-          breakpoints={detailedHeaderBreakpoints} />
+          breakpoints={detailedHeaderBreakpoints}
+          {...entitiesStyles['project']}
+        />
       </Grid>
       <Grid item xs={6}>
         <DetailedHeader
           header={headerControlUnit}
           body={headerControlUnitFields}
-          colorBackground={"rgba(255, 177, 27, 0.30)"}
-          icon={<EmojiEvents />}
-          iconColor={"#ffb11b"}
           breakpoints={detailedHeaderBreakpoints}
+          {...entitiesStyles['project']}
         />
       </Grid>
       <Grid item xs={12}>

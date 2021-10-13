@@ -18,7 +18,7 @@ import { getSelectedProject } from "redux/project-selector/selectors";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
-import { primaryColor } from "utils/helper";
+import {entitiesStyles, primaryColor} from "utils/helper";
 import { formatCurrencyWithIntl } from "utils/formats";
 
 import { getKpisColorValue, isPeriodOpen } from "./common";
@@ -64,7 +64,6 @@ const ProjectDetailedContent = ({
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
-
     setProjectFields([
       {
         field: "Beneficio Origen",
@@ -102,8 +101,6 @@ const ProjectDetailedContent = ({
     period.id && actions.loadKpis({ id: period.id });
   }, [period]);
 
-
-
   const content = [
     { field: "Importe Total", value: tree.importTotal },
     {
@@ -119,10 +116,8 @@ const ProjectDetailedContent = ({
         <DetailedHeader
           header={headerProject}
           body={projectFields}
-          colorBackground={"rgba(58, 145, 152, 0.30)"}
-          icon={<BusinessIcon />}
-          iconColor={primaryColor}
           breakpoints={detailedHeaderBreakpoints}
+          {...entitiesStyles['project']}
         />
       </Grid>
       <Grid item xs={4}>

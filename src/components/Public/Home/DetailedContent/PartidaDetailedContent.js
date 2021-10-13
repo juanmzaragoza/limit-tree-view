@@ -26,20 +26,16 @@ import {
   getPartida,
   getRows,
 } from "redux/partida/selectors";
-import {
-
-  getKpis as getKpisProjecte,
-
-} from "redux/project/selectors";
+import { getKpis as getKpisProjecte } from "redux/project/selectors";
 import { loadHeader as loadUnitControlHeader } from "redux/unit-control";
 import { getUnitControl } from "redux/unit-control/selectors";
 import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
-import {getKpisColorValue, getResourceColumnsByPeriod, isPeriodOpen} from "./common";
+import { getKpisColorValue, getResourceColumnsByPeriod, isPeriodOpen } from "./common";
 import BusinessIcon from '@mui/icons-material/Business';
-import { primaryColor } from "utils/helper";
+import { entitiesStyles, primaryColor } from "utils/helper";
 import {
   getKpis as
   getKpisUC 
@@ -279,7 +275,7 @@ const ProjectDetailedContent = ({
         colorValue: getKpisColorValue({ value: kpisUnitatControl?.obraPendentAny >= 0 }),
       },
     ]);
-  }, [kpisUnitatControl,unitControl, intl]);
+  }, [kpisUnitatControl, unitControl, intl]);
 
   React.useEffect(() => {
     setHeaderPartida({ title: partida.descripcioReduc });
@@ -369,29 +365,27 @@ const ProjectDetailedContent = ({
     <Grid container spacing={1}>
       <Grid item xs={4}>
         <DetailedHeader
-          header={headerProject} body={headerProjectFields}
-          colorBackground={"rgba(58, 145, 152, 0.30)"}
-          icon={<BusinessIcon />}
-          iconColor={primaryColor}
-          breakpoints={detailedHeaderBreakpoints} />
+          header={headerProject}
+          body={headerProjectFields}
+          breakpoints={detailedHeaderBreakpoints}
+          {...entitiesStyles['project']}
+        />
       </Grid>
       <Grid item xs={4}>
         <DetailedHeader
           header={headerControlUnit}
           body={headerControlUnitFields}
-          colorBackground={"rgba(255, 177, 27, 0.30)"}
-          icon={<EmojiEvents />}
-          iconColor={"#ffb11b"}
-          breakpoints={detailedHeaderBreakpoints} />
+          breakpoints={detailedHeaderBreakpoints}
+          {...entitiesStyles['controlUnit']}
+        />
       </Grid>
       <Grid item xs={4}>
         <DetailedHeader
           header={headerPartida}
           body={headerPartidaFields}
-          colorBackground={"rgba(162, 80, 245, 0.30)"}
-          icon={<CatchingPokemon />}
-          iconColor={"#a250f5"}
-          breakpoints={detailedHeaderBreakpoints} />
+          breakpoints={detailedHeaderBreakpoints}
+          {...entitiesStyles['partida']}
+        />
       </Grid>
       <Grid item xs={12}>
         <Tabs value={tabIndex} onChange={(e, index) => setTabIndex(index)}>
