@@ -2,14 +2,14 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { useIntl } from "react-intl";
 import { bindActionCreators } from "redux";
-import { Grid } from "@mui/material";
-import { Assignment } from "@mui/icons-material";
 import { isEmpty } from "lodash";
+
+import { Grid } from "@mui/material";
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
 import MaterialCardPartidaIndicator from "components/shared/MaterialCardPartidaIndicator";
-import { formatCurrencyWithIntl } from "utils/formats";
+import CardTotal from "components/shared/CardTotal";
 
 import { loadKpis, resetKpis } from "redux/project";
 import { getIsLoading, getKpis, getRows } from "redux/project/selectors";
@@ -17,11 +17,11 @@ import { getSelectedProject } from "redux/project-selector/selectors";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
-import { isPeriodOpen } from "./common";
-import BusinessIcon from "@mui/icons-material/Business";
-import { primaryColor } from "utils/helper";
-import CardTotal from "components/shared/CardTotal";
+import { entitiesStyles } from "utils/helper";
+import { formatCurrencyWithIntl } from "utils/formats";
+import { PROJECT_TYPE } from "constants/business-types";
 
+import { getKpisColorValue, isPeriodOpen } from "./common";
 
 const ProjectDetailedContent = ({
   rows,
@@ -60,11 +60,10 @@ const ProjectDetailedContent = ({
       editable: false,
     },
   ]);
-  const [indicadores, setIndicadores] = React.useState([]);
+  const [indicadores] = React.useState([]);
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
-
     setProjectFields([
       {
         field: "Beneficio Origen",
@@ -73,16 +72,16 @@ const ProjectDetailedContent = ({
       {
         field: "Beneficio Año",
         value: kpis.beneficiAny,
-        colorValue: kpis?.beneficiAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpis?.beneficiAny >= 0 }),
       },
       {
         field: "Desviación Origen",
-        value: kpis.desviacioOrigen,
+        value: getKpisColorValue({ value: kpis.desviacioOrigen }),
       },
       {
         field: "Desviación Año",
         value: kpis.desviacioAny,
-        colorValue: kpis?.desviacioAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpis?.desviacioAny >= 0 }),
       },
       {
         field: "Obra Pendiente Origen",
@@ -102,8 +101,6 @@ const ProjectDetailedContent = ({
     period.id && actions.loadKpis({ id: period.id });
   }, [period]);
 
-
-
   const content = [
     { field: "Importe Total", value: tree.importTotal },
     {
@@ -112,16 +109,15 @@ const ProjectDetailedContent = ({
     },
   ];
 
+  const detailedHeaderBreakpoints = { xs: 2 };
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
         <DetailedHeader
           header={headerProject}
           body={projectFields}
-          colorBack={"rgba(58, 145, 152, 0.30)"}
-          icon={<BusinessIcon />}
-          iconColor={primaryColor}
-          breakPoint={2}
+          breakpoints={detailedHeaderBreakpoints}
+          {...entitiesStyles[PROJECT_TYPE]}
         />
       </Grid>
       <Grid item xs={4}>

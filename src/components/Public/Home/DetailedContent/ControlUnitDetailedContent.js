@@ -1,8 +1,8 @@
 import * as React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Grid } from "@mui/material";
 import { useIntl } from "react-intl";
+import { Grid } from "@mui/material";
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
@@ -11,22 +11,25 @@ import {
   getIsLoading,
   getRows,
   getUnitControl,
-  getKpis as
-  getKpisUC 
+  getKpis as getKpisUC
 } from "redux/unit-control/selectors";
 import { loadHeader, updatePartida, loadKpis } from "redux/unit-control";
 import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
+import { getKpis } from "redux/project/selectors";
+
+import { entitiesStyles } from "utils/helper";
+import {
+  CONTROL_UNIT_TYPE,
+  PROJECT_TYPE
+} from "constants/business-types";
 
 import {
+  getKpisColorValue,
   getPartidaColumnsByPeriod,
-  isPeriodOpen
+  isPeriodOpen,
 } from "./common";
-
-import {Business, EmojiEvents} from '@mui/icons-material'
-import { primaryColor } from "utils/helper";
-import { getKpis } from "redux/project/selectors";
 
 const ControlUnitDetailedContent = ({
   rows,
@@ -44,9 +47,7 @@ const ControlUnitDetailedContent = ({
   const [headerProject, setHeaderProject] = React.useState({});
   const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
-  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState(
-    []
-  );
+  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
   const [columns] = React.useState(getPartidaColumnsByPeriod({ period: selectedPeriod, intl }));
 
   const loadHeader = () => actions.loadHeader({ id: props.id });
@@ -65,7 +66,7 @@ const ControlUnitDetailedContent = ({
       {
         field: "Beneficio Año",
         value: kpisUnitatControl.beneficiAny,
-        colorValue: kpisUnitatControl?.beneficiAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisUnitatControl?.beneficiAny }),
       },
       {
         field: "Desviación Origen",
@@ -74,7 +75,7 @@ const ControlUnitDetailedContent = ({
       {
         field: "Desviación Año",
         value: kpisUnitatControl.desviacioAny,
-        colorValue: kpisUnitatControl?.desviacioAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisUnitatControl?.desviacioAny >= 0 }),
       },
       {
         field: "Obra Pendiente Origen",
@@ -84,7 +85,7 @@ const ControlUnitDetailedContent = ({
       {
         field: "Obra Pendiente Año",
         value: kpisUnitatControl.obraPendentAny,
-        colorValue: kpisUnitatControl?.obraPendentAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisUnitatControl?.obraPendentAny >= 0 }),
       },
     ]);
   }, [kpisUnitatControl,unitControl, intl]);
@@ -100,7 +101,7 @@ const ControlUnitDetailedContent = ({
         {
           field: "Beneficio Año",
           value: kpis.beneficiAny,
-          colorValue: kpis?.beneficiAny >= 0 ? "green" : "red",
+          colorValue: getKpisColorValue({ value: kpis?.beneficiAny >= 0 }),
         },
         {
           field: "Desviación Origen",
@@ -109,7 +110,7 @@ const ControlUnitDetailedContent = ({
         {
           field: "Desviación Año",
           value: kpis.desviacioAny,
-          colorValue: kpis?.desviacioAny >= 0 ? "green" : "red",
+          colorValue: getKpisColorValue({ value: kpis?.desviacioAny >= 0 }),
         },
         {
           field: "Obra Pendiente Origen",
@@ -119,7 +120,7 @@ const ControlUnitDetailedContent = ({
         {
           field: "Obra Pendiente Año",
           value: kpis.obraPendentAny,
-          colorValue: kpis?.obraPendentAny >= 0 ? "green" : "red",
+          colorValue: getKpisColorValue({ value: kpis?.obraPendentAny >= 0 }),
         },
       ]);
   
@@ -143,22 +144,22 @@ const ControlUnitDetailedContent = ({
     unitControl.id && actions.loadKpis({ id: unitControl.id });
   }, [unitControl]);
 
+  const detailedHeaderBreakpoints = { xs: 4 };
   return (
     <Grid container spacing={1}>
       <Grid item xs={6}>
-        <DetailedHeader header={headerProject} body={headerProjectFields}   colorBack={"rgba(58, 145, 152, 0.30)"}
-          icon={<Business />}
-          iconColor={primaryColor}
-          breakPoint={4} />
+        <DetailedHeader
+          header={headerProject} body={headerProjectFields}
+          breakpoints={detailedHeaderBreakpoints}
+          {...entitiesStyles[PROJECT_TYPE]}
+        />
       </Grid>
       <Grid item xs={6}>
         <DetailedHeader
           header={headerControlUnit}
           body={headerControlUnitFields}
-          colorBack={"rgba(255, 177, 27, 0.30)"}
-          icon={<EmojiEvents />}
-          iconColor={"#ffb11b"}
-          breakPoint={4}
+          breakpoints={detailedHeaderBreakpoints}
+          {...entitiesStyles[CONTROL_UNIT_TYPE]}
         />
       </Grid>
       <Grid item xs={12}>
@@ -169,7 +170,6 @@ const ControlUnitDetailedContent = ({
           loading={loading}
           onCellEditCommit={handleCellChange}
           disableInlineEdition={!isPeriodOpen({ period: selectedPeriod })}
-
         />
       </Grid>
     </Grid>

@@ -1,8 +1,11 @@
-import {formatCurrencyWithIntl} from "../../../../utils/formats";
+import { formatCurrencyWithIntl } from "utils/formats";
+import {greenColor, redColor} from "../../../../utils/helper";
 
 export const isPeriodOpen = ({ period }) => {
   return !period.tancat;
 }
+
+export const getKpisColorValue = ({ value }) => value >= 0 ? greenColor : redColor;
 
 export const getPartidaColumnsByPeriod = ({ period, intl }) => {
   const { number } = period;

@@ -15,10 +15,10 @@ import { useIntl } from "react-intl";
 const DetailedHeader = ({
   header,
   body,
-  colorBack,
+  colorBackground,
   icon,
   iconColor,
-  breakPoint = 6,
+  breakpoints = { xs: 6 },
 }) => {
   const intl = useIntl();
   const renderSkeleton = () => <MaterialHeaderSkeleton />;
@@ -50,7 +50,7 @@ const DetailedHeader = ({
         }}
         sx={{
           maxHeight: "60px",
-          backgroundColor: colorBack,
+          backgroundColor: colorBackground,
         }}
         className="tituloDetailHeader"
       />
@@ -61,7 +61,7 @@ const DetailedHeader = ({
               const line = `${field}: ${value}`;
               const size = colorValue !== "inherit" ? "20px" : "";
               return (
-                <Grid key={line} item xs={breakPoint}>
+                <Grid key={line} item xs={breakpoints.xs} >
                   <Typography
                     component="h2"
                     variant="caption"

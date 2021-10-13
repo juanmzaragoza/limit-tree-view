@@ -11,11 +11,8 @@ import {
   Euro,
   CallMissedOutgoing,
   Construction,
-  CatchingPokemon,
-  EmojiEvents
 } from "@mui/icons-material";
 
-import { formatCurrencyWithIntl } from "utils/formats";
 import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
@@ -27,27 +24,24 @@ import {
   getPartida,
   getRows,
 } from "redux/partida/selectors";
-import {
-
-  getKpis as getKpisProjecte,
-
-} from "redux/project/selectors";
+import { getKpis as getKpisProjecte } from "redux/project/selectors";
 import { loadHeader as loadUnitControlHeader } from "redux/unit-control";
-import { getUnitControl } from "redux/unit-control/selectors";
+import { getUnitControl, getKpis as getKpisUC  } from "redux/unit-control/selectors";
 import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
-import { getResourceColumnsByPeriod, isPeriodOpen } from "./common";
-import BusinessIcon from '@mui/icons-material/Business';
-import { primaryColor } from "utils/helper";
+import { entitiesStyles } from "utils/helper";
 import {
-  getKpis as
-  getKpisUC 
-} from "redux/unit-control/selectors";
+  CONTROL_UNIT_TYPE,
+  PARTIDA_TYPE,
+  PROJECT_TYPE
+} from "constants/business-types";
+
+import { getKpisColorValue, getResourceColumnsByPeriod, isPeriodOpen } from "./common";
+
 const KPIS_TAB_INDEX = 0;
 const RESOURCES_TAB_INDEX = 1;
-
 
 const ProjectDetailedContent = ({
   rows,
@@ -66,9 +60,7 @@ const ProjectDetailedContent = ({
   const [headerProject, setHeaderProject] = React.useState({});
   const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
-  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState(
-    []
-  );
+  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
   const [headerPartida, setHeaderPartida] = React.useState({});
   const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
   const [tabIndex, setTabIndex] = React.useState(KPIS_TAB_INDEX);
@@ -242,12 +234,6 @@ const ProjectDetailedContent = ({
           ],
         },
       ]
-
-      // kpis.map(kpi => ({
-
-      //   ...kpi,
-      //   icon: <Engineering />,
-      // }))
     );
   }, [kpisPartida]);
 
@@ -266,7 +252,7 @@ const ProjectDetailedContent = ({
       {
         field: "Beneficio Año",
         value: kpisUnitatControl.beneficiAny,
-        colorValue: kpisUnitatControl?.beneficiAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisUnitatControl?.beneficiAny >= 0 }),
       },
       {
         field: "Desviación Origen",
@@ -275,7 +261,7 @@ const ProjectDetailedContent = ({
       {
         field: "Desviación Año",
         value: kpisUnitatControl.desviacioAny,
-        colorValue: kpisUnitatControl?.desviacioAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisUnitatControl?.desviacioAny >= 0 }),
       },
       {
         field: "Pendiente Origen",
@@ -285,10 +271,10 @@ const ProjectDetailedContent = ({
       {
         field: "Pendiente Año",
         value: kpisUnitatControl.obraPendentAny,
-        colorValue: kpisUnitatControl?.obraPendentAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisUnitatControl?.obraPendentAny >= 0 }),
       },
     ]);
-  }, [kpisUnitatControl,unitControl, intl]);
+  }, [kpisUnitatControl, unitControl, intl]);
 
   React.useEffect(() => {
     setHeaderPartida({ title: partida.descripcioReduc });
@@ -300,7 +286,7 @@ const ProjectDetailedContent = ({
       {
         field: "Beneficio Año",
         value: kpisUnitatControl.beneficiAny,
-        colorValue: kpisPartida?.beneficiAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisPartida?.beneficiAny >= 0 }),
       },
       {
         field: "Desviación Origen",
@@ -309,7 +295,7 @@ const ProjectDetailedContent = ({
       {
         field: "Desviación Año",
         value: kpisPartida.desviacioAny,
-        colorValue: kpisPartida?.desviacioAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisPartida?.desviacioAny >= 0 }),
       },
       {
         field: " Pendiente Origen",
@@ -319,14 +305,13 @@ const ProjectDetailedContent = ({
       {
         field: " Pendiente Año",
         value: kpisPartida.obraPendentAny,
-        colorValue: kpisPartida?.obraPendentAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisPartida?.obraPendentAny >= 0 }),
       },
     ]);
   }, [kpisPartida, partida, intl]);
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
-
     setHeaderProjectFields([
       {
         field: "Beneficio Origen",
@@ -335,7 +320,7 @@ const ProjectDetailedContent = ({
       {
         field: "Beneficio Año",
         value: kpisProjecte.beneficiAny,
-        colorValue: kpisProjecte?.beneficiAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisProjecte?.beneficiAny >= 0 }),
       },
       {
         field: "Desviación Origen",
@@ -344,18 +329,17 @@ const ProjectDetailedContent = ({
       {
         field: "Desviación Año",
         value: kpisProjecte.desviacioAny,
-        colorValue: kpisProjecte?.desviacioAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisProjecte?.desviacioAny >= 0 }),
       },
       {
         field: " Pendiente Origen",
         value: kpisProjecte.obraPendentOrigen,
-        colorValue: kpisProjecte?.obraPendentOrigen >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisProjecte?.obraPendentOrigen >= 0 }),
       },
-
       {
         field: " Pendiente Año",
         value: kpisProjecte.obraPendentAny,
-        colorValue: kpisProjecte?.obraPendentAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisProjecte?.obraPendentAny >= 0 }),
       },
     ]);
   }, [kpisProjecte,tree, intl]);
@@ -375,38 +359,37 @@ const ProjectDetailedContent = ({
     }
   };
 
+  const detailedHeaderBreakpoints = { xs: 4 };
   return (
     <Grid container spacing={1}>
       <Grid item xs={4}>
-        <DetailedHeader header={headerProject} body={headerProjectFields}   colorBack={"rgba(58, 145, 152, 0.30)"}
-          icon={<BusinessIcon />}
-          iconColor={primaryColor}
-          breakPoint={4} />
+        <DetailedHeader
+          header={headerProject}
+          body={headerProjectFields}
+          breakpoints={detailedHeaderBreakpoints}
+          {...entitiesStyles[PROJECT_TYPE]}
+        />
       </Grid>
       <Grid item xs={4}>
         <DetailedHeader
           header={headerControlUnit}
           body={headerControlUnitFields}
-          colorBack={"rgba(255, 177, 27, 0.30)"}
-          icon={<EmojiEvents />}
-          iconColor={"#ffb11b"}
-          breakPoint={4}/>
+          breakpoints={detailedHeaderBreakpoints}
+          {...entitiesStyles[CONTROL_UNIT_TYPE]}
+        />
       </Grid>
       <Grid item xs={4}>
-        <DetailedHeader header={headerPartida} body={headerPartidaFields}
-        colorBack={"rgba(162, 80, 245, 0.30)"}
-        icon={<CatchingPokemon />}
-        iconColor={"#a250f5"}
-        breakPoint={4} />
+        <DetailedHeader
+          header={headerPartida}
+          body={headerPartidaFields}
+          breakpoints={detailedHeaderBreakpoints}
+          {...entitiesStyles[PARTIDA_TYPE]}
+        />
       </Grid>
       <Grid item xs={12}>
         <Tabs value={tabIndex} onChange={(e, index) => setTabIndex(index)}>
-        <Tab
-            label={"Indicadores"}
-            className="tabsIndicators tabsIndicators1"
-          />
+          <Tab label={"Indicadores"} className="tabsIndicators tabsIndicators1" />
           <Tab label={"Recursos"} className="tabsIndicators tabsIndicators2" />
-         
         </Tabs>
       </Grid>
 
@@ -422,10 +405,6 @@ const ProjectDetailedContent = ({
           />
         )}
         {tabIndex === KPIS_TAB_INDEX && (
-          // <MaterialCardPartidaIndicator
-          //   loading={isEmpty(indicadores)}
-          //   content={indicadores}
-          //   onUnmount={() => actions.resetKpis()}/>
           <Grid container spacing={2}>
             <MaterialCardIndicator
               loading={isEmpty(indicadores)}
