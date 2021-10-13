@@ -100,13 +100,13 @@ export const loadKpis = ({ url = LOAD_KPIS_URL, id }) => {
       apiCall()
         .then(({data}) => data)
         .then((data) => {
-          dispatch(add({
-            kpis: Object.keys(data).map((key, index) => {
-              return {
-                field: key,
-                value: data[key]
-              }
-            })
+          dispatch(add({kpis: data
+            // kpis: Object.keys(data).map((key, index) => {
+            //   return {
+            //     field: key,
+            //     value: data[key]
+            //   }
+            // })
           }));
         })
         .catch(error => {
