@@ -1,8 +1,9 @@
 import * as React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Grid } from "@mui/material";
 import { useIntl } from "react-intl";
+import { Grid } from "@mui/material";
+import { Business, EmojiEvents } from '@mui/icons-material'
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
@@ -18,15 +19,15 @@ import { loadHeader, updatePartida, loadKpis } from "redux/unit-control";
 import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
+import { getKpis } from "redux/project/selectors";
+
+import { greenColor, primaryColor, redColor } from "utils/helper";
 
 import {
+  getKpisColorValue,
   getPartidaColumnsByPeriod,
-  isPeriodOpen
+  isPeriodOpen,
 } from "./common";
-
-import {Business, EmojiEvents} from '@mui/icons-material'
-import { primaryColor } from "utils/helper";
-import { getKpis } from "redux/project/selectors";
 
 const ControlUnitDetailedContent = ({
   rows,
@@ -65,7 +66,7 @@ const ControlUnitDetailedContent = ({
       {
         field: "Beneficio Año",
         value: kpisUnitatControl.beneficiAny,
-        colorValue: kpisUnitatControl?.beneficiAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisUnitatControl?.beneficiAny }),
       },
       {
         field: "Desviación Origen",
@@ -74,7 +75,7 @@ const ControlUnitDetailedContent = ({
       {
         field: "Desviación Año",
         value: kpisUnitatControl.desviacioAny,
-        colorValue: kpisUnitatControl?.desviacioAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisUnitatControl?.desviacioAny >= 0 }),
       },
       {
         field: "Obra Pendiente Origen",
@@ -84,7 +85,7 @@ const ControlUnitDetailedContent = ({
       {
         field: "Obra Pendiente Año",
         value: kpisUnitatControl.obraPendentAny,
-        colorValue: kpisUnitatControl?.obraPendentAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisUnitatControl?.obraPendentAny >= 0 }),
       },
     ]);
   }, [kpisUnitatControl,unitControl, intl]);
@@ -100,7 +101,7 @@ const ControlUnitDetailedContent = ({
         {
           field: "Beneficio Año",
           value: kpis.beneficiAny,
-          colorValue: kpis?.beneficiAny >= 0 ? "green" : "red",
+          colorValue: getKpisColorValue({ value: kpis?.beneficiAny >= 0 }),
         },
         {
           field: "Desviación Origen",
@@ -109,7 +110,7 @@ const ControlUnitDetailedContent = ({
         {
           field: "Desviación Año",
           value: kpis.desviacioAny,
-          colorValue: kpis?.desviacioAny >= 0 ? "green" : "red",
+          colorValue: getKpisColorValue({ value: kpis?.desviacioAny >= 0 }),
         },
         {
           field: "Obra Pendiente Origen",
@@ -119,7 +120,7 @@ const ControlUnitDetailedContent = ({
         {
           field: "Obra Pendiente Año",
           value: kpis.obraPendentAny,
-          colorValue: kpis?.obraPendentAny >= 0 ? "green" : "red",
+          colorValue: getKpisColorValue({ value: kpis?.obraPendentAny >= 0 }),
         },
       ]);
   

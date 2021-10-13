@@ -95,14 +95,7 @@ export const loadKpis = ({ url = LOAD_KPIS_URL, id }) => {
       apiCall()
         .then(({data}) => data)
         .then((indicadorsPartides) => {
-          dispatch(add({kpis: indicadorsPartides
-            // kpis: Object.keys(data).map((key, index) => {
-            //   return {
-            //     field: key,
-            //     value: data[key]
-            //   }
-            // })
-          }));
+          dispatch(add({ kpis: indicadorsPartides }));
         })
         .catch(error => {
           console.log(error);

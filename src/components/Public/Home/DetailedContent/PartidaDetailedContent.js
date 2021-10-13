@@ -38,7 +38,7 @@ import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
-import { getResourceColumnsByPeriod, isPeriodOpen } from "./common";
+import {getKpisColorValue, getResourceColumnsByPeriod, isPeriodOpen} from "./common";
 import BusinessIcon from '@mui/icons-material/Business';
 import { primaryColor } from "utils/helper";
 import {
@@ -242,12 +242,6 @@ const ProjectDetailedContent = ({
           ],
         },
       ]
-
-      // kpis.map(kpi => ({
-
-      //   ...kpi,
-      //   icon: <Engineering />,
-      // }))
     );
   }, [kpisPartida]);
 
@@ -266,7 +260,7 @@ const ProjectDetailedContent = ({
       {
         field: "Beneficio Año",
         value: kpisUnitatControl.beneficiAny,
-        colorValue: kpisUnitatControl?.beneficiAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisUnitatControl?.beneficiAny >= 0 }),
       },
       {
         field: "Desviación Origen",
@@ -275,7 +269,7 @@ const ProjectDetailedContent = ({
       {
         field: "Desviación Año",
         value: kpisUnitatControl.desviacioAny,
-        colorValue: kpisUnitatControl?.desviacioAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisUnitatControl?.desviacioAny >= 0 }),
       },
       {
         field: "Pendiente Origen",
@@ -285,7 +279,7 @@ const ProjectDetailedContent = ({
       {
         field: "Pendiente Año",
         value: kpisUnitatControl.obraPendentAny,
-        colorValue: kpisUnitatControl?.obraPendentAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisUnitatControl?.obraPendentAny >= 0 }),
       },
     ]);
   }, [kpisUnitatControl,unitControl, intl]);
@@ -300,7 +294,7 @@ const ProjectDetailedContent = ({
       {
         field: "Beneficio Año",
         value: kpisUnitatControl.beneficiAny,
-        colorValue: kpisPartida?.beneficiAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisPartida?.beneficiAny >= 0 }),
       },
       {
         field: "Desviación Origen",
@@ -309,7 +303,7 @@ const ProjectDetailedContent = ({
       {
         field: "Desviación Año",
         value: kpisPartida.desviacioAny,
-        colorValue: kpisPartida?.desviacioAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisPartida?.desviacioAny >= 0 }),
       },
       {
         field: " Pendiente Origen",
@@ -319,7 +313,7 @@ const ProjectDetailedContent = ({
       {
         field: " Pendiente Año",
         value: kpisPartida.obraPendentAny,
-        colorValue: kpisPartida?.obraPendentAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisPartida?.obraPendentAny >= 0 }),
       },
     ]);
   }, [kpisPartida, partida, intl]);
@@ -335,7 +329,7 @@ const ProjectDetailedContent = ({
       {
         field: "Beneficio Año",
         value: kpisProjecte.beneficiAny,
-        colorValue: kpisProjecte?.beneficiAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisProjecte?.beneficiAny >= 0 }),
       },
       {
         field: "Desviación Origen",
@@ -344,18 +338,18 @@ const ProjectDetailedContent = ({
       {
         field: "Desviación Año",
         value: kpisProjecte.desviacioAny,
-        colorValue: kpisProjecte?.desviacioAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisProjecte?.desviacioAny >= 0 }),
       },
       {
         field: " Pendiente Origen",
         value: kpisProjecte.obraPendentOrigen,
-        colorValue: kpisProjecte?.obraPendentOrigen >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisProjecte?.obraPendentOrigen >= 0 }),
       },
 
       {
         field: " Pendiente Año",
         value: kpisProjecte.obraPendentAny,
-        colorValue: kpisProjecte?.obraPendentAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpisProjecte?.obraPendentAny >= 0 }),
       },
     ]);
   }, [kpisProjecte,tree, intl]);

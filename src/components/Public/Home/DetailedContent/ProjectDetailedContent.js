@@ -2,14 +2,15 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { useIntl } from "react-intl";
 import { bindActionCreators } from "redux";
-import { Grid } from "@mui/material";
-import { Assignment } from "@mui/icons-material";
 import { isEmpty } from "lodash";
+
+import { Grid } from "@mui/material";
+import BusinessIcon from "@mui/icons-material/Business";
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
 import MaterialCardPartidaIndicator from "components/shared/MaterialCardPartidaIndicator";
-import { formatCurrencyWithIntl } from "utils/formats";
+import CardTotal from "components/shared/CardTotal";
 
 import { loadKpis, resetKpis } from "redux/project";
 import { getIsLoading, getKpis, getRows } from "redux/project/selectors";
@@ -17,11 +18,10 @@ import { getSelectedProject } from "redux/project-selector/selectors";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
-import { isPeriodOpen } from "./common";
-import BusinessIcon from "@mui/icons-material/Business";
 import { primaryColor } from "utils/helper";
-import CardTotal from "components/shared/CardTotal";
+import { formatCurrencyWithIntl } from "utils/formats";
 
+import { getKpisColorValue, isPeriodOpen } from "./common";
 
 const ProjectDetailedContent = ({
   rows,
@@ -60,7 +60,7 @@ const ProjectDetailedContent = ({
       editable: false,
     },
   ]);
-  const [indicadores, setIndicadores] = React.useState([]);
+  const [indicadores] = React.useState([]);
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
@@ -73,16 +73,16 @@ const ProjectDetailedContent = ({
       {
         field: "Beneficio Año",
         value: kpis.beneficiAny,
-        colorValue: kpis?.beneficiAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpis?.beneficiAny >= 0 }),
       },
       {
         field: "Desviación Origen",
-        value: kpis.desviacioOrigen,
+        value: getKpisColorValue({ value: kpis.desviacioOrigen }),
       },
       {
         field: "Desviación Año",
         value: kpis.desviacioAny,
-        colorValue: kpis?.desviacioAny >= 0 ? "green" : "red",
+        colorValue: getKpisColorValue({ value: kpis?.desviacioAny >= 0 }),
       },
       {
         field: "Obra Pendiente Origen",
