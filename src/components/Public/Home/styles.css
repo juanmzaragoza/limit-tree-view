@@ -14,10 +14,6 @@
   background-color: rgba(58, 145, 152, 0.08) !important;
 }
 
-.containerProjectTree {
-  border-top: 1px solid #cdcdcd;
-}
-
 .MuiDataGrid-root .MuiDataGrid-cell.MuiDataGrid-cell--editing:focus-within {
   outline: solid #3a9198 1px !important;
   outline-offset: -1px !important;
@@ -46,11 +42,6 @@
 
 .containerData {
   padding-right: 0 !important;
-}
-
-.empty-tree-root {
-  display: flex;
-  justify-content: center;
 }
 
 .tabsIndicators {

@@ -1,121 +1,32 @@
 import * as React from 'react';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
 import {
-  forEach,
-  isEmpty,
-  isEqual,
-  remove
-} from 'lodash';
+  getExpanded,
+  getFormattedData,
+  getIsLoading
+} from "redux/project-tree/selectors";
+import { reset, setExpanded } from "redux/project-tree";
 
-import TreeView from '@mui/lab/TreeView';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-
-import MaterialSkeleton from "components/shared/MaterialSkeleton/MaterialSkeleton";
-
-import { entitiesStyles } from 'utils/helper';
-import { usePrevious } from "utils/helper-hooks";
-
-import StyledTreeItem from "./StyledTreeItem";
 import "./styles.css";
+import ProjectsTreeView from "./ProjectTreeView";
 
-const ProjectsTreeView = ({ tree, loading, onNodeSelect }) => {
-  const [nodeIds, setNodeIds] = React.useState(null);
-  const [expanded, setExpanded] = React.useState([]);
-
-  const previousTree = usePrevious(tree);
-  React.useEffect(() => {
-    if(!isEmpty(tree) && !isEqual(previousTree?.id,tree?.id)) {
-      setExpanded([tree.id]);
-      handleOnNodeSelect({},tree.id);
-    }
-  },[tree]);
-
-  const renderNodes = ({ tree }) => {
-    const { type } = tree;
-    if(tree.nodes) {
-      return <StyledTreeItem
-        key={tree.id}
-        nodeId={tree.id}
-        labelText={tree.labelText}
-        labelInfo={tree.labelInfo}
-        color={entitiesStyles[type]?.iconColor}
-        bgColor={entitiesStyles[type]?.colorBackground}
-        labelIcon={entitiesStyles[type]?.icon}
-      >
-        {tree.nodes.map(node => renderNodes({ tree: node }))}
-      </StyledTreeItem>
-    } else{
-      return <StyledTreeItem
-        key={tree.id}
-        nodeId={tree.id}
-        labelText={tree.labelText}
-        labelInfo={tree.labelInfo}
-        color={entitiesStyles[type]?.iconColor}
-        bgColor={entitiesStyles[type]?.colorBackground}
-        labelIcon={entitiesStyles[type]?.icon}
-        disabled={tree.disabled}
-      />
-    }
+const mapStateToProps = (state, props) => {
+  return {
+    data: getFormattedData(state),
+    loading: getIsLoading(state),
+    expandedData: getExpanded(state)
   };
+};
 
-  const findNode = ({ nodes, nodeId }) => {
-    if(nodes.id === nodeId) {
-      return nodes;
-    } else{
-      let founded = {};
-      forEach(nodes.nodes, node => {
-        const n = findNode({ nodes: node, nodeId });
-        if(!isEmpty(n)) {
-          founded = n;
-          return false;
-        }
-      })
-      return founded;
-    }
-  }
+const mapDispatchToProps = (dispatch, props) => {
+  const actions = {
+    setExpanded: bindActionCreators(setExpanded, dispatch),
+    reset: bindActionCreators(reset, dispatch),
+  };
+  return { actions };
+};
 
-  const processOnNodeSelected = (selectedId) => {
-    const selected = selectedId;
-    // fire action
-    setNodeIds(selected);
-    const selectedNode = findNode({nodes: tree, nodeId: selected});
-    if (!selectedNode.disabled)
-      onNodeSelect(selectedNode);
-  }
-  const handleOnNodeSelect = (e, ids) => {
-    processOnNodeSelected(ids);
-    // update expanded
-    const found = expanded.find(id => ids === id);
-    if(found) {
-      setExpanded(remove(expanded, (e) => e !== found));
-    } else{
-      setExpanded([...expanded, ids]);
-    }
-  }
-
-  const renderEmptyTree = () => <div className="empty-tree-root">No existen elementos en el árbol</div>
-
-  return (
-    <TreeView
-      aria-label="tree"
-      expanded={expanded}
-      defaultCollapseIcon={<ArrowDropDownIcon />}
-      defaultExpandIcon={<ArrowRightIcon />}
-      defaultEndIcon={<div style={{ width: 24 }} />}
-      sx={{
-        height: 'auto',
-        flexGrow: 1,
-        overflowY: 'auto',
-        textAlign: 'left'
-      }}
-      onNodeSelect={handleOnNodeSelect}
-      selected={nodeIds}
-    >
-      {!loading && !isEmpty(tree) && renderNodes({ tree })}
-      {!loading && isEmpty(tree) && renderEmptyTree()}
-      {loading && <MaterialSkeleton />}
-    </TreeView>
-  );
-}
-
-export default ProjectsTreeView;
+const component = connect(mapStateToProps,mapDispatchToProps)(ProjectsTreeView);
+export default component;

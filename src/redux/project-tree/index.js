@@ -62,6 +62,12 @@ export const loadData = ({ url = URL, periodId }) => {
   };
 };
 
+export const setExpanded = ({ expanded }) => {
+  return async dispatch => {
+    dispatch(add({ expanded }));
+  }
+}
+
 //Action creators
 export const add = (payload) => {
   return {
@@ -81,6 +87,7 @@ const initialState = {
   formattedData: {},
   data: {},
   loading: false,
+  expanded: []
 };
 
 const reducer = (state = initialState, action) => {

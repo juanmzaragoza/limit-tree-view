@@ -10,18 +10,12 @@ import DetailedContent from "./DetailedContent/index";
 import ProjectSelector from "./ProjectSelector";
 import PeriodsManagement from "./PeriodsManagement/index";
 
-import { getFormattedData, getIsLoading } from "redux/project-tree/selectors";
 import { loadData } from "redux/project-tree";
 import { getSelectedPeriod } from "redux/period/selectors";
 
-const Home = ({ data, loading, selectedPeriod, actions }) =>{
+const Home = ({ selectedPeriod, actions }) =>{
   const [show, setShow] = React.useState(false);
   const [node, setNode] = React.useState(null);
-  const [tree, setTree] = React.useState({});
-
-  React.useEffect(() => {
-    setTree(data);
-  },[data]);
 
   React.useEffect(() => {
     if(selectedPeriod?.id){
@@ -55,13 +49,10 @@ const Home = ({ data, loading, selectedPeriod, actions }) =>{
             <Grid container spacing={1} className="containerProjectTree">
               <Grid item xs={12} md={12} lg={12} sx={{ mt: 1 }}>
                 <ProjectsTreeView
-                  tree={tree}
                   onNodeSelect={(selectedNode) => {
                     setShow(!!selectedNode.id);
                     setNode(selectedNode);
-                  }}
-                  loading={loading} />
-                
+                  }} />
               </Grid>
             </Grid>
           </Paper>
@@ -80,8 +71,6 @@ const Home = ({ data, loading, selectedPeriod, actions }) =>{
 
 const mapStateToProps = (state, props) => {
   return {
-    data: getFormattedData(state),
-    loading: getIsLoading(state),
     selectedPeriod: getSelectedPeriod(state)
   };
 };
