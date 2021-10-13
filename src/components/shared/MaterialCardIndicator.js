@@ -32,10 +32,7 @@ const cardUseStyles = makeStyles((theme) => ({
 }));
 
 export default function MaterialCardIndicator({
-  title,
   content,
-  icon,
-  xs,
   loading,
   onUnmount = () => {},
 }) {
@@ -62,7 +59,9 @@ export default function MaterialCardIndicator({
       )}
       {content?.map(({ title, indicators, lg, icon }, index) => {
         return (
-          <Grid item xs={12} className={theme.cardContent} key={index}>
+
+          <Grid item xs={12} className={theme.cardContent} key={index} >
+
             <Card className={theme.card}>
               <CardHeader
                 avatar={
@@ -95,7 +94,9 @@ export default function MaterialCardIndicator({
                 <Grid container spacing={2}>
                   {indicators?.map(({ field, value }, index) => {
                     return (
-                      <Grid item xs={lg} key={index}>
+
+                      <Grid item xs={lg} key={index} >
+
                         {field}: <br />
                         <strong>
                           {value === undefined
