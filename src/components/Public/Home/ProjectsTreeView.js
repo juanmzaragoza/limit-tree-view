@@ -14,6 +14,7 @@ import TreeItem, { treeItemClasses } from '@mui/lab/TreeItem';
 import Typography from '@mui/material/Typography';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import LabelIcon from '@mui/icons-material/Label';
 
 import MaterialSkeleton from "components/shared/MaterialSkeleton/MaterialSkeleton";
 
@@ -55,9 +56,9 @@ const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
 
 const StyledTreeItem = (props) => {
   const {
-    bgColor,
-    color,
-    labelIcon: LabelIcon,
+    bgColor = primaryColor,
+    color = primaryColor,
+    labelIcon: LabelIcon = <LabelIcon />,
     labelInfo,
     labelText,
     ...other
@@ -113,9 +114,9 @@ const ProjectsTreeView = ({ tree, loading, onNodeSelect }) => {
         nodeId={tree.id}
         labelText={tree.labelText}
         labelInfo={tree.labelInfo}
-        color={entitiesStyles[type].iconColor}
-        bgColor={entitiesStyles[type].colorBackground}
-        labelIcon={entitiesStyles[type].icon}
+        color={entitiesStyles[type]?.iconColor}
+        bgColor={entitiesStyles[type]?.colorBackground}
+        labelIcon={entitiesStyles[type]?.icon}
       >
         {tree.nodes.map(node => renderNodes({ tree: node }))}
       </StyledTreeItem>
@@ -125,9 +126,9 @@ const ProjectsTreeView = ({ tree, loading, onNodeSelect }) => {
         nodeId={tree.id}
         labelText={tree.labelText}
         labelInfo={tree.labelInfo}
-        color={entitiesStyles[type].iconColor}
-        bgColor={entitiesStyles[type].colorBackground}
-        labelIcon={entitiesStyles[type].icon}
+        color={entitiesStyles[type]?.iconColor}
+        bgColor={entitiesStyles[type]?.colorBackground}
+        labelIcon={entitiesStyles[type]?.icon}
         disabled={tree.disabled}
       />
     }
