@@ -14,7 +14,7 @@ import {
   getKpis as getKpisUC
 } from "redux/unit-control/selectors";
 import { loadHeader, updatePartida, loadKpis } from "redux/unit-control";
-import { loadData as loadTreeData } from "redux/project-tree";
+import { loadData as loadTreeData, expandTreeUntil } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 import { getKpis } from "redux/project/selectors";
@@ -170,6 +170,7 @@ const ControlUnitDetailedContent = ({
           loading={loading}
           onCellEditCommit={handleCellChange}
           disableInlineEdition={!isPeriodOpen({ period: selectedPeriod })}
+          onRowClick={(row) => actions.expandTreeUntil({ row })}
         />
       </Grid>
     </Grid>
@@ -194,6 +195,7 @@ const mapDispatchToProps = (dispatch, props) => {
     updatePartida: bindActionCreators(updatePartida, dispatch),
     loadTreeData: bindActionCreators(loadTreeData, dispatch),
     loadKpis: bindActionCreators(loadKpis, dispatch),
+    expandTreeUntil: bindActionCreators(expandTreeUntil, dispatch),
   };
   return { actions };
 };

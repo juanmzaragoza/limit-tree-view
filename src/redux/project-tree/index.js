@@ -9,6 +9,7 @@ import { formatCurrency } from "utils/formats";
 //Action types
 const ADD = "ADD_TO_TREE";
 const RESET = "RESET_TREE";
+const EXPAND_UNTIL = "EXPAND_TREE_UNTIL_NODE_ID";
 
 // Constants
 const URL = 'api/fact/estudisProjecte/{id}/tree';
@@ -82,6 +83,13 @@ export const reset = () => {
   }
 }
 
+export const expandTreeUntil = (payload) => {
+  return {
+    type: EXPAND_UNTIL,
+    payload
+  }
+}
+
 //Reducers
 const initialState = {
   formattedData: {},
@@ -94,6 +102,9 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD:
       return { ...state, ...action.payload };
+    case EXPAND_UNTIL:
+      const { row } = action.payload;
+      return { ...state, expanded: [...state.expanded, row.id] };
     case RESET:
     case "RESET":
       return initialState;

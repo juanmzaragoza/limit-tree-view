@@ -14,6 +14,7 @@ import CardTotal from "components/shared/CardTotal";
 import { loadKpis, resetKpis } from "redux/project";
 import { getIsLoading, getKpis, getRows } from "redux/project/selectors";
 import { getSelectedProject } from "redux/project-selector/selectors";
+import { expandTreeUntil } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
@@ -128,6 +129,7 @@ const ProjectDetailedContent = ({
           columns={columns}
           rows={rows}
           disableInlineEdition={!isPeriodOpen({ period })}
+          onRowClick={(row) => actions.expandTreeUntil({ row })}
         />
       </Grid>
       <Grid item xs={12}>
@@ -157,6 +159,7 @@ const mapDispatchToProps = (dispatch, props) => {
   const actions = {
     loadKpis: bindActionCreators(loadKpis, dispatch),
     resetKpis: bindActionCreators(resetKpis, dispatch),
+    expandTreeUntil: bindActionCreators(expandTreeUntil, dispatch),
   };
   return { actions };
 };

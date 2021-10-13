@@ -17,27 +17,29 @@ import { usePrevious } from "utils/helper-hooks";
 import StyledTreeItem from "./StyledTreeItem";
 import "./styles.css";
 
-const ProjectsTreeView = ({ data, loading, onNodeSelect, actions }) => {
+const ProjectsTreeView = ({
+  data,
+  loading,
+  expanded,
+  onNodeSelect,
+  actions: { reset = () => {}, setExpanded = () => {} }
+}) => {
   const [nodeIds, setNodeIds] = React.useState(null);
-  const [expanded, setExpanded] = React.useState([]);
+  //const [expanded, setExpanded] = React.useState([]);
   const [tree, setTree] = React.useState({});
 
   React.useEffect(() => {
-    return () => actions?.reset();
+    return () => reset();
   },[]);
 
   React.useEffect(() => {
     setTree(data);
   },[data]);
 
-  React.useEffect(() => {
-    actions?.setExpanded({ expanded });
-  },[expanded, actions]);
-
   const previousTree = usePrevious(tree);
   React.useEffect(() => {
     if(!isEmpty(tree) && !isEqual(previousTree?.id,tree?.id)) {
-      setExpanded([tree.id]);
+      setExpanded({ expanded: [tree.id]});
       handleOnNodeSelect({},tree.id);
     }
   },[tree]);
@@ -100,9 +102,9 @@ const ProjectsTreeView = ({ data, loading, onNodeSelect, actions }) => {
     // TODO(): this logic must be implemented in the reducer
     const found = expanded.find(id => ids === id);
     if(found) {
-      setExpanded(remove(expanded, (e) => e !== found));
+      setExpanded({ expanded: remove(expanded, (e) => e !== found)});
     } else{
-      setExpanded([...expanded, ids]);
+      setExpanded({ expanded: [...expanded, ids] });
     }
   }
 

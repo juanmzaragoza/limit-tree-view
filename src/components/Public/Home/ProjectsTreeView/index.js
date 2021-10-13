@@ -16,7 +16,7 @@ const mapStateToProps = (state, props) => {
   return {
     data: getFormattedData(state),
     loading: getIsLoading(state),
-    expandedData: getExpanded(state)
+    expanded: getExpanded(state)
   };
 };
 
