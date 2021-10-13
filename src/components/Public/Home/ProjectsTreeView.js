@@ -148,23 +148,21 @@ const ProjectsTreeView = ({ tree, loading, onNodeSelect }) => {
   }
 
   const processOnNodeSelected = (selectedId) => {
-    const selected = selectedId === nodeIds ? null : selectedId;
+    const selected = selectedId;
     // fire action
     setNodeIds(selected);
     const selectedNode = findNode({nodes: tree, nodeId: selected});
     if (!selectedNode.disabled)
       onNodeSelect(selectedNode);
   }
-
   const handleOnNodeSelect = (e, ids) => {
+    processOnNodeSelected(ids);
     // update expanded
     const found = expanded.find(id => ids === id);
     if(found) {
       setExpanded(remove(expanded, (e) => e !== found));
-      processOnNodeSelected(null);
     } else{
       setExpanded([...expanded, ids]);
-      processOnNodeSelected(ids);
     }
   }
 
