@@ -7,13 +7,14 @@ import { useIntl } from "react-intl";
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
 
-import { formatCurrencyWithIntl } from "utils/formats";
 import {
   getIsLoading,
   getRows,
   getUnitControl,
+  getKpis as
+  getKpisUC 
 } from "redux/unit-control/selectors";
-import { loadHeader, updatePartida } from "redux/unit-control";
+import { loadHeader, updatePartida, loadKpis } from "redux/unit-control";
 import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
@@ -23,6 +24,10 @@ import {
   isPeriodOpen
 } from "./common";
 
+import {Business, EmojiEvents} from '@mui/icons-material'
+import { primaryColor } from "utils/helper";
+import { getKpis } from "redux/project/selectors";
+
 const ControlUnitDetailedContent = ({
   rows,
   loading,
@@ -30,6 +35,8 @@ const ControlUnitDetailedContent = ({
   actions,
   project,
   tree,
+  kpis,
+  kpisUnitatControl,
   selectedPeriod,
   ...props
 }) => {
@@ -52,29 +59,71 @@ const ControlUnitDetailedContent = ({
     setHeaderControlUnit({ title: unitControl.descripcio });
     setHeaderControlUnitFields([
       {
-        field: "Importe Total",
-        value: formatCurrencyWithIntl(unitControl.importTotal ?? 0, intl),
+        field: "Beneficio Origen",
+        value: kpisUnitatControl.beneficiOrigen,
       },
       {
-        field: "Coste Total",
-        value: formatCurrencyWithIntl(unitControl.costTotal ?? 0, intl),
+        field: "Beneficio Año",
+        value: kpisUnitatControl.beneficiAny,
+        colorValue: kpisUnitatControl?.beneficiAny >= 0 ? "green" : "red",
+      },
+      {
+        field: "Desviación Origen",
+        value: kpisUnitatControl.desviacioOrigen,
+      },
+      {
+        field: "Desviación Año",
+        value: kpisUnitatControl.desviacioAny,
+        colorValue: kpisUnitatControl?.desviacioAny >= 0 ? "green" : "red",
+      },
+      {
+        field: "Obra Pendiente Origen",
+        value: kpisUnitatControl.obraPendentOrigen,
+      },
+
+      {
+        field: "Obra Pendiente Año",
+        value: kpisUnitatControl.obraPendentAny,
+        colorValue: kpisUnitatControl?.obraPendentAny >= 0 ? "green" : "red",
       },
     ]);
-  }, [unitControl, intl]);
+  }, [kpisUnitatControl,unitControl, intl]);
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
     setHeaderProjectFields([
-      {
-        field: "Importe Total",
-        value: formatCurrencyWithIntl(tree.importTotal ?? 0, intl),
-      },
-      {
-        field: "Coste Total",
-        value: formatCurrencyWithIntl(tree.costTotal ?? 0, intl),
-      },
-    ]);
-  }, [tree, intl]);
+    
+        {
+          field: "Beneficio Origen",
+          value: kpis.beneficiOrigen,
+        },
+        {
+          field: "Beneficio Año",
+          value: kpis.beneficiAny,
+          colorValue: kpis?.beneficiAny >= 0 ? "green" : "red",
+        },
+        {
+          field: "Desviación Origen",
+          value: kpis.desviacioOrigen,
+        },
+        {
+          field: "Desviación Año",
+          value: kpis.desviacioAny,
+          colorValue: kpis?.desviacioAny >= 0 ? "green" : "red",
+        },
+        {
+          field: "Obra Pendiente Origen",
+          value: kpis.obraPendentOrigen,
+        },
+  
+        {
+          field: "Obra Pendiente Año",
+          value: kpis.obraPendentAny,
+          colorValue: kpis?.obraPendentAny >= 0 ? "green" : "red",
+        },
+      ]);
+  
+  }, [kpis, tree, intl]);
 
   const handleCellChange = async (params, event, details) => {
     const { id, field, value } = params;
@@ -90,15 +139,26 @@ const ControlUnitDetailedContent = ({
     }
   };
 
+  React.useEffect(() => {
+    unitControl.id && actions.loadKpis({ id: unitControl.id });
+  }, [unitControl]);
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={6}>
-        <DetailedHeader header={headerProject} body={headerProjectFields} />
+        <DetailedHeader header={headerProject} body={headerProjectFields}   colorBack={"rgba(58, 145, 152, 0.30)"}
+          icon={<Business />}
+          iconColor={primaryColor}
+          breakPoint={4} />
       </Grid>
       <Grid item xs={6}>
         <DetailedHeader
           header={headerControlUnit}
           body={headerControlUnitFields}
+          colorBack={"rgba(255, 177, 27, 0.30)"}
+          icon={<EmojiEvents />}
+          iconColor={"#ffb11b"}
+          breakPoint={4}
         />
       </Grid>
       <Grid item xs={12}>
@@ -123,6 +183,8 @@ const mapStateToProps = (state, props) => {
     unitControl: getUnitControl(state),
     tree: getData(state),
     selectedPeriod: getSelectedPeriod(state),
+    kpis: getKpis(state),
+    kpisUnitatControl: getKpisUC(state)
   };
 };
 
@@ -131,6 +193,7 @@ const mapDispatchToProps = (dispatch, props) => {
     loadHeader: bindActionCreators(loadHeader, dispatch),
     updatePartida: bindActionCreators(updatePartida, dispatch),
     loadTreeData: bindActionCreators(loadTreeData, dispatch),
+    loadKpis: bindActionCreators(loadKpis, dispatch),
   };
   return { actions };
 };

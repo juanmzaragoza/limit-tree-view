@@ -8,6 +8,7 @@ const REPLACE = "REPLACE_TO_UC";
 const URL = 'api/fact/liniesEstudi?query=unitatControlEstudi.id=="{id}"&sort=codi';
 const HEADER_URL = 'api/fact/unitatsControlEstudi';
 const UPDATE_PARTIDA_URL = 'api/fact/liniesEstudi';
+const LOAD_KPIS_URL = 'api/fact/unitatsControlEstudi/{id}/indicadors';
 
 //Functions
 export const loadData = ({ url = URL, id  }) => {
@@ -86,6 +87,32 @@ export const updatePartida = ({ url = UPDATE_PARTIDA_URL, id, data }) => {
     })
   };
 }
+
+export const loadKpis = ({ url = LOAD_KPIS_URL, id }) => {
+  return async dispatch => {
+    const apiCall = () => Axios.get(url.replace('{id}',id));
+    try {
+      apiCall()
+        .then(({data}) => data)
+        .then((indicadorsPartides) => {
+          dispatch(add({kpis: indicadorsPartides
+            // kpis: Object.keys(data).map((key, index) => {
+            //   return {
+            //     field: key,
+            //     value: data[key]
+            //   }
+            // })
+          }));
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+        });
+    } catch (error) {
+    }
+  };
+};
 
 //Action creators
 export const add = (payload) => {

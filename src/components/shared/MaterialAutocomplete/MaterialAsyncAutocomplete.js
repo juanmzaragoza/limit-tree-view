@@ -97,10 +97,11 @@ const MaterialAsyncAutocomplete = ({
                   {params.InputProps.endAdornment}
                 </React.Fragment>
               ),
+              autoComplete: 'off'
             }}
           />
         )}
-        autoComplete={false}
+     
       />
     </React.Fragment>
   );

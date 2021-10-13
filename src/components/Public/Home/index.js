@@ -57,7 +57,7 @@ const Home = ({ data, loading, selectedPeriod, actions }) =>{
                 <ProjectsTreeView
                   tree={tree}
                   onNodeSelect={(selectedNode) => {
-                    setShow(!!selectedNode);
+                    setShow(!!selectedNode.id);
                     setNode(selectedNode);
                   }}
                   loading={loading} />
