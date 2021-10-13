@@ -71,21 +71,23 @@ const PeriodsManagement = ({
     const data = dateEnd;
     try {
       await actions.addPeriod({ id: periodSelected.id, codiAccio, data });
-      openNew();
+      if(openNewPeriod){
+        openNew();
+      }
+      
       setOpen(false);
-      // TODO(): estas haciendo lo mismo que en openNew()
-      //setReload(true);
-      //setOpenNewPeriod(false);
+  
     } catch (e) {
-      //handle error
+  
     }
+    setReload(true);
   };
 
   const openNew = () => {
     const codiAccio = "ETP_NOUPER";
     actions.openNewPeriod({ id: periodSelected.id, codiAccio });
     setOpenNewPeriod(false);
-    setReload(true);
+   
   };
 
   const openPeriod = () => {
@@ -95,7 +97,7 @@ const PeriodsManagement = ({
   };
 
   React.useEffect(() => {
-    reload && actions.loadData({ projectCodi: project?.codi });
+    actions.loadData({ projectCodi: project?.codi });
     setReload(false);
   }, [reload]);
 
