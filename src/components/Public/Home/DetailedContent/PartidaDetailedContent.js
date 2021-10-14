@@ -26,7 +26,10 @@ import {
 } from "redux/partida/selectors";
 import { getKpis as getKpisProjecte } from "redux/project/selectors";
 import { loadHeader as loadUnitControlHeader } from "redux/unit-control";
-import { getUnitControl, getKpis as getKpisUC  } from "redux/unit-control/selectors";
+import {
+  getUnitControl,
+  getKpis as getKpisUC,
+} from "redux/unit-control/selectors";
 import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
@@ -35,10 +38,15 @@ import { entitiesStyles } from "utils/helper";
 import {
   CONTROL_UNIT_TYPE,
   PARTIDA_TYPE,
-  PROJECT_TYPE
+  PROJECT_TYPE,
 } from "constants/business-types";
 
-import { getKpisColorValue, getResourceColumnsByPeriod, isPeriodOpen } from "./common";
+import {
+  getKpisColorValue,
+  getResourceColumnsByPeriod,
+  isPeriodOpen,
+} from "./common";
+import CardTotal from "components/shared/CardTotal";
 
 const KPIS_TAB_INDEX = 0;
 const RESOURCES_TAB_INDEX = 1;
@@ -60,7 +68,9 @@ const ProjectDetailedContent = ({
   const [headerProject, setHeaderProject] = React.useState({});
   const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
-  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
+  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState(
+    []
+  );
   const [headerPartida, setHeaderPartida] = React.useState({});
   const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
   const [tabIndex, setTabIndex] = React.useState(KPIS_TAB_INDEX);
@@ -79,172 +89,177 @@ const ProjectDetailedContent = ({
     onChangeIndexExecutor[tabIndex]();
   }, [tabIndex, partida]);
 
-  React.useEffect(() => {
-    setIndicadores(
-      [
-        {
-          title: "Produccion",
-          icon: <Engineering />,
-          lg: 2,
-          indicators: [
-            {
-              field: "Producción Anterior",
-              value: kpisPartida.produccioAnterior,
-              breakpoints: 3,
-            },
-            {
-              field: "Producción Periodo",
-              value: kpisPartida.produccioPeriode,
-              breakpoints: 2,
-            },
-            {
-              field: "Producción Año Natural",
-              value: kpisPartida.produccioAny,
-              breakpoints: 3,
-            },
-            {
-              field: "Producción a Origen",
-              value: kpisPartida.produccioOrigen,
-              breakpoints: 2,
-            },
-            {
-              field: "Producción Pendiente",
-              value: kpisPartida.produccioPendent,
-              breakpoints: 2,
-            },
-          ],
-        },
-        {
-          title: "Coste Teórico",
-          icon: <StackedLineChart />,
-          lg: 2,
-          indicators: [
-            {
-              field: "Coste Teórico Anterior",
-              value: kpisPartida.costTeoricAnterior,
-              breakpoints: 3,
-            },
-            {
-              field: "Coste Teórico Pendiente",
-              value: kpisPartida.costTeoricPeriode,
-              breakpoints: 2,
-            },
-            {
-              field: "Coste Teórico Año Natural",
-              value: kpisPartida.costTeoricAny,
-              breakpoints: 3,
-            },
-            {
-              field: "Coste Teórico a Origen",
-              value: kpisPartida.costTeoricOrigen,
-              breakpoints: 2,
-            },
-            {
-              field: "Coste Teórico Pendiente",
-              value: kpisPartida.costTeoricPendent,
-              breakpoints: 2,
-            },
-          ],
-        },
-        {
-          title: "Coste Real",
-          icon: <StackedBarChart />,
-          lg: 3,
-          indicators: [
-            {
-              field: "Coste Real Anterior",
-              value: kpisPartida.costRealAnterior,
-              icon: <StackedBarChart />,
-            },
-            {
-              field: "Coste Real Pendiente",
-              value: kpisPartida.costRealPeriode,
-              icon: <StackedBarChart />,
-            },
-            {
-              field: "Coste Real año Natural",
-              value: kpisPartida.costRealAny,
-              icon: <StackedBarChart />,
-            },
-            {
-              field: "Coste Real Origen",
-              value: kpisPartida.costRealOrigen,
-              icon: <StackedBarChart />,
-            },
-          ],
-        },
-        {
-          title: "Beneficios",
-          icon: <Euro />,
-          lg: 3,
-          indicators: [
-            {
-              field: "Beneficio Anterior",
-              value: kpisPartida.beneficiAnterior,
-            },
-            {
-              field: "Beneficio Período",
-              value: kpisPartida.beneficiPeriode,
-            },
-            {
-              field: "Beneficio año Natural",
-              value: kpisPartida.beneficiAny,
-            },
-            {
-              field: "Beneficio Origen",
-              value: kpisPartida.beneficiOrigen,
-            },
-          ],
-        },
-        {
-          title: "Desviación",
-          icon: <CallMissedOutgoing />,
-          lg: 3,
-          indicators: [
-            {
-              field: "Desviación Anterior",
-              value: kpisPartida.desviacioCostAnterior,
-            },
-            {
-              field: "Desviación Período",
-              value: kpisPartida.desviacioPeriode,
-            },
-            {
-              field: "Desviación año Natural",
-              value: kpisPartida.desviacioAny,
-            },
+  const content = [
+    {
+      field: "Coste Total",
+      value: partida.costTotal,
+    },
+  ];
 
-            {
-              field: "Desviación Origen",
-              value: kpisPartida.desviacioOrigen,
-            },
-          ],
-        },
-        {
-          title: "Obra Pendiente Periodo",
-          icon: <Construction />,
-          lg: 3,
-          indicators: [
-            {
-              field: "Obra Pendiente Anterior",
-              value: kpisPartida.obraPendentFacturar,
-            },
-            {
-              field: "Obra Pendiente Período",
-              value: kpisPartida.obraPendent,
-            },
-            {
-              field: "Obra Pendiente año Natural",
-              value: kpisPartida.obraPendentAny,
-            },
-            {
-              field: "Obra Pendiente Origen",
-              value: kpisPartida.obraPendentOrigen,
-            },
-          ],
-        },
-      ]
-    );
+  React.useEffect(() => {
+    setIndicadores([
+      {
+        title: "Producción",
+        icon: <Engineering />,
+        lg: 2,
+        indicators: [
+          {
+            field: "Producción Anterior",
+            value: kpisPartida.produccioAnterior,
+            breakpoints: 3,
+          },
+          {
+            field: "Producción Periodo",
+            value: kpisPartida.produccioPeriode,
+            breakpoints: 2,
+          },
+          {
+            field: "Producción Año Natural",
+            value: kpisPartida.produccioAny,
+            breakpoints: 3,
+          },
+          {
+            field: "Producción a Origen",
+            value: kpisPartida.produccioOrigen,
+            breakpoints: 2,
+          },
+          {
+            field: "Producción Pendiente",
+            value: kpisPartida.produccioPendent,
+            breakpoints: 2,
+          },
+        ],
+      },
+      {
+        title: "Coste Teórico",
+        icon: <StackedLineChart />,
+        lg: 2,
+        indicators: [
+          {
+            field: "Coste Teórico Anterior",
+            value: kpisPartida.costTeoricAnterior,
+            breakpoints: 3,
+          },
+          {
+            field: "Coste Teórico Pendiente",
+            value: kpisPartida.costTeoricPeriode,
+            breakpoints: 2,
+          },
+          {
+            field: "Coste Teórico Año Natural",
+            value: kpisPartida.costTeoricAny,
+            breakpoints: 3,
+          },
+          {
+            field: "Coste Teórico a Origen",
+            value: kpisPartida.costTeoricOrigen,
+            breakpoints: 2,
+          },
+          {
+            field: "Coste Teórico Pendiente",
+            value: kpisPartida.costTeoricPendent,
+            breakpoints: 2,
+          },
+        ],
+      },
+      {
+        title: "Coste Real",
+        icon: <StackedBarChart />,
+        lg: 3,
+        indicators: [
+          {
+            field: "Coste Real Anterior",
+            value: kpisPartida.costRealAnterior,
+            icon: <StackedBarChart />,
+          },
+          {
+            field: "Coste Real Pendiente",
+            value: kpisPartida.costRealPeriode,
+            icon: <StackedBarChart />,
+          },
+          {
+            field: "Coste Real año Natural",
+            value: kpisPartida.costRealAny,
+            icon: <StackedBarChart />,
+          },
+          {
+            field: "Coste Real Origen",
+            value: kpisPartida.costRealOrigen,
+            icon: <StackedBarChart />,
+          },
+        ],
+      },
+      {
+        title: "Beneficios",
+        icon: <Euro />,
+        lg: 3,
+        indicators: [
+          {
+            field: "Beneficio Anterior",
+            value: kpisPartida.beneficiAnterior,
+          },
+          {
+            field: "Beneficio Período",
+            value: kpisPartida.beneficiPeriode,
+          },
+          {
+            field: "Beneficio año Natural",
+            value: kpisPartida.beneficiAny,
+          },
+          {
+            field: "Beneficio Origen",
+            value: kpisPartida.beneficiOrigen,
+          },
+        ],
+      },
+      {
+        title: "Desviación",
+        icon: <CallMissedOutgoing />,
+        lg: 3,
+        indicators: [
+          {
+            field: "Desviación Anterior",
+            value: kpisPartida.desviacioCostAnterior,
+          },
+          {
+            field: "Desviación Período",
+            value: kpisPartida.desviacioPeriode,
+          },
+          {
+            field: "Desviación año Natural",
+            value: kpisPartida.desviacioAny,
+          },
+
+          {
+            field: "Desviación Origen",
+            value: kpisPartida.desviacioOrigen,
+          },
+        ],
+      },
+      {
+        title: "Obra Pendiente Periodo",
+        icon: <Construction />,
+        lg: 3,
+        indicators: [
+          {
+            field: "Obra Pendiente Anterior",
+            value: kpisPartida.obraPendentFacturar,
+          },
+          {
+            field: "Obra Pendiente Período",
+            value: kpisPartida.obraPendent,
+          },
+          {
+            field: "Obra Pendiente año Natural",
+            value: kpisPartida.obraPendentAny,
+          },
+          {
+            field: "Obra Pendiente Origen",
+            value: kpisPartida.obraPendentOrigen,
+          },
+        ],
+      },
+    ]);
   }, [kpisPartida]);
 
   const loadHeader = () => actions.loadHeader({ id: props.id });
@@ -262,7 +277,9 @@ const ProjectDetailedContent = ({
       {
         field: "Benef. Año",
         value: kpisUnitatControl.beneficiAny,
-        colorValue: getKpisColorValue({ value: kpisUnitatControl?.beneficiAny >= 0 }),
+        colorValue: getKpisColorValue({
+          value: kpisUnitatControl?.beneficiAny >= 0,
+        }),
       },
       {
         field: "Desv. Origen",
@@ -271,7 +288,9 @@ const ProjectDetailedContent = ({
       {
         field: "Desv. Año",
         value: kpisUnitatControl.desviacioAny,
-        colorValue: getKpisColorValue({ value: kpisUnitatControl?.desviacioAny >= 0 }),
+        colorValue: getKpisColorValue({
+          value: kpisUnitatControl?.desviacioAny >= 0,
+        }),
       },
       {
         field: "Pen. Origen",
@@ -281,7 +300,9 @@ const ProjectDetailedContent = ({
       {
         field: "Pen. Año",
         value: kpisUnitatControl.obraPendentAny,
-        colorValue: getKpisColorValue({ value: kpisUnitatControl?.obraPendentAny >= 0 }),
+        colorValue: getKpisColorValue({
+          value: kpisUnitatControl?.obraPendentAny >= 0,
+        }),
       },
     ]);
   }, [kpisUnitatControl, unitControl, intl]);
@@ -305,7 +326,9 @@ const ProjectDetailedContent = ({
       {
         field: "Desv. Año",
         value: kpisPartida.desviacioAny,
-        colorValue: getKpisColorValue({ value: kpisPartida?.desviacioAny >= 0 }),
+        colorValue: getKpisColorValue({
+          value: kpisPartida?.desviacioAny >= 0,
+        }),
       },
       {
         field: "Pen. Origen",
@@ -315,7 +338,9 @@ const ProjectDetailedContent = ({
       {
         field: "Pen. Año",
         value: kpisPartida.obraPendentAny,
-        colorValue: getKpisColorValue({ value: kpisPartida?.obraPendentAny >= 0 }),
+        colorValue: getKpisColorValue({
+          value: kpisPartida?.obraPendentAny >= 0,
+        }),
       },
     ]);
   }, [kpisPartida, partida, intl]);
@@ -330,7 +355,9 @@ const ProjectDetailedContent = ({
       {
         field: "Benef. Año",
         value: kpisProjecte.beneficiAny,
-        colorValue: getKpisColorValue({ value: kpisProjecte?.beneficiAny >= 0 }),
+        colorValue: getKpisColorValue({
+          value: kpisProjecte?.beneficiAny >= 0,
+        }),
       },
       {
         field: "Desv. Origen",
@@ -339,20 +366,26 @@ const ProjectDetailedContent = ({
       {
         field: "Desv. Año",
         value: kpisProjecte.desviacioAny,
-        colorValue: getKpisColorValue({ value: kpisProjecte?.desviacioAny >= 0 }),
+        colorValue: getKpisColorValue({
+          value: kpisProjecte?.desviacioAny >= 0,
+        }),
       },
       {
         field: "Pen. Origen",
         value: kpisProjecte.obraPendentOrigen,
-        colorValue: getKpisColorValue({ value: kpisProjecte?.obraPendentOrigen >= 0 }),
+        colorValue: getKpisColorValue({
+          value: kpisProjecte?.obraPendentOrigen >= 0,
+        }),
       },
       {
         field: "Pen. Año",
         value: kpisProjecte.obraPendentAny,
-        colorValue: getKpisColorValue({ value: kpisProjecte?.obraPendentAny >= 0 }),
+        colorValue: getKpisColorValue({
+          value: kpisProjecte?.obraPendentAny >= 0,
+        }),
       },
     ]);
-  }, [kpisProjecte,tree, intl]);
+  }, [kpisProjecte, tree, intl]);
 
   const handleCellChange = async (params, event, details) => {
     const { id, field, value } = params;
@@ -397,10 +430,23 @@ const ProjectDetailedContent = ({
         />
       </Grid>
       <Grid item xs={12}>
-        <Tabs value={tabIndex} onChange={(e, index) => setTabIndex(index)}>
-          <Tab label={"Indicadores"} className="tabsIndicators tabsIndicators1" />
-          <Tab label={"Recursos"} className="tabsIndicators tabsIndicators2" />
-        </Tabs>
+        <Grid container>
+          <Grid item xs={10}>
+            <Tabs value={tabIndex} onChange={(e, index) => setTabIndex(index)}>
+              <Tab
+                label={"Indicadores"}
+                className="tabsIndicators tabsIndicators1"
+              />
+              <Tab
+                label={"Recursos"}
+                className="tabsIndicators tabsIndicators2"
+              />
+            </Tabs>
+          </Grid>
+          <Grid item xs={2}>
+            <CardTotal body={content} breakPoint={12}/>
+          </Grid>
+        </Grid>
       </Grid>
 
       <Grid item xs={12}>
@@ -437,8 +483,8 @@ const mapStateToProps = (state, props) => {
     tree: getData(state),
     selectedPeriod: getSelectedPeriod(state),
     kpisPartida: getKpisPartida(state),
-    kpisUnitatControl:  getKpisUC(state),
-    kpisProjecte: getKpisProjecte(state)
+    kpisUnitatControl: getKpisUC(state),
+    kpisProjecte: getKpisProjecte(state),
   };
 };
 
@@ -450,7 +496,6 @@ const mapDispatchToProps = (dispatch, props) => {
     loadTreeData: bindActionCreators(loadTreeData, dispatch),
     loadKpis: bindActionCreators(loadKpis, dispatch),
     resetKpis: bindActionCreators(resetKpis, dispatch),
-    
   };
   return { actions };
 };
