@@ -5,8 +5,8 @@ const ADD = "ADD_TO_PROJECT";
 const RESET_KPIS = "RESET_KPIS_TO_PROJECT";
 
 // Constants
-const URL = 'api/fact/unitatsControlEstudi?query=estudiProjecte.id=="{id}"&sort=codi';
-const LOAD_KPIS_URL = 'api/fact/estudisProjecte/{id}/indicadors';
+const URL = 'api/estp/unitatsControlEstudi?query=estudiProjecte.id=="{id}"&sort=codi';
+const LOAD_KPIS_URL = 'api/estp/estudisProjecte/{id}/indicadors';
 
 //Functions
 export const loadData = ({ url = URL, id }) => {

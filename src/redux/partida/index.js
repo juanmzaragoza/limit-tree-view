@@ -6,10 +6,10 @@ const REPLACE = "REPLACE_TO_PARTIDA";
 const RESET_KPIS = "RESET_KPIS_TO_PARTIDA";
 
 // Constants
-const URL = 'api/fact/recursosEstudi?query=liniaEstudi.id=="{id}"&sort=codi';
-const HEADER_URL = 'api/fact/liniesEstudi';
-const UPDATE_RESOURCE_URL = 'api/fact/recursosEstudi';
-const LOAD_KPIS_URL = 'api/fact/liniesEstudi/{id}/indicadors';
+const URL = 'api/estp/recursosEstudi?query=liniaEstudi.id=="{id}"&sort=codi';
+const HEADER_URL = 'api/estp/liniesEstudi';
+const UPDATE_RESOURCE_URL = 'api/estp/recursosEstudi';
+const LOAD_KPIS_URL = 'api/estp/liniesEstudi/{id}/indicadors';
 
 //Functions
 export const loadData = ({ url = URL, id }) => {

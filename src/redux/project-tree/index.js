@@ -11,7 +11,7 @@ const ADD = "ADD_TO_TREE";
 const RESET = "RESET_TREE";
 
 // Constants
-const URL = 'api/fact/estudisProjecte/{id}/tree';
+const URL = 'api/estp/estudisProjecte/{id}/tree';
 
 //Functions
 export const loadData = ({ url = URL, periodId }) => {
