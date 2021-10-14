@@ -8,9 +8,10 @@ export const isPeriodOpen = ({ period }) => {
 export const getKpisColorValue = ({ value }) => value >= 0 ? greenColor : redColor;
 
 export const getPartidaColumnsByPeriod = ({ period, intl }) => {
-  const { number } = period;
+  const  number  = period.numero;
   const numberIsZero = !number;
   const numberIsNotZero = !!number;
+
   return [
     { field: "codi", headerName: "Cód.", minWidth: 90 },
     {
