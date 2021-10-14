@@ -76,7 +76,8 @@ const ProjectDetailedContent = ({
       },
       {
         field: "Desviación Origen",
-        value: getKpisColorValue({ value: kpis.desviacioOrigen }),
+        value: kpis.desviacioOrigen,
+ 
       },
       {
         field: "Desviación Año",
@@ -92,7 +93,7 @@ const ProjectDetailedContent = ({
       {
         field: "Obra Pendiente Año",
         value: kpis.obraPendentAny,
-        colorValue: kpis?.obraPendentAny >= 0 ? "green" : "red",
+        colorValue:getKpisColorValue({ value: kpis?.obraPendentAny >= 0 }), 
       },
     ]);
   }, [kpis, project, intl]);
@@ -130,14 +131,14 @@ const ProjectDetailedContent = ({
           disableInlineEdition={!isPeriodOpen({ period })}
         />
       </Grid>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <MaterialCardPartidaIndicator
           title={"Indicadores"}
           loading={isEmpty(indicadores)}
           content={indicadores}
          
         />
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };

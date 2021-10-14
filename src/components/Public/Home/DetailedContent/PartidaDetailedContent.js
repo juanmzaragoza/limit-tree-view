@@ -285,7 +285,7 @@ const ProjectDetailedContent = ({
       },
       {
         field: "Beneficio Año",
-        value: kpisUnitatControl.beneficiAny,
+        value: kpisPartida.beneficiAny,
         colorValue: getKpisColorValue({ value: kpisPartida?.beneficiAny >= 0 }),
       },
       {
