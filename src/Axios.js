@@ -48,7 +48,11 @@ const solveError = (status) => {
 let key;
 Axios.interceptors.response.use(
   (response) => {
-    SnackbarUtils.close(key);
+    const { status } = response;
+    if(status === 200 && !!key) {
+      SnackbarUtils.close(key);
+      key = null;
+    }
     return response;
   },
   (error) => {
@@ -59,7 +63,7 @@ Axios.interceptors.response.use(
       }
       // if the status cannot be handled by the component
     } else if(error.response){
-      SnackbarUtils.close(key);
+      //SnackbarUtils.close(key);
       const { status } = error.response;
       solveError(status);
     }

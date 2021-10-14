@@ -6,14 +6,15 @@ import { isEmpty } from "lodash";
 
 import { Grid, Tab, Tabs } from "@mui/material";
 
+import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
-import MaterialCardPartidaIndicator from "components/shared/MaterialCardPartidaIndicator";
 import CardTotal from "components/shared/CardTotal";
 
 import { loadKpis, resetKpis } from "redux/project";
 import { getIsLoading, getKpis, getRows } from "redux/project/selectors";
 import { getSelectedProject } from "redux/project-selector/selectors";
+import { selectNode } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
@@ -22,7 +23,6 @@ import { formatCurrencyWithIntl } from "utils/formats";
 import { PROJECT_TYPE } from "constants/business-types";
 
 import { getKpisColorValue, isPeriodOpen } from "./common";
-import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
 import {
   Engineering,
   StackedLineChart,
@@ -250,7 +250,6 @@ const ProjectDetailedContent = ({
     );
   }, [kpis]);
 
-
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
     setProjectFields([
@@ -287,8 +286,6 @@ const ProjectDetailedContent = ({
     ]);
   }, [kpis, project, intl]);
 
-
-
   const content = [
     { field: "Importe Total", value: tree.importTotal },
     {
@@ -308,29 +305,30 @@ const ProjectDetailedContent = ({
           {...entitiesStyles[PROJECT_TYPE]}
         />
       </Grid>
-   
       <Grid item xs={12}>
         <Grid container>
-        <Grid item xs={9}>
-        <Tabs value={tabIndex} onChange={(e, index) => setTabIndex(index)}>
-          <Tab label={"Indicadores"} className="tabsIndicators tabsIndicators1" />
-          <Tab label={"Unidades Control"} className="tabsIndicators tabsIndicators2" />
-        </Tabs>
+          <Grid item xs={9}>
+            <Tabs value={tabIndex} onChange={(e, index) => setTabIndex(index)}>
+              <Tab label={"Indicadores"} className="tabsIndicators tabsIndicators1" />
+              <Tab label={"Unidades Control"} className="tabsIndicators tabsIndicators2" />
+            </Tabs>
+          </Grid>
+          <Grid item xs={3} >
+            <CardTotal body={content} />
+          </Grid>
         </Grid>
-        <Grid item xs={3} >
-        <CardTotal body={content} />
       </Grid>
-      </Grid>
-      </Grid>
-
       <Grid item xs={12}>
         {tabIndex === PROJECTS_TAB_INDEX && (
-      <MaterialDataGrid
-      columns={columns}
-      rows={rows}
-      disableInlineEdition={!isPeriodOpen({ period })}
-      flexGrid={1}
-    />
+
+          <MaterialDataGrid
+            columns={columns}
+            rows={rows}
+            disableInlineEdition={!isPeriodOpen({ period })}
+            onRowDoubleClick={(row) => actions.selectNode({ ids: row.id })}
+            flexGrid={1}
+          />
+
         )}
         {tabIndex === KPIS_TAB_INDEX && (
           <Grid container spacing={2}>
@@ -342,17 +340,6 @@ const ProjectDetailedContent = ({
           </Grid>
         )}
       </Grid>
-      <Grid item xs={12}>
-       
-      </Grid>
-      {/* <Grid item xs={12}>
-        <MaterialCardPartidaIndicator
-          title={"Indicadores"}
-          loading={isEmpty(indicadores)}
-          content={indicadores}
-         
-        />
-      </Grid> */}
     </Grid>
   );
 };
@@ -372,6 +359,7 @@ const mapDispatchToProps = (dispatch, props) => {
   const actions = {
     loadKpis: bindActionCreators(loadKpis, dispatch),
     resetKpis: bindActionCreators(resetKpis, dispatch),
+    selectNode: bindActionCreators(selectNode, dispatch),
   };
   return { actions };
 };

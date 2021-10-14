@@ -12,8 +12,9 @@ import PeriodsManagement from "./PeriodsManagement/index";
 
 import { loadData } from "redux/project-tree";
 import { getSelectedPeriod } from "redux/period/selectors";
+import { getSelectedNode } from "redux/project-tree/selectors";
 
-const Home = ({ selectedPeriod, actions }) =>{
+const Home = ({ selectedPeriod, selectedNode, actions }) =>{
   const [show, setShow] = React.useState(false);
   const [node, setNode] = React.useState(null);
 
@@ -24,6 +25,11 @@ const Home = ({ selectedPeriod, actions }) =>{
     setShow(false);
     setNode(null);
   },[actions, selectedPeriod]);
+
+  React.useEffect(() => {
+    setShow(selectedNode && !!selectedNode.id);
+    setNode(selectedNode);
+  },[selectedNode]);
 
   return ( <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
       <Grid container>
@@ -48,17 +54,11 @@ const Home = ({ selectedPeriod, actions }) =>{
             </Grid>
             <Grid container spacing={1} className="containerProjectTree">
               <Grid item xs={12} md={12} lg={12} sx={{ mt: 1 }}>
-                <ProjectsTreeView
-                  onNodeSelect={(selectedNode) => {
-                    setShow(!!selectedNode.id);
-                    setNode(selectedNode);
-                  }} />
+                <ProjectsTreeView />
               </Grid>
             </Grid>
           </Paper>
         </Grid>
-
-        <Grid ></Grid>
         <Grid item xs={12} md={8} lg={8} sx={{ mt: 2, mb: 3 }}>
           {show && <DetailedContent data={node} />}
           {!show && <SelectOne />}
@@ -71,7 +71,8 @@ const Home = ({ selectedPeriod, actions }) =>{
 
 const mapStateToProps = (state, props) => {
   return {
-    selectedPeriod: getSelectedPeriod(state)
+    selectedPeriod: getSelectedPeriod(state),
+    selectedNode: getSelectedNode(state),
   };
 };
 

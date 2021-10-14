@@ -1,9 +1,7 @@
 import * as React from 'react';
 import {
-  forEach,
   isEmpty,
   isEqual,
-  remove
 } from 'lodash';
 import TreeView from '@mui/lab/TreeView';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -17,28 +15,31 @@ import { usePrevious } from "utils/helper-hooks";
 import StyledTreeItem from "./StyledTreeItem";
 import "./styles.css";
 
-const ProjectsTreeView = ({ data, loading, onNodeSelect, actions }) => {
-  const [nodeIds, setNodeIds] = React.useState(null);
-  const [expanded, setExpanded] = React.useState([]);
+const ProjectsTreeView = ({
+  data,
+  loading,
+  expanded,
+  onNodeSelect = () => {},
+  selectedNode,
+  actions: {
+    reset = () => {},
+    selectNode = () => {}
+  }
+}) => {
   const [tree, setTree] = React.useState({});
 
   React.useEffect(() => {
-    return () => actions?.reset();
+    return () => reset();
   },[]);
 
   React.useEffect(() => {
     setTree(data);
   },[data]);
 
-  React.useEffect(() => {
-    actions?.setExpanded({ expanded });
-  },[expanded, actions]);
-
   const previousTree = usePrevious(tree);
   React.useEffect(() => {
     if(!isEmpty(tree) && !isEqual(previousTree?.id,tree?.id)) {
-      setExpanded([tree.id]);
-      handleOnNodeSelect({},tree.id);
+      selectNode({ ids: tree.id });
     }
   },[tree]);
 
@@ -70,40 +71,9 @@ const ProjectsTreeView = ({ data, loading, onNodeSelect, actions }) => {
     }
   };
 
-  const findNode = ({ nodes, nodeId }) => {
-    if(nodes.id === nodeId) {
-      return nodes;
-    } else{
-      let founded = {};
-      forEach(nodes.nodes, node => {
-        const n = findNode({ nodes: node, nodeId });
-        if(!isEmpty(n)) {
-          founded = n;
-          return false;
-        }
-      })
-      return founded;
-    }
-  }
-
-  const processOnNodeSelected = (selectedId) => {
-    const selected = selectedId;
-    // fire action
-    setNodeIds(selected);
-    const selectedNode = findNode({nodes: tree, nodeId: selected});
-    if (!selectedNode.disabled)
-      onNodeSelect(selectedNode);
-  }
   const handleOnNodeSelect = (e, ids) => {
-    processOnNodeSelected(ids);
-    // update expanded
-    // TODO(): this logic must be implemented in the reducer
-    const found = expanded.find(id => ids === id);
-    if(found) {
-      setExpanded(remove(expanded, (e) => e !== found));
-    } else{
-      setExpanded([...expanded, ids]);
-    }
+    selectNode({ ids });
+    onNodeSelect(ids);
   }
 
   const renderEmptyTree = () => <div className="empty-tree-root">No existen elementos en el árbol</div>
@@ -122,7 +92,7 @@ const ProjectsTreeView = ({ data, loading, onNodeSelect, actions }) => {
         textAlign: 'left'
       }}
       onNodeSelect={handleOnNodeSelect}
-      selected={nodeIds}
+      selected={selectedNode?.id ?? null}
     >
       {!loading && !isEmpty(tree) && renderNodes({ tree })}
       {!loading && isEmpty(tree) && renderEmptyTree()}
