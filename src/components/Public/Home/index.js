@@ -10,18 +10,13 @@ import DetailedContent from "./DetailedContent/index";
 import ProjectSelector from "./ProjectSelector";
 import PeriodsManagement from "./PeriodsManagement/index";
 
-import { getFormattedData, getIsLoading } from "redux/project-tree/selectors";
 import { loadData } from "redux/project-tree";
 import { getSelectedPeriod } from "redux/period/selectors";
+import { getSelectedNode } from "redux/project-tree/selectors";
 
-const Home = ({ data, loading, selectedPeriod, actions }) =>{
+const Home = ({ selectedPeriod, selectedNode, actions }) =>{
   const [show, setShow] = React.useState(false);
   const [node, setNode] = React.useState(null);
-  const [tree, setTree] = React.useState({});
-
-  React.useEffect(() => {
-    setTree(data);
-  },[data]);
 
   React.useEffect(() => {
     if(selectedPeriod?.id){
@@ -30,6 +25,11 @@ const Home = ({ data, loading, selectedPeriod, actions }) =>{
     setShow(false);
     setNode(null);
   },[actions, selectedPeriod]);
+
+  React.useEffect(() => {
+    setShow(selectedNode && !!selectedNode.id);
+    setNode(selectedNode);
+  },[selectedNode]);
 
   return ( <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
       <Grid container>
@@ -54,20 +54,11 @@ const Home = ({ data, loading, selectedPeriod, actions }) =>{
             </Grid>
             <Grid container spacing={1} className="containerProjectTree">
               <Grid item xs={12} md={12} lg={12} sx={{ mt: 1 }}>
-                <ProjectsTreeView
-                  tree={tree}
-                  onNodeSelect={(selectedNode) => {
-                    setShow(!!selectedNode.id);
-                    setNode(selectedNode);
-                  }}
-                  loading={loading} />
-                
+                <ProjectsTreeView />
               </Grid>
             </Grid>
           </Paper>
         </Grid>
-
-        <Grid ></Grid>
         <Grid item xs={12} md={8} lg={8} sx={{ mt: 2, mb: 3 }}>
           {show && <DetailedContent data={node} />}
           {!show && <SelectOne />}
@@ -80,9 +71,8 @@ const Home = ({ data, loading, selectedPeriod, actions }) =>{
 
 const mapStateToProps = (state, props) => {
   return {
-    data: getFormattedData(state),
-    loading: getIsLoading(state),
-    selectedPeriod: getSelectedPeriod(state)
+    selectedPeriod: getSelectedPeriod(state),
+    selectedNode: getSelectedNode(state),
   };
 };
 

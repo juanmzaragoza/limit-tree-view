@@ -5,13 +5,15 @@ import {
   PROJECT_TYPE
 } from "constants/business-types";
 import { formatCurrency } from "utils/formats";
+import {forEach, isEmpty, remove} from "lodash";
 
 //Action types
 const ADD = "ADD_TO_TREE";
 const RESET = "RESET_TREE";
+const SELECT_NODE = "SELECT_NODE_TREE";
 
 // Constants
-const URL = 'api/fact/estudisProjecte/{id}/tree';
+const URL = 'api/estp/estudisProjecte/{id}/tree';
 
 //Functions
 export const loadData = ({ url = URL, periodId }) => {
@@ -76,17 +78,58 @@ export const reset = () => {
   }
 }
 
+export const selectNode = (payload) => {
+  return {
+    type: SELECT_NODE,
+    payload
+  }
+}
+
+// Helpers
+export const findNode = ({ nodes, nodeId }) => {
+  if(nodes.id === nodeId) {
+    return nodes;
+  } else{
+    let founded = {};
+    forEach(nodes.nodes, node => {
+      const n = findNode({ nodes: node, nodeId });
+      if(!isEmpty(n)) {
+        founded = n;
+        return false;
+      }
+    })
+    return founded;
+  }
+}
+
 //Reducers
 const initialState = {
   formattedData: {},
   data: {},
   loading: false,
+  expanded: [],
+  selectedNode: null
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD:
       return { ...state, ...action.payload };
+    case SELECT_NODE:
+      const { ids } = action.payload;
+      const { expanded, formattedData: nodes } = state;
+      // update selected
+      const selectedNode = findNode({ nodes: nodes, nodeId: ids });
+      // update expanded
+      const found = expanded.find(id => ids === id);
+      return {
+        ...state,
+        selectedNode: selectedNode,
+        expanded: found?
+          remove(expanded, (e) => e !== found)
+          :
+          [...expanded, ids]
+      }
     case RESET:
     case "RESET":
       return initialState;

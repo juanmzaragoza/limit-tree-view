@@ -16,15 +16,10 @@ const CardTotal = ({
   const intl = useIntl();
 return(
     <Card
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        flexDirection: "column",
-        width: "100%",
-      }}
+      className="importsTotals"
     >
-      <CardContent>
-        <Container>
+      <CardContent  className="importsTotals"> 
+        <Container  className="importsTotals">
           <Grid container spacing={1}>
             {body.map(({ field, value, colorValue = "inherit" }) => {
               const line = `${field}: ${value}`;
@@ -33,7 +28,7 @@ return(
                   <Typography
                     component="h2"
                     variant="caption"
-                    align="left"
+                    align="center"
                     className="bodyLabel"
                   >
                     <span style={{ fontSize: "14px" }}> <strong>{field}</strong></span>

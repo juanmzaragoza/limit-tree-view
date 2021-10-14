@@ -9,10 +9,12 @@ const DetailedTable = ({
   getRowId = (row) => row.codi,
   autoHeight = true,
   autoWidth = true,
-  onCellEditCommit = (params, event, details) => {},
   disableColumnMenu = true,
   disableExtendRowFullWidth = true,
-  disableInlineEdition = false
+  disableInlineEdition = false,
+  onCellEditCommit = (params, event, details) => {},
+  onRowClick = (row) => {},
+  onRowDoubleClick = (row) => {},
 }) => {
   return (
     <div style={rootStyle}>
@@ -34,6 +36,8 @@ const DetailedTable = ({
             style={{ backgroundColor: "white"}} 
             classsName="bodyLabel"
             onCellEditCommit={onCellEditCommit}
+            onRowClick={(e) => onRowClick(e.row)}
+            onRowDoubleClick={(e) => onRowDoubleClick(e.row)}
           />
         </div>
       </div>
