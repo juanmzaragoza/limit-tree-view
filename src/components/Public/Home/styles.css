@@ -96,3 +96,7 @@
   align-items: center !important;
 }
 
+.tableRowBorder .MuiTableCell-head{
+  border-right: 2px blue solid !important;
+}
+

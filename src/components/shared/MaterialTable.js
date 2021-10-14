@@ -387,7 +387,7 @@ export default function ColumnGroupingTable({ content, contentTotal }) {
       <TableContainer>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
-            <TableRow>
+            <TableRow className="tableRowBorder">
               <TableCell align="center" colSpan={2}></TableCell>
               
               <TableCell align="center" colSpan={5} sx={{ fontWeight: "bold" }}>
