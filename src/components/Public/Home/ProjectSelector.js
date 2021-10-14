@@ -77,7 +77,7 @@ const ProjectSelector = ({ onChange = () => {}, rows, loading, actions }) => {
             <FormControl fullWidth>
               <MaterialAsyncAutocomplete
                 id="project-number-selector"
-                label="Número de proyecto"
+                label="Proyecto"
                 loading={loading}
                 items={items.map((item) => ({ label: item.name, value: item.value }))}
                 onChange={handleChange}
