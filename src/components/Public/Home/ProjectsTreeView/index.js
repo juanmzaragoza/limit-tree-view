@@ -5,9 +5,10 @@ import { bindActionCreators } from "redux";
 import {
   getExpanded,
   getFormattedData,
-  getIsLoading
+  getIsLoading,
+  getSelectedNode,
 } from "redux/project-tree/selectors";
-import { reset, setExpanded } from "redux/project-tree";
+import { reset, selectNode } from "redux/project-tree";
 
 import "./styles.css";
 import ProjectsTreeView from "./ProjectTreeView";
@@ -16,14 +17,16 @@ const mapStateToProps = (state, props) => {
   return {
     data: getFormattedData(state),
     loading: getIsLoading(state),
-    expanded: getExpanded(state)
+    expanded: getExpanded(state),
+    selectedNode: getSelectedNode(state)
   };
 };
 
 const mapDispatchToProps = (dispatch, props) => {
   const actions = {
-    setExpanded: bindActionCreators(setExpanded, dispatch),
+    //setExpanded: bindActionCreators(setExpanded, dispatch),
     reset: bindActionCreators(reset, dispatch),
+    selectNode: bindActionCreators(selectNode, dispatch),
   };
   return { actions };
 };

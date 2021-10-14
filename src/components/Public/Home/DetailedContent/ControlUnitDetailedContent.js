@@ -19,7 +19,10 @@ import {
   loadKpis,
   resetKpis,
 } from "redux/unit-control";
-import { loadData as loadTreeData, expandTreeUntil } from "redux/project-tree";
+import {
+  loadData as loadTreeData,
+  selectNode
+} from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 import { getKpis } from "redux/project/selectors";
@@ -398,7 +401,7 @@ const ControlUnitDetailedContent = ({
             loading={loading}
             onCellEditCommit={handleCellChange}
             disableInlineEdition={!isPeriodOpen({ period: selectedPeriod })}
-            onRowClick={(row) => actions.expandTreeUntil({ row })}
+            onRowDoubleClick={(row) => actions.selectNode({ ids: row.id })}
           />
         )}
         {tabIndex === KPIS_TAB_INDEX && (
@@ -434,7 +437,7 @@ const mapDispatchToProps = (dispatch, props) => {
     loadTreeData: bindActionCreators(loadTreeData, dispatch),
     loadKpis: bindActionCreators(loadKpis, dispatch),
     resetKpis: bindActionCreators(resetKpis, dispatch),
-    expandTreeUntil: bindActionCreators(expandTreeUntil, dispatch),
+    selectNode: bindActionCreators(selectNode, dispatch),
   };
   return { actions };
 };

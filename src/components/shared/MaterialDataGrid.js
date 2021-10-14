@@ -14,6 +14,7 @@ const DetailedTable = ({
   disableInlineEdition = false,
   onCellEditCommit = (params, event, details) => {},
   onRowClick = (row) => {},
+  onRowDoubleClick = (row) => {},
 }) => {
   return (
     <div style={rootStyle}>
@@ -36,6 +37,7 @@ const DetailedTable = ({
             classsName="bodyLabel"
             onCellEditCommit={onCellEditCommit}
             onRowClick={(e) => onRowClick(e.row)}
+            onRowDoubleClick={(e) => onRowDoubleClick(e.row)}
           />
         </div>
       </div>
