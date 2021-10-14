@@ -5,7 +5,9 @@ import {
   PROJECT_TYPE
 } from "constants/business-types";
 import { formatCurrency } from "utils/formats";
-import {forEach, isEmpty, remove} from "lodash";
+import { remove } from "lodash";
+
+import { findAllParents, findNode } from "./helpers";
 
 //Action types
 const ADD = "ADD_TO_TREE";
@@ -85,23 +87,6 @@ export const selectNode = (payload) => {
   }
 }
 
-// Helpers
-export const findNode = ({ nodes, nodeId }) => {
-  if(nodes.id === nodeId) {
-    return nodes;
-  } else{
-    let founded = {};
-    forEach(nodes.nodes, node => {
-      const n = findNode({ nodes: node, nodeId });
-      if(!isEmpty(n)) {
-        founded = n;
-        return false;
-      }
-    })
-    return founded;
-  }
-}
-
 //Reducers
 const initialState = {
   formattedData: {},
@@ -122,13 +107,18 @@ const reducer = (state = initialState, action) => {
       const selectedNode = findNode({ nodes: nodes, nodeId: ids });
       // update expanded
       const found = expanded.find(id => ids === id);
+      let newExpanded;
+      // is opened -> we must close it
+      if(found) {
+        newExpanded = remove(expanded, (e) => e !== found);
+      } else{ // is closed -> open it
+        newExpanded = findAllParents({ nodes: nodes, nodeId: ids });
+        newExpanded = [...expanded, ...newExpanded, ids];
+      }
       return {
         ...state,
         selectedNode: selectedNode,
-        expanded: found?
-          remove(expanded, (e) => e !== found)
-          :
-          [...expanded, ids]
+        expanded: newExpanded
       }
     case RESET:
     case "RESET":
