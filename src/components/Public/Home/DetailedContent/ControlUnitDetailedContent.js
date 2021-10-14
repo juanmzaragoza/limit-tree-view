@@ -395,14 +395,15 @@ const ControlUnitDetailedContent = ({
                 label={"Indicadores"}
                 className="tabsIndicators tabsIndicators1"
               />
-              <Tab
-                label={"Partidas"}
+                <Tab
+                label={"Indicadores Partidas"}
                 className="tabsIndicators "
               />
-               <Tab
-                label={"Detalles"}
+              <Tab
+                label={"Partidas"}
                 className="tabsIndicators tabsIndicators2"
               />
+             
             </Tabs>
           </Grid>
           <Grid item xs={3}>

@@ -329,6 +329,7 @@ const ProjectDetailedContent = ({
       columns={columns}
       rows={rows}
       disableInlineEdition={!isPeriodOpen({ period })}
+      flexGrid={1}
     />
         )}
         {tabIndex === KPIS_TAB_INDEX && (

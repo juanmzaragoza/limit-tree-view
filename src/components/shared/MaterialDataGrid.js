@@ -12,7 +12,8 @@ const DetailedTable = ({
   onCellEditCommit = (params, event, details) => {},
   disableColumnMenu = true,
   disableExtendRowFullWidth = true,
-  disableInlineEdition = false
+  disableInlineEdition = false,
+  flexGrid,
 }) => {
   return (
     <div style={rootStyle}>
@@ -22,7 +23,7 @@ const DetailedTable = ({
             rows={rows}
             columns={columns.map(column => ({
               ...column,
-              flex: 1,
+             flex: flexGrid ? flexGrid : "",
               editable: disableInlineEdition? false:column.editable
             }))}
             getRowId={getRowId}

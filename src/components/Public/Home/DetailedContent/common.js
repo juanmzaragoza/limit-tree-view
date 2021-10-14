@@ -116,28 +116,31 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
 export const getResourceColumnsByPeriod = ({ period, intl }) => {
   const { number } = period;
   return [
-    { field: "codi", headerName: "Código", type: "number" },
+    { field: "codi", headerName: "Código",  minWidth: 110, },
     {
       field: "descripcio",
       headerName: "Descripción",
-      width: 140,
+      minWidth: 490,
       editable: !number,
     },
     {
       field: "unitats",
       headerName: "Medición",
       type: "number",
+      minWidth: 140,
       editable: !number,
     },
     {
       field: "unitatTipus",
       headerName: "Tipo Unidad",
+      minWidth: 140,
       valueGetter: (params) => `${params.value?.description || ""}`,
     },
     {
       field: "costUnitat",
       headerName: "Coste Unitario",
       type: "number",
+      minWidth: 140,
       valueFormatter: (params) => {
         return formatCurrencyWithIntl(params.row.costUnitat ?? 0, intl);
       },
@@ -146,6 +149,7 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
     {
       field: "costTotal",
       headerName: "Coste Total",
+      minWidth: 140,
       type: "number",
       valueFormatter: (params) => {
         return formatCurrencyWithIntl(params.row.costTotal ?? 0, intl);
