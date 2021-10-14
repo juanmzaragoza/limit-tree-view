@@ -56,7 +56,6 @@
 .tabsIndicators1 {
   border-top-left-radius: 10px !important;
   border-bottom-left-radius: 10px !important;
-
 }
 .tabsIndicators2 {
   border-top-right-radius: 10px !important;
@@ -78,7 +77,7 @@
 }
 
 
-.css-1l3106v-MuiTabs-indicator {
+.MuiTabs-indicator .css-fnr8v6 {
   display: none !important;
   position: unset !important;
   left: 0 !important;
@@ -86,17 +85,23 @@
   color: transparent !important;
 }
 
-.css-118fhal-MuiTreeItem-root .MuiTreeItem-content.Mui-focused, .css-118fhal-MuiTreeItem-root .MuiTreeItem-content.Mui-selected, .css-118fhal-MuiTreeItem-root .MuiTreeItem-content.Mui-selected.Mui-focused{
+
+.MuiTabs-root .MuiTabs-indicator{
+  display: none !important;
+  position: unset !important;
+  left: 0 !important;
+  width: 0 !important;
+  color: transparent !important;
+
+}
+.css-118fhal-MuiTreeItem-root .MuiTreeItem-content.Mui-focused,
+.css-118fhal-MuiTreeItem-root .MuiTreeItem-content.Mui-selected,
+.css-118fhal-MuiTreeItem-root .MuiTreeItem-content.Mui-selected.Mui-focused {
   color: rgba(0, 0, 0, 0.6) !important;
 }
 
-.importsTotals{
+.importsTotals {
   padding: 0 !important;
   text-align: center !important;
   align-items: center !important;
 }
-
-.tableRowBorder .MuiTableCell-head{
-  border-right: 2px blue solid !important;
-}
-
