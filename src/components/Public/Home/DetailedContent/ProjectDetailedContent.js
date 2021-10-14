@@ -30,6 +30,8 @@ import {
   Euro,
   CallMissedOutgoing,
   Construction,
+  Assignment
+
 } from "@mui/icons-material";
 
 const KPIS_TAB_INDEX = 0;
@@ -90,7 +92,35 @@ const ProjectDetailedContent = ({
     setIndicadores(
       [
         {
-          title: "Produccion",
+          title: "Facturación",
+          icon: <Assignment />,
+          lg: 3,
+          indicators: [
+            {
+              field: "Facturación Anterior",
+              value: kpis.facturacioRealAnterior,
+           
+            },
+            {
+              field: "Facturación Periodo",
+              value: kpis.facturacioRealPeriode,
+         
+            },
+            {
+              field: "Facturación Año Natural",
+              value: kpis.facturacioRealAny,
+     
+            },
+            {
+              field: "Facturación a Origen",
+              value: kpis.facturacioRealOrigen,
+            
+            },
+           
+          ],
+        },
+        {
+          title: "Producción",
           icon: <Engineering />,
           lg: 2,
           indicators: [
