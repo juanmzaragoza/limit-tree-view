@@ -2,7 +2,7 @@ import * as React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { useIntl } from "react-intl";
-import { Grid } from "@mui/material";
+import { Grid, Tab, Tabs } from "@mui/material";
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
@@ -13,7 +13,7 @@ import {
   getUnitControl,
   getKpis as getKpisUC
 } from "redux/unit-control/selectors";
-import { loadHeader, updatePartida, loadKpis } from "redux/unit-control";
+import { loadHeader, updatePartida, loadKpis, resetKpis } from "redux/unit-control";
 import { loadData as loadTreeData } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
@@ -30,6 +30,19 @@ import {
   getPartidaColumnsByPeriod,
   isPeriodOpen,
 } from "./common";
+import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
+
+import {
+  Engineering,
+  StackedLineChart,
+  StackedBarChart,
+  Euro,
+  CallMissedOutgoing,
+  Construction,
+} from "@mui/icons-material";
+import { isEmpty } from "lodash";
+const KPIS_TAB_INDEX = 0;
+const PARTIDAS_TAB_INDEX = 1;
 
 const ControlUnitDetailedContent = ({
   rows,
@@ -49,12 +62,181 @@ const ControlUnitDetailedContent = ({
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
   const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
   const [columns] = React.useState(getPartidaColumnsByPeriod({ period: selectedPeriod, intl }));
-
+  const [tabIndex, setTabIndex] = React.useState(KPIS_TAB_INDEX);
   const loadHeader = () => actions.loadHeader({ id: props.id });
+  const [indicadores, setIndicadores] = React.useState();
+  const onChangeIndexExecutor = {
+    [PARTIDAS_TAB_INDEX]: () => {},
+    [KPIS_TAB_INDEX]: () => {
+      unitControl.id && actions.loadKpis({ id: unitControl.id });
+    },
+  };
+  React.useEffect(() => {
+    onChangeIndexExecutor[tabIndex]();
+  }, [tabIndex, unitControl]);
 
   React.useEffect(() => {
     loadHeader();
   }, [props.id]);
+
+  React.useEffect(() => {
+    setIndicadores(
+      [
+        {
+          title: "Produccion",
+          icon: <Engineering />,
+          lg: 2,
+          indicators: [
+            {
+              field: "Producción Anterior",
+              value: kpisUnitatControl.produccioAnterior,
+            },
+            {
+              field: "Producción Periodo",
+              value: kpisUnitatControl.produccioPeriode,
+            },
+            {
+              field: "Producción Año Natural",
+              value: kpisUnitatControl.produccioAny,
+            },
+            {
+              field: "Producción a Origen",
+              value: kpisUnitatControl.produccioOrigen,
+            },
+            {
+              field: "Producción Pendiente",
+              value: kpisUnitatControl.produccioPendent,
+            },
+          ],
+        },
+        {
+          title: "Coste Teórico",
+          icon: <StackedLineChart />,
+          lg: 2,
+          indicators: [
+            {
+              field: "Coste Teórico Anterior",
+              value: kpisUnitatControl.costTeoricAnterior,
+            },
+            {
+              field: "Coste Teórico Pendiente",
+              value: kpisUnitatControl.costTeoricPeriode,
+            },
+            {
+              field: "Coste Teórico Año Natural",
+              value: kpisUnitatControl.costTeoricAny,
+            },
+            {
+              field: "Coste Teórico a Origen",
+              value: kpisUnitatControl.costTeoricOrigen,
+            },
+            {
+              field: "Coste Teórico Pendiente",
+              value: kpisUnitatControl.costTeoricPendent,
+            },
+          ],
+        },
+        {
+          title: "Coste Real",
+          icon: <StackedBarChart />,
+          lg: 3,
+          indicators: [
+            {
+              field: "Coste Real Anterior",
+              value: kpisUnitatControl.costRealAnterior,
+              icon: <StackedBarChart />,
+            },
+            {
+              field: "Coste Real Pendiente",
+              value: kpisUnitatControl.costRealPeriode,
+              icon: <StackedBarChart />,
+            },
+            {
+              field: "Coste Real año Natural",
+              value: kpisUnitatControl.costRealAny,
+              icon: <StackedBarChart />,
+            },
+            {
+              field: "Coste Real Origen",
+              value: kpisUnitatControl.costRealOrigen,
+              icon: <StackedBarChart />,
+            },
+          ],
+        },
+        {
+          title: "Beneficios",
+          icon: <Euro />,
+          lg: 3,
+          indicators: [
+            {
+              field: "Beneficio Anterior",
+              value: kpisUnitatControl.beneficiAnterior,
+            },
+            {
+              field: "Beneficio Período",
+              value: kpisUnitatControl.beneficiPeriode,
+            },
+            {
+              field: "Beneficio año Natural",
+              value: kpisUnitatControl.beneficiAny,
+            },
+            {
+              field: "Beneficio Origen",
+              value: kpisUnitatControl.beneficiOrigen,
+            },
+          ],
+        },
+        {
+          title: "Desviación",
+          icon: <CallMissedOutgoing />,
+          lg: 3,
+          indicators: [
+            {
+              field: "Desviación Anterior",
+              value: kpisUnitatControl.desviacioCostAnterior,
+            },
+            {
+              field: "Desviación Período",
+              value: kpisUnitatControl.desviacioPeriode,
+            },
+            {
+              field: "Desviación año Natural",
+              value: kpisUnitatControl.desviacioAny,
+            },
+
+            {
+              field: "Desviación Origen",
+              value: kpisUnitatControl.desviacioOrigen,
+            },
+          ],
+        },
+        {
+          title: "Obra Pendiente Periodo",
+          icon: <Construction />,
+          lg: 3,
+          indicators: [
+            {
+              field: "Obra Pendiente Anterior",
+              value: kpisUnitatControl.obraPendentFacturar,
+            },
+            {
+              field: "Obra Pendiente Período",
+              value: kpisUnitatControl.obraPendent,
+            },
+            {
+              field: "Obra Pendiente año Natural",
+              value: kpisUnitatControl.obraPendentAny,
+            },
+            {
+              field: "Obra Pendiente Origen",
+              value: kpisUnitatControl.obraPendentOrigen,
+            },
+          ],
+        },
+      ]
+    );
+  }, [kpisUnitatControl]);
+
 
   React.useEffect(() => {
     setHeaderControlUnit({ title: unitControl.descripcio });
@@ -140,9 +322,7 @@ const ControlUnitDetailedContent = ({
     }
   };
 
-  React.useEffect(() => {
-    unitControl.id && actions.loadKpis({ id: unitControl.id });
-  }, [unitControl]);
+ 
 
   const detailedHeaderBreakpoints = { xs: 4 };
   return (
@@ -163,15 +343,34 @@ const ControlUnitDetailedContent = ({
         />
       </Grid>
       <Grid item xs={12}>
-        <MaterialDataGrid
-          columns={columns}
-          getRowId={(row) => row.id}
-          rows={rows}
-          loading={loading}
-          onCellEditCommit={handleCellChange}
-          disableInlineEdition={!isPeriodOpen({ period: selectedPeriod })}
-        />
+        <Tabs value={tabIndex} onChange={(e, index) => setTabIndex(index)}>
+          <Tab label={"Indicadores"} className="tabsIndicators tabsIndicators1" />
+          <Tab label={"Partidas"} className="tabsIndicators tabsIndicators2" />
+        </Tabs>
       </Grid>
+
+      <Grid item xs={12}>
+        {tabIndex === PARTIDAS_TAB_INDEX && (
+       <MaterialDataGrid
+       columns={columns}
+       getRowId={(row) => row.id}
+       rows={rows}
+       loading={loading}
+       onCellEditCommit={handleCellChange}
+       disableInlineEdition={!isPeriodOpen({ period: selectedPeriod })}
+     />
+        )}
+        {tabIndex === KPIS_TAB_INDEX && (
+          <Grid container spacing={2}>
+            <MaterialCardIndicator
+              loading={isEmpty(indicadores)}
+              content={indicadores}
+              onUnmount={() => actions.resetKpis()}
+            />
+          </Grid>
+        )}
+      </Grid>
+   
     </Grid>
   );
 };
@@ -194,6 +393,7 @@ const mapDispatchToProps = (dispatch, props) => {
     updatePartida: bindActionCreators(updatePartida, dispatch),
     loadTreeData: bindActionCreators(loadTreeData, dispatch),
     loadKpis: bindActionCreators(loadKpis, dispatch),
+    resetKpis: bindActionCreators(resetKpis, dispatch),
   };
   return { actions };
 };
