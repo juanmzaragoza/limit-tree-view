@@ -92,7 +92,7 @@ const ProjectDetailedContent = ({
   const content = [
     {
       field: "Coste Total",
-      value: partida.costTotal,
+      value: partida.costUni,
     },
   ];
 
