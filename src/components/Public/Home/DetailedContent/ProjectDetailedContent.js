@@ -4,7 +4,7 @@ import { useIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import { isEmpty } from "lodash";
 
-import { Grid } from "@mui/material";
+import { Grid, Tab, Tabs } from "@mui/material";
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
@@ -22,6 +22,18 @@ import { formatCurrencyWithIntl } from "utils/formats";
 import { PROJECT_TYPE } from "constants/business-types";
 
 import { getKpisColorValue, isPeriodOpen } from "./common";
+import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
+import {
+  Engineering,
+  StackedLineChart,
+  StackedBarChart,
+  Euro,
+  CallMissedOutgoing,
+  Construction,
+} from "@mui/icons-material";
+
+const KPIS_TAB_INDEX = 0;
+const PROJECTS_TAB_INDEX = 1;
 
 const ProjectDetailedContent = ({
   rows,
@@ -60,7 +72,174 @@ const ProjectDetailedContent = ({
       editable: false,
     },
   ]);
-  const [indicadores] = React.useState([]);
+
+  const [indicadores, setIndicadores] = React.useState();
+  const [tabIndex, setTabIndex] = React.useState(KPIS_TAB_INDEX);
+
+  const onChangeIndexExecutor = {
+    [PROJECTS_TAB_INDEX]: () => {},
+    [KPIS_TAB_INDEX]: () => {
+      period.id && actions.loadKpis({ id: period.id });
+    },
+  };
+  React.useEffect(() => {
+    onChangeIndexExecutor[tabIndex]();
+  }, [tabIndex, project]);
+
+  React.useEffect(() => {
+    setIndicadores(
+      [
+        {
+          title: "Produccion",
+          icon: <Engineering />,
+          lg: 2,
+          indicators: [
+            {
+              field: "Producción Anterior",
+              value: kpis.produccioAnterior,
+            },
+            {
+              field: "Producción Periodo",
+              value: kpis.produccioPeriode,
+            },
+            {
+              field: "Producción Año Natural",
+              value: kpis.produccioAny,
+            },
+            {
+              field: "Producción a Origen",
+              value: kpis.produccioOrigen,
+            },
+            {
+              field: "Producción Pendiente",
+              value: kpis.produccioPendent,
+            },
+          ],
+        },
+        {
+          title: "Coste Teórico",
+          icon: <StackedLineChart />,
+          lg: 2,
+          indicators: [
+            {
+              field: "Coste Teórico Anterior",
+              value: kpis.costTeoricAnterior,
+            },
+            {
+              field: "Coste Teórico Pendiente",
+              value: kpis.costTeoricPeriode,
+            },
+            {
+              field: "Coste Teórico Año Natural",
+              value: kpis.costTeoricAny,
+            },
+            {
+              field: "Coste Teórico a Origen",
+              value: kpis.costTeoricOrigen,
+            },
+            {
+              field: "Coste Teórico Pendiente",
+              value: kpis.costTeoricPendent,
+            },
+          ],
+        },
+        {
+          title: "Coste Real",
+          icon: <StackedBarChart />,
+          lg: 3,
+          indicators: [
+            {
+              field: "Coste Real Anterior",
+              value: kpis.costRealAnterior,
+            },
+            {
+              field: "Coste Real Pendiente",
+              value: kpis.costRealPeriode,
+            },
+            {
+              field: "Coste Real año Natural",
+              value: kpis.costRealAny,
+            },
+            {
+              field: "Coste Real Origen",
+              value: kpis.costRealOrigen,
+            },
+          ],
+        },
+        {
+          title: "Beneficios",
+          icon: <Euro />,
+          lg: 3,
+          indicators: [
+            {
+              field: "Beneficio Anterior",
+              value: kpis.beneficiAnterior,
+            },
+            {
+              field: "Beneficio Período",
+              value: kpis.beneficiPeriode,
+            },
+            {
+              field: "Beneficio año Natural",
+              value: kpis.beneficiAny,
+            },
+            {
+              field: "Beneficio Origen",
+              value: kpis.beneficiOrigen,
+            },
+          ],
+        },
+        {
+          title: "Desviación",
+          icon: <CallMissedOutgoing />,
+          lg: 3,
+          indicators: [
+            {
+              field: "Desviación Anterior",
+              value: kpis.desviacioCostAnterior,
+            },
+            {
+              field: "Desviación Período",
+              value: kpis.desviacioPeriode,
+            },
+            {
+              field: "Desviación año Natural",
+              value: kpis.desviacioAny,
+            },
+
+            {
+              field: "Desviación Origen",
+              value: kpis.desviacioOrigen,
+            },
+          ],
+        },
+        {
+          title: "Obra Pendiente Periodo",
+          icon: <Construction />,
+          lg: 3,
+          indicators: [
+            {
+              field: "Obra Pendiente Anterior",
+              value: kpis.obraPendentFacturar,
+            },
+            {
+              field: "Obra Pendiente Período",
+              value: kpis.obraPendent,
+            },
+            {
+              field: "Obra Pendiente año Natural",
+              value: kpis.obraPendentAny,
+            },
+            {
+              field: "Obra Pendiente Origen",
+              value: kpis.obraPendentOrigen,
+            },
+          ],
+        },
+      ]
+    );
+  }, [kpis]);
+
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
@@ -98,9 +277,7 @@ const ProjectDetailedContent = ({
     ]);
   }, [kpis, project, intl]);
 
-  React.useEffect(() => {
-    period.id && actions.loadKpis({ id: period.id });
-  }, [period]);
+
 
   const content = [
     { field: "Importe Total", value: tree.importTotal },
@@ -121,15 +298,41 @@ const ProjectDetailedContent = ({
           {...entitiesStyles[PROJECT_TYPE]}
         />
       </Grid>
-      <Grid item xs={4}>
+   
+      <Grid item xs={12}>
+        <Grid container>
+        <Grid item xs={9}>
+        <Tabs value={tabIndex} onChange={(e, index) => setTabIndex(index)}>
+          <Tab label={"Indicadores"} className="tabsIndicators tabsIndicators1" />
+          <Tab label={"Unidades Control"} className="tabsIndicators tabsIndicators2" />
+        </Tabs>
+        </Grid>
+        <Grid item xs={3} >
         <CardTotal body={content} />
       </Grid>
+      </Grid>
+      </Grid>
+
       <Grid item xs={12}>
-        <MaterialDataGrid
-          columns={columns}
-          rows={rows}
-          disableInlineEdition={!isPeriodOpen({ period })}
-        />
+        {tabIndex === PROJECTS_TAB_INDEX && (
+      <MaterialDataGrid
+      columns={columns}
+      rows={rows}
+      disableInlineEdition={!isPeriodOpen({ period })}
+    />
+        )}
+        {tabIndex === KPIS_TAB_INDEX && (
+          <Grid container spacing={2}>
+            <MaterialCardIndicator
+              loading={isEmpty(indicadores)}
+              content={indicadores}
+              // onUnmount={() => actions.resetKpis()}
+            />
+          </Grid>
+        )}
+      </Grid>
+      <Grid item xs={12}>
+       
       </Grid>
       {/* <Grid item xs={12}>
         <MaterialCardPartidaIndicator

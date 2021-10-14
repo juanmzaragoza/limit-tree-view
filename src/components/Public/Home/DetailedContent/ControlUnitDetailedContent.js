@@ -365,7 +365,7 @@ const ControlUnitDetailedContent = ({
             <MaterialCardIndicator
               loading={isEmpty(indicadores)}
               content={indicadores}
-              onUnmount={() => actions.resetKpis()}
+              // onUnmount={() => actions.resetKpis()}
             />
           </Grid>
         )}
