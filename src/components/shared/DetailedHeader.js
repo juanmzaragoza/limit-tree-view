@@ -12,6 +12,7 @@ import MaterialHeaderSkeleton from "./MaterialSkeleton/MaterialHeaderSkeleton";
 import { formatCurrencyWithIntl } from "utils/formats";
 import { useIntl } from "react-intl";
 
+
 const DetailedHeader = ({
   header,
   body,
@@ -21,6 +22,13 @@ const DetailedHeader = ({
   breakpoints = { xs: 6 },
 }) => {
   const intl = useIntl();
+  const cutTitle = () => {
+    if(header.title.length > 50){
+      return `${header.title.substring(0,50)}...`;
+    }else{
+      return header.title;
+    }
+  }
   const renderSkeleton = () => <MaterialHeaderSkeleton />;
   const renderContent = () => (
     <Card
@@ -31,6 +39,7 @@ const DetailedHeader = ({
         width: "100%",
       }}
     >
+     
       <CardHeader
         avatar={
           <>
@@ -42,7 +51,7 @@ const DetailedHeader = ({
             </Avatar>
           </>
         }
-        title={header.title}
+        title={cutTitle()}
         subheader={header.subheader}
         titleTypographyProps={{ align: "center" }}
         subheaderTypographyProps={{
@@ -54,12 +63,13 @@ const DetailedHeader = ({
         }}
         className="tituloDetailHeader"
       />
+      
       <CardContent sx={{padding: 0, paddingBottom: "2px"}}>
         <Container>
           <Grid container spacing={1}>
             {body.map(({ field, value, colorValue = "inherit" }) => {
               const line = `${field}: ${value}`;
-              const size = colorValue !== "inherit" ? "20px" : "";
+        
               return (
                 <Grid key={line} item xs={breakpoints.xs} >
                   <Typography
@@ -70,7 +80,7 @@ const DetailedHeader = ({
                   >
                     <span style={{ fontSize: "14px" }}> <strong>{field}</strong></span>
                     <br />
-                    <span style={{ color: colorValue, fontSize: size }}>
+                    <span style={{ color: colorValue, fontSize: "14px" }}>
                       {value === undefined
                         ? "---"
                         : formatCurrencyWithIntl(value ?? 0, intl)}

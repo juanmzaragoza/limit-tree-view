@@ -5,8 +5,8 @@ const ADD = "ADD_TO_PERIODS";
 const RESET =  "RESET_PERIOD";
 
 // Constants
-const URL = "api/fact/estudisProjecte?query=projecte.codi=={codi}&sort=numero,desc";
-const ADD_PERIOD_URL = "api/fact/estudisProjecte";
+const URL = "api/estp/estudisProjecte?query=projecte.codi=={codi}&sort=numero,desc";
+const ADD_PERIOD_URL = "api/estp/estudisProjecte";
 
 //Functions
 export const loadData = ({ url = URL, projectCodi }) => {

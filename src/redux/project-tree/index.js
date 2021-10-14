@@ -12,7 +12,7 @@ const RESET = "RESET_TREE";
 const EXPAND_UNTIL = "EXPAND_TREE_UNTIL_NODE_ID";
 
 // Constants
-const URL = 'api/fact/estudisProjecte/{id}/tree';
+const URL = 'api/estp/estudisProjecte/{id}/tree';
 
 //Functions
 export const loadData = ({ url = URL, periodId }) => {
