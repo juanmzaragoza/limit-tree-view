@@ -11,7 +11,7 @@ import {
 import MaterialHeaderSkeleton from "./MaterialSkeleton/MaterialHeaderSkeleton";
 import { formatCurrencyWithIntl } from "utils/formats";
 import { useIntl } from "react-intl";
-import { stubString } from "lodash";
+
 
 const DetailedHeader = ({
   header,
@@ -39,6 +39,7 @@ const DetailedHeader = ({
         width: "100%",
       }}
     >
+     
       <CardHeader
         avatar={
           <>
@@ -62,6 +63,7 @@ const DetailedHeader = ({
         }}
         className="tituloDetailHeader"
       />
+      
       <CardContent sx={{padding: 0, paddingBottom: "2px"}}>
         <Container>
           <Grid container spacing={1}>

@@ -256,30 +256,30 @@ const ProjectDetailedContent = ({
     setHeaderControlUnit({ title: unitControl.descripcio });
     setHeaderControlUnitFields([
       {
-        field: "Beneficio Origen",
+        field: "Benef. Origen",
         value: kpisUnitatControl.beneficiOrigen,
       },
       {
-        field: "Beneficio Año",
+        field: "Benef. Año",
         value: kpisUnitatControl.beneficiAny,
         colorValue: getKpisColorValue({ value: kpisUnitatControl?.beneficiAny >= 0 }),
       },
       {
-        field: "Desviación Origen",
+        field: "Desv. Origen",
         value: kpisUnitatControl.desviacioOrigen,
       },
       {
-        field: "Desviación Año",
+        field: "Desv. Año",
         value: kpisUnitatControl.desviacioAny,
         colorValue: getKpisColorValue({ value: kpisUnitatControl?.desviacioAny >= 0 }),
       },
       {
-        field: "Pendiente Origen",
+        field: "Pen. Origen",
         value: kpisUnitatControl.obraPendentOrigen,
       },
 
       {
-        field: "Pendiente Año",
+        field: "Pen. Año",
         value: kpisUnitatControl.obraPendentAny,
         colorValue: getKpisColorValue({ value: kpisUnitatControl?.obraPendentAny >= 0 }),
       },
@@ -290,30 +290,30 @@ const ProjectDetailedContent = ({
     setHeaderPartida({ title: partida.descripcioReduc });
     setHeaderPartidaFields([
       {
-        field: "Beneficio Origen",
+        field: "Benef. Origen",
         value: kpisPartida.beneficiOrigen,
       },
       {
-        field: "Beneficio Año",
+        field: "Benef. Año",
         value: kpisPartida.beneficiAny,
         colorValue: getKpisColorValue({ value: kpisPartida?.beneficiAny >= 0 }),
       },
       {
-        field: "Desviación Origen",
+        field: "Desv. Origen",
         value: kpisPartida.desviacioOrigen,
       },
       {
-        field: "Desviación Año",
+        field: "Desv. Año",
         value: kpisPartida.desviacioAny,
         colorValue: getKpisColorValue({ value: kpisPartida?.desviacioAny >= 0 }),
       },
       {
-        field: "Pendiente Origen",
+        field: "Pen. Origen",
         value: kpisPartida.obraPendentOrigen,
       },
 
       {
-        field: "Pendiente Año",
+        field: "Pen. Año",
         value: kpisPartida.obraPendentAny,
         colorValue: getKpisColorValue({ value: kpisPartida?.obraPendentAny >= 0 }),
       },
@@ -324,30 +324,30 @@ const ProjectDetailedContent = ({
     setHeaderProject({ title: tree.descripcio });
     setHeaderProjectFields([
       {
-        field: "Beneficio Origen",
+        field: "Benef. Origen",
         value: kpisProjecte.beneficiOrigen,
       },
       {
-        field: "Beneficio Año",
+        field: "Benef. Año",
         value: kpisProjecte.beneficiAny,
         colorValue: getKpisColorValue({ value: kpisProjecte?.beneficiAny >= 0 }),
       },
       {
-        field: "Desviación Origen",
+        field: "Desv. Origen",
         value: kpisProjecte.desviacioOrigen,
       },
       {
-        field: "Desviación Año",
+        field: "Desv. Año",
         value: kpisProjecte.desviacioAny,
         colorValue: getKpisColorValue({ value: kpisProjecte?.desviacioAny >= 0 }),
       },
       {
-        field: " Pendiente Origen",
+        field: "Pen. Origen",
         value: kpisProjecte.obraPendentOrigen,
         colorValue: getKpisColorValue({ value: kpisProjecte?.obraPendentOrigen >= 0 }),
       },
       {
-        field: " Pendiente Año",
+        field: "Pen. Año",
         value: kpisProjecte.obraPendentAny,
         colorValue: getKpisColorValue({ value: kpisProjecte?.obraPendentAny >= 0 }),
       },

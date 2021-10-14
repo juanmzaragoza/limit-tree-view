@@ -255,32 +255,32 @@ const ProjectDetailedContent = ({
     setHeaderProject({ title: tree.descripcio });
     setProjectFields([
       {
-        field: "Beneficio Origen",
+        field: "Benef. Origen",
         value: kpis.beneficiOrigen,
       },
       {
-        field: "Beneficio Año",
+        field: "Benef. Año",
         value: kpis.beneficiAny,
         colorValue: getKpisColorValue({ value: kpis?.beneficiAny >= 0 }),
       },
       {
-        field: "Desviación Origen",
+        field: "Desv. Origen",
         value: kpis.desviacioOrigen,
  
       },
       {
-        field: "Desviación Año",
+        field: "Desv. Año",
         value: kpis.desviacioAny,
         colorValue: getKpisColorValue({ value: kpis?.desviacioAny >= 0 }),
       },
       {
-        field: "Obra Pendiente Origen",
+        field: "Pen. Origen",
         value: kpis.obraPendentOrigen,
   
       },
 
       {
-        field: "Obra Pendiente Año",
+        field: "Pen. Año",
         value: kpis.obraPendentAny,
         colorValue:getKpisColorValue({ value: kpis?.obraPendentAny >= 0 }), 
       },

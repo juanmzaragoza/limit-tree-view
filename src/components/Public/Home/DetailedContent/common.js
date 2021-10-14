@@ -12,32 +12,32 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
   const numberIsZero = !number;
   const numberIsNotZero = !!number;
   return [
-    { field: "codi", headerName: "Código", minWidth: 150 },
+    { field: "codi", headerName: "Cód.", minWidth: 90 },
     {
       field: "descripcioReduc",
       headerName: "Descripció",
-      minWidth: 200,
+      minWidth: 350,
       editable: numberIsZero,
     },
 
     {
       field: "unitatsActual",
-      headerName: "Medición Periodo",
+      headerName: "Med. Periodo",
       type: "number",
-      minWidth: 170,
+      minWidth: 140,
       editable: numberIsNotZero,
     },
     {
       field: "medicioOrigen",
-      headerName: "Medición Origen",
+      headerName: "Med. Origen",
       type: "number",
-      minWidth: 170,
+      minWidth: 140,
       editable: numberIsNotZero,
     },
 
     {
       field: "unitats",
-      headerName: "Unidades Medición",
+      headerName: "Med. Prevista",
       type: "number",
       minWidth: 140,
       editable: numberIsZero,
@@ -46,19 +46,19 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
       field: "unitatTipus",
       headerName: "Tipo Unidad",
       valueGetter: (params) => `${params.value?.description || ""}`,
-      minWidth: 150,
+      minWidth: 100,
     },
     {
       field: "unitatsAnterior",
-      headerName: "Medición Anterior",
+      headerName: "Med. Anterior",
       type: "number",
-      minWidth: 260,
+      minWidth: 140,
     },
     {
       field: "obraPendent",
       headerName: "Obra pendiente",
       type: "number",
-      minWidth: 220,
+      minWidth: 140,
     },
     {
       field: "unitatsPress",
@@ -94,16 +94,16 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
     },
     {
       field: "costUni",
-      headerName: "Coste Unitario",
+      headerName: "Coste Unit.",
       type: "number",
       valueFormatter: (params) =>
         formatCurrencyWithIntl(params.row.costUni ?? 0, intl),
-      minWidth: 150,
+      minWidth: 140,
       editable: false,
     },
     {
       field: "costTotal",
-      headerName: "Coste Total",
+      headerName: "Coste Prev.",
       type: "number",
       valueFormatter: (params) =>
         formatCurrencyWithIntl(params.row.costTotal ?? 0, intl),
