@@ -90,22 +90,27 @@ const ControlUnitDetailedContent = ({
             {
               field: "Producción Anterior",
               value: kpisUnitatControl.produccioAnterior,
+              breakpoints: 3,
             },
             {
               field: "Producción Periodo",
               value: kpisUnitatControl.produccioPeriode,
+              breakpoints: 2,
             },
             {
               field: "Producción Año Natural",
               value: kpisUnitatControl.produccioAny,
+              breakpoints: 3,
             },
             {
               field: "Producción a Origen",
               value: kpisUnitatControl.produccioOrigen,
+              breakpoints: 2,
             },
             {
               field: "Producción Pendiente",
               value: kpisUnitatControl.produccioPendent,
+              breakpoints: 2,
             },
           ],
         },
@@ -117,22 +122,27 @@ const ControlUnitDetailedContent = ({
             {
               field: "Coste Teórico Anterior",
               value: kpisUnitatControl.costTeoricAnterior,
+              breakpoints: 3,
             },
             {
               field: "Coste Teórico Pendiente",
               value: kpisUnitatControl.costTeoricPeriode,
+              breakpoints: 2,
             },
             {
               field: "Coste Teórico Año Natural",
               value: kpisUnitatControl.costTeoricAny,
+              breakpoints: 3,
             },
             {
               field: "Coste Teórico a Origen",
               value: kpisUnitatControl.costTeoricOrigen,
+              breakpoints: 2,
             },
             {
               field: "Coste Teórico Pendiente",
               value: kpisUnitatControl.costTeoricPendent,
+              breakpoints: 2,
             },
           ],
         },

@@ -92,10 +92,10 @@ export default function MaterialCardIndicator({
 
               <CardContent>
                 <Grid container spacing={2}>
-                  {indicators?.map(({ field, value }, index) => {
+                  {indicators?.map(({ field, value, breakpoints }, index) => {
                     return (
 
-                      <Grid item xs={lg} key={index} >
+                      <Grid item xs={breakpoints ? breakpoints : lg} key={index} >
 
                         {field}: <br />
                         <strong>

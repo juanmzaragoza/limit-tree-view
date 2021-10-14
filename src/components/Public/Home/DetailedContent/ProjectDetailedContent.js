@@ -97,22 +97,27 @@ const ProjectDetailedContent = ({
             {
               field: "Producción Anterior",
               value: kpis.produccioAnterior,
+              breakpoints: 3,
             },
             {
               field: "Producción Periodo",
               value: kpis.produccioPeriode,
+              breakpoints: 2,
             },
             {
               field: "Producción Año Natural",
               value: kpis.produccioAny,
+              breakpoints: 3,
             },
             {
               field: "Producción a Origen",
               value: kpis.produccioOrigen,
+              breakpoints: 2,
             },
             {
               field: "Producción Pendiente",
               value: kpis.produccioPendent,
+              breakpoints: 2,
             },
           ],
         },
@@ -124,22 +129,27 @@ const ProjectDetailedContent = ({
             {
               field: "Coste Teórico Anterior",
               value: kpis.costTeoricAnterior,
+              breakpoints: 3,
             },
             {
               field: "Coste Teórico Pendiente",
               value: kpis.costTeoricPeriode,
+              breakpoints: 2,
             },
             {
               field: "Coste Teórico Año Natural",
               value: kpis.costTeoricAny,
+              breakpoints: 3,
             },
             {
               field: "Coste Teórico a Origen",
               value: kpis.costTeoricOrigen,
+              breakpoints: 2,
             },
             {
               field: "Coste Teórico Pendiente",
               value: kpis.costTeoricPendent,
+              breakpoints: 2,
             },
           ],
         },
