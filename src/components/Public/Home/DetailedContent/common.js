@@ -153,3 +153,78 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
     },
   ];
 }
+
+
+export const getPartidaColumnsByIndicator = ({ intl }) => {
+
+  return [
+    { field: "codi", headerName: "Cód.", minWidth: 90 },
+    {
+      field: "descripcio",
+      headerName: "Descripció",
+      minWidth: 350,
+   
+    },
+
+    {
+      headerName: "Prod. Anterior",
+      field: "produccioAnterior",
+      minWidth: 140,
+      valueFormatter: (params) =>
+      formatCurrencyWithIntl(params.row.produccioAnterior ?? 0, intl),
+    },
+    {
+      headerName: "Prod. Periodo",
+      field: "produccioPeriode",
+      minWidth: 140,
+      valueFormatter: (params) =>
+      formatCurrencyWithIntl(params.row.produccioPeriode ?? 0, intl),
+    },
+    {
+      headerName: "Prod. Año Natural",
+      field: "produccioAny",
+      minWidth: 140,
+      valueFormatter: (params) =>
+      formatCurrencyWithIntl(params.row.produccioAny ?? 0, intl),
+    },
+    {
+      headerName: "Prod. Origen",
+      field: "produccioOrigen",
+      minWidth: 140,
+      valueFormatter: (params) =>
+      formatCurrencyWithIntl(params.row.produccioOrigen ?? 0, intl),
+
+    },
+    {
+      headerName: "Prod. Pendiente",
+      field: "produccioPendent",
+      valueFormatter: (params) =>
+      formatCurrencyWithIntl(params.row.produccioPendent ?? 0, intl),
+    },
+    {
+      headerName: "Coste Teórico Anterior",
+      value: "costTeoricAnterior",
+
+    },
+    {
+      headerName: "Coste Teórico Pendiente",
+      field: "costTeoricPeriode",
+       },
+    {
+      headerName: "Coste Teórico Año Natural",
+      field: "costTeoricAny",
+ 
+    },
+    {
+      headerName: "Coste Teórico a Origen",
+      field: "costTeoricOrigen",
+  
+    },
+    {
+      headerName: "Coste Teórico Pendiente",
+      field: "costTeoricPendent",
+    
+    },
+ 
+  ];
+}

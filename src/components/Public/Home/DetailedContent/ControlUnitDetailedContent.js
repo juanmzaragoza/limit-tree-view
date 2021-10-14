@@ -6,17 +6,22 @@ import { Grid, Tab, Tabs } from "@mui/material";
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
+import MaterialTable from "components/shared/MaterialTable";
+
 
 import {
   getIsLoading,
   getRows,
+  getDetails,
   getUnitControl,
   getKpis as getKpisUC,
+  getTotals,
 } from "redux/unit-control/selectors";
 import {
   loadHeader,
   updatePartida,
   loadKpis,
+  loadDetails,
   resetKpis,
 } from "redux/unit-control";
 import { loadData as loadTreeData } from "redux/project-tree";
@@ -30,6 +35,7 @@ import { CONTROL_UNIT_TYPE, PROJECT_TYPE } from "constants/business-types";
 import {
   getKpisColorValue,
   getPartidaColumnsByPeriod,
+  getPartidaColumnsByIndicator,
   isPeriodOpen,
 } from "./common";
 import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
@@ -46,6 +52,7 @@ import { isEmpty } from "lodash";
 import CardTotal from "components/shared/CardTotal";
 const KPIS_TAB_INDEX = 0;
 const PARTIDAS_TAB_INDEX = 1;
+const DETAIL_TAB_INDEX = 2;
 
 const ControlUnitDetailedContent = ({
   rows,
@@ -57,6 +64,8 @@ const ControlUnitDetailedContent = ({
   kpis,
   kpisUnitatControl,
   selectedPeriod,
+  details,
+  totals,
   ...props
 }) => {
   const intl = useIntl();
@@ -69,6 +78,9 @@ const ControlUnitDetailedContent = ({
   const [columns] = React.useState(
     getPartidaColumnsByPeriod({ period: selectedPeriod, intl })
   );
+  const [columnsIndicators] = React.useState(
+    getPartidaColumnsByIndicator({ period: selectedPeriod, intl })
+  );
   const [tabIndex, setTabIndex] = React.useState(KPIS_TAB_INDEX);
   const loadHeader = () => actions.loadHeader({ id: props.id });
   const [indicadores, setIndicadores] = React.useState();
@@ -77,6 +89,10 @@ const ControlUnitDetailedContent = ({
     [KPIS_TAB_INDEX]: () => {
       unitControl.id && actions.loadKpis({ id: unitControl.id });
     },
+    [DETAIL_TAB_INDEX]: ()=>{
+      unitControl.id && actions.loadDetails({ id: unitControl.id })
+      console.log(unitControl);
+    }
   };
   React.useEffect(() => {
     onChangeIndexExecutor[tabIndex]();
@@ -84,6 +100,8 @@ const ControlUnitDetailedContent = ({
 
   React.useEffect(() => {
     loadHeader();
+    
+
   }, [props.id]);
 
 
@@ -379,6 +397,10 @@ const ControlUnitDetailedContent = ({
               />
               <Tab
                 label={"Partidas"}
+                className="tabsIndicators "
+              />
+               <Tab
+                label={"Detalles"}
                 className="tabsIndicators tabsIndicators2"
               />
             </Tabs>
@@ -409,6 +431,13 @@ const ControlUnitDetailedContent = ({
             />
           </Grid>
         )}
+         {tabIndex === DETAIL_TAB_INDEX && (
+         
+    
+
+          <MaterialTable content={details} contentTotal={totals}/>
+    
+        )}
       </Grid>
     </Grid>
   );
@@ -423,6 +452,8 @@ const mapStateToProps = (state, props) => {
     selectedPeriod: getSelectedPeriod(state),
     kpis: getKpis(state),
     kpisUnitatControl: getKpisUC(state),
+    details:getDetails(state),
+    totals: getTotals(state),
   };
 };
 
@@ -432,6 +463,7 @@ const mapDispatchToProps = (dispatch, props) => {
     updatePartida: bindActionCreators(updatePartida, dispatch),
     loadTreeData: bindActionCreators(loadTreeData, dispatch),
     loadKpis: bindActionCreators(loadKpis, dispatch),
+    loadDetails: bindActionCreators(loadDetails, dispatch),
     resetKpis: bindActionCreators(resetKpis, dispatch),
   };
   return { actions };
