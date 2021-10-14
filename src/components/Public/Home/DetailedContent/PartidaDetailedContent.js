@@ -298,12 +298,12 @@ const ProjectDetailedContent = ({
         colorValue: getKpisColorValue({ value: kpisPartida?.desviacioAny >= 0 }),
       },
       {
-        field: " Pendiente Origen",
+        field: "Pendiente Origen",
         value: kpisPartida.obraPendentOrigen,
       },
 
       {
-        field: " Pendiente Año",
+        field: "Pendiente Año",
         value: kpisPartida.obraPendentAny,
         colorValue: getKpisColorValue({ value: kpisPartida?.obraPendentAny >= 0 }),
       },

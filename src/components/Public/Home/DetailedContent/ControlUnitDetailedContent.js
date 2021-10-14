@@ -260,12 +260,12 @@ const ControlUnitDetailedContent = ({
         colorValue: getKpisColorValue({ value: kpisUnitatControl?.desviacioAny >= 0 }),
       },
       {
-        field: "Obra Pendiente Origen",
+        field: "Pendiente Origen",
         value: kpisUnitatControl.obraPendentOrigen,
       },
 
       {
-        field: "Obra Pendiente Año",
+        field: "Pendiente Año",
         value: kpisUnitatControl.obraPendentAny,
         colorValue: getKpisColorValue({ value: kpisUnitatControl?.obraPendentAny >= 0 }),
       },
@@ -295,12 +295,12 @@ const ControlUnitDetailedContent = ({
           colorValue: getKpisColorValue({ value: kpis?.desviacioAny >= 0 }),
         },
         {
-          field: "Obra Pendiente Origen",
+          field: "Pendiente Origen",
           value: kpis.obraPendentOrigen,
         },
   
         {
-          field: "Obra Pendiente Año",
+          field: "Pendiente Año",
           value: kpis.obraPendentAny,
           colorValue: getKpisColorValue({ value: kpis?.obraPendentAny >= 0 }),
         },
