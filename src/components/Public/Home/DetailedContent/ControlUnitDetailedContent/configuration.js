@@ -526,3 +526,13 @@ export const columnsSubTotal = (intl) => [
        numeric: true,
     },
   ];
+
+  export const groups = [
+    { label: "Producción", colSpan: 5 },
+    { label: "Coste Teórico", colSpan: 5 },
+    { label: "Coste Real", colSpan: 4 },
+    { label: "Beneficios", colSpan: 4 },
+    { label: "Desviación", colSpan: 4 },
+    { label: "Obra Pendiente", colSpan: 4 },
+  ];
+  

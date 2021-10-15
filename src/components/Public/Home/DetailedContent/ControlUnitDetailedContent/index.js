@@ -47,6 +47,7 @@ import {
   getIndicators,
   columnsIndicatorsPartida,
   columnsSubTotal,
+  groups
 } from "./configuration";
 
 const KPIS_TAB_INDEX = 0;
@@ -268,6 +269,7 @@ const ControlUnitDetailedContent = ({
             contentTotal={totals}
             columns={columnsIndicatorsPartida(intl)}
             columnsSubTotal={columnsSubTotal(intl)}
+            groups={groups}
           />
         )}
       </Grid>

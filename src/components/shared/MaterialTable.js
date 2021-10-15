@@ -6,23 +6,13 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { formatCurrencyWithIntl } from "utils/formats";
-import { useIntl } from "react-intl";
 
 
 
 
-const groups = [
-  { label: "Producción" },
-  { label: "Coste Teórico" },
-  { label: "Coste Real" },
-  { label: "Beneficios" },
-  { label: "Desviación" },
-  { label: "Obra Pendiente" },
-];
 
-export default function ColumnGroupingTable({ content, contentTotal , columns, columnsSubTotal}) {
- 
+
+export default function MaterialTable({ content, contentTotal , columns, columnsSubTotal, groups}) {
 
 
   return (
@@ -32,30 +22,21 @@ export default function ColumnGroupingTable({ content, contentTotal , columns, c
           <TableHead>
             <TableRow className="tableRowBorder">
               <TableCell align="center" colSpan={2}></TableCell>
-              
-              <TableCell align="center" colSpan={5} sx={{ fontWeight: "bold" }}>
-                Producción
-              </TableCell>
-              <TableCell align="center" colSpan={5} sx={{ fontWeight: "bold" }}>
-                Coste Teórico
-              </TableCell>
-              <TableCell align="center" colSpan={4} sx={{ fontWeight: "bold" }}>
-                Coste Real
-              </TableCell>
-              <TableCell align="center" colSpan={4} sx={{ fontWeight: "bold" }}>
-                Beneficios
-              </TableCell>
-              <TableCell align="center" colSpan={4} sx={{ fontWeight: "bold" }}>
-                Desviación
-              </TableCell>
-              <TableCell align="center" colSpan={4} sx={{ fontWeight: "bold" }}>
-                Obra Pendiente
-              </TableCell>
+              {groups.map((column, index) => {
+                    
+                    return (
+                      <TableCell align="center" colSpan={column.colSpan} sx={{ fontWeight: "bold" }} key={index}>
+                      {column.label}
+                    </TableCell>
+                    );
+              })}
+             
+            
             </TableRow>
             <TableRow sx={{}}>
-              {columns.map((column) => (
+              {columns.map((column, index) => (
                 <TableCell
-                  key={column.id}
+                  key={index}
                   style={{
                     top: 57,
                     minWidth: column.minWidth,
@@ -69,9 +50,9 @@ export default function ColumnGroupingTable({ content, contentTotal , columns, c
             </TableRow>
           </TableHead>
           <TableBody>
-            {content.map((row) => {
+            {content.map((row,index) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                   {columns.map((column) => {
                     const value = row[column.id];
                     return (
@@ -101,6 +82,7 @@ export default function ColumnGroupingTable({ content, contentTotal , columns, c
                     key={column.id}
                     align={column.numeric ? 'right' : 'left'}
                     className={column.class}
+                  
                   >
                     <strong>
                       {value === undefined && "---"}
