@@ -120,7 +120,7 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
     {
       field: "descripcio",
       headerName: "Descripción",
-      minWidth: 490,
+      minWidth: 639,
       editable: !number,
     },
     {
