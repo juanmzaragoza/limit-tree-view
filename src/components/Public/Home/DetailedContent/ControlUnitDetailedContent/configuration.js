@@ -194,14 +194,14 @@ export const columnsIndicatorsPartida = (intl) => [
     className: "borderLeft",
   },
   {
-    label: "Periodo",
+    label: "Hecho Período",
     id: "produccioPeriode",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
   },
   {
-    label: "Año Natural",
+    label: "Año",
     id: "produccioAny",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
@@ -230,14 +230,14 @@ export const columnsIndicatorsPartida = (intl) => [
     className: "borderLeft",
   },
   {
-    label: "Pendiente",
+    label: "Hecha Período",
     id: "costTeoricPeriode",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
   },
   {
-    label: "Año Natural",
+    label: "Año",
     id: "costTeoricAny",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
@@ -266,14 +266,14 @@ export const columnsIndicatorsPartida = (intl) => [
     className: "borderLeft",
   },
   {
-    label: "Pendiente",
+    label: "Hecho Período",
     id: "costRealPeriode",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
   },
   {
-    label: "Año Natural",
+    label: "Año",
     id: "costRealAny",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
@@ -295,14 +295,14 @@ export const columnsIndicatorsPartida = (intl) => [
     className: "borderLeft",
   },
   {
-    label: "Periodo",
+    label: "Hecho Período",
     id: "beneficiPeriode",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
   },
   {
-    label: "Año Natural",
+    label: "Año",
     id: "beneficiAny",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
@@ -331,7 +331,7 @@ export const columnsIndicatorsPartida = (intl) => [
     numeric: true,
   },
   {
-    label: "Año Natural",
+    label: "Año",
     id: "desviacioAny",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
@@ -353,14 +353,14 @@ export const columnsIndicatorsPartida = (intl) => [
     className: "borderLeft",
   },
   {
-    label: "Periodo",
+    label: "Hecho Período",
     id: "obraPendent",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
   },
   {
-    label: "Año Natural",
+    label: "Año",
     id: "obraPendentAny",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
@@ -374,7 +374,6 @@ export const columnsIndicatorsPartida = (intl) => [
     numeric: true,
   },
 ];
-
 export const columnsSubTotal = (intl) => [
   {
     id: "produccioAnterior",

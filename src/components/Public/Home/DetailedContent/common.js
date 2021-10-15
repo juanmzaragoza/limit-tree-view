@@ -16,21 +16,21 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
     { field: "codi", headerName: "Cód.", minWidth: 90 },
     {
       field: "descripcioReduc",
-      headerName: "Descripció",
+      headerName: "Descripción",
       minWidth: 350,
       editable: numberIsZero,
     },
 
     {
       field: "unitatsActual",
-      headerName: "Med. Periodo",
+      headerName: "Medida hecha período",
       type: "number",
       minWidth: 140,
       editable: numberIsNotZero,
     },
     {
       field: "medicioOrigen",
-      headerName: "Med. Origen",
+      headerName: "Medición Origen",
       type: "number",
       minWidth: 140,
       editable: numberIsNotZero,
@@ -38,7 +38,7 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
 
     {
       field: "unitats",
-      headerName: "Med. Prevista",
+      headerName: "Medición Prevista",
       type: "number",
       minWidth: 140,
       editable: numberIsZero,
@@ -51,7 +51,7 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
     },
     {
       field: "unitatsAnterior",
-      headerName: "Med. Anterior",
+      headerName: "Medición Origen Anterior",
       type: "number",
       minWidth: 140,
     },
@@ -63,7 +63,7 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
     },
     {
       field: "unitatsPress",
-      headerName: "Un. Pres",
+      headerName: "Medición Presupuestada",
       type: "number",
       minWidth: 140,
       editable: numberIsZero,
@@ -87,7 +87,7 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
     },
     {
       field: "importTotal",
-      headerName: "Importe",
+      headerName: "Importe Total Presupuestado",
       type: "number",
       valueFormatter: (params) =>
         formatCurrencyWithIntl(params.row.importTotal ?? 0, intl),
@@ -95,7 +95,7 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
     },
     {
       field: "costUni",
-      headerName: "Coste Unit.",
+      headerName: "Coste Unitario Total",
       type: "number",
       valueFormatter: (params) =>
         formatCurrencyWithIntl(params.row.costUni ?? 0, intl),
@@ -104,7 +104,7 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
     },
     {
       field: "costTotal",
-      headerName: "Coste Prev.",
+      headerName: "Coste Total Previsto",
       type: "number",
       valueFormatter: (params) =>
         formatCurrencyWithIntl(params.row.costTotal ?? 0, intl),
