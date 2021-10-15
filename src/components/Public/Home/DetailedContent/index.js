@@ -9,9 +9,9 @@ import {
   PARTIDA_TYPE,
   PROJECT_TYPE
 } from "constants/business-types";
-import ProjectDetailedContent from "./ProjectDetailedContent";
-import ControlUnitDetailedContent from "./ControlUnitDetailedContent";
-import PartidaDetailedContent from "./PartidaDetailedContent";
+import ProjectDetailedContent from "./ProjectDetailedContent.js";
+import ControlUnitDetailedContent from "./ControlUnitDetailedContent.js";
+import PartidaDetailedContent from "./PartidaDetailedContent.js";
 
 import { loadData as loadUnitControlData } from "redux/project";
 import { loadData as loadPartidaData } from "redux/unit-control";
