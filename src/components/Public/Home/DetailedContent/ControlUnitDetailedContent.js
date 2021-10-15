@@ -54,8 +54,8 @@ import {
 import { isEmpty } from "lodash";
 import CardTotal from "components/shared/CardTotal";
 const KPIS_TAB_INDEX = 0;
-const PARTIDAS_TAB_INDEX = 1;
-const DETAIL_TAB_INDEX = 2;
+const DETAIL_TAB_INDEX = 1;
+const PARTIDAS_TAB_INDEX = 2;
 
 const ControlUnitDetailedContent = ({
   rows,
