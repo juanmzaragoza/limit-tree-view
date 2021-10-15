@@ -94,11 +94,7 @@
   color: transparent !important;
 
 }
-.css-118fhal-MuiTreeItem-root .MuiTreeItem-content.Mui-focused,
-.css-118fhal-MuiTreeItem-root .MuiTreeItem-content.Mui-selected,
-.css-118fhal-MuiTreeItem-root .MuiTreeItem-content.Mui-selected.Mui-focused {
-  color: rgba(0, 0, 0, 0.6) !important;
-}
+
 
 .importsTotals {
   padding: 0 !important;
