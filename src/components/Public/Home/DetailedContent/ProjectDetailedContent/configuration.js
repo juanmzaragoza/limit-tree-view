@@ -11,6 +11,7 @@ import {
 import { formatCurrencyWithIntl } from "utils/formats";
 import { entitiesStyles } from "utils/helper";
 import { CONTROL_UNIT_TYPE } from "constants/business-types";
+import { Avatar } from "@mui/material";
 
 export const getIndicators = (kpis) => [
   {
@@ -196,8 +197,13 @@ export const getIndicators = (kpis) => [
 ];
 
 export const columnsIndicatorsPartida = (intl) => [
-  { id: "unitatControlCodi", id2:"unitatControlDescripcio", label: "Código - Descripción", minWidth: 400,   },
-
+  {
+    id: "unitatControlCodi",
+    id2: "unitatControlDescripcio",
+    label: "Código - Descripción",
+    minWidth: 400,
+    className: "borderRight",
+  },
 
   {
     label: "P. Anterior",
@@ -205,6 +211,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    className: "borderLeft",
   },
   {
     label: "P. Periodo",
@@ -240,6 +247,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    className: "borderLeft",
   },
   {
     label: "CT. Pendiente",
@@ -275,6 +283,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    className: "borderLeft",
   },
   {
     label: "CR. Pendiente",
@@ -303,6 +312,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    className: "borderLeft",
   },
   {
     label: "Benef. Periodo",
@@ -331,6 +341,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    className: "borderLeft",
   },
   {
     label: "Desv. Periodo",
@@ -359,6 +370,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    className: "borderLeft",
   },
   {
     label: "OP. Periodo",
@@ -389,6 +401,7 @@ export const columnsSubTotal = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    className: "borderLeft",
   },
   {
     id: "produccioPeriode",
@@ -419,6 +432,7 @@ export const columnsSubTotal = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    className: "borderLeft",
   },
   {
     id: "costTeoricPeriode",
@@ -449,6 +463,7 @@ export const columnsSubTotal = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    className: "borderLeft",
   },
   {
     id: "costRealPeriode",
@@ -473,6 +488,7 @@ export const columnsSubTotal = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    className: "borderLeft",
   },
   {
     id: "beneficiPeriode",
@@ -497,6 +513,7 @@ export const columnsSubTotal = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    className: "borderLeft",
   },
   {
     id: "desviacioPeriode",
@@ -521,6 +538,7 @@ export const columnsSubTotal = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    className: "borderLeft",
   },
   {
     id: "obraPendent",
@@ -543,11 +561,29 @@ export const columnsSubTotal = (intl) => [
 ];
 
 export const groups = [
-  { label: { ...entitiesStyles[CONTROL_UNIT_TYPE].icon } , colSpan: 1 },
-  { label: "Producción", colSpan: 5 },
-  { label: "Coste Teórico", colSpan: 5 },
-  { label: "Coste Real", colSpan: 4 },
-  { label: "Beneficios", colSpan: 4 },
-  { label: "Desviación", colSpan: 4 },
-  { label: "Obra Pendiente", colSpan: 4 },
+  {
+    label: (
+      <>
+        {" "}
+        <Avatar
+          aria-label="recipe"
+          sx={{
+            bgcolor: entitiesStyles[CONTROL_UNIT_TYPE].iconColor,
+            color: "white",
+          }}
+        >
+          {entitiesStyles[CONTROL_UNIT_TYPE].icon}
+        </Avatar>
+      </>
+    ),
+    colSpan: 1,
+    className: "borderRight",
+  },
+
+  { label: "Producción", colSpan: 5, className: "borderLeft" },
+  { label: "Coste Teórico", colSpan: 5, className: "borderLeft" },
+  { label: "Coste Real", colSpan: 4, className: "borderLeft" },
+  { label: "Beneficios", colSpan: 4, className: "borderLeft" },
+  { label: "Desviación", colSpan: 4, className: "borderLeft" },
+  { label: "Obra Pendiente", colSpan: 4, className: "borderLeft" },
 ];

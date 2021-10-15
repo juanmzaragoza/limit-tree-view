@@ -41,7 +41,7 @@ export default function MaterialTable({ content, contentTotal , columns, columns
               {groups.map((column, index) => {
                     
                     return (
-                      <TableCell align="center" colSpan={column.colSpan} sx={{ fontWeight: "bold" }} key={index}  className={columns.className} >
+                      <TableCell align="center" colSpan={column.colSpan} sx={{ fontWeight: "bold" }} key={index}  className={column.className} >
                       {column.label}
                     </TableCell>
                     );
@@ -59,7 +59,7 @@ export default function MaterialTable({ content, contentTotal , columns, columns
                     fontWeight: "bold",
                   }}
                   align={column.numeric ? 'right' : 'left'}
-                  className={columns.className}
+                  className={column.className}
                 >
                   {column.label}
                 </TableCell>
@@ -103,7 +103,7 @@ export default function MaterialTable({ content, contentTotal , columns, columns
                   <TableCell
                     key={column.id}
                     align={column.numeric ? 'right' : 'left'}
-                    className={column.class}
+                    className={column.className}
                   
                   >
                     <strong>
