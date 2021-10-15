@@ -270,7 +270,7 @@ const ControlUnitDetailedContent = ({
             columns={columnsIndicatorsPartida(intl)}
             columnsSubTotal={columnsSubTotal(intl)}
             groups={groups}
-            onDoubleClick={(row) => actions.selectNode({ ids: row.unitatControlId })}
+            onDoubleClick={(row) => actions.selectNode({ ids: row.id })}
           />
         )}
       </Grid>

@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { makeStyles } from "@material-ui/styles";
-
+import "./TableStyle.css"
 const useStyles = makeStyles({
   stickyActionsColumn: {
     '& table:first-child': {
@@ -41,7 +41,7 @@ export default function MaterialTable({ content, contentTotal , columns, columns
               {groups.map((column, index) => {
                     
                     return (
-                      <TableCell align="center" colSpan={column.colSpan} sx={{ fontWeight: "bold" }} key={index} >
+                      <TableCell align="center" colSpan={column.colSpan} sx={{ fontWeight: "bold" }} key={index}  className={columns.className} >
                       {column.label}
                     </TableCell>
                     );
@@ -59,6 +59,7 @@ export default function MaterialTable({ content, contentTotal , columns, columns
                     fontWeight: "bold",
                   }}
                   align={column.numeric ? 'right' : 'left'}
+                  className={columns.className}
                 >
                   {column.label}
                 </TableCell>
@@ -76,7 +77,8 @@ export default function MaterialTable({ content, contentTotal , columns, columns
                       <TableCell
                         key={column.id}
                         align={column.numeric ? 'right' : 'left'}
-                        className={column.class}
+                        className={column.className}
+                    
                       >
                         {value === undefined && "---"}
                         {column.format && typeof value === "number"

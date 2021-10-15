@@ -185,6 +185,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    className:"borderLeft"
   },
   {
     label: "P. Periodo",
@@ -213,6 +214,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    className:"borderRight"
   },
   {
     label: "CT. Anterior",
@@ -525,10 +527,10 @@ export const columnsSubTotal = (intl) => [
 export const groups = [
   { label: { ...entitiesStyles[PARTIDA_TYPE].icon }, colSpan: 1 },
 
-  { label: "Producción", colSpan: 5 },
-  { label: "Coste Teórico", colSpan: 5 },
-  { label: "Coste Real", colSpan: 4 },
-  { label: "Beneficios", colSpan: 4 },
-  { label: "Desviación", colSpan: 4 },
-  { label: "Obra Pendiente", colSpan: 4 },
+  { label: "Producción", colSpan: 5, className:"borderLeft"},
+  { label: "Coste Teórico", colSpan: 5, className:"borderLeft" },
+  { label: "Coste Real", colSpan: 4, className:"borderLeft" },
+  { label: "Beneficios", colSpan: 4, className:"borderLeft" },
+  { label: "Desviación", colSpan: 4, className:"borderLeft" },
+  { label: "Obra Pendiente", colSpan: 4, className:"borderLeft" },
 ];
