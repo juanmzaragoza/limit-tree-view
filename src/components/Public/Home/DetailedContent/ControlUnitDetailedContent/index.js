@@ -10,7 +10,6 @@ import MaterialDataGrid from "components/shared/MaterialDataGrid";
 
 import MaterialTable from "components/shared/MaterialTable";
 
-
 import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
 import CardTotal from "components/shared/CardTotal";
 
@@ -29,10 +28,7 @@ import {
   loadDetails,
   resetKpis,
 } from "redux/unit-control";
-import {
-  loadData as loadTreeData,
-  selectNode
-} from "redux/project-tree";
+import { loadData as loadTreeData, selectNode } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 import { getKpis } from "redux/project/selectors";
@@ -47,8 +43,11 @@ import {
   isPeriodOpen,
 } from "../common";
 
-import { getIndicators } from "./configuration";
-
+import {
+  getIndicators,
+  columnsIndicatorsPartida,
+  columnsSubTotal,
+} from "./configuration";
 
 const KPIS_TAB_INDEX = 0;
 const DETAIL_TAB_INDEX = 1;
@@ -89,10 +88,10 @@ const ControlUnitDetailedContent = ({
     [KPIS_TAB_INDEX]: () => {
       unitControl.id && actions.loadKpis({ id: unitControl.id });
     },
-    [DETAIL_TAB_INDEX]: ()=>{
-      unitControl.id && actions.loadDetails({ id: unitControl.id })
+    [DETAIL_TAB_INDEX]: () => {
+      unitControl.id && actions.loadDetails({ id: unitControl.id });
       console.log(unitControl);
-    }
+    },
   };
   React.useEffect(() => {
     onChangeIndexExecutor[tabIndex]();
@@ -100,8 +99,6 @@ const ControlUnitDetailedContent = ({
 
   React.useEffect(() => {
     loadHeader();
-    
-
   }, [props.id]);
 
   const content = [
@@ -231,15 +228,11 @@ const ControlUnitDetailedContent = ({
                 label={"Indicadores"}
                 className="tabsIndicators tabsIndicators1"
               />
-                <Tab
-                label={"Indicadores Partidas"}
-                className="tabsIndicators "
-              />
+              <Tab label={"Indicadores Partidas"} className="tabsIndicators " />
               <Tab
                 label={"Partidas"}
                 className="tabsIndicators tabsIndicators2"
               />
-             
             </Tabs>
           </Grid>
           <Grid item xs={3}>
@@ -269,12 +262,13 @@ const ControlUnitDetailedContent = ({
             />
           </Grid>
         )}
-         {tabIndex === DETAIL_TAB_INDEX && (
-         
-    
-
-          <MaterialTable content={details} contentTotal={totals}/>
-    
+        {tabIndex === DETAIL_TAB_INDEX && (
+          <MaterialTable
+            content={details}
+            contentTotal={totals}
+            columns={columnsIndicatorsPartida(intl)}
+            columnsSubTotal={columnsSubTotal(intl)}
+          />
         )}
       </Grid>
     </Grid>
@@ -290,7 +284,7 @@ const mapStateToProps = (state, props) => {
     selectedPeriod: getSelectedPeriod(state),
     kpis: getKpis(state),
     kpisUnitatControl: getKpisUC(state),
-    details:getDetails(state),
+    details: getDetails(state),
     totals: getTotals(state),
   };
 };

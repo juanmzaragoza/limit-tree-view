@@ -34,7 +34,7 @@ import { formatCurrencyWithIntl } from "utils/formats";
 import { PROJECT_TYPE } from "constants/business-types";
 
 
-import {getIndicators} from "./configuration";
+import {getIndicators, columnsIndicatorsPartida , columnsSubTotal} from "./configuration";
 
 const KPIS_TAB_INDEX = 0;
 const DETAIL_TAB_INDEX = 1;
@@ -198,7 +198,7 @@ const ProjectDetailedContent = ({
           </Grid>
         )}
         {tabIndex === DETAIL_TAB_INDEX && (
-          <MaterialTable content={details} contentTotal={totals} />
+          <MaterialTable content={details} contentTotal={totals} columns={columnsIndicatorsPartida(intl)} columnsSubTotal={columnsSubTotal(intl)}/>
         )}
       </Grid>
     </Grid>
