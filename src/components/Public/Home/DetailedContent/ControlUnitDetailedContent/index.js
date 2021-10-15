@@ -3,26 +3,32 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { useIntl } from "react-intl";
 import { Grid, Tab, Tabs } from "@mui/material";
+import { isEmpty } from "lodash";
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
 
+import MaterialTable from "components/shared/MaterialTable";
+
+import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
+import CardTotal from "components/shared/CardTotal";
+
 import {
   getIsLoading,
   getRows,
+  getDetails,
   getUnitControl,
   getKpis as getKpisUC,
+  getTotals,
 } from "redux/unit-control/selectors";
 import {
   loadHeader,
   updatePartida,
   loadKpis,
+  loadDetails,
   resetKpis,
 } from "redux/unit-control";
-import {
-  loadData as loadTreeData,
-  selectNode
-} from "redux/project-tree";
+import { loadData as loadTreeData, selectAndExpandNode } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 import { getKpis } from "redux/project/selectors";
@@ -33,22 +39,20 @@ import { CONTROL_UNIT_TYPE, PROJECT_TYPE } from "constants/business-types";
 import {
   getKpisColorValue,
   getPartidaColumnsByPeriod,
+  getPartidaColumnsByIndicator,
   isPeriodOpen,
-} from "./common";
-import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
+} from "../common";
 
 import {
-  Engineering,
-  StackedLineChart,
-  StackedBarChart,
-  Euro,
-  CallMissedOutgoing,
-  Construction,
-} from "@mui/icons-material";
-import { isEmpty } from "lodash";
-import CardTotal from "components/shared/CardTotal";
+  getIndicators,
+  columnsIndicatorsPartida,
+  columnsSubTotal,
+  groups
+} from "./configuration";
+
 const KPIS_TAB_INDEX = 0;
-const PARTIDAS_TAB_INDEX = 1;
+const DETAIL_TAB_INDEX = 1;
+const PARTIDAS_TAB_INDEX = 2;
 
 const ControlUnitDetailedContent = ({
   rows,
@@ -60,6 +64,8 @@ const ControlUnitDetailedContent = ({
   kpis,
   kpisUnitatControl,
   selectedPeriod,
+  details,
+  totals,
   ...props
 }) => {
   const intl = useIntl();
@@ -80,6 +86,10 @@ const ControlUnitDetailedContent = ({
     [KPIS_TAB_INDEX]: () => {
       unitControl.id && actions.loadKpis({ id: unitControl.id });
     },
+    [DETAIL_TAB_INDEX]: () => {
+      unitControl.id && actions.loadDetails({ id: unitControl.id });
+
+    },
   };
   React.useEffect(() => {
     onChangeIndexExecutor[tabIndex]();
@@ -89,7 +99,6 @@ const ControlUnitDetailedContent = ({
     loadHeader();
   }, [props.id]);
 
-
   const content = [
     { field: "Importe Total", value: unitControl.importTotal },
     {
@@ -97,172 +106,9 @@ const ControlUnitDetailedContent = ({
       value: unitControl.costTotal,
     },
   ];
-  
 
   React.useEffect(() => {
-    setIndicadores([
-      {
-        title: "Produccion",
-        icon: <Engineering />,
-        lg: 2,
-        indicators: [
-          {
-            field: "Producción Anterior",
-            value: kpisUnitatControl.produccioAnterior,
-            breakpoints: 3,
-          },
-          {
-            field: "Producción Periodo",
-            value: kpisUnitatControl.produccioPeriode,
-            breakpoints: 2,
-          },
-          {
-            field: "Producción Año Natural",
-            value: kpisUnitatControl.produccioAny,
-            breakpoints: 3,
-          },
-          {
-            field: "Producción a Origen",
-            value: kpisUnitatControl.produccioOrigen,
-            breakpoints: 2,
-          },
-          {
-            field: "Producción Pendiente",
-            value: kpisUnitatControl.produccioPendent,
-            breakpoints: 2,
-          },
-        ],
-      },
-      {
-        title: "Coste Teórico",
-        icon: <StackedLineChart />,
-        lg: 2,
-        indicators: [
-          {
-            field: "Coste Teórico Anterior",
-            value: kpisUnitatControl.costTeoricAnterior,
-            breakpoints: 3,
-          },
-          {
-            field: "Coste Teórico Pendiente",
-            value: kpisUnitatControl.costTeoricPeriode,
-            breakpoints: 2,
-          },
-          {
-            field: "Coste Teórico Año Natural",
-            value: kpisUnitatControl.costTeoricAny,
-            breakpoints: 3,
-          },
-          {
-            field: "Coste Teórico a Origen",
-            value: kpisUnitatControl.costTeoricOrigen,
-            breakpoints: 2,
-          },
-          {
-            field: "Coste Teórico Pendiente",
-            value: kpisUnitatControl.costTeoricPendent,
-            breakpoints: 2,
-          },
-        ],
-      },
-      {
-        title: "Coste Real",
-        icon: <StackedBarChart />,
-        lg: 3,
-        indicators: [
-          {
-            field: "Coste Real Anterior",
-            value: kpisUnitatControl.costRealAnterior,
-            icon: <StackedBarChart />,
-          },
-          {
-            field: "Coste Real Pendiente",
-            value: kpisUnitatControl.costRealPeriode,
-            icon: <StackedBarChart />,
-          },
-          {
-            field: "Coste Real año Natural",
-            value: kpisUnitatControl.costRealAny,
-            icon: <StackedBarChart />,
-          },
-          {
-            field: "Coste Real Origen",
-            value: kpisUnitatControl.costRealOrigen,
-            icon: <StackedBarChart />,
-          },
-        ],
-      },
-      {
-        title: "Beneficios",
-        icon: <Euro />,
-        lg: 3,
-        indicators: [
-          {
-            field: "Beneficio Anterior",
-            value: kpisUnitatControl.beneficiAnterior,
-          },
-          {
-            field: "Beneficio Período",
-            value: kpisUnitatControl.beneficiPeriode,
-          },
-          {
-            field: "Beneficio año Natural",
-            value: kpisUnitatControl.beneficiAny,
-          },
-          {
-            field: "Beneficio Origen",
-            value: kpisUnitatControl.beneficiOrigen,
-          },
-        ],
-      },
-      {
-        title: "Desviación",
-        icon: <CallMissedOutgoing />,
-        lg: 3,
-        indicators: [
-          {
-            field: "Desviación Anterior",
-            value: kpisUnitatControl.desviacioCostAnterior,
-          },
-          {
-            field: "Desviación Período",
-            value: kpisUnitatControl.desviacioPeriode,
-          },
-          {
-            field: "Desviación año Natural",
-            value: kpisUnitatControl.desviacioAny,
-          },
-
-          {
-            field: "Desviación Origen",
-            value: kpisUnitatControl.desviacioOrigen,
-          },
-        ],
-      },
-      {
-        title: "Obra Pendiente Periodo",
-        icon: <Construction />,
-        lg: 3,
-        indicators: [
-          {
-            field: "Obra Pendiente Anterior",
-            value: kpisUnitatControl.obraPendentFacturar,
-          },
-          {
-            field: "Obra Pendiente Período",
-            value: kpisUnitatControl.obraPendent,
-          },
-          {
-            field: "Obra Pendiente año Natural",
-            value: kpisUnitatControl.obraPendentAny,
-          },
-          {
-            field: "Obra Pendiente Origen",
-            value: kpisUnitatControl.obraPendentOrigen,
-          },
-        ],
-      },
-    ]);
+    setIndicadores(getIndicators(kpisUnitatControl));
   }, [kpisUnitatControl]);
 
   React.useEffect(() => {
@@ -272,6 +118,16 @@ const ControlUnitDetailedContent = ({
         field: "Benef. Origen",
         value: kpisUnitatControl.beneficiOrigen,
       },
+  
+      {
+        field: "Prod. Origen",
+        value: kpisUnitatControl.produccioOrigen,
+      },
+      {
+        field: "Pen. Origen",
+        value: kpisUnitatControl.obraPendentOrigen,
+      },
+     
       {
         field: "Benef. Año",
         value: kpisUnitatControl.beneficiAny,
@@ -280,20 +136,13 @@ const ControlUnitDetailedContent = ({
         }),
       },
       {
-        field: "Desv. Origen",
-        value: kpisUnitatControl.desviacioOrigen,
-      },
-      {
-        field: "Desv. Año",
-        value: kpisUnitatControl.desviacioAny,
+        field: "Prod. Año",
+        value: kpisUnitatControl.produccioAny,
         colorValue: getKpisColorValue({
-          value: kpisUnitatControl?.desviacioAny >= 0,
+          value: kpisUnitatControl?.produccioAny >= 0,
         }),
       },
-      {
-        field: "Pen. Origen",
-        value: kpisUnitatControl.obraPendentOrigen,
-      },
+     
 
       {
         field: "Pen. Año",
@@ -312,24 +161,26 @@ const ControlUnitDetailedContent = ({
         field: "Benef. Origen",
         value: kpis.beneficiOrigen,
       },
+      
+      {
+        field: "Prod. Origen",
+        value: kpis.produccioOrigen,
+      },
+      {
+        field: "Pen. Origen",
+        value: kpis.obraPendentOrigen,
+      },
       {
         field: "Benef. Año",
         value: kpis.beneficiAny,
         colorValue: getKpisColorValue({ value: kpis?.beneficiAny >= 0 }),
       },
       {
-        field: "Desv. Origen",
-        value: kpis.desviacioOrigen,
+        field: "Prod. Año",
+        value: kpis.produccioAny,
+        colorValue: getKpisColorValue({ value: kpis?.produccioAny >= 0 }),
       },
-      {
-        field: "Desv. Año",
-        value: kpis.desviacioAny,
-        colorValue: getKpisColorValue({ value: kpis?.desviacioAny >= 0 }),
-      },
-      {
-        field: "Pen. Origen",
-        value: kpis.obraPendentOrigen,
-      },
+     
 
       {
         field: "Pen. Año",
@@ -358,18 +209,23 @@ const ControlUnitDetailedContent = ({
     <Grid container spacing={1}>
       <Grid item xs={6}>
         <DetailedHeader
+          id={selectedPeriod.id}
           header={headerProject}
           body={headerProjectFields}
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[PROJECT_TYPE]}
+          onClick={(id) => actions.selectNode({ ids: id })}
+
         />
       </Grid>
       <Grid item xs={6}>
         <DetailedHeader
+          id={unitControl.id}
           header={headerControlUnit}
           body={headerControlUnitFields}
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[CONTROL_UNIT_TYPE]}
+          onClick={(id) => actions.selectNode({ ids: id })}
         />
       </Grid>
       <Grid item xs={12}>
@@ -380,6 +236,7 @@ const ControlUnitDetailedContent = ({
                 label={"Indicadores"}
                 className="tabsIndicators tabsIndicators1"
               />
+              <Tab label={"Indicadores Partidas"} className="tabsIndicators " />
               <Tab
                 label={"Partidas"}
                 className="tabsIndicators tabsIndicators2"
@@ -413,6 +270,16 @@ const ControlUnitDetailedContent = ({
             />
           </Grid>
         )}
+        {tabIndex === DETAIL_TAB_INDEX && (
+          <MaterialTable
+            content={details}
+            contentTotal={totals}
+            columns={columnsIndicatorsPartida(intl)}
+            columnsSubTotal={columnsSubTotal(intl)}
+            groups={groups}
+            onDoubleClick={(row) => actions.selectNode({ ids: row.id })}
+          />
+        )}
       </Grid>
     </Grid>
   );
@@ -427,6 +294,8 @@ const mapStateToProps = (state, props) => {
     selectedPeriod: getSelectedPeriod(state),
     kpis: getKpis(state),
     kpisUnitatControl: getKpisUC(state),
+    details: getDetails(state),
+    totals: getTotals(state),
   };
 };
 
@@ -436,8 +305,9 @@ const mapDispatchToProps = (dispatch, props) => {
     updatePartida: bindActionCreators(updatePartida, dispatch),
     loadTreeData: bindActionCreators(loadTreeData, dispatch),
     loadKpis: bindActionCreators(loadKpis, dispatch),
+    loadDetails: bindActionCreators(loadDetails, dispatch),
     resetKpis: bindActionCreators(resetKpis, dispatch),
-    selectNode: bindActionCreators(selectNode, dispatch),
+    selectNode: bindActionCreators(selectAndExpandNode, dispatch),
   };
   return { actions };
 };

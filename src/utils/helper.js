@@ -18,9 +18,10 @@ export const redColor = 'red';
 
 export const entitiesStyles = {
   [PROJECT_TYPE]: {
-    colorBackground: "rgba(58, 145, 152, 0.30)",
+
+    colorBackground: "rgba(16, 118, 49, 0.30)",
     icon: <Business />,
-    iconColor: primaryColor,
+    iconColor: "#107631",
   },
   [CONTROL_UNIT_TYPE]: {
     colorBackground: "rgba(255, 177, 27, 0.30)",
@@ -32,4 +33,6 @@ export const entitiesStyles = {
     icon: <CatchingPokemon />,
     iconColor: "#a250f5",
   }
+
+  
 }

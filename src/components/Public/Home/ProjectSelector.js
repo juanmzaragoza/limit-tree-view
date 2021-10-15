@@ -58,12 +58,12 @@ const ProjectSelector = ({ onChange = () => {}, rows, loading, actions }) => {
       query = [{
         columnName: 'codi',
         value: `*${v}*`,
-        exact: true
+        exact: false
       },
       {
         columnName: 'nom',
         value: `*${v}*`,
-        exact: true
+        exact: false
       }];
     }
     actions.loadData({ query });

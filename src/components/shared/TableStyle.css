@@ -1,0 +1,7 @@
+.borderLeft{
+    border-left: 1px solid rgba(224, 224, 224, 1) !important;
+}
+
+.borderRight{
+    border-right: 1px solid rgba(224, 224, 224, 1) !important;
+}

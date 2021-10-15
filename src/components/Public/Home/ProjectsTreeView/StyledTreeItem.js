@@ -25,7 +25,7 @@ const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
     },
     '&.Mui-focused, &.Mui-selected, &.Mui-selected.Mui-focused': {
       backgroundColor: `var(--tree-view-bg-color,  rgba(58, 145, 152, 0.08))`,
-      color: primaryColor,
+
     },
     [`& .${treeItemClasses.label}`]: {
       fontWeight: 'inherit',
@@ -43,7 +43,7 @@ const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
 const StyledTreeItem = (props) => {
   const {
     bgColor = primaryColor,
-    color = primaryColor,
+    color,
     labelIcon = <LabelIcon />,
     labelInfo,
     labelText,

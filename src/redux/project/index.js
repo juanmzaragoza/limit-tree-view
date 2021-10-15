@@ -7,6 +7,7 @@ const RESET_KPIS = "RESET_KPIS_TO_PROJECT";
 // Constants
 const URL = 'api/estp/unitatsControlEstudi?query=estudiProjecte.id=="{id}"&sort=codi';
 const LOAD_KPIS_URL = 'api/estp/estudisProjecte/{id}/indicadors';
+const LOAD_DETAILS_URL = "api/estp/estudisProjecte/{id}/indicadors?desglossat=true";
 
 //Functions
 export const loadData = ({ url = URL, id }) => {
@@ -52,6 +53,26 @@ export const loadKpis = ({ url = LOAD_KPIS_URL, id }) => {
   };
 };
 
+
+
+export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
+  return async (dispatch) => {
+    const apiCall = () => Axios.get(url.replace("{id}", id));
+    try {
+      apiCall()
+        .then(({ data }) => data)
+        .then(({ indicadorsPartides, indicadorsPartidesDesglossats }) => {
+          dispatch(add({ details: indicadorsPartidesDesglossats, totals: indicadorsPartides }));
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {});
+    } catch (error) {}
+  };
+};
+
+
 //Action creators
 export const add = (payload) => {
   return {
@@ -70,7 +91,8 @@ export const resetKpis = () => {
 const initialState = {
   rows: [],
   loading: false,
-  kpis: []
+  kpis: [],
+  details:[]
 };
 
 const reducer = (state = initialState, action) => {

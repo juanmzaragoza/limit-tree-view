@@ -16,14 +16,14 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
     { field: "codi", headerName: "Cód.", minWidth: 90 },
     {
       field: "descripcioReduc",
-      headerName: "Descripció",
+      headerName: "Descripción",
       minWidth: 350,
       editable: numberIsZero,
     },
 
     {
       field: "unitatsActual",
-      headerName: "Med. Periodo",
+      headerName: "Med. hecha período",
       type: "number",
       minWidth: 140,
       editable: numberIsNotZero,
@@ -51,19 +51,19 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
     },
     {
       field: "unitatsAnterior",
-      headerName: "Med. Anterior",
+      headerName: "Med. Orig. Anterior",
       type: "number",
       minWidth: 140,
     },
     {
       field: "obraPendent",
-      headerName: "Obra pendiente",
+      headerName: "Med. pendiente",
       type: "number",
       minWidth: 140,
     },
     {
       field: "unitatsPress",
-      headerName: "Un. Pres",
+      headerName: "Med. Presupuestada",
       type: "number",
       minWidth: 140,
       editable: numberIsZero,
@@ -87,7 +87,7 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
     },
     {
       field: "importTotal",
-      headerName: "Importe",
+      headerName: "Imp. Tot. Pres.",
       type: "number",
       valueFormatter: (params) =>
         formatCurrencyWithIntl(params.row.importTotal ?? 0, intl),
@@ -95,7 +95,7 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
     },
     {
       field: "costUni",
-      headerName: "Coste Unit.",
+      headerName: "Coste Unit. Total",
       type: "number",
       valueFormatter: (params) =>
         formatCurrencyWithIntl(params.row.costUni ?? 0, intl),
@@ -104,7 +104,7 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
     },
     {
       field: "costTotal",
-      headerName: "Coste Prev.",
+      headerName: "Coste Total Prev.",
       type: "number",
       valueFormatter: (params) =>
         formatCurrencyWithIntl(params.row.costTotal ?? 0, intl),
@@ -116,28 +116,31 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
 export const getResourceColumnsByPeriod = ({ period, intl }) => {
   const { number } = period;
   return [
-    { field: "codi", headerName: "Código", type: "number" },
+    { field: "codi", headerName: "Código",  minWidth: 110, },
     {
       field: "descripcio",
       headerName: "Descripción",
-      width: 140,
+      minWidth: 639,
       editable: !number,
     },
     {
       field: "unitats",
       headerName: "Medición",
       type: "number",
+      minWidth: 140,
       editable: !number,
     },
     {
       field: "unitatTipus",
       headerName: "Tipo Unidad",
+      minWidth: 140,
       valueGetter: (params) => `${params.value?.description || ""}`,
     },
     {
       field: "costUnitat",
       headerName: "Coste Unitario",
       type: "number",
+      minWidth: 140,
       valueFormatter: (params) => {
         return formatCurrencyWithIntl(params.row.costUnitat ?? 0, intl);
       },
@@ -146,10 +149,86 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
     {
       field: "costTotal",
       headerName: "Coste Total",
+      minWidth: 140,
       type: "number",
       valueFormatter: (params) => {
         return formatCurrencyWithIntl(params.row.costTotal ?? 0, intl);
       },
     },
+  ];
+}
+
+
+export const getPartidaColumnsByIndicator = ({ intl }) => {
+
+  return [
+    { field: "codi", headerName: "Cód.", minWidth: 90 },
+    {
+      field: "descripcio",
+      headerName: "Descripció",
+      minWidth: 350,
+   
+    },
+
+    {
+      headerName: "Prod. Anterior",
+      field: "produccioAnterior",
+      minWidth: 140,
+      valueFormatter: (params) =>
+      formatCurrencyWithIntl(params.row.produccioAnterior ?? 0, intl),
+    },
+    {
+      headerName: "Prod. Periodo",
+      field: "produccioPeriode",
+      minWidth: 140,
+      valueFormatter: (params) =>
+      formatCurrencyWithIntl(params.row.produccioPeriode ?? 0, intl),
+    },
+    {
+      headerName: "Prod. Año Natural",
+      field: "produccioAny",
+      minWidth: 140,
+      valueFormatter: (params) =>
+      formatCurrencyWithIntl(params.row.produccioAny ?? 0, intl),
+    },
+    {
+      headerName: "Prod. Origen",
+      field: "produccioOrigen",
+      minWidth: 140,
+      valueFormatter: (params) =>
+      formatCurrencyWithIntl(params.row.produccioOrigen ?? 0, intl),
+
+    },
+    {
+      headerName: "Prod. Pendiente",
+      field: "produccioPendent",
+      valueFormatter: (params) =>
+      formatCurrencyWithIntl(params.row.produccioPendent ?? 0, intl),
+    },
+    {
+      headerName: "Coste Teórico Anterior",
+      value: "costTeoricAnterior",
+
+    },
+    {
+      headerName: "Coste Teórico Pendiente",
+      field: "costTeoricPeriode",
+       },
+    {
+      headerName: "Coste Teórico Año Natural",
+      field: "costTeoricAny",
+ 
+    },
+    {
+      headerName: "Coste Teórico a Origen",
+      field: "costTeoricOrigen",
+  
+    },
+    {
+      headerName: "Coste Teórico Pendiente",
+      field: "costTeoricPendent",
+    
+    },
+ 
   ];
 }

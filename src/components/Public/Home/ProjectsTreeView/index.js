@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -8,7 +7,7 @@ import {
   getIsLoading,
   getSelectedNode,
 } from "redux/project-tree/selectors";
-import { reset, selectNode } from "redux/project-tree";
+import {reset, selectNode, expandNode, selectAndExpandNode} from "redux/project-tree";
 
 import "./styles.css";
 import ProjectsTreeView from "./ProjectTreeView";
@@ -24,9 +23,10 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch, props) => {
   const actions = {
-    //setExpanded: bindActionCreators(setExpanded, dispatch),
     reset: bindActionCreators(reset, dispatch),
     selectNode: bindActionCreators(selectNode, dispatch),
+    expandNode: bindActionCreators(expandNode, dispatch),
+    selectAndExpandNode: bindActionCreators(selectAndExpandNode, dispatch),
   };
   return { actions };
 };

@@ -11,15 +11,18 @@ import {
 import MaterialHeaderSkeleton from "./MaterialSkeleton/MaterialHeaderSkeleton";
 import { formatCurrencyWithIntl } from "utils/formats";
 import { useIntl } from "react-intl";
+import {IconButton} from "@material-ui/core";
 
 
 const DetailedHeader = ({
+  id,
   header,
   body,
   colorBackground,
   icon,
   iconColor,
   breakpoints = { xs: 6 },
+  onClick = (row) => {},
 }) => {
   const intl = useIntl();
   const cutTitle = () => {
@@ -42,14 +45,14 @@ const DetailedHeader = ({
      
       <CardHeader
         avatar={
-          <>
+          <IconButton>
             <Avatar
               aria-label="recipe"
               sx={{ bgcolor: iconColor, color: "white" }}
             >
               {icon}
             </Avatar>
-          </>
+          </IconButton>
         }
         title={cutTitle()}
         subheader={header.subheader}
@@ -62,6 +65,7 @@ const DetailedHeader = ({
           backgroundColor: colorBackground,
         }}
         className="tituloDetailHeader"
+        onClick={() => onClick(id)}
       />
       
       <CardContent sx={{padding: 0, paddingBottom: "2px"}}>
