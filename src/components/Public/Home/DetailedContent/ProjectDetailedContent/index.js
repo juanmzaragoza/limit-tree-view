@@ -115,13 +115,13 @@ const ProjectDetailedContent = ({
         colorValue: getKpisColorValue({ value: kpis?.beneficiAny >= 0 }),
       },
       {
-        field: "Desv. Origen",
-        value: kpis.desviacioOrigen,
+        field: "Prod. Origen",
+        value: kpis.produccioOrigen,
       },
       {
-        field: "Desv. Año",
-        value: kpis.desviacioAny,
-        colorValue: getKpisColorValue({ value: kpis?.desviacioAny >= 0 }),
+        field: "Prod. Año",
+        value: kpis.produccioAny,
+        colorValue: getKpisColorValue({ value: kpis?.produccioAny >= 0 }),
       },
       {
         field: "Pen. Origen",

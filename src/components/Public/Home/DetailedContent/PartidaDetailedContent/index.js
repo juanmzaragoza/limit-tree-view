@@ -105,28 +105,31 @@ const ProjectDetailedContent = ({
         field: "Benef. Origen",
         value: kpisUnitatControl.beneficiOrigen,
       },
+  
       {
-        field: "Benef. Año",
-        value: kpisUnitatControl.beneficiAny,
-        colorValue: getKpisColorValue({
-          value: kpisUnitatControl?.beneficiAny >= 0,
-        }),
-      },
-      {
-        field: "Desv. Origen",
-        value: kpisUnitatControl.desviacioOrigen,
-      },
-      {
-        field: "Desv. Año",
-        value: kpisUnitatControl.desviacioAny,
-        colorValue: getKpisColorValue({
-          value: kpisUnitatControl?.desviacioAny >= 0,
-        }),
+        field: "Prod. Origen",
+        value: kpisUnitatControl.produccioOrigen,
       },
       {
         field: "Pen. Origen",
         value: kpisUnitatControl.obraPendentOrigen,
       },
+     
+      {
+        field: "Benef. Año",
+        value: kpisUnitatControl.beneficiAny,
+        colorValue: getKpisColorValue({
+          value: kpisUnitatControl?.beneficiAny,
+        }),
+      },
+      {
+        field: "Prod. Año",
+        value: kpisUnitatControl.produccioAny,
+        colorValue: getKpisColorValue({
+          value: kpisUnitatControl?.produccioAny >= 0,
+        }),
+      },
+     
 
       {
         field: "Pen. Año",
@@ -145,75 +148,69 @@ const ProjectDetailedContent = ({
         field: "Benef. Origen",
         value: kpisPartida.beneficiOrigen,
       },
+      
+      {
+        field: "Prod. Origen",
+        value: kpisPartida.produccioOrigen,
+      },
+      {
+        field: "Pen. Origen",
+        value: kpisPartida.obraPendentOrigen,
+      },
       {
         field: "Benef. Año",
         value: kpisPartida.beneficiAny,
         colorValue: getKpisColorValue({ value: kpisPartida?.beneficiAny >= 0 }),
       },
       {
-        field: "Desv. Origen",
-        value: kpisPartida.desviacioOrigen,
+        field: "Prod. Año",
+        value: kpisPartida.produccioAny,
+        colorValue: getKpisColorValue({ value: kpisPartida?.produccioAny >= 0 }),
       },
-      {
-        field: "Desv. Año",
-        value: kpisPartida.desviacioAny,
-        colorValue: getKpisColorValue({
-          value: kpisPartida?.desviacioAny >= 0,
-        }),
-      },
-      {
-        field: "Pen. Origen",
-        value: kpisPartida.obraPendentOrigen,
-      },
+     
 
       {
         field: "Pen. Año",
         value: kpisPartida.obraPendentAny,
-        colorValue: getKpisColorValue({
-          value: kpisPartida?.obraPendentAny >= 0,
-        }),
+        colorValue: getKpisColorValue({ value: kpisPartida?.obraPendentAny >= 0 }),
       },
+      
     ]);
   }, [kpisPartida, partida, intl]);
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
     setHeaderProjectFields([
+
       {
         field: "Benef. Origen",
         value: kpisProjecte.beneficiOrigen,
       },
+      
       {
-        field: "Benef. Año",
-        value: kpisProjecte.beneficiAny,
-        colorValue: getKpisColorValue({
-          value: kpisProjecte?.beneficiAny >= 0,
-        }),
-      },
-      {
-        field: "Desv. Origen",
-        value: kpisProjecte.desviacioOrigen,
-      },
-      {
-        field: "Desv. Año",
-        value: kpisProjecte.desviacioAny,
-        colorValue: getKpisColorValue({
-          value: kpisProjecte?.desviacioAny >= 0,
-        }),
+        field: "Prod. Origen",
+        value: kpisProjecte.produccioOrigen,
       },
       {
         field: "Pen. Origen",
         value: kpisProjecte.obraPendentOrigen,
-        colorValue: getKpisColorValue({
-          value: kpisProjecte?.obraPendentOrigen >= 0,
-        }),
       },
+      {
+        field: "Benef. Año",
+        value: kpisProjecte.beneficiAny,
+        colorValue: getKpisColorValue({ value: kpisProjecte?.beneficiAny >= 0 }),
+      },
+      {
+        field: "Prod. Año",
+        value: kpisProjecte.produccioAny,
+        colorValue: getKpisColorValue({ value: kpisProjecte?.produccioAny >= 0 }),
+      },
+     
+
       {
         field: "Pen. Año",
         value: kpisProjecte.obraPendentAny,
-        colorValue: getKpisColorValue({
-          value: kpisProjecte?.obraPendentAny >= 0,
-        }),
+        colorValue: getKpisColorValue({ value: kpisProjecte?.obraPendentAny >= 0 }),
       },
     ]);
   }, [kpisProjecte, tree, intl]);

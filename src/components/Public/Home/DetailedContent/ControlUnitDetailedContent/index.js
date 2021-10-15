@@ -121,6 +121,16 @@ const ControlUnitDetailedContent = ({
         field: "Benef. Origen",
         value: kpisUnitatControl.beneficiOrigen,
       },
+  
+      {
+        field: "Prod. Origen",
+        value: kpisUnitatControl.produccioOrigen,
+      },
+      {
+        field: "Pen. Origen",
+        value: kpisUnitatControl.obraPendentOrigen,
+      },
+     
       {
         field: "Benef. Año",
         value: kpisUnitatControl.beneficiAny,
@@ -129,20 +139,13 @@ const ControlUnitDetailedContent = ({
         }),
       },
       {
-        field: "Desv. Origen",
-        value: kpisUnitatControl.desviacioOrigen,
-      },
-      {
-        field: "Desv. Año",
-        value: kpisUnitatControl.desviacioAny,
+        field: "Prod. Año",
+        value: kpisUnitatControl.produccioAny,
         colorValue: getKpisColorValue({
-          value: kpisUnitatControl?.desviacioAny >= 0,
+          value: kpisUnitatControl?.produccioAny >= 0,
         }),
       },
-      {
-        field: "Pen. Origen",
-        value: kpisUnitatControl.obraPendentOrigen,
-      },
+     
 
       {
         field: "Pen. Año",
@@ -161,24 +164,26 @@ const ControlUnitDetailedContent = ({
         field: "Benef. Origen",
         value: kpis.beneficiOrigen,
       },
+      
+      {
+        field: "Prod. Origen",
+        value: kpis.produccioOrigen,
+      },
+      {
+        field: "Pen. Origen",
+        value: kpis.obraPendentOrigen,
+      },
       {
         field: "Benef. Año",
         value: kpis.beneficiAny,
         colorValue: getKpisColorValue({ value: kpis?.beneficiAny >= 0 }),
       },
       {
-        field: "Desv. Origen",
-        value: kpis.desviacioOrigen,
+        field: "Prod. Año",
+        value: kpis.produccioAny,
+        colorValue: getKpisColorValue({ value: kpis?.produccioAny >= 0 }),
       },
-      {
-        field: "Desv. Año",
-        value: kpis.desviacioAny,
-        colorValue: getKpisColorValue({ value: kpis?.desviacioAny >= 0 }),
-      },
-      {
-        field: "Pen. Origen",
-        value: kpis.obraPendentOrigen,
-      },
+     
 
       {
         field: "Pen. Año",
