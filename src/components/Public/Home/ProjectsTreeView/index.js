@@ -7,7 +7,7 @@ import {
   getIsLoading,
   getSelectedNode,
 } from "redux/project-tree/selectors";
-import { reset, selectNode } from "redux/project-tree";
+import {reset, selectNode, expandNode, selectAndExpandNode} from "redux/project-tree";
 
 import "./styles.css";
 import ProjectsTreeView from "./ProjectTreeView";
@@ -25,6 +25,8 @@ const mapDispatchToProps = (dispatch, props) => {
   const actions = {
     reset: bindActionCreators(reset, dispatch),
     selectNode: bindActionCreators(selectNode, dispatch),
+    expandNode: bindActionCreators(expandNode, dispatch),
+    selectAndExpandNode: bindActionCreators(selectAndExpandNode, dispatch),
   };
   return { actions };
 };

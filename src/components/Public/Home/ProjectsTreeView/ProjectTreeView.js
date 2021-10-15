@@ -22,8 +22,10 @@ const ProjectsTreeView = ({
   onNodeSelect = () => {},
   selectedNode,
   actions: {
-    reset = () => {},
-    selectNode = () => {}
+    reset = () => null,
+    selectNode = () => null,
+    expandNode = () => null,
+    selectAndExpandNode = () => null,
   }
 }) => {
   const [tree, setTree] = React.useState({});
@@ -39,7 +41,7 @@ const ProjectsTreeView = ({
   const previousTree = usePrevious(tree);
   React.useEffect(() => {
     if(!isEmpty(tree) && !isEqual(previousTree?.id,tree?.id)) {
-      selectNode({ ids: tree.id });
+      selectAndExpandNode({ ids: tree.id });
     }
   },[tree]);
 
@@ -72,8 +74,14 @@ const ProjectsTreeView = ({
   };
 
   const handleOnNodeSelect = (e, ids) => {
-    selectNode({ ids });
-    onNodeSelect(ids);
+    const { target } = e;
+    // click in the expand/collapse icon
+    if(target instanceof SVGElement) {
+      expandNode({ ids });
+    } else{ // select node
+      selectNode({ ids });
+      onNodeSelect(ids);
+    }
   }
 
   const renderEmptyTree = () => <div className="empty-tree-root">No existen elementos en el árbol</div>
