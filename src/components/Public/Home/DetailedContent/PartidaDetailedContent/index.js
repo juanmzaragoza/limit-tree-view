@@ -28,7 +28,7 @@ import {
   getUnitControl,
   getKpis as getKpisUC,
 } from "redux/unit-control/selectors";
-import { loadData as loadTreeData, selectNode } from "redux/project-tree";
+import { loadData as loadTreeData, selectAndExpandNode } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
@@ -235,32 +235,32 @@ const ProjectDetailedContent = ({
     <Grid container spacing={1}>
       <Grid item xs={4}>
         <DetailedHeader
+          id={selectedPeriod.id}
           header={headerProject}
           body={headerProjectFields}
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[PROJECT_TYPE]}
-          id={selectedPeriod.id}
-          onDoubleClick={(id) => actions.selectNode({ ids: id })}
+          onClick={(id) => actions.selectNode({ ids: id })}
         />
       </Grid>
       <Grid item xs={4}>
         <DetailedHeader
+          id={unitControl.id}
           header={headerControlUnit}
           body={headerControlUnitFields}
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[CONTROL_UNIT_TYPE]}
-          id={unitControl.id}
-          onDoubleClick={(id) => actions.selectNode({ ids: id })}
+          onClick={(id) => actions.selectNode({ ids: id })}
         />
       </Grid>
       <Grid item xs={4}>
         <DetailedHeader
+          id={partida.id}
           header={headerPartida}
           body={headerPartidaFields}
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[PARTIDA_TYPE]}
-          id={partida.id}
-          onDoubleClick={(id) => actions.selectNode({ ids: id })}
+          onClick={(id) => actions.selectNode({ ids: id })}
         />
       </Grid>
       <Grid item xs={12}>
@@ -330,7 +330,7 @@ const mapDispatchToProps = (dispatch, props) => {
     loadTreeData: bindActionCreators(loadTreeData, dispatch),
     loadKpis: bindActionCreators(loadKpis, dispatch),
     resetKpis: bindActionCreators(resetKpis, dispatch),
-    selectNode: bindActionCreators(selectNode, dispatch),
+    selectNode: bindActionCreators(selectAndExpandNode, dispatch),
   };
   return { actions };
 };
