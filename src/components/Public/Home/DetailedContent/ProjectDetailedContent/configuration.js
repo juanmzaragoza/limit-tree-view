@@ -214,7 +214,7 @@ export const columnsIndicatorsPartida = (intl) => [
     className: "borderLeft",
   },
   {
-    label: "Hecho Período",
+    label: "Período",
     id: "produccioPeriode",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
@@ -250,7 +250,7 @@ export const columnsIndicatorsPartida = (intl) => [
     className: "borderLeft",
   },
   {
-    label: "Hecha Período",
+    label: "Período",
     id: "costTeoricPeriode",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
@@ -286,7 +286,7 @@ export const columnsIndicatorsPartida = (intl) => [
     className: "borderLeft",
   },
   {
-    label: "Hecho Período",
+    label: "Período",
     id: "costRealPeriode",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
@@ -315,7 +315,7 @@ export const columnsIndicatorsPartida = (intl) => [
     className: "borderLeft",
   },
   {
-    label: "Hecho Período",
+    label: "Período",
     id: "beneficiPeriode",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
@@ -344,7 +344,7 @@ export const columnsIndicatorsPartida = (intl) => [
     className: "borderLeft",
   },
   {
-    label: "Periodo",
+    label: "Período",
     id: "desviacioPeriode",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
@@ -373,7 +373,7 @@ export const columnsIndicatorsPartida = (intl) => [
     className: "borderLeft",
   },
   {
-    label: "Hecho Período",
+    label: "Período",
     id: "obraPendent",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
