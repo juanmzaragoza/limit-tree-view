@@ -136,11 +136,23 @@ export default function MaterialTable({
                     align={column.numeric ? "right" : "left"}
                     className={column.className}
                   >
-                    <strong>
+                    <strong>  
                       {value === undefined && "---"}
+                      <span
+                          className={
+                            column.numeric
+                              ? value > 0
+                                ? classes.colorGreen
+                                : value < 0
+                                ? classes.colorRed
+                                : ""
+                              : ""
+                          }
+                        >
                       {column.format && typeof value === "number"
                         ? column.format(value)
                         : value}
+                        </span>
                     </strong>
                   </TableCell>
                 );
