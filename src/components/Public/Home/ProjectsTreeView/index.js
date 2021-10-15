@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -24,7 +23,6 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch, props) => {
   const actions = {
-    //setExpanded: bindActionCreators(setExpanded, dispatch),
     reset: bindActionCreators(reset, dispatch),
     selectNode: bindActionCreators(selectNode, dispatch),
   };
