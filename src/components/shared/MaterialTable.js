@@ -7,29 +7,41 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { makeStyles } from "@material-ui/styles";
-import "./TableStyle.css"
+import "./TableStyle.css";
+import { greenColor, redColor } from "utils/helper";
 const useStyles = makeStyles({
   stickyActionsColumn: {
-    '& table:first-child': {
-      '& tr': {
-        '& td:first-child, th:first-child': {
-          backgroundColor: 'white',
-          position: 'sticky',
+    "& table:first-child": {
+      "& tr": {
+        "& td:first-child, th:first-child": {
+          backgroundColor: "white",
+          position: "sticky",
           left: 0,
-          zIndex: 999
+          zIndex: 999,
         },
-        '& th:first-child': {
-          zIndex: 9999
-        }
-      }
-    }
+        "& th:first-child": {
+          zIndex: 9999,
+        },
+      },
+    },
   },
+  colorGreen: {
+    color: greenColor,
+  },
+  colorRed: {
+    color: redColor,
+  },
+});
 
-})
-
-
-export default function MaterialTable({ content, contentTotal , columns, columnsSubTotal, groups,  onDoubleClick = (row) => {},}) {
- const classes = useStyles();
+export default function MaterialTable({
+  content,
+  contentTotal,
+  columns,
+  columnsSubTotal,
+  groups,
+  onDoubleClick = (row) => {},
+}) {
+  const classes = useStyles();
 
   return (
     <Paper sx={{ width: "100%" }}>
@@ -37,17 +49,19 @@ export default function MaterialTable({ content, contentTotal , columns, columns
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow className="tableRowBorder">
-         
               {groups.map((column, index) => {
-                    
-                    return (
-                      <TableCell align="center" colSpan={column.colSpan} sx={{ fontWeight: "bold" }} key={index}  className={column.className} >
-                      {column.label}
-                    </TableCell>
-                    );
+                return (
+                  <TableCell
+                    align="center"
+                    colSpan={column.colSpan}
+                    sx={{ fontWeight: "bold" }}
+                    key={index}
+                    className={column.className}
+                  >
+                    {column.label}
+                  </TableCell>
+                );
               })}
-             
-            
             </TableRow>
             <TableRow sx={{}}>
               {columns.map((column, index) => (
@@ -58,7 +72,7 @@ export default function MaterialTable({ content, contentTotal , columns, columns
                     minWidth: column.minWidth,
                     fontWeight: "bold",
                   }}
-                  align={column.numeric ? 'right' : 'left'}
+                  align={column.numeric ? "right" : "left"}
                   className={column.className}
                 >
                   {column.label}
@@ -67,26 +81,44 @@ export default function MaterialTable({ content, contentTotal , columns, columns
             </TableRow>
           </TableHead>
           <TableBody>
-            {content.map((row,index) => {
+            {content.map((row, index) => {
               return (
-                <TableRow hover  tabIndex={-1} key={index}   onDoubleClick={(e) => onDoubleClick(row)}>
+                <TableRow
+                  hover
+                  tabIndex={-1}
+                  key={index}
+                  onDoubleClick={(e) => onDoubleClick(row)}
+                >
                   {columns.map((column) => {
                     const value = row[column.id];
                     const value2 = row[column.id2];
                     return (
                       <TableCell
                         key={column.id}
-                        align={column.numeric ? 'right' : 'left'}
+                        align={column.numeric ? "right" : "left"}
                         className={column.className}
-                    
                       >
                         {value === undefined && "---"}
-                        {column.format && typeof value === "number"
-                          ? column.format(value)
-                          : value}
-                        {value2 ? column.format && typeof value === "number"
-                          ? column.format(value2)
-                          : ` - ${value2}` : ""}
+                        <span
+                          className={
+                            column.numeric
+                              ? value > 0
+                                ? classes.colorGreen
+                                : value < 0
+                                ? classes.colorRed
+                                : ""
+                              : ""
+                          }
+                        >
+                          {column.format && typeof value === "number"
+                            ? column.format(value)
+                            : value}{" "}
+                        </span>
+                        {value2
+                          ? column.format && typeof value === "number"
+                            ? column.format(value2)
+                            : ` - ${value2}`
+                          : ""}
                       </TableCell>
                     );
                   })}
@@ -95,16 +127,14 @@ export default function MaterialTable({ content, contentTotal , columns, columns
             })}
 
             <TableRow>
-     
               <TableCell sx={{ fontWeight: "bold" }}>TOTAL</TableCell>
               {columnsSubTotal.map((column) => {
                 const value = contentTotal[column.id];
                 return (
                   <TableCell
                     key={column.id}
-                    align={column.numeric ? 'right' : 'left'}
+                    align={column.numeric ? "right" : "left"}
                     className={column.className}
-                  
                   >
                     <strong>
                       {value === undefined && "---"}
