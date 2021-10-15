@@ -6,26 +6,42 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { makeStyles } from "@material-ui/styles";
 
+const useStyles = makeStyles({
+  stickyActionsColumn: {
+    '& table:first-child': {
+      '& tr': {
+        '& td:first-child, th:first-child': {
+          backgroundColor: 'white',
+          position: 'sticky',
+          left: 0,
+          zIndex: 999
+        },
+        '& th:first-child': {
+          zIndex: 9999
+        }
+      }
+    }
+  },
 
-
-
+})
 
 
 export default function MaterialTable({ content, contentTotal , columns, columnsSubTotal, groups,  onDoubleClick = (row) => {},}) {
-
+ const classes = useStyles();
 
   return (
     <Paper sx={{ width: "100%" }}>
-      <TableContainer>
+      <TableContainer className={classes.stickyActionsColumn}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow className="tableRowBorder">
-              <TableCell align="center" colSpan={2}></TableCell>
+         
               {groups.map((column, index) => {
                     
                     return (
-                      <TableCell align="center" colSpan={column.colSpan} sx={{ fontWeight: "bold" }} key={index}>
+                      <TableCell align="center" colSpan={column.colSpan} sx={{ fontWeight: "bold" }} key={index} >
                       {column.label}
                     </TableCell>
                     );
@@ -52,9 +68,10 @@ export default function MaterialTable({ content, contentTotal , columns, columns
           <TableBody>
             {content.map((row,index) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={index}   onDoubleClick={(e) => onDoubleClick(row)}>
+                <TableRow hover  tabIndex={-1} key={index}   onDoubleClick={(e) => onDoubleClick(row)}>
                   {columns.map((column) => {
                     const value = row[column.id];
+                    const value2 = row[column.id2];
                     return (
                       <TableCell
                         key={column.id}
@@ -65,6 +82,9 @@ export default function MaterialTable({ content, contentTotal , columns, columns
                         {column.format && typeof value === "number"
                           ? column.format(value)
                           : value}
+                        {value2 ? column.format && typeof value === "number"
+                          ? column.format(value2)
+                          : ` - ${value2}` : ""}
                       </TableCell>
                     );
                   })}
@@ -73,7 +93,7 @@ export default function MaterialTable({ content, contentTotal , columns, columns
             })}
 
             <TableRow>
-              <TableCell rowSpan={3} />
+     
               <TableCell sx={{ fontWeight: "bold" }}>TOTAL</TableCell>
               {columnsSubTotal.map((column) => {
                 const value = contentTotal[column.id];

@@ -6,9 +6,12 @@ import {
   Euro,
   StackedBarChart,
   StackedLineChart,
-  Assignment
+  Assignment,
 } from "@mui/icons-material";
 import { formatCurrencyWithIntl } from "utils/formats";
+import { entitiesStyles } from "utils/helper";
+import { CONTROL_UNIT_TYPE } from "constants/business-types";
+
 export const getIndicators = (kpis) => [
   {
     title: "Facturación",
@@ -192,14 +195,9 @@ export const getIndicators = (kpis) => [
   },
 ];
 
-
 export const columnsIndicatorsPartida = (intl) => [
-  { id: "unitatControlCodi", label: "Cód.", minWidth: 90 },
-  {
-    id: "unitatControlDescripcio",
-    label: "Descripció",
-    minWidth: 350,
-  },
+  { id: "unitatControlCodi", id2:"unitatControlDescripcio", label: "Código - Descripción", minWidth: 400,   },
+
 
   {
     label: "P. Anterior",
@@ -385,7 +383,6 @@ export const columnsIndicatorsPartida = (intl) => [
   },
 ];
 
-
 export const columnsSubTotal = (intl) => [
   {
     id: "produccioAnterior",
@@ -541,11 +538,12 @@ export const columnsSubTotal = (intl) => [
     id: "obraPendentOrigen",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
-     numeric: true,
+    numeric: true,
   },
 ];
 
 export const groups = [
+  { label: { ...entitiesStyles[CONTROL_UNIT_TYPE].icon } , colSpan: 1 },
   { label: "Producción", colSpan: 5 },
   { label: "Coste Teórico", colSpan: 5 },
   { label: "Coste Real", colSpan: 4 },
