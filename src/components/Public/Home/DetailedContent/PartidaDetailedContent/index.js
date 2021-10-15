@@ -28,7 +28,7 @@ import {
   getUnitControl,
   getKpis as getKpisUC,
 } from "redux/unit-control/selectors";
-import { loadData as loadTreeData } from "redux/project-tree";
+import { loadData as loadTreeData, selectNode } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
@@ -242,6 +242,8 @@ const ProjectDetailedContent = ({
           body={headerProjectFields}
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[PROJECT_TYPE]}
+          id={selectedPeriod.id}
+          onDoubleClick={(id) => actions.selectNode({ ids: id })}
         />
       </Grid>
       <Grid item xs={4}>
@@ -250,6 +252,8 @@ const ProjectDetailedContent = ({
           body={headerControlUnitFields}
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[CONTROL_UNIT_TYPE]}
+          id={unitControl.id}
+          onDoubleClick={(id) => actions.selectNode({ ids: id })}
         />
       </Grid>
       <Grid item xs={4}>
@@ -258,6 +262,8 @@ const ProjectDetailedContent = ({
           body={headerPartidaFields}
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[PARTIDA_TYPE]}
+          id={partida.id}
+          onDoubleClick={(id) => actions.selectNode({ ids: id })}
         />
       </Grid>
       <Grid item xs={12}>
@@ -327,6 +333,7 @@ const mapDispatchToProps = (dispatch, props) => {
     loadTreeData: bindActionCreators(loadTreeData, dispatch),
     loadKpis: bindActionCreators(loadKpis, dispatch),
     resetKpis: bindActionCreators(resetKpis, dispatch),
+    selectNode: bindActionCreators(selectNode, dispatch),
   };
   return { actions };
 };

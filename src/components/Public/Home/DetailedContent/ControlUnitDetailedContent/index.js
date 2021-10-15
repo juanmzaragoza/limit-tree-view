@@ -211,6 +211,9 @@ const ControlUnitDetailedContent = ({
           body={headerProjectFields}
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[PROJECT_TYPE]}
+          id={selectedPeriod.id}
+          onDoubleClick={(id) => actions.selectNode({ ids: id })}
+
         />
       </Grid>
       <Grid item xs={6}>
@@ -219,6 +222,8 @@ const ControlUnitDetailedContent = ({
           body={headerControlUnitFields}
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[CONTROL_UNIT_TYPE]}
+          id={unitControl.id}
+          onDoubleClick={(id) => actions.selectNode({ ids: id })}
         />
       </Grid>
       <Grid item xs={12}>

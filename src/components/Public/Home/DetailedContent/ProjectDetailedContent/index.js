@@ -152,6 +152,7 @@ const ProjectDetailedContent = ({
           header={headerProject}
           body={projectFields}
           breakpoints={detailedHeaderBreakpoints}
+      
           {...entitiesStyles[PROJECT_TYPE]}
         />
       </Grid>

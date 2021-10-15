@@ -20,6 +20,8 @@ const DetailedHeader = ({
   icon,
   iconColor,
   breakpoints = { xs: 6 },
+  id,
+  onDoubleClick = (row) => {},
 }) => {
   const intl = useIntl();
   const cutTitle = () => {
@@ -62,6 +64,7 @@ const DetailedHeader = ({
           backgroundColor: colorBackground,
         }}
         className="tituloDetailHeader"
+        onDoubleClick={() => onDoubleClick(id)}
       />
       
       <CardContent sx={{padding: 0, paddingBottom: "2px"}}>
