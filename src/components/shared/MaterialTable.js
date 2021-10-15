@@ -12,7 +12,7 @@ import TableRow from "@mui/material/TableRow";
 
 
 
-export default function MaterialTable({ content, contentTotal , columns, columnsSubTotal, groups}) {
+export default function MaterialTable({ content, contentTotal , columns, columnsSubTotal, groups,  onDoubleClick = (row) => {},}) {
 
 
   return (
@@ -52,7 +52,7 @@ export default function MaterialTable({ content, contentTotal , columns, columns
           <TableBody>
             {content.map((row,index) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                <TableRow hover role="checkbox" tabIndex={-1} key={index}   onDoubleClick={(e) => onDoubleClick(row)}>
                   {columns.map((column) => {
                     const value = row[column.id];
                     return (

@@ -91,7 +91,7 @@ const ControlUnitDetailedContent = ({
     },
     [DETAIL_TAB_INDEX]: () => {
       unitControl.id && actions.loadDetails({ id: unitControl.id });
-      console.log(unitControl);
+
     },
   };
   React.useEffect(() => {
@@ -270,6 +270,7 @@ const ControlUnitDetailedContent = ({
             columns={columnsIndicatorsPartida(intl)}
             columnsSubTotal={columnsSubTotal(intl)}
             groups={groups}
+            onDoubleClick={(row) => actions.selectNode({ ids: row.id })}
           />
         )}
       </Grid>

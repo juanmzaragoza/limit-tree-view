@@ -198,7 +198,7 @@ const ProjectDetailedContent = ({
           </Grid>
         )}
         {tabIndex === DETAIL_TAB_INDEX && (
-          <MaterialTable content={details} contentTotal={totals} columns={columnsIndicatorsPartida(intl)} columnsSubTotal={columnsSubTotal(intl)} groups={groups}/>
+          <MaterialTable content={details} contentTotal={totals} columns={columnsIndicatorsPartida(intl)} columnsSubTotal={columnsSubTotal(intl)} groups={groups} onDoubleClick={(row) => actions.selectNode({ ids: row.id })}/>
         )}
       </Grid>
     </Grid>
