@@ -16,7 +16,7 @@ import {
   isPeriodOpen,
 } from "components/Public/Home/DetailedContent/common";
 
-import { loadKpis, resetKpis, loadDetails } from "redux/project";
+import { loadKpis, resetKpis, loadDetails, selectTab } from "redux/project";
 import {
   getIsLoading,
   getKpis,
@@ -61,6 +61,21 @@ const ProjectDetailedContent = ({
   const [tabIndex, setTabIndex] = React.useState(KPIS_TAB_INDEX);
   const colorUnit = entitiesStyles[CONTROL_UNIT_TYPE].iconColor;
 
+  const onChangeIndexExecutor = {
+    [PROJECTS_TAB_INDEX]: () => {},
+    [KPIS_TAB_INDEX]: () => {
+      period.id && actions.loadKpis({ id: period.id });
+    },
+    [DETAIL_TAB_INDEX]: () => {
+      period.id && actions.loadDetails({ id: period.id });
+    },
+  };
+
+
+  React.useEffect(() => {
+    onChangeIndexExecutor[tabIndex]();
+  }, [tabIndex, project]);
+
   const [columns] = React.useState([
     {
       field: "id",
@@ -79,11 +94,12 @@ const ProjectDetailedContent = ({
         </>
       ),
       renderCell: (cellValues) => {
+        
         return (
           <IconButton
             variant="outlined"
             onClick={() => {
-              // actions.selectTab({ tab: tabIndex });
+              actions.selectTab({ value: PROJECTS_TAB_INDEX });
               actions.selectNode({ ids: cellValues.row.id });
             }}
             style={{ color: colorUnit }}
@@ -123,21 +139,6 @@ const ProjectDetailedContent = ({
       minWidth: 220,
     },
   ]);
-
-
-
-  const onChangeIndexExecutor = {
-    [PROJECTS_TAB_INDEX]: () => {},
-    [KPIS_TAB_INDEX]: () => {
-      period.id && actions.loadKpis({ id: period.id });
-    },
-    [DETAIL_TAB_INDEX]: () => {
-      period.id && actions.loadDetails({ id: period.id });
-    },
-  };
-  React.useEffect(() => {
-    onChangeIndexExecutor[tabIndex]();
-  }, [tabIndex, project]);
 
   React.useEffect(() => {
     setIndicadores(getIndicators(kpis));
@@ -243,9 +244,11 @@ const ProjectDetailedContent = ({
             columns={columnsIndicatorsPartida(intl)}
             columnsSubTotal={columnsSubTotal(intl)}
             groups={groups}
-            onDoubleClick={(row) =>
+            onDoubleClick={(row) =>{
+              actions.selectTab({ value: DETAIL_TAB_INDEX });
               actions.selectNode({ ids: row.unitatControlId })
             }
+          }
           />
         )}
       </Grid>
@@ -272,6 +275,7 @@ const mapDispatchToProps = (dispatch, props) => {
     resetKpis: bindActionCreators(resetKpis, dispatch),
     selectNode: bindActionCreators(selectAndExpandNode, dispatch),
     loadDetails: bindActionCreators(loadDetails, dispatch),
+    selectTab:  bindActionCreators(selectTab, dispatch),
   };
   return { actions };
 };

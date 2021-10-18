@@ -31,15 +31,15 @@ import {
 import { loadData as loadTreeData, selectAndExpandNode } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
-import { getKpis } from "redux/project/selectors";
+import { getKpis, getTabIndex } from "redux/project/selectors";
 
 import { entitiesStyles } from "utils/helper";
 import { CONTROL_UNIT_TYPE, PROJECT_TYPE } from "constants/business-types";
+import { selectTab } from "redux/project";
 
 import {
   getKpisColorValue,
   getPartidaColumnsByPeriod,
-  getPartidaColumnsByIndicator,
   isPeriodOpen,
 } from "../common";
 
@@ -66,6 +66,7 @@ const ControlUnitDetailedContent = ({
   selectedPeriod,
   details,
   totals,
+  tab,
   ...props
 }) => {
   const intl = useIntl();
@@ -76,9 +77,9 @@ const ControlUnitDetailedContent = ({
     []
   );
   const [columns] = React.useState(
-    getPartidaColumnsByPeriod({ period: selectedPeriod, intl })
+    getPartidaColumnsByPeriod({ period: selectedPeriod, intl, actions })
   );
-  const [tabIndex, setTabIndex] = React.useState(KPIS_TAB_INDEX);
+  const [tabIndex, setTabIndex] = React.useState(tab);
   const loadHeader = () => actions.loadHeader({ id: props.id });
   const [indicadores, setIndicadores] = React.useState();
   const onChangeIndexExecutor = {
@@ -258,7 +259,7 @@ const ControlUnitDetailedContent = ({
             loading={loading}
             onCellEditCommit={handleCellChange}
             disableInlineEdition={!isPeriodOpen({ period: selectedPeriod })}
-            onRowDoubleClick={(row) => actions.selectNode({ ids: row.id })}
+            // onRowDoubleClick={(row) => actions.selectNode({ ids: row.id })}
           />
         )}
         {tabIndex === KPIS_TAB_INDEX && (
@@ -277,7 +278,8 @@ const ControlUnitDetailedContent = ({
             columns={columnsIndicatorsPartida(intl)}
             columnsSubTotal={columnsSubTotal(intl)}
             groups={groups}
-            onDoubleClick={(row) => actions.selectNode({ ids: row.id })}
+            onDoubleClick={(row) => { actions.selectTab({ value: KPIS_TAB_INDEX});
+            actions.selectNode({ ids: row.id })}}
           />
         )}
       </Grid>
@@ -296,6 +298,7 @@ const mapStateToProps = (state, props) => {
     kpisUnitatControl: getKpisUC(state),
     details: getDetails(state),
     totals: getTotals(state),
+    tab: getTabIndex(state)
   };
 };
 
@@ -308,6 +311,7 @@ const mapDispatchToProps = (dispatch, props) => {
     loadDetails: bindActionCreators(loadDetails, dispatch),
     resetKpis: bindActionCreators(resetKpis, dispatch),
     selectNode: bindActionCreators(selectAndExpandNode, dispatch),
+    selectTab:  bindActionCreators(selectTab, dispatch),
   };
   return { actions };
 };

@@ -158,11 +158,11 @@ export const getIndicators = (kpisUnitatControl) => [
     indicators: [
       {
         field: "Obra Pendiente Anterior",
-        value: kpisUnitatControl.obraPendentFacturar,
+        value: kpisUnitatControl.obraPendentAnterior,
       },
       {
         field: "Obra Pendiente Período",
-        value: kpisUnitatControl.obraPendent,
+        value: kpisUnitatControl.obraPendentPeriode,
       },
       {
         field: "Obra Pendiente año Natural",
@@ -345,7 +345,7 @@ export const columnsIndicatorsPartida = (intl) => [
   },
   {
     label: "Anterior",
-    id: "obraPendentFacturar",
+    id: "obraPendentAnterior",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
@@ -353,7 +353,7 @@ export const columnsIndicatorsPartida = (intl) => [
   },
   {
     label: "Período",
-    id: "obraPendent",
+    id: "obraPendentPeriode",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
@@ -513,14 +513,14 @@ export const columnsSubTotal = (intl) => [
     numeric: true,
   },
   {
-    id: "obraPendentFacturar",
+    id: "obraPendentAnterior",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
     className: "borderLeft",
   },
   {
-    id: "obraPendent",
+    id: "obraPendentPeriode",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,

@@ -22,7 +22,7 @@ import {
   getPartida,
   getRows,
 } from "redux/partida/selectors";
-import { getKpis as getKpisProjecte } from "redux/project/selectors";
+import { getKpis as getKpisProjecte, getTabIndex } from "redux/project/selectors";
 import { loadHeader as loadUnitControlHeader } from "redux/unit-control";
 import {
   getUnitControl,
@@ -55,6 +55,7 @@ const ProjectDetailedContent = ({
   kpisPartida,
   kpisUnitatControl,
   actions,
+  tab,
   ...props
 }) => {
   const intl = useIntl();
@@ -66,7 +67,7 @@ const ProjectDetailedContent = ({
   );
   const [headerPartida, setHeaderPartida] = React.useState({});
   const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
-  const [tabIndex, setTabIndex] = React.useState(KPIS_TAB_INDEX);
+  const [tabIndex, setTabIndex] = React.useState(tab === 2 ? 1 : tab);
   const [indicadores, setIndicadores] = React.useState();
   const [columns] = React.useState(
     getResourceColumnsByPeriod({ period: selectedPeriod, intl })
@@ -319,6 +320,7 @@ const mapStateToProps = (state, props) => {
     kpisPartida: getKpisPartida(state),
     kpisUnitatControl: getKpisUC(state),
     kpisProjecte: getKpisProjecte(state),
+    tab: getTabIndex(state)
   };
 };
 

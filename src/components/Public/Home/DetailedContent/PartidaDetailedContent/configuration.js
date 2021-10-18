@@ -154,11 +154,11 @@ export const getIndicators = (kpisPartida) => [
     indicators: [
       {
         field: "Obra Pendiente Anterior",
-        value: kpisPartida.obraPendentFacturar,
+        value: kpisPartida.obraPendentAnterior,
       },
       {
         field: "Obra Pendiente Período",
-        value: kpisPartida.obraPendent,
+        value: kpisPartida.obraPendentPeriode,
       },
       {
         field: "Obra Pendiente año Natural",

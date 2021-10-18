@@ -1,5 +1,7 @@
+import { Avatar, IconButton } from "@mui/material";
+import { PARTIDA_TYPE } from "constants/business-types";
 import { formatCurrencyWithIntl } from "utils/formats";
-import {greenColor, redColor} from "../../../../utils/helper";
+import {entitiesStyles, greenColor, redColor} from "../../../../utils/helper";
 
 export const isPeriodOpen = ({ period }) => {
   return !period.tancat;
@@ -7,12 +9,46 @@ export const isPeriodOpen = ({ period }) => {
 
 export const getKpisColorValue = ({ value }) => value >= 0 ? greenColor : redColor;
 
-export const getPartidaColumnsByPeriod = ({ period, intl }) => {
+export const getPartidaColumnsByPeriod = ({ period, intl,actions, }) => {
   const  number  = period.numero;
   const numberIsZero = !number;
   const numberIsNotZero = !!number;
 
   return [
+    {
+      field: "id",
+      headerName: (
+        <>
+          {" "}
+          <Avatar
+            aria-label="recipe"
+            sx={{
+              bgcolor: entitiesStyles[PARTIDA_TYPE].iconColor,
+              color: "white",
+            }}
+          >
+            {entitiesStyles[PARTIDA_TYPE].icon}
+          </Avatar>
+        </>
+      ),
+      renderCell: (cellValues) => {
+        
+        return (
+          <IconButton
+            variant="outlined"
+            onClick={() => {
+              actions.selectTab({ value: 1 });
+              actions.selectNode({ ids: cellValues.row.id });
+            }}
+            style={{ color: entitiesStyles[PARTIDA_TYPE].iconColor }}
+          >
+            {entitiesStyles[PARTIDA_TYPE].icon}
+          </IconButton>
+        );
+      },
+      minWidth: 30,
+      editable: false,
+    },
     { field: "codi", headerName: "Cód.", minWidth: 90 },
     {
       field: "descripcioReduc",
@@ -113,9 +149,10 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
   ];
 }
 
-export const getResourceColumnsByPeriod = ({ period, intl }) => {
+export const getResourceColumnsByPeriod = ({ period, intl, }) => {
   const { number } = period;
   return [
+
     { field: "codi", headerName: "Código",  minWidth: 110, },
     {
       field: "descripcio",
