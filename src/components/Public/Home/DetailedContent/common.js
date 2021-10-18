@@ -166,7 +166,7 @@ export const getPartidaColumnsByPeriod = ({ period, intl, actions }) => {
 };
 
 export const getResourceColumnsByPeriod = ({ period, intl }) => {
-  const { number } = period;
+  const  number  = period.numero;
   return [
     { field: "codi", headerName: "Código", minWidth: 110 },
     {
