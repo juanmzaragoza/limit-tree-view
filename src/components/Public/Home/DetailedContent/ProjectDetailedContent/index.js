@@ -9,7 +9,7 @@ import { Grid, Tab, Tabs } from "@mui/material";
 import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
-import MaterialTable from "components/shared/MaterialTable";
+import MaterialTable from "components/shared/MaterialTable/index";
 import CardTotal from "components/shared/CardTotal";
 import {
   getKpisColorValue,
@@ -75,7 +75,7 @@ const ProjectDetailedContent = ({
     },
     {
       field: "costTotal",
-      headerName: "Costel Total",
+      headerName: "Coste Total",
       type: "number",
       valueFormatter: (params) => {
         return formatCurrencyWithIntl(params.row.costTotal ?? 0, intl);

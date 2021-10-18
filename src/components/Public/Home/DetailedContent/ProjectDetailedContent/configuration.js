@@ -14,29 +14,7 @@ import { CONTROL_UNIT_TYPE } from "constants/business-types";
 import { Avatar } from "@mui/material";
 
 export const getIndicators = (kpis) => [
-  {
-    title: "Facturación",
-    icon: <Assignment />,
-    lg: 3,
-    indicators: [
-      {
-        field: "Facturación Anterior",
-        value: kpis.facturacioRealAnterior,
-      },
-      {
-        field: "Facturación Periodo",
-        value: kpis.facturacioRealPeriode,
-      },
-      {
-        field: "Facturación Año Natural",
-        value: kpis.facturacioRealAny,
-      },
-      {
-        field: "Facturación a Origen",
-        value: kpis.facturacioRealOrigen,
-      },
-    ],
-  },
+
   {
     title: "Produccion",
     icon: <Engineering />,
@@ -191,6 +169,29 @@ export const getIndicators = (kpis) => [
       {
         field: "Obra Pendiente Origen",
         value: kpis.obraPendentOrigen,
+      },
+    ],
+  },
+  {
+    title: "Facturación",
+    icon: <Assignment />,
+    lg: 3,
+    indicators: [
+      {
+        field: "Facturación Anterior",
+        value: kpis.facturacioRealAnterior,
+      },
+      {
+        field: "Facturación Periodo",
+        value: kpis.facturacioRealPeriode,
+      },
+      {
+        field: "Facturación Año Natural",
+        value: kpis.facturacioRealAny,
+      },
+      {
+        field: "Facturación a Origen",
+        value: kpis.facturacioRealOrigen,
       },
     ],
   },

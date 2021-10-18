@@ -11,6 +11,7 @@ const HEADER_URL = "api/estp/unitatsControlEstudi";
 const UPDATE_PARTIDA_URL = "api/estp/liniesEstudi";
 const LOAD_KPIS_URL = "api/estp/unitatsControlEstudi/{id}/indicadors";
 const LOAD_DETAILS_URL = "api/estp/unitatsControlEstudi/{id}/indicadors?desglossat=true";
+const LOAD_COSTES_URL = "api/estp/unitatsControlEstudi/{id}/costReal";
 
 //Functions
 export const loadData = ({ url = URL, id }) => {
@@ -124,6 +125,23 @@ export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
   };
 };
 
+export const loadCostes = ({ url = LOAD_COSTES_URL, id }) => {
+  return async (dispatch) => {
+    const apiCall = () => Axios.get(url.replace("{id}", id));
+    try {
+      apiCall()
+        .then(({ data }) => data)
+        .then(({ data }) => {
+          dispatch(add({ costesUC: data,  }));
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {});
+    } catch (error) {}
+  };
+};
+
 
 //Action creators
 export const add = (payload) => {
@@ -152,7 +170,9 @@ const initialState = {
   rows: [],
   loading: false,
   kpis:[],
-  details:[]
+  details:[],
+  totals:[],
+  costesUC:[]
 };
 
 const reducer = (state = initialState, action) => {

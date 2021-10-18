@@ -4,7 +4,7 @@ import {IntlProvider} from "react-intl";
 
 import 'App.css';
 import Routes from "router";
-import { primaryColor, secondaryColor } from "utils/helper";
+import { primaryColor, resourcesColor, secondaryColor } from "utils/helper";
 import {login} from "./utils/before-login-helper";
 
 function App() {
@@ -23,7 +23,12 @@ function App() {
       error: {
         main: red.A400,
       },
+      info: {
+        main: resourcesColor,
+      }
     },
+
+    
   });
   login();
   return (

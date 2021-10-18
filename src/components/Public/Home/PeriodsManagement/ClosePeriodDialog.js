@@ -25,7 +25,8 @@ const ClosePeriodDialog = ({
   return <Dialog
     open={open}
     onClose={onClose}
-    width={"1000px"}
+
+    fullWidth={true} maxWidth={"md"}
   >
     <DialogTitle>Cerrar Periodo</DialogTitle>
     <DialogContent>

@@ -1,16 +1,31 @@
 import * as React from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+
 import { makeStyles } from "@material-ui/styles";
-import "./TableStyle.css";
+
 import { greenColor, redColor } from "utils/helper";
-import { Button, Popover } from "@mui/material";
+import {
+  Button,
+  DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  Box,
+  TableRow,
+  TableHead,
+  TableContainer,
+  TableCell,
+  TableBody,
+  Table,
+  Paper,
+  DialogActions,
+  IconButton,
+} from "@mui/material";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import DialogCostes from "./DialogCostes";
+import { loadCostes } from "redux/partida";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
 const useStyles = makeStyles({
   stickyActionsColumn: {
     "& table:first-child": {
@@ -22,7 +37,7 @@ const useStyles = makeStyles({
           zIndex: 999,
         },
         "& th:first-child": {
-          zIndex: 9999,
+          zIndex: 999,
         },
       },
     },
@@ -33,30 +48,29 @@ const useStyles = makeStyles({
   colorRed: {
     color: redColor,
   },
+  backDrop: {
+    backgroundColor: "white",
+    color: "white",
+  },
 });
 
-export default function MaterialTable({
+const MaterialTable = ({
   content,
   contentTotal,
   columns,
   columnsSubTotal,
   groups,
   onDoubleClick = (row) => {},
-}) {
+  actions,
+}) => {
   const classes = useStyles();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = (idRow) => {
+    actions.loadCost({ id: idRow });
+    setOpen(true);
   };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
 
   return (
     <Paper sx={{ width: "100%" }}>
@@ -107,6 +121,7 @@ export default function MaterialTable({
                   {columns.map((column) => {
                     const value = row[column.id];
                     const value2 = row[column.id2];
+                
                     return (
                       <TableCell
                         key={column.id}
@@ -136,70 +151,16 @@ export default function MaterialTable({
                           : ""}
                         <span style={{ float: "right" }}>
                           {column.button && (
-                            <>
-                              <Button variant="contained" onClick={handleClick}>
-                                <MonetizationOnIcon />
-                              </Button>
-                              <Popover
-                                id={id}
-                                open={open}
-                                anchorEl={anchorEl}
-                                onClose={handleClose}
-                                anchorOrigin={{
-                                  vertical: "bottom",
-                                  horizontal: "left",
-                                }}
+                            <React.Fragment>
+                              <IconButton
+                                aria-label="upload picture"
+                                component="span"
+                                onClick={() => handleClick(row.id)}
+                                color={"info"}
                               >
-                                <TableContainer component={Paper}>
-                                  <Table
-                                    size="small"
-                                    aria-label="a dense table"
-                                  >
-                                    <TableHead>
-                                      <TableRow>
-                                        <TableCell align="right">
-                                          Coste
-                                        </TableCell>
-                                        <TableCell align="right">
-                                          Presupuesto
-                                        </TableCell>
-                                        <TableCell align="right">
-                                          Coste R
-                                        </TableCell>
-                                        <TableCell align="right">
-                                          Coste Medi
-                                        </TableCell>
-                                      </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                      <TableRow
-                                        sx={{
-                                          "&:last-child td, &:last-child th": {
-                                            border: 0,
-                                          },
-                                        }}
-                                      >
-                                        <TableCell align="right">
-                                          "row.coste"
-                                        </TableCell>
-                                        <TableCell align="left">
-                                          ow.pres
-                                        </TableCell>
-                                        <TableCell align="left">
-                                          row.medicio
-                                        </TableCell>
-                                        <TableCell align="left">
-                                          ow.costeR
-                                        </TableCell>
-                                        <TableCell align="left">
-                                          row.costeMedi
-                                        </TableCell>
-                                      </TableRow>
-                                    </TableBody>
-                                  </Table>
-                                </TableContainer>
-                              </Popover>
-                            </>
+                                <MonetizationOnIcon />
+                              </IconButton>
+                            </React.Fragment>
                           )}
                         </span>
                       </TableCell>
@@ -208,7 +169,11 @@ export default function MaterialTable({
                 </TableRow>
               );
             })}
-
+            <DialogCostes
+              open={open}
+              onClose={() => setOpen(false)}
+             
+            />
             <TableRow>
               <TableCell sx={{ fontWeight: "bold" }}>TOTAL</TableCell>
               {columnsSubTotal.map((column) => {
@@ -246,4 +211,14 @@ export default function MaterialTable({
       </TableContainer>
     </Paper>
   );
-}
+};
+
+const mapDispatchToProps = (dispatch, props) => {
+  const actions = {
+    loadCost: bindActionCreators(loadCostes, dispatch),
+  };
+  return { actions };
+};
+
+const component = connect(null, mapDispatchToProps)(MaterialTable);
+export default component;
