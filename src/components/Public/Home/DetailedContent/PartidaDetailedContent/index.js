@@ -62,9 +62,7 @@ const ProjectDetailedContent = ({
   const [headerProject, setHeaderProject] = React.useState({});
   const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
-  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState(
-    []
-  );
+  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
   const [headerPartida, setHeaderPartida] = React.useState({});
   const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
   const [tabIndex, setTabIndex] = React.useState(tab === 2 ? 1 : tab);
@@ -130,8 +128,6 @@ const ProjectDetailedContent = ({
           value: kpisUnitatControl.produccioAny ,
         }),
       },
-     
-
       {
         field: "Pen. Año",
         value: kpisUnitatControl.obraPendentAny,
@@ -283,7 +279,6 @@ const ProjectDetailedContent = ({
           </Grid>
         </Grid>
       </Grid>
-
       <Grid item xs={12}>
         {tabIndex === RESOURCES_TAB_INDEX && (
           <MaterialDataGrid

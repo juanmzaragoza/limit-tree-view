@@ -1,7 +1,8 @@
 import { forEach, isEmpty } from "lodash";
+import { getTreeId } from "utils/helper";
 
 export const findNode = ({ nodes, nodeId }) => {
-  if(nodes.id === nodeId) {
+  if(getTreeId(nodes) === nodeId) {
     return nodes;
   } else{
     let founded = {};
@@ -17,10 +18,10 @@ export const findNode = ({ nodes, nodeId }) => {
 }
 
 export const findAllParents = ({ nodes, nodeId }) => {
-  if(nodes.id === nodeId) {
+  if(getTreeId(nodes) === nodeId) {
     return [];
   } else{
-    let parent = [nodes.id];
+    let parent = [getTreeId(nodes)];
     forEach(nodes.nodes, node => {
       const n = findNode({ nodes: node, nodeId });
       if(!isEmpty(n)) {

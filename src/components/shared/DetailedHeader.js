@@ -42,7 +42,6 @@ const DetailedHeader = ({
         width: "100%",
       }}
     >
-     
       <CardHeader
         avatar={
           <IconButton>
@@ -71,11 +70,9 @@ const DetailedHeader = ({
       <CardContent sx={{padding: 0, paddingBottom: "2px"}}>
         <Container>
           <Grid container spacing={1}>
-            {body.map(({ field, value, colorValue = "inherit" }) => {
-              const line = `${field}: ${value}`;
-        
+            {body.map(({ field, value, colorValue = "inherit" }, index) => {
               return (
-                <Grid key={line} item xs={breakpoints.xs} >
+                <Grid key={index} item xs={breakpoints.xs} >
                   <Typography
                     component="h2"
                     variant="caption"

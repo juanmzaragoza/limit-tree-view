@@ -74,9 +74,7 @@ const ControlUnitDetailedContent = ({
   const [headerProject, setHeaderProject] = React.useState({});
   const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
-  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState(
-    []
-  );
+  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
   const [columns] = React.useState(
     getPartidaColumnsByPeriod({ period: selectedPeriod, intl, actions })
   );
@@ -90,7 +88,6 @@ const ControlUnitDetailedContent = ({
     },
     [DETAIL_TAB_INDEX]: () => {
       unitControl.id && actions.loadDetails({ id: unitControl.id });
-
     },
   };
   React.useEffect(() => {
@@ -279,8 +276,10 @@ const ControlUnitDetailedContent = ({
             columns={columnsIndicatorsPartida(intl)}
             columnsSubTotal={columnsSubTotal(intl)}
             groups={groups}
-            onDoubleClick={(row) => { actions.selectTab({ value: KPIS_TAB_INDEX});
-            actions.selectNode({ ids: row.id })}}
+            onDoubleClick={(row) => {
+              actions.selectTab({ value: KPIS_TAB_INDEX});
+              actions.selectNode({ ids: row.id });
+            }}
             loadingTable={loadingDetails}
           />
         )}
