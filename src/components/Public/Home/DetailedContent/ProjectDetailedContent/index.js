@@ -25,7 +25,7 @@ import {
   getTotals,
 } from "redux/project/selectors";
 import { getSelectedProject } from "redux/project-selector/selectors";
-import { selectNode } from "redux/project-tree";
+import { selectAndExpandNode } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
@@ -33,8 +33,12 @@ import { entitiesStyles } from "utils/helper";
 import { formatCurrencyWithIntl } from "utils/formats";
 import { PROJECT_TYPE } from "constants/business-types";
 
-
-import {getIndicators, columnsIndicatorsPartida , columnsSubTotal, groups} from "./configuration";
+import {
+  getIndicators,
+  columnsIndicatorsPartida,
+  columnsSubTotal,
+  groups
+} from "./configuration";
 
 const KPIS_TAB_INDEX = 0;
 const DETAIL_TAB_INDEX = 1;
@@ -138,10 +142,7 @@ const ProjectDetailedContent = ({
 
   const content = [
     { field: "Importe Total", value: tree.importTotal },
-    {
-      field: "Coste Total",
-      value: tree.costTotal,
-    },
+    { field: "Coste Total", value: tree.costTotal },
   ];
 
   const detailedHeaderBreakpoints = { xs: 2 };
@@ -149,11 +150,12 @@ const ProjectDetailedContent = ({
     <Grid container spacing={1}>
       <Grid item xs={12}>
         <DetailedHeader
+          id={tree.id}
           header={headerProject}
           body={projectFields}
           breakpoints={detailedHeaderBreakpoints}
-      
           {...entitiesStyles[PROJECT_TYPE]}
+          onClick={(id) => actions.selectNode({ ids: id })}
         />
       </Grid>
       <Grid item xs={12}>
@@ -199,7 +201,13 @@ const ProjectDetailedContent = ({
           </Grid>
         )}
         {tabIndex === DETAIL_TAB_INDEX && (
-          <MaterialTable content={details} contentTotal={totals} columns={columnsIndicatorsPartida(intl)} columnsSubTotal={columnsSubTotal(intl)} groups={groups} onDoubleClick={(row) => actions.selectNode({ ids: row.unitatControlId })}/>
+          <MaterialTable
+            content={details}
+            contentTotal={totals}
+            columns={columnsIndicatorsPartida(intl)}
+            columnsSubTotal={columnsSubTotal(intl)}
+            groups={groups}
+            onDoubleClick={(row) => actions.selectNode({ ids: row.unitatControlId })}/>
         )}
       </Grid>
     </Grid>
@@ -223,7 +231,7 @@ const mapDispatchToProps = (dispatch, props) => {
   const actions = {
     loadKpis: bindActionCreators(loadKpis, dispatch),
     resetKpis: bindActionCreators(resetKpis, dispatch),
-    selectNode: bindActionCreators(selectNode, dispatch),
+    selectNode: bindActionCreators(selectAndExpandNode, dispatch),
     loadDetails: bindActionCreators(loadDetails, dispatch),
   };
   return { actions };

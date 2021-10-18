@@ -13,6 +13,8 @@ import { findAllParents, findNode } from "./helpers";
 const ADD = "ADD_TO_TREE";
 const RESET = "RESET_TREE";
 const SELECT_NODE = "SELECT_NODE_TREE";
+const EXPAND_NODE = "EXPAND_NODE_TREE";
+const SELECT_AND_EXPAND_NODE = "SELECT_AND_EXPAND_NODE";
 
 // Constants
 const URL = 'api/estp/estudisProjecte/{id}/tree';
@@ -87,6 +89,20 @@ export const selectNode = (payload) => {
   }
 }
 
+export const expandNode = (payload) => {
+  return {
+    type: EXPAND_NODE,
+    payload
+  }
+}
+
+export const selectAndExpandNode = (payload) => {
+  return {
+    type: SELECT_AND_EXPAND_NODE,
+    payload
+  }
+}
+
 //Reducers
 const initialState = {
   formattedData: {},
@@ -96,29 +112,47 @@ const initialState = {
   selectedNode: null
 };
 
+const getExpanded = ({ ids, state }) => {
+  const { expanded, formattedData: nodes } = state;
+  const found = expanded.find(id => ids === id);
+  let newExpanded;
+  // is opened -> we must close it
+  if(found) {
+    newExpanded = remove(expanded, (e) => e !== found);
+  } else{ // is closed -> open it
+    newExpanded = findAllParents({ nodes: nodes, nodeId: ids });
+    newExpanded = [...expanded, ...newExpanded, ids];
+  }
+  return newExpanded;
+}
+
+const getSelected = ({ ids, state }) => {
+  const { formattedData: nodes } = state;
+  // update selected
+  const selectedNode = findNode({ nodes: nodes, nodeId: ids });
+  return selectedNode;
+}
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD:
       return { ...state, ...action.payload };
     case SELECT_NODE:
       const { ids } = action.payload;
-      const { expanded, formattedData: nodes } = state;
-      // update selected
-      const selectedNode = findNode({ nodes: nodes, nodeId: ids });
-      // update expanded
-      const found = expanded.find(id => ids === id);
-      let newExpanded;
-      // is opened -> we must close it
-      if(found) {
-        newExpanded = remove(expanded, (e) => e !== found);
-      } else{ // is closed -> open it
-        newExpanded = findAllParents({ nodes: nodes, nodeId: ids });
-        newExpanded = [...expanded, ...newExpanded, ids];
-      }
       return {
         ...state,
-        selectedNode: selectedNode,
-        expanded: newExpanded
+        selectedNode: getSelected({ ids, state }),
+      }
+    case EXPAND_NODE:
+      return {
+        ...state,
+        expanded: getExpanded({ ids: action.payload.ids, state })
+      }
+    case SELECT_AND_EXPAND_NODE:
+      return {
+        ...state,
+        selectedNode: getSelected({ ids: action.payload.ids, state }),
+        expanded: getExpanded({ ids: action.payload.ids, state })
       }
     case RESET:
     case "RESET":
