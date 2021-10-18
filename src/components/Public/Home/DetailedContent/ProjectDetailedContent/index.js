@@ -75,7 +75,7 @@ const ProjectDetailedContent = ({
     },
     {
       field: "costTotal",
-      headerName: "Costel Total",
+      headerName: "Coste Total",
       type: "number",
       valueFormatter: (params) => {
         return formatCurrencyWithIntl(params.row.costTotal ?? 0, intl);
