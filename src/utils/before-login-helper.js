@@ -18,7 +18,7 @@ export const login = () => {
     }),
   })
     .then(({status, data, ...rest}) => {
-      Axios.post('api/auth/refresh', {token: data.token, session:{"i":1814,"e":1830}}, {
+      Axios.post('api/auth/refresh', {token: data.token, session:{"i":443,"e":987}}, {
         headers: new Headers({
           'Accept': 'application/json',
           'Content-Type': 'application/json',
