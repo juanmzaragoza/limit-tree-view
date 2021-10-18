@@ -1,5 +1,5 @@
 import { Avatar, IconButton } from "@mui/material";
-import { PARTIDA_TYPE } from "constants/business-types";
+import { PARTIDA_TYPE,RESOURCE_TYPE } from "constants/business-types";
 import { formatCurrencyWithIntl } from "utils/formats";
 import {entitiesStyles, greenColor, redColor} from "../../../../utils/helper";
 
@@ -40,9 +40,9 @@ export const getPartidaColumnsByPeriod = ({ period, intl,actions, }) => {
               actions.selectTab({ value: 1 });
               actions.selectNode({ ids: cellValues.row.id });
             }}
-            style={{ color: entitiesStyles[PARTIDA_TYPE].iconColor }}
+            style={{ color: entitiesStyles[RESOURCE_TYPE].iconColor }}
           >
-            {entitiesStyles[PARTIDA_TYPE].icon}
+            {entitiesStyles[RESOURCE_TYPE].icon}
           </IconButton>
         );
       },

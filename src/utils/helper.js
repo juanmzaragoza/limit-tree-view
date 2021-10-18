@@ -2,13 +2,14 @@ import * as React from "react";
 import {
   CatchingPokemon,
   EmojiEvents,
-  Business
+  Business,People
 } from "@mui/icons-material";
 
 import {
   CONTROL_UNIT_TYPE,
   PARTIDA_TYPE,
-  PROJECT_TYPE
+  PROJECT_TYPE,
+  RESOURCE_TYPE
 } from "constants/business-types";
 
 export const primaryColor = '#3a9198';
@@ -32,7 +33,13 @@ export const entitiesStyles = {
     colorBackground: "rgba(162, 80, 245, 0.30)",
     icon: <CatchingPokemon />,
     iconColor: "#a250f5",
+  },
+  [RESOURCE_TYPE]: {
+    colorBackground: "rgba(162, 80, 245, 0.30)",
+    icon: <People />,
+    iconColor: "#6CA0B0",
   }
+
 
   
 }

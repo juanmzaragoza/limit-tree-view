@@ -31,7 +31,7 @@ import { getSelectedPeriod } from "redux/period/selectors";
 
 import { entitiesStyles } from "utils/helper";
 import { formatCurrencyWithIntl } from "utils/formats";
-import { PROJECT_TYPE, CONTROL_UNIT_TYPE } from "constants/business-types";
+import { PROJECT_TYPE, CONTROL_UNIT_TYPE, PARTIDA_TYPE } from "constants/business-types";
 
 import {
   getIndicators,
@@ -59,7 +59,7 @@ const ProjectDetailedContent = ({
   const [projectFields, setProjectFields] = React.useState([]);
   const [indicadores, setIndicadores] = React.useState();
   const [tabIndex, setTabIndex] = React.useState(KPIS_TAB_INDEX);
-  const colorUnit = entitiesStyles[CONTROL_UNIT_TYPE].iconColor;
+  const colorUnit = entitiesStyles[PARTIDA_TYPE].iconColor;
 
   const onChangeIndexExecutor = {
     [PROJECTS_TAB_INDEX]: () => {},
@@ -104,7 +104,7 @@ const ProjectDetailedContent = ({
             }}
             style={{ color: colorUnit }}
           >
-            {entitiesStyles[CONTROL_UNIT_TYPE].icon}
+            {entitiesStyles[PARTIDA_TYPE].icon}
           </IconButton>
         );
       },
