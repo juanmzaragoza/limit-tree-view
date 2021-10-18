@@ -114,6 +114,7 @@ export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
   return async (dispatch) => {
     const apiCall = () => Axios.get(url.replace("{id}", id));
     try {
+      dispatch(add({ loadingDetails: true }));
       apiCall()
         .then(({ data }) => data)
         .then(({ indicadorsPartides, indicadorsPartidesDesglossats }) => {
@@ -123,11 +124,15 @@ export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
               totals: indicadorsPartides,
             })
           );
+          dispatch(add({ loadingDetails: false }));
         })
         .catch((error) => {
           console.log(error);
+          dispatch(add({ loadingDetails: false }));
         })
-        .finally(() => {});
+        .finally(() => {
+          dispatch(add({ loadingDetails: false }));
+        });
     } catch (error) {}
   };
 };
@@ -139,8 +144,8 @@ export const loadCostes = ({ url = LOAD_COSTES_URL, id }) => {
     try {
       apiCall()
         .then(({ data }) => data)
-        .then(({ data }) => {
-          dispatch(add({ costesUC: data,  }));
+        .then(({ _embedded }) => {
+          dispatch(add({ costesUC: _embedded['liniaEstudiCostReals']  }));
         })
         .catch((error) => {
           console.log(error);
@@ -182,7 +187,8 @@ const initialState = {
   kpis:[],
   details:[],
   totals:[],
-  costesUC:[]
+  costesUC:[],
+  loadingDetails: false,
 
 };
 

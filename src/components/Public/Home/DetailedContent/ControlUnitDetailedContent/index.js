@@ -19,6 +19,7 @@ import {
   getUnitControl,
   getKpis as getKpisUC,
   getTotals,
+  getIsLoadingDetails,
 } from "redux/unit-control/selectors";
 import {
   loadHeader,
@@ -66,6 +67,7 @@ const ControlUnitDetailedContent = ({
   details,
   totals,
   tab,
+  loadingDetails,
   ...props
 }) => {
   const intl = useIntl();
@@ -279,6 +281,7 @@ const ControlUnitDetailedContent = ({
             groups={groups}
             onDoubleClick={(row) => { actions.selectTab({ value: KPIS_TAB_INDEX});
             actions.selectNode({ ids: row.id })}}
+            loadingTable={loadingDetails}
           />
         )}
       </Grid>
@@ -297,7 +300,8 @@ const mapStateToProps = (state, props) => {
     kpisUnitatControl: getKpisUC(state),
     details: getDetails(state),
     totals: getTotals(state),
-    tab: getTabIndex(state)
+    tab: getTabIndex(state),
+    loadingDetails : getIsLoadingDetails(state)
   };
 };
 

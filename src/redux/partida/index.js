@@ -124,15 +124,20 @@ export const loadCostes = ({ url = LOAD_COSTES_URL, id }) => {
   return async (dispatch) => {
     const apiCall = () => Axios.get(url.replace("{id}", id));
     try {
+      dispatch(add({ loading: true }));
       apiCall()
         .then(({ data }) => data)
-        .then(({ data }) => {
-          dispatch(add({ costesPartida: data,  }));
+        .then(({ _embedded }) => {
+          dispatch(add({ costesPartida: _embedded?.liniaEstudiCostReals,  }));
+          dispatch(add({ loading: false }));
         })
         .catch((error) => {
           console.log(error);
+          dispatch(add({ loading: false }));
         })
-        .finally(() => {});
+        .finally(() => {
+          dispatch(add({ loading: false }));
+        });
     } catch (error) {}
   };
 };

@@ -4,9 +4,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
-  Grid,
   Paper,
   Table,
   TableContainer,
@@ -14,57 +12,62 @@ import {
   TableBody,
   TableHead,
   TableRow,
+  CircularProgress,
+  Stack,
 } from "@mui/material";
+import { formatCurrency } from "utils/formats";
 
 export const columns = [
   {
-    id: "article",
+    id: "familiaArticleDescripcio",
+    id2: "familiaArticleCodi",
+    label: "Familia artículo",
+    minWidth: 270,
+  },
+  {
+    id: "articleDescripcio",
+    id2: "articleCodi",
     label: "Artículo",
-    minWidth: 400,
+    minWidth: 270,
   },
 
   {
-    label: "familia",
-    id: "Familia",
+    label: "Unidades",
+    id: "unitats",
     minWidth: 140,
+    numeric: true,
   },
   {
-    label: "cost Mitg",
-    id: "Coste Medio Unitario",
+    label: "Precio",
+    id: "preu",
     minWidth: 140,
+    numeric: true,
+    format: (value) => formatCurrency(value ?? 0),
+  },
+  {
+    label: "Importe",
+    id: "importt",
+    minWidth: 140,
+    numeric: true,
+    format: (value) => formatCurrency(value ?? 0),
   },
 ];
 
-export const content = [
-  {
-    id: "article",
-    label: "Artículo",
-    minWidth: 400,
-  },
-
-  {
-    label: "familia",
-    id: "Familia",
-    minWidth: 140,
-  },
-  {
-    label: "cost Mitg",
-    id: "Coste Medio Unitario",
-    minWidth: 140,
-  },
-];
-
-const DialogCostes = ({ open, onClose, idCostes }) => {
+const DialogCostes = ({ open, onClose, contentDialog, loading }) => {
   return (
     <Dialog open={open} onClose={onClose} fullWidth={true} maxWidth={"lg"}>
       <DialogTitle>Coste Real</DialogTitle>
       <DialogContent>
-        <DialogContentText>
+        {loading ? (
+          <Stack sx={{ color: "grey.500", alignItems: "center"}}>
+            <CircularProgress color="inherit" />
+          </Stack>
+        ) : (
           <Paper>
-            <TableContainer>
-              <Table  aria-label="sticky table">
+            <TableContainer sx={{ mt: 1 }}>
+              <Table aria-label="sticky table">
                 <TableHead>
-                  <TableRow >
+                  <TableRow>
                     {columns.map((column, index) => (
                       <TableCell
                         key={index}
@@ -82,13 +85,20 @@ const DialogCostes = ({ open, onClose, idCostes }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {content.map((row, index) => {
+                  {!contentDialog.length && (
+                    <TableRow hover>
+                      <TableCell align="center" colSpan={5}>
+                        No hay costes reales para esta partida.
+                      </TableCell>
+                    </TableRow>
+                  )}
+
+                  {contentDialog.map((row, index) => {
                     return (
                       <TableRow hover tabIndex={-1} key={index}>
                         {columns.map((column) => {
                           const value = row[column.id];
-                     
-
+                          const value2 = row[column.id2];
                           return (
                             <TableCell
                               key={column.id}
@@ -101,6 +111,7 @@ const DialogCostes = ({ open, onClose, idCostes }) => {
                                   ? column.format(value)
                                   : value}{" "}
                               </span>
+                              {value2 ? ` (${value2})` : ""}
                             </TableCell>
                           );
                         })}
@@ -111,7 +122,7 @@ const DialogCostes = ({ open, onClose, idCostes }) => {
               </Table>
             </TableContainer>
           </Paper>
-        </DialogContentText>
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancelar</Button>
