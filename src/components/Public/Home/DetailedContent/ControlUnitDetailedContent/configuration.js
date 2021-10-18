@@ -184,6 +184,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 400,
     className: "borderRight",
   },
+
   {
     label: "Anterior",
     id: "produccioAnterior",
@@ -219,6 +220,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     label: "Anterior",
@@ -255,6 +257,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     label: "Anterior",
@@ -292,6 +295,7 @@ export const columnsIndicatorsPartida = (intl) => [
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
     className: "borderLeft",
+    colorValue: true,
   },
   {
     label: "Período",
@@ -299,6 +303,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     label: "Año",
@@ -306,6 +311,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     label: "Origen",
@@ -313,6 +319,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     label: "Anterior",
@@ -321,6 +328,7 @@ export const columnsIndicatorsPartida = (intl) => [
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
     className: "borderLeft",
+    colorValue: true,
   },
   {
     label: "Período",
@@ -328,6 +336,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     label: "Año",
@@ -335,6 +344,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     label: "Origen",
@@ -342,6 +352,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     label: "Anterior",
@@ -405,6 +416,7 @@ export const columnsSubTotal = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     id: "costTeoricAnterior",
@@ -436,6 +448,7 @@ export const columnsSubTotal = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     id: "costRealAnterior",
@@ -468,24 +481,28 @@ export const columnsSubTotal = (intl) => [
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
     className: "borderLeft",
+    colorValue: true,
   },
   {
     id: "beneficiPeriode",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     id: "beneficiAny",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     id: "beneficiOrigen",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     id: "desviacioCostAnterior",
@@ -493,24 +510,28 @@ export const columnsSubTotal = (intl) => [
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
     className: "borderLeft",
+    colorValue: true,
   },
   {
     id: "desviacioPeriode",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     id: "desviacioAny",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     id: "desviacioOrigen",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     id: "obraPendentAnterior",

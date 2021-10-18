@@ -100,9 +100,8 @@ export default function MaterialTable({
                       >
                         {value === undefined && "---"}
                         <span
-                          className={
-                            column.numeric
-                              ? value > 0
+                          className={column.colorValue ?
+                            value > 0
                                 ? classes.colorGreen
                                 : value < 0
                                 ? classes.colorRed
@@ -140,7 +139,7 @@ export default function MaterialTable({
                       {value === undefined && "---"}
                       <span
                           className={
-                            column.numeric
+                            column.colorValue
                               ? value > 0
                                 ? classes.colorGreen
                                 : value < 0
