@@ -154,7 +154,7 @@ const ProjectDetailedContent = ({
       {
         field: "Benef. Año",
         value: kpis.beneficiAny,
-        colorValue: getKpisColorValue({ value: kpis?.beneficiAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpis?.beneficiAny > 0 }),
       },
       {
         field: "Prod. Origen",
@@ -163,7 +163,7 @@ const ProjectDetailedContent = ({
       {
         field: "Prod. Año",
         value: kpis.produccioAny,
-        colorValue: getKpisColorValue({ value: kpis?.produccioAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpis?.produccioAny > 0 }),
       },
       {
         field: "Pen. Origen",
@@ -173,7 +173,7 @@ const ProjectDetailedContent = ({
       {
         field: "Pen. Año",
         value: kpis.obraPendentAny,
-        colorValue: getKpisColorValue({ value: kpis?.obraPendentAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpis?.obraPendentAny > 0 }),
       },
     ]);
   }, [kpis, project, intl]);
