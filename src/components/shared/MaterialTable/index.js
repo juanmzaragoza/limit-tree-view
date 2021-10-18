@@ -130,9 +130,8 @@ const MaterialTable = ({
                       >
                         {value === undefined && "---"}
                         <span
-                          className={
-                            column.numeric
-                              ? value > 0
+                          className={column.colorValue ?
+                            value > 0
                                 ? classes.colorGreen
                                 : value < 0
                                 ? classes.colorRed
@@ -187,14 +186,17 @@ const MaterialTable = ({
                     <strong>
                       {value === undefined && "---"}
                       <span
-                        className={
-                          column.numeric
-                            ? value > 0
-                              ? classes.colorGreen
-                              : value < 0
-                              ? classes.colorRed
+
+                          className={
+                            column.colorValue
+                              ? value > 0
+                                ? classes.colorGreen
+                                : value < 0
+                                ? classes.colorRed
+                                : ""
+
                               : ""
-                            : ""
+                           
                         }
                       >
                         {column.format && typeof value === "number"

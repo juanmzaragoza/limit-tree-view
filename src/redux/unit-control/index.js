@@ -4,6 +4,8 @@ import Axios from "Axios";
 const ADD = "ADD_TO_UC";
 const REPLACE = "REPLACE_TO_UC";
 const RESET_KPIS = "RESET_KPIS_TO_PARTIDA";
+
+
 // Constants
 const URL =
   'api/estp/liniesEstudi?query=unitatControlEstudi.id=="{id}"&sort=codi';
@@ -115,7 +117,12 @@ export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
       apiCall()
         .then(({ data }) => data)
         .then(({ indicadorsPartides, indicadorsPartidesDesglossats }) => {
-          dispatch(add({ details: indicadorsPartidesDesglossats, totals: indicadorsPartides }));
+          dispatch(
+            add({
+              details: indicadorsPartidesDesglossats,
+              totals: indicadorsPartides,
+            })
+          );
         })
         .catch((error) => {
           console.log(error);
@@ -124,6 +131,7 @@ export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
     } catch (error) {}
   };
 };
+
 
 export const loadCostes = ({ url = LOAD_COSTES_URL, id }) => {
   return async (dispatch) => {
@@ -151,6 +159,8 @@ export const add = (payload) => {
   };
 };
 
+
+
 export const replace = (payload) => {
   return {
     type: REPLACE,
@@ -173,7 +183,10 @@ const initialState = {
   details:[],
   totals:[],
   costesUC:[]
+
 };
+
+
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -184,6 +197,7 @@ const reducer = (state = initialState, action) => {
         row.id === action.payload.id ? action.payload : row
       );
       return { ...state, rows: changedRows };
+
     case RESET_KPIS:
       return { ...state, kpis: [] };
     case "RESET":

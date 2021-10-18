@@ -4,7 +4,7 @@ import { Container, Grid, Paper } from "@mui/material";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 
-import ProjectsTreeView from "./ProjectsTreeView";
+import ProjectsTreeView from "./ProjectsTreeView/index";
 import SelectOne from "./SelectOne";
 import DetailedContent from "./DetailedContent/index";
 import ProjectSelector from "./ProjectSelector";

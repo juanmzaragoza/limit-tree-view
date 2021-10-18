@@ -3,7 +3,8 @@ import * as React from "react";
 
 import { styled } from "@mui/material/styles";
 import TreeItem, { treeItemClasses } from "@mui/lab/TreeItem";
-import LabelIcon from "@mui/icons-material/Label";
+
+import PeopleIcon from '@mui/icons-material/People';
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
@@ -44,7 +45,7 @@ const StyledTreeItem = (props) => {
   const {
     bgColor = primaryColor,
     color,
-    labelIcon = <LabelIcon />,
+    labelIcon = <PeopleIcon />,
     labelInfo,
     labelText,
     ...other

@@ -20,7 +20,7 @@ export const getIndicators = (kpisPartida) => [
         breakpoints: 3,
       },
       {
-        field: "Producción Periodo",
+        field: "Producción Período",
         value: kpisPartida.produccioPeriode,
         breakpoints: 2,
       },
@@ -52,7 +52,7 @@ export const getIndicators = (kpisPartida) => [
         breakpoints: 3,
       },
       {
-        field: "Coste Teórico Pendiente",
+        field: "Coste Teórico Período",
         value: kpisPartida.costTeoricPeriode,
         breakpoints: 2,
       },
@@ -84,7 +84,7 @@ export const getIndicators = (kpisPartida) => [
         icon: <StackedBarChart />,
       },
       {
-        field: "Coste Real Pendiente",
+        field: "Coste Real Período",
         value: kpisPartida.costRealPeriode,
         icon: <StackedBarChart />,
       },
@@ -154,11 +154,11 @@ export const getIndicators = (kpisPartida) => [
     indicators: [
       {
         field: "Obra Pendiente Anterior",
-        value: kpisPartida.obraPendentFacturar,
+        value: kpisPartida.obraPendentAnterior,
       },
       {
         field: "Obra Pendiente Período",
-        value: kpisPartida.obraPendent,
+        value: kpisPartida.obraPendentPeriode,
       },
       {
         field: "Obra Pendiente año Natural",

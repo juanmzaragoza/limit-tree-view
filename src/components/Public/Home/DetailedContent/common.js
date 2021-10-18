@@ -1,18 +1,70 @@
+import { Avatar, IconButton } from "@mui/material";
+import { PARTIDA_TYPE, RESOURCE_TYPE } from "constants/business-types";
 import { formatCurrencyWithIntl } from "utils/formats";
-import {greenColor, redColor} from "../../../../utils/helper";
+import {
+  entitiesStyles,
+  greenColor,
+  redColor,
+  inheritColor,
+} from "../../../../utils/helper";
 
 export const isPeriodOpen = ({ period }) => {
   return !period.tancat;
-}
+};
 
-export const getKpisColorValue = ({ value }) => value >= 0 ? greenColor : redColor;
+export const getKpisColorValue = ({ value }) => {
+  if (value !== undefined) {
+    if (value === 0) {
+      return inheritColor;
+    } else if (value >= 0) {
+      return greenColor;
+    } else {
+      return redColor;
+    }
+  } else {
+    return inheritColor;
+  }
+};
 
-export const getPartidaColumnsByPeriod = ({ period, intl }) => {
-  const  number  = period.numero;
+export const getPartidaColumnsByPeriod = ({ period, intl, actions }) => {
+  const number = period.numero;
   const numberIsZero = !number;
   const numberIsNotZero = !!number;
 
   return [
+    {
+      field: "id",
+      headerName: (
+        <>
+          {" "}
+          <Avatar
+            aria-label="recipe"
+            sx={{
+              bgcolor: entitiesStyles[PARTIDA_TYPE].iconColor,
+              color: "white",
+            }}
+          >
+            {entitiesStyles[PARTIDA_TYPE].icon}
+          </Avatar>
+        </>
+      ),
+      renderCell: (cellValues) => {
+        return (
+          <IconButton
+            variant="outlined"
+            onClick={() => {
+              actions.selectTab({ value: 1 });
+              actions.selectNode({ ids: cellValues.row.id });
+            }}
+            style={{ color: entitiesStyles[RESOURCE_TYPE].iconColor }}
+          >
+            {entitiesStyles[RESOURCE_TYPE].icon}
+          </IconButton>
+        );
+      },
+      minWidth: 30,
+      editable: false,
+    },
     { field: "codi", headerName: "Cód.", minWidth: 90 },
     {
       field: "descripcioReduc",
@@ -111,12 +163,12 @@ export const getPartidaColumnsByPeriod = ({ period, intl }) => {
       minWidth: 140,
     },
   ];
-}
+};
 
 export const getResourceColumnsByPeriod = ({ period, intl }) => {
-  const { number } = period;
+  const  number  = period.numero;
   return [
-    { field: "codi", headerName: "Código",  minWidth: 110, },
+    { field: "codi", headerName: "Código", minWidth: 110 },
     {
       field: "descripcio",
       headerName: "Descripción",
@@ -156,18 +208,15 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
       },
     },
   ];
-}
-
+};
 
 export const getPartidaColumnsByIndicator = ({ intl }) => {
-
   return [
     { field: "codi", headerName: "Cód.", minWidth: 90 },
     {
       field: "descripcio",
       headerName: "Descripció",
       minWidth: 350,
-   
     },
 
     {
@@ -175,60 +224,54 @@ export const getPartidaColumnsByIndicator = ({ intl }) => {
       field: "produccioAnterior",
       minWidth: 140,
       valueFormatter: (params) =>
-      formatCurrencyWithIntl(params.row.produccioAnterior ?? 0, intl),
+        formatCurrencyWithIntl(params.row.produccioAnterior ?? 0, intl),
     },
     {
       headerName: "Prod. Periodo",
       field: "produccioPeriode",
       minWidth: 140,
       valueFormatter: (params) =>
-      formatCurrencyWithIntl(params.row.produccioPeriode ?? 0, intl),
+        formatCurrencyWithIntl(params.row.produccioPeriode ?? 0, intl),
     },
     {
       headerName: "Prod. Año Natural",
       field: "produccioAny",
       minWidth: 140,
       valueFormatter: (params) =>
-      formatCurrencyWithIntl(params.row.produccioAny ?? 0, intl),
+        formatCurrencyWithIntl(params.row.produccioAny ?? 0, intl),
     },
     {
       headerName: "Prod. Origen",
       field: "produccioOrigen",
       minWidth: 140,
       valueFormatter: (params) =>
-      formatCurrencyWithIntl(params.row.produccioOrigen ?? 0, intl),
-
+        formatCurrencyWithIntl(params.row.produccioOrigen ?? 0, intl),
     },
     {
       headerName: "Prod. Pendiente",
       field: "produccioPendent",
       valueFormatter: (params) =>
-      formatCurrencyWithIntl(params.row.produccioPendent ?? 0, intl),
+        formatCurrencyWithIntl(params.row.produccioPendent ?? 0, intl),
     },
     {
       headerName: "Coste Teórico Anterior",
       value: "costTeoricAnterior",
-
     },
     {
       headerName: "Coste Teórico Pendiente",
       field: "costTeoricPeriode",
-       },
+    },
     {
       headerName: "Coste Teórico Año Natural",
       field: "costTeoricAny",
- 
     },
     {
       headerName: "Coste Teórico a Origen",
       field: "costTeoricOrigen",
-  
     },
     {
       headerName: "Coste Teórico Pendiente",
       field: "costTeoricPendent",
-    
     },
- 
   ];
-}
+};
