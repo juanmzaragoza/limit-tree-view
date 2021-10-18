@@ -16,6 +16,7 @@ export const primaryColor = '#3a9198';
 export const secondaryColor = '#4468a0';
 export const greenColor = 'green';
 export const redColor = 'red';
+export const inheritColor =  'rgba(0, 0, 0, 0.87)';
 
 export const entitiesStyles = {
   [PROJECT_TYPE]: {
