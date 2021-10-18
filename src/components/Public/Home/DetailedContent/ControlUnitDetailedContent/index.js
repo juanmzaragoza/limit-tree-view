@@ -133,14 +133,14 @@ const ControlUnitDetailedContent = ({
         field: "Benef. Año",
         value: kpisUnitatControl.beneficiAny,
         colorValue: getKpisColorValue({
-          value: kpisUnitatControl?.beneficiAny,
+          value: kpisUnitatControl.beneficiAny,
         }),
       },
       {
         field: "Prod. Año",
         value: kpisUnitatControl.produccioAny,
         colorValue: getKpisColorValue({
-          value: kpisUnitatControl?.produccioAny >= 0,
+          value: kpisUnitatControl.produccioAny ,
         }),
       },
      
@@ -149,7 +149,7 @@ const ControlUnitDetailedContent = ({
         field: "Pen. Año",
         value: kpisUnitatControl.obraPendentAny,
         colorValue: getKpisColorValue({
-          value: kpisUnitatControl?.obraPendentAny >= 0,
+          value: kpisUnitatControl.obraPendentAny ,
         }),
       },
     ]);
@@ -174,19 +174,19 @@ const ControlUnitDetailedContent = ({
       {
         field: "Benef. Año",
         value: kpis.beneficiAny,
-        colorValue: getKpisColorValue({ value: kpis?.beneficiAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpis.beneficiAny  }),
       },
       {
         field: "Prod. Año",
         value: kpis.produccioAny,
-        colorValue: getKpisColorValue({ value: kpis?.produccioAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpis.produccioAny }),
       },
      
 
       {
         field: "Pen. Año",
         value: kpis.obraPendentAny,
-        colorValue: getKpisColorValue({ value: kpis?.obraPendentAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpis.obraPendentAny  }),
       },
     ]);
   }, [kpis, tree, intl]);

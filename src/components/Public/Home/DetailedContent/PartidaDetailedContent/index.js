@@ -120,14 +120,14 @@ const ProjectDetailedContent = ({
         field: "Benef. Año",
         value: kpisUnitatControl.beneficiAny,
         colorValue: getKpisColorValue({
-          value: kpisUnitatControl?.beneficiAny,
+          value: kpisUnitatControl.beneficiAny,
         }),
       },
       {
         field: "Prod. Año",
         value: kpisUnitatControl.produccioAny,
         colorValue: getKpisColorValue({
-          value: kpisUnitatControl?.produccioAny >= 0,
+          value: kpisUnitatControl.produccioAny ,
         }),
       },
      
@@ -136,7 +136,7 @@ const ProjectDetailedContent = ({
         field: "Pen. Año",
         value: kpisUnitatControl.obraPendentAny,
         colorValue: getKpisColorValue({
-          value: kpisUnitatControl?.obraPendentAny >= 0,
+          value: kpisUnitatControl.obraPendentAny,
         }),
       },
     ]);
@@ -161,19 +161,19 @@ const ProjectDetailedContent = ({
       {
         field: "Benef. Año",
         value: kpisPartida.beneficiAny,
-        colorValue: getKpisColorValue({ value: kpisPartida?.beneficiAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpisPartida.beneficiAny }),
       },
       {
         field: "Prod. Año",
         value: kpisPartida.produccioAny,
-        colorValue: getKpisColorValue({ value: kpisPartida?.produccioAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpisPartida.produccioAny}),
       },
      
 
       {
         field: "Pen. Año",
         value: kpisPartida.obraPendentAny,
-        colorValue: getKpisColorValue({ value: kpisPartida?.obraPendentAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpisPartida.obraPendentAny }),
       },
       
     ]);
@@ -199,19 +199,19 @@ const ProjectDetailedContent = ({
       {
         field: "Benef. Año",
         value: kpisProjecte.beneficiAny,
-        colorValue: getKpisColorValue({ value: kpisProjecte?.beneficiAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpisProjecte.beneficiAny }),
       },
       {
         field: "Prod. Año",
         value: kpisProjecte.produccioAny,
-        colorValue: getKpisColorValue({ value: kpisProjecte?.produccioAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpisProjecte.produccioAny  }),
       },
      
 
       {
         field: "Pen. Año",
         value: kpisProjecte.obraPendentAny,
-        colorValue: getKpisColorValue({ value: kpisProjecte?.obraPendentAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpisProjecte.obraPendentAny  }),
       },
     ]);
   }, [kpisProjecte, tree, intl]);
