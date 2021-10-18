@@ -38,7 +38,7 @@ export const loadData = ({ url = URL, periodId }) => {
               labelInfo: formatCurrency(controlUnit.costTotal),
               labelText: `${controlUnit.codi} - ${controlUnit.descripcio}`,
               type: CONTROL_UNIT_TYPE,
-              nodes: controlUnit['partides'].map(partida => ({
+              nodes: controlUnit['partides']?.map(partida => ({
                 id: partida.id,
                 labelText: `${partida.codi} - ${partida.descripcioReduc}`,
                 labelInfo: formatCurrency(partida.costTotal),
