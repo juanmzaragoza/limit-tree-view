@@ -19,7 +19,7 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import DialogCostes from "./DialogCostes";
 import { loadCostes } from "redux/partida";
 import { getCost, getIsLoading } from "redux/partida/selectors";
-
+import "../TableStyle.css"
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
