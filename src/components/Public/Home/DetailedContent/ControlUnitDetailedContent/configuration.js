@@ -10,7 +10,7 @@ import {
 import { formatCurrencyWithIntl } from "utils/formats";
 import { entitiesStyles } from "utils/helper";
 import { PARTIDA_TYPE } from "constants/business-types";
-import { Avatar } from "@mui/material";
+import { Avatar, Button } from "@mui/material";
 
 export const getIndicators = (kpisUnitatControl) => [
   {
@@ -183,6 +183,7 @@ export const columnsIndicatorsPartida = (intl) => [
     label: "Código - Descripción",
     minWidth: 400,
     className: "borderRight",
+    button : true,
   },
   {
     label: "Anterior",
@@ -381,6 +382,7 @@ export const columnsSubTotal = (intl) => [
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
     className: "borderLeft",
+   
   },
   {
     id: "produccioPeriode",
