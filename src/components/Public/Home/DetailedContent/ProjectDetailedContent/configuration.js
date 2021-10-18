@@ -26,7 +26,7 @@ export const getIndicators = (kpis) => [
         breakpoints: 3,
       },
       {
-        field: "Producción Periodo",
+        field: "Producción Período",
         value: kpis.produccioPeriode,
         breakpoints: 2,
       },
@@ -58,7 +58,7 @@ export const getIndicators = (kpis) => [
         breakpoints: 3,
       },
       {
-        field: "Coste Teórico Pendiente",
+        field: "Coste Teórico Período",
         value: kpis.costTeoricPeriode,
         breakpoints: 2,
       },
@@ -89,7 +89,7 @@ export const getIndicators = (kpis) => [
         value: kpis.costRealAnterior,
       },
       {
-        field: "Coste Real Pendiente",
+        field: "Coste Real Período",
         value: kpis.costRealPeriode,
       },
       {
@@ -198,6 +198,7 @@ export const getIndicators = (kpis) => [
 ];
 
 export const columnsIndicatorsPartida = (intl) => [
+
   {
     id: "unitatControlCodi",
     id2: "unitatControlDescripcio",

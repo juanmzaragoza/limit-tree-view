@@ -24,7 +24,7 @@ export const getIndicators = (kpisUnitatControl) => [
         breakpoints: 3,
       },
       {
-        field: "Producción Periodo",
+        field: "Producción Período",
         value: kpisUnitatControl.produccioPeriode,
         breakpoints: 2,
       },
@@ -56,7 +56,7 @@ export const getIndicators = (kpisUnitatControl) => [
         breakpoints: 3,
       },
       {
-        field: "Coste Teórico Pendiente",
+        field: "Coste Teórico Período",
         value: kpisUnitatControl.costTeoricPeriode,
         breakpoints: 2,
       },
@@ -88,7 +88,7 @@ export const getIndicators = (kpisUnitatControl) => [
         icon: <StackedBarChart />,
       },
       {
-        field: "Coste Real Pendiente",
+        field: "Coste Real Período",
         value: kpisUnitatControl.costRealPeriode,
         icon: <StackedBarChart />,
       },
@@ -152,7 +152,7 @@ export const getIndicators = (kpisUnitatControl) => [
     ],
   },
   {
-    title: "Obra Pendiente Periodo",
+    title: "Obra Pendiente Período",
     icon: <Construction />,
     lg: 3,
     indicators: [
