@@ -65,18 +65,15 @@ const ProjectDetailedContent = ({
     {
       field: "id",
       headerName: (
-        <>
-          {" "}
-          <Avatar
-            aria-label="recipe"
-            sx={{
-              bgcolor: entitiesStyles[CONTROL_UNIT_TYPE].iconColor,
-              color: "white",
-            }}
-          >
-            {entitiesStyles[CONTROL_UNIT_TYPE].icon}
-          </Avatar>
-        </>
+        <Avatar
+          aria-label="recipe"
+          sx={{
+            bgcolor: entitiesStyles[CONTROL_UNIT_TYPE].iconColor,
+            color: "white",
+          }}
+        >
+          {entitiesStyles[CONTROL_UNIT_TYPE].icon}
+        </Avatar>
       ),
       renderCell: (cellValues) => {
         return (
@@ -84,7 +81,7 @@ const ProjectDetailedContent = ({
             variant="outlined"
             onClick={() => {
               actions.selectTab({ value: PROJECTS_TAB_INDEX });
-              actions.selectNode({ ids: cellValues.row.id });
+              actions.selectNode({ ids: getTreeId(cellValues.row) });
             }}
             style={{ color: colorUnit }}
           >
@@ -218,13 +215,6 @@ const ProjectDetailedContent = ({
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        {tabIndex === PROJECTS_TAB_INDEX && (
-          <MaterialDataGrid
-            columns={columns}
-            rows={rows}
-            disableInlineEdition={!isPeriodOpen({ period })}
-          />
-        )}
         {tabIndex === KPIS_TAB_INDEX && (
           <Grid container spacing={2}>
             <MaterialCardIndicator
@@ -242,10 +232,16 @@ const ProjectDetailedContent = ({
             columnsSubTotal={columnsSubTotal(intl)}
             groups={groups}
             onDoubleClick={(row) => {
-              console.log(row)
               actions.selectTab({ value: DETAIL_TAB_INDEX });
-              actions.selectNode({ ids: row.unitatControlId })
+              actions.selectNode({ ids: getTreeId(row) })
             }}
+          />
+        )}
+        {tabIndex === PROJECTS_TAB_INDEX && (
+          <MaterialDataGrid
+            columns={columns}
+            rows={rows}
+            disableInlineEdition={!isPeriodOpen({ period })}
           />
         )}
       </Grid>
