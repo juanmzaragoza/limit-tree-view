@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Container, Grid, Paper } from "@mui/material";
 
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 import ProjectsTreeView from "./ProjectsTreeView/index";
 import SelectOne from "./SelectOne";
@@ -22,8 +22,8 @@ const Home = ({ selectedPeriod, selectedNode, actions }) =>{
     if(selectedPeriod?.id){
       actions.getData({ periodId: selectedPeriod.id });
     }
-    setShow(false);
-    setNode(null);
+    setShow(selectedNode && !!selectedNode.id);
+    setNode(selectedNode);
   },[actions, selectedPeriod]);
 
   React.useEffect(() => {
