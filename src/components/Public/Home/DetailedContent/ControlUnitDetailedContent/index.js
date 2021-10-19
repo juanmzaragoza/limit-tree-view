@@ -95,11 +95,16 @@ const ControlUnitDetailedContent = ({
   };
   React.useEffect(() => {
     onChangeIndexExecutor[tabIndex]();
+   
   }, [tabIndex, unitControl]);
 
   React.useEffect(() => {
     loadHeader();
-  }, [props.id]);
+    unitControl.id && actions.loadKpis({ id: props.id });
+  }, [props.id,]);
+
+
+
 
   const content = [
     { field: "Importe Total", value: unitControl.importTotal },
