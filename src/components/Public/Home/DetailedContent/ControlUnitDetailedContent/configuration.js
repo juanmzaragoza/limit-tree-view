@@ -184,6 +184,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 400,
     className: "borderRight",
     button : true,
+    buttonMedicion: true,
   },
 
   {

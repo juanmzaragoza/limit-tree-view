@@ -1,18 +1,20 @@
 import Axios from "Axios";
+import { findPartida } from "./helpers";
 
 //Action types
 const ADD = "ADD_TO_UC";
 const REPLACE = "REPLACE_TO_UC";
 const RESET_KPIS = "RESET_KPIS_TO_PARTIDA";
-
-
+const SELECT_PARTIDA = "SELECT_PARTIDA";
+const RESET_PARTIDA = "RESET_PARTIDA"
 // Constants
 const URL =
   'api/estp/liniesEstudi?query=unitatControlEstudi.id=="{id}"&sort=codi';
 const HEADER_URL = "api/estp/unitatsControlEstudi";
 const UPDATE_PARTIDA_URL = "api/estp/liniesEstudi";
 const LOAD_KPIS_URL = "api/estp/unitatsControlEstudi/{id}/indicadors";
-const LOAD_DETAILS_URL = "api/estp/unitatsControlEstudi/{id}/indicadors?desglossat=true";
+const LOAD_DETAILS_URL =
+  "api/estp/unitatsControlEstudi/{id}/indicadors?desglossat=true";
 const LOAD_COSTES_URL = "api/estp/unitatsControlEstudi/{id}/costReal";
 
 //Functions
@@ -137,7 +139,6 @@ export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
   };
 };
 
-
 export const loadCostes = ({ url = LOAD_COSTES_URL, id }) => {
   return async (dispatch) => {
     const apiCall = () => Axios.get(url.replace("{id}", id));
@@ -145,7 +146,7 @@ export const loadCostes = ({ url = LOAD_COSTES_URL, id }) => {
       apiCall()
         .then(({ data }) => data)
         .then(({ _embedded }) => {
-          dispatch(add({ costesUC: _embedded['liniaEstudiCostReals']  }));
+          dispatch(add({ costesUC: _embedded["liniaEstudiCostReals"] }));
         })
         .catch((error) => {
           console.log(error);
@@ -155,7 +156,6 @@ export const loadCostes = ({ url = LOAD_COSTES_URL, id }) => {
   };
 };
 
-
 //Action creators
 export const add = (payload) => {
   return {
@@ -164,11 +164,16 @@ export const add = (payload) => {
   };
 };
 
-
-
 export const replace = (payload) => {
   return {
     type: REPLACE,
+    payload,
+  };
+};
+
+export const selectPartida = (payload) => {
+  return {
+    type: SELECT_PARTIDA,
     payload,
   };
 };
@@ -179,20 +184,30 @@ export const resetKpis = () => {
   };
 };
 
+export const resetPartida = () => {
+  return {
+    type: RESET_PARTIDA,
+  };
+};
+
+const getPartidaSelected = ({ ids, state }) => {
+  const { rows: infoPartida } = state;
+  const selectedPartida = findPartida({ id: ids, partidas: infoPartida });
+  return selectedPartida;
+};
+
 //Reducers
 const initialState = {
   unitControl: {},
   rows: [],
   loading: false,
-  kpis:[],
-  details:[],
-  totals:[],
-  costesUC:[],
+  kpis: [],
+  details: [],
+  totals: [],
+  costesUC: [],
   loadingDetails: false,
-
+  partidaSelected: {},
 };
-
-
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -204,8 +219,17 @@ const reducer = (state = initialState, action) => {
       );
       return { ...state, rows: changedRows };
 
+    case SELECT_PARTIDA:
+      const { ids } = action.payload;
+      return {
+        ...state,
+        partidaSelected: getPartidaSelected({ ids, state }),
+      };
+
     case RESET_KPIS:
       return { ...state, kpis: [] };
+    case RESET_PARTIDA:
+      return { ...state, partidaSelected: [] };
     case "RESET":
       return initialState;
     default:

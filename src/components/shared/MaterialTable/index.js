@@ -17,12 +17,16 @@ import {
   Tooltip,
 } from "@mui/material";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import SpeedIcon from "@mui/icons-material/Speed";
 import DialogCostes from "./DialogCostes";
 import { loadCostes } from "redux/partida";
+import { selectPartida, updatePartida, loadData } from "redux/unit-control";
 import { getCost, getIsLoading } from "redux/partida/selectors";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import DialogMediciones from "./DialogMediciones";
+import { getPartidaInfo, getUnitControl } from "redux/unit-control/selectors";
 
 const useStyles = makeStyles({
   stickyActionsColumn: {
@@ -63,14 +67,42 @@ const MaterialTable = ({
   costs,
   loading,
   loadingTable,
+  getPartidaInfo,
+  unitControl,
 }) => {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
+  const [openMediciones, setOpenMediciones] = React.useState(false);
 
   const handleClick = (idRow) => {
     actions.loadCost({ id: idRow });
     setOpen(true);
+  };
+
+  const handleClickMediciones = (idRow) => {
+    const partida = actions.findPartida({ ids: idRow });
+
+    setOpenMediciones(true);
+  };
+
+  const handleUpdateMediciones = async (id, dataMedicion) => {
+    dataMedicion.map((data) => {
+      if (data.value !== undefined) {
+        getPartidaInfo[data.field] = data.value;
+      }
+    });
+
+    try {
+      await actions.updatePartida({ id, data: getPartidaInfo });
+      actions.loadData({ id: unitControl.id });
+      actions.findPartida({ ids: getPartidaInfo.id });
+      setOpenMediciones(false);
+      
+      // update related data
+    } catch (e) {
+      // handle errors
+    }
   };
 
   return loadingTable ? (
@@ -155,11 +187,25 @@ const MaterialTable = ({
                             : ` - ${value2}`
                           : ""}
                         <span style={{ float: "right" }}>
+                          {column.buttonMedicion && (
+                            <React.Fragment>
+                              <Tooltip title="Mediciones" arrow>
+                                <IconButton
+                                  aria-label="medicones"
+                                  component="span"
+                                  onClick={() => handleClickMediciones(row.id)}
+                                  color={"info"}
+                                >
+                                  <SpeedIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </React.Fragment>
+                          )}
                           {column.button && (
                             <React.Fragment>
                               <Tooltip title="Costes Reales" arrow>
                                 <IconButton
-                                  aria-label="upload picture"
+                                  aria-label="costes-reales"
                                   component="span"
                                   onClick={() => handleClick(row.id)}
                                   color={"info"}
@@ -181,6 +227,14 @@ const MaterialTable = ({
               onClose={() => setOpen(false)}
               contentDialog={costs}
               loading={loading}
+            />
+            <DialogMediciones
+              open={openMediciones}
+              onClose={() => setOpenMediciones(false)}
+              contentDialog={getPartidaInfo}
+              loading={loading}
+              handleUpdateMediciones={handleUpdateMediciones}
+         
             />
             <TableRow>
               <TableCell sx={{ fontWeight: "bold" }}>TOTAL</TableCell>
@@ -225,12 +279,17 @@ const mapStateToProps = (state, props) => {
   return {
     costs: getCost(state),
     loading: getIsLoading(state),
+    getPartidaInfo: getPartidaInfo(state),
+    unitControl: getUnitControl(state),
   };
 };
 
 const mapDispatchToProps = (dispatch, props) => {
   const actions = {
     loadCost: bindActionCreators(loadCostes, dispatch),
+    findPartida: bindActionCreators(selectPartida, dispatch),
+    updatePartida: bindActionCreators(updatePartida, dispatch),
+    loadData: bindActionCreators(loadData, dispatch),
   };
   return { actions };
 };

@@ -195,6 +195,7 @@ const ControlUnitDetailedContent = ({
   const handleCellChange = async (params, event, details) => {
     const { id, field, value } = params;
     const data = rows.find((row) => row.id === id);
+    console.log(params);
     data[field] = value;
     try {
       await actions.updatePartida({ id, data });
