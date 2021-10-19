@@ -251,7 +251,7 @@ const DialogMediciones = ({
           }}
           variant="contained"
         >
-          Editar
+          Guardar
         </Button>
       </DialogActions>
     </Dialog>
