@@ -11,8 +11,8 @@ import {
   Grid,
 
 } from "@mui/material";
-import { findPartida } from "redux/unit-control/helpers";
-
+import { formatCurrencyWithIntl } from "utils/formats";
+import { useIntl } from "react-intl";
 
 const DialogMediciones = ({
   open,
@@ -29,8 +29,7 @@ const DialogMediciones = ({
     { field: "medicioOrigen", value: contentDialog?.medicioOrigen },
   ]);
 
-  
-
+  const intl = useIntl();
   return (
     <Dialog open={open} onClose={onClose} fullWidth={true} maxWidth={"lg"}>
       <DialogTitle>Mediciones</DialogTitle>
@@ -157,6 +156,81 @@ const DialogMediciones = ({
                       ? ""
                       : contentDialog?.unitatsPress
                   }`}
+                  disabled
+                  variant="standard"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item lg={2} sm={12}>
+                <TextField
+                  id="preu"
+                  label="Pvp Bruto"
+                  type="input"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  defaultValue={
+                    contentDialog ? formatCurrencyWithIntl(contentDialog?.preu, intl) : ""}
+                  disabled
+                  variant="standard"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item lg={2} sm={12}>
+                <TextField
+                  id="preuNet"
+                  label="Pvp Neto"
+                  type="input"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  defaultValue={
+                    contentDialog ? formatCurrencyWithIntl(contentDialog?.preuNet, intl) : ""}
+                  disabled
+                  variant="standard"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item lg={2} sm={12}>
+                <TextField
+                  id="importTotal"
+                  label="Import Total"
+                  type="input"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  defaultValue={
+                    contentDialog ? formatCurrencyWithIntl(contentDialog?.importTotal, intl) : ""}
+                  disabled
+                  variant="standard"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item lg={2} sm={12}>
+                <TextField
+                  id="costUni"
+                  label="Coste Unitario Total"
+                  type="input"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  defaultValue={
+                    contentDialog ? formatCurrencyWithIntl(contentDialog?.costUni, intl) : ""}
+                  disabled
+                  variant="standard"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item lg={2} sm={12}>
+                <TextField
+                  id="costTotal"
+                  label="Coste Total Previsto"
+                  type="input"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  defaultValue={
+                    contentDialog ? formatCurrencyWithIntl(contentDialog?.costTotal, intl) : ""}
                   disabled
                   variant="standard"
                   fullWidth
