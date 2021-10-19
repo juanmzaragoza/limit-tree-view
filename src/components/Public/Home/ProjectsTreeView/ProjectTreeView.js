@@ -9,7 +9,7 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 import MaterialSkeleton from "components/shared/MaterialSkeleton/MaterialSkeleton";
 
-import { entitiesStyles } from 'utils/helper';
+import { entitiesStyles, getTreeId } from 'utils/helper';
 import { usePrevious } from "utils/helper-hooks";
 
 import StyledTreeItem from "./StyledTreeItem";
@@ -40,8 +40,8 @@ const ProjectsTreeView = ({
 
   const previousTree = usePrevious(tree);
   React.useEffect(() => {
-    if(!isEmpty(tree) && !isEqual(previousTree?.id,tree?.id)) {
-      selectAndExpandNode({ ids: tree.id });
+    if(!isEmpty(tree) && !isEqual(getTreeId(previousTree), getTreeId(tree))) {
+      selectAndExpandNode({ ids: tree.treeId });
     }
   },[tree]);
 
@@ -50,7 +50,7 @@ const ProjectsTreeView = ({
     if(tree.nodes) {
       return <StyledTreeItem
         key={tree.id}
-        nodeId={tree.id}
+        nodeId={getTreeId(tree)}
         labelText={tree.labelText}
         labelInfo={tree.labelInfo}
         color={entitiesStyles[type]?.iconColor}
@@ -62,7 +62,7 @@ const ProjectsTreeView = ({
     } else{
       return <StyledTreeItem
         key={tree.id}
-        nodeId={tree.id}
+        nodeId={getTreeId(tree)}
         labelText={tree.labelText}
         labelInfo={tree.labelInfo}
         color={entitiesStyles[type]?.iconColor}
@@ -100,7 +100,7 @@ const ProjectsTreeView = ({
         textAlign: 'left'
       }}
       onNodeSelect={handleOnNodeSelect}
-      selected={selectedNode?.id ?? null}
+      selected={getTreeId(selectedNode) ?? null}
     >
       {!loading && !isEmpty(tree) && renderNodes({ tree })}
       {!loading && isEmpty(tree) && renderEmptyTree()}

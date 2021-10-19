@@ -14,29 +14,7 @@ import { CONTROL_UNIT_TYPE } from "constants/business-types";
 import { Avatar } from "@mui/material";
 
 export const getIndicators = (kpis) => [
-  {
-    title: "Facturación",
-    icon: <Assignment />,
-    lg: 3,
-    indicators: [
-      {
-        field: "Facturación Anterior",
-        value: kpis.facturacioRealAnterior,
-      },
-      {
-        field: "Facturación Periodo",
-        value: kpis.facturacioRealPeriode,
-      },
-      {
-        field: "Facturación Año Natural",
-        value: kpis.facturacioRealAny,
-      },
-      {
-        field: "Facturación a Origen",
-        value: kpis.facturacioRealOrigen,
-      },
-    ],
-  },
+
   {
     title: "Produccion",
     icon: <Engineering />,
@@ -48,7 +26,7 @@ export const getIndicators = (kpis) => [
         breakpoints: 3,
       },
       {
-        field: "Producción Periodo",
+        field: "Producción Período",
         value: kpis.produccioPeriode,
         breakpoints: 2,
       },
@@ -80,7 +58,7 @@ export const getIndicators = (kpis) => [
         breakpoints: 3,
       },
       {
-        field: "Coste Teórico Pendiente",
+        field: "Coste Teórico Período",
         value: kpis.costTeoricPeriode,
         breakpoints: 2,
       },
@@ -111,7 +89,7 @@ export const getIndicators = (kpis) => [
         value: kpis.costRealAnterior,
       },
       {
-        field: "Coste Real Pendiente",
+        field: "Coste Real Período",
         value: kpis.costRealPeriode,
       },
       {
@@ -178,11 +156,11 @@ export const getIndicators = (kpis) => [
     indicators: [
       {
         field: "Obra Pendiente Anterior",
-        value: kpis.obraPendentFacturar,
+        value: kpis.obraPendentAnterior,
       },
       {
         field: "Obra Pendiente Período",
-        value: kpis.obraPendent,
+        value: kpis.obraPendentPeriode,
       },
       {
         field: "Obra Pendiente año Natural",
@@ -194,15 +172,40 @@ export const getIndicators = (kpis) => [
       },
     ],
   },
+  {
+    title: "Facturación",
+    icon: <Assignment />,
+    lg: 3,
+    indicators: [
+      {
+        field: "Facturación Anterior",
+        value: kpis.facturacioRealAnterior,
+      },
+      {
+        field: "Facturación Periodo",
+        value: kpis.facturacioRealPeriode,
+      },
+      {
+        field: "Facturación Año Natural",
+        value: kpis.facturacioRealAny,
+      },
+      {
+        field: "Facturación a Origen",
+        value: kpis.facturacioRealOrigen,
+      },
+    ],
+  },
 ];
 
 export const columnsIndicatorsPartida = (intl) => [
+
   {
     id: "unitatControlCodi",
     id2: "unitatControlDescripcio",
     label: "Código - Descripción",
     minWidth: 400,
     className: "borderRight",
+   
   },
 
   {
@@ -240,6 +243,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue:true,
   },
   {
     label: "Anterior",
@@ -276,6 +280,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue:true,
   },
   {
     label: "Anterior",
@@ -313,6 +318,7 @@ export const columnsIndicatorsPartida = (intl) => [
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
     className: "borderLeft",
+    colorValue:true,
   },
   {
     label: "Período",
@@ -320,6 +326,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue:true,
   },
   {
     label: "Año",
@@ -327,6 +334,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue:true,
   },
   {
     label: "Origen",
@@ -334,6 +342,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue:true,
   },
   {
     label: "Anterior",
@@ -342,6 +351,7 @@ export const columnsIndicatorsPartida = (intl) => [
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
     className: "borderLeft",
+    colorValue:true,
   },
   {
     label: "Período",
@@ -349,6 +359,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue:true,
   },
   {
     label: "Año",
@@ -356,6 +367,7 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue:true,
   },
   {
     label: "Origen",
@@ -363,10 +375,11 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue:true,
   },
   {
     label: "Anterior",
-    id: "obraPendentFacturar",
+    id: "obraPendentAnterior",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
@@ -374,7 +387,7 @@ export const columnsIndicatorsPartida = (intl) => [
   },
   {
     label: "Período",
-    id: "obraPendent",
+    id: "obraPendentPeriode",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
@@ -426,6 +439,7 @@ export const columnsSubTotal = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     id: "costTeoricAnterior",
@@ -457,6 +471,7 @@ export const columnsSubTotal = (intl) => [
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     id: "costRealAnterior",
@@ -489,24 +504,28 @@ export const columnsSubTotal = (intl) => [
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
     className: "borderLeft",
+    colorValue: true,
   },
   {
     id: "beneficiPeriode",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     id: "beneficiAny",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     id: "beneficiOrigen",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     id: "desviacioCostAnterior",
@@ -514,34 +533,38 @@ export const columnsSubTotal = (intl) => [
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
     className: "borderLeft",
+    colorValue: true,
   },
   {
     id: "desviacioPeriode",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     id: "desviacioAny",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
     id: "desviacioOrigen",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
+    colorValue: true,
   },
   {
-    id: "obraPendentFacturar",
+    id: "obraPendentAnterior",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
     className: "borderLeft",
   },
   {
-    id: "obraPendent",
+    id: "obraPendentPeriode",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,

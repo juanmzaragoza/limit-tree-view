@@ -10,6 +10,7 @@ const URL = 'api/estp/recursosEstudi?query=liniaEstudi.id=="{id}"&sort=codi';
 const HEADER_URL = 'api/estp/liniesEstudi';
 const UPDATE_RESOURCE_URL = 'api/estp/recursosEstudi';
 const LOAD_KPIS_URL = 'api/estp/liniesEstudi/{id}/indicadors';
+const LOAD_COSTES_URL = "api/estp/liniesEstudi/{id}/costReal";
 
 //Functions
 export const loadData = ({ url = URL, id }) => {
@@ -119,6 +120,28 @@ export const loadKpis = ({ url = LOAD_KPIS_URL, id }) => {
   };
 };
 
+export const loadCostes = ({ url = LOAD_COSTES_URL, id }) => {
+  return async (dispatch) => {
+    const apiCall = () => Axios.get(url.replace("{id}", id));
+    try {
+      dispatch(add({ loading: true }));
+      apiCall()
+        .then(({ data }) => data)
+        .then(({ _embedded }) => {
+          dispatch(add({ costesPartida: _embedded?.liniaEstudiCostReals,  }));
+          dispatch(add({ loading: false }));
+        })
+        .catch((error) => {
+          console.log(error);
+          dispatch(add({ loading: false }));
+        })
+        .finally(() => {
+          dispatch(add({ loading: false }));
+        });
+    } catch (error) {}
+  };
+};
+
 //Action creators
 export const add = (payload) => {
   return {
@@ -145,7 +168,8 @@ const initialState = {
   partida: {},
   rows: [],
   loading: false,
-  kpis: []
+  kpis: [],
+  costesPartida : []
 };
 
 const reducer = (state = initialState, action) => {

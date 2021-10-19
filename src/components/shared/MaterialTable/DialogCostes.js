@@ -1,0 +1,134 @@
+import * as React from "react";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Paper,
+  Table,
+  TableContainer,
+  TableCell,
+  TableBody,
+  TableHead,
+  TableRow,
+  CircularProgress,
+  Stack,
+} from "@mui/material";
+import { formatCurrency } from "utils/formats";
+
+export const columns = [
+  {
+    id: "familiaArticleDescripcio",
+    id2: "familiaArticleCodi",
+    label: "Familia artículo",
+    minWidth: 270,
+  },
+  {
+    id: "articleDescripcio",
+    id2: "articleCodi",
+    label: "Artículo",
+    minWidth: 270,
+  },
+
+  {
+    label: "Unidades",
+    id: "unitats",
+    minWidth: 140,
+    numeric: true,
+  },
+  {
+    label: "Precio",
+    id: "preu",
+    minWidth: 140,
+    numeric: true,
+    format: (value) => formatCurrency(value ?? 0),
+  },
+  {
+    label: "Importe",
+    id: "importt",
+    minWidth: 140,
+    numeric: true,
+    format: (value) => formatCurrency(value ?? 0),
+  },
+];
+
+const DialogCostes = ({ open, onClose, contentDialog, loading }) => {
+  return (
+    <Dialog open={open} onClose={onClose} fullWidth={true} maxWidth={"lg"}>
+      <DialogTitle>Coste Real</DialogTitle>
+      <DialogContent>
+        {loading ? (
+          <Stack sx={{ color: "grey.500", alignItems: "center"}}>
+            <CircularProgress color="inherit" />
+          </Stack>
+        ) : (
+          <Paper>
+            <TableContainer sx={{ mt: 1 }}>
+              <Table aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    {columns.map((column, index) => (
+                      <TableCell
+                        key={index}
+                        style={{
+                          top: 57,
+                          minWidth: column.minWidth,
+                          fontWeight: "bold",
+                        }}
+                        align={column.numeric ? "right" : "left"}
+                        className={column.className}
+                      >
+                        {column.label}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {!contentDialog.length && (
+                    <TableRow hover>
+                      <TableCell align="center" colSpan={5}>
+                        No hay costes reales para esta partida.
+                      </TableCell>
+                    </TableRow>
+                  )}
+
+                  {contentDialog.map((row, index) => {
+                    return (
+                      <TableRow hover tabIndex={-1} key={index}>
+                        {columns.map((column) => {
+                          const value = row[column.id];
+                          const value2 = row[column.id2];
+                          return (
+                            <TableCell
+                              key={column.id}
+                              align={column.numeric ? "right" : "left"}
+                              className={column.className}
+                            >
+                              {value === undefined && "---"}
+                              <span>
+                                {column.format && typeof value === "number"
+                                  ? column.format(value)
+                                  : value}{" "}
+                              </span>
+                              {value2 ? ` (${value2})` : ""}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+        )}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Cancelar</Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+export default DialogCostes;

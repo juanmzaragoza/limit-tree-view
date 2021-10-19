@@ -22,7 +22,7 @@ import {
   getPartida,
   getRows,
 } from "redux/partida/selectors";
-import { getKpis as getKpisProjecte } from "redux/project/selectors";
+import { getKpis as getKpisProjecte, getTabIndex } from "redux/project/selectors";
 import { loadHeader as loadUnitControlHeader } from "redux/unit-control";
 import {
   getUnitControl,
@@ -55,18 +55,17 @@ const ProjectDetailedContent = ({
   kpisPartida,
   kpisUnitatControl,
   actions,
+  tab,
   ...props
 }) => {
   const intl = useIntl();
   const [headerProject, setHeaderProject] = React.useState({});
   const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
-  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState(
-    []
-  );
+  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
   const [headerPartida, setHeaderPartida] = React.useState({});
   const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
-  const [tabIndex, setTabIndex] = React.useState(KPIS_TAB_INDEX);
+  const [tabIndex, setTabIndex] = React.useState(tab === 2 ? 1 : tab);
   const [indicadores, setIndicadores] = React.useState();
   const [columns] = React.useState(
     getResourceColumnsByPeriod({ period: selectedPeriod, intl })
@@ -119,23 +118,21 @@ const ProjectDetailedContent = ({
         field: "Benef. Año",
         value: kpisUnitatControl.beneficiAny,
         colorValue: getKpisColorValue({
-          value: kpisUnitatControl?.beneficiAny,
+          value: kpisUnitatControl.beneficiAny,
         }),
       },
       {
         field: "Prod. Año",
         value: kpisUnitatControl.produccioAny,
         colorValue: getKpisColorValue({
-          value: kpisUnitatControl?.produccioAny >= 0,
+          value: kpisUnitatControl.produccioAny ,
         }),
       },
-     
-
       {
         field: "Pen. Año",
         value: kpisUnitatControl.obraPendentAny,
         colorValue: getKpisColorValue({
-          value: kpisUnitatControl?.obraPendentAny >= 0,
+          value: kpisUnitatControl.obraPendentAny,
         }),
       },
     ]);
@@ -160,19 +157,19 @@ const ProjectDetailedContent = ({
       {
         field: "Benef. Año",
         value: kpisPartida.beneficiAny,
-        colorValue: getKpisColorValue({ value: kpisPartida?.beneficiAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpisPartida.beneficiAny }),
       },
       {
         field: "Prod. Año",
         value: kpisPartida.produccioAny,
-        colorValue: getKpisColorValue({ value: kpisPartida?.produccioAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpisPartida.produccioAny}),
       },
      
 
       {
         field: "Pen. Año",
         value: kpisPartida.obraPendentAny,
-        colorValue: getKpisColorValue({ value: kpisPartida?.obraPendentAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpisPartida.obraPendentAny }),
       },
       
     ]);
@@ -198,19 +195,19 @@ const ProjectDetailedContent = ({
       {
         field: "Benef. Año",
         value: kpisProjecte.beneficiAny,
-        colorValue: getKpisColorValue({ value: kpisProjecte?.beneficiAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpisProjecte.beneficiAny }),
       },
       {
         field: "Prod. Año",
         value: kpisProjecte.produccioAny,
-        colorValue: getKpisColorValue({ value: kpisProjecte?.produccioAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpisProjecte.produccioAny  }),
       },
      
 
       {
         field: "Pen. Año",
         value: kpisProjecte.obraPendentAny,
-        colorValue: getKpisColorValue({ value: kpisProjecte?.obraPendentAny >= 0 }),
+        colorValue: getKpisColorValue({ value: kpisProjecte.obraPendentAny  }),
       },
     ]);
   }, [kpisProjecte, tree, intl]);
@@ -282,7 +279,6 @@ const ProjectDetailedContent = ({
           </Grid>
         </Grid>
       </Grid>
-
       <Grid item xs={12}>
         {tabIndex === RESOURCES_TAB_INDEX && (
           <MaterialDataGrid
@@ -319,6 +315,7 @@ const mapStateToProps = (state, props) => {
     kpisPartida: getKpisPartida(state),
     kpisUnitatControl: getKpisUC(state),
     kpisProjecte: getKpisProjecte(state),
+    tab: getTabIndex(state)
   };
 };
 

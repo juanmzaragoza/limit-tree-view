@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Container, Grid, Paper } from "@mui/material";
 
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-import ProjectsTreeView from "./ProjectsTreeView";
+import ProjectsTreeView from "./ProjectsTreeView/index";
 import SelectOne from "./SelectOne";
 import DetailedContent from "./DetailedContent/index";
 import ProjectSelector from "./ProjectSelector";
@@ -22,8 +22,8 @@ const Home = ({ selectedPeriod, selectedNode, actions }) =>{
     if(selectedPeriod?.id){
       actions.getData({ periodId: selectedPeriod.id });
     }
-    setShow(false);
-    setNode(null);
+    setShow(selectedNode && !!selectedNode.id);
+    setNode(selectedNode);
   },[actions, selectedPeriod]);
 
   React.useEffect(() => {
@@ -37,7 +37,7 @@ const Home = ({ selectedPeriod, selectedNode, actions }) =>{
           <ProjectSelector />
         </Grid>
 
-        <Grid item xs={12} md={4} lg={3} sx={{ mt: 2, mb: 3 }}>
+        <Grid item xs={12} md={4} lg={4} sx={{ mt: 2, mb: 3 }}>
           <Paper
             sx={{
               p: 2,
@@ -59,7 +59,7 @@ const Home = ({ selectedPeriod, selectedNode, actions }) =>{
             </Grid>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={8} lg={9} sx={{ mt: 2, mb: 3 }}>
+        <Grid item xs={12} md={8} lg={8} sx={{ mt: 2, mb: 3 }}>
           {show && <DetailedContent data={node} />}
           {!show && <SelectOne />}
         </Grid>
