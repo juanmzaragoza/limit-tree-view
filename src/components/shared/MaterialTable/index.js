@@ -23,7 +23,7 @@ import DialogCostes from "./DialogCostes";
 import { loadCostes } from "redux/partida";
 import { selectPartida, updatePartida, loadData } from "redux/unit-control";
 import { getCost, getIsLoading } from "redux/partida/selectors";
-
+import "../TableStyle.css";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import DialogMediciones from "./DialogMediciones";

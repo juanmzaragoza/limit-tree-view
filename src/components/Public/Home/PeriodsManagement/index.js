@@ -53,7 +53,10 @@ const PeriodsManagement = ({
     }
   }, [project]);
 
-  const getDate = (value) => value.split("T")[0].replace(/-/g, "/");
+  const getDate = (value) => { const data = new Date(value)
+    return data.toLocaleDateString()};
+
+  
   React.useEffect(() => {
     setIsEmptyRows(rows.length === 0);
     setPeriods(
