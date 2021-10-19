@@ -57,6 +57,7 @@ export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
   return async (dispatch) => {
     const apiCall = () => Axios.get(url.replace("{id}", id));
     try {
+      dispatch(add({ loadingDetails: true }));
       apiCall()
         .then(({ data }) => data)
         .then(({ indicadorsPartides, indicadorsPartidesDesglossats }) => {
@@ -66,12 +67,18 @@ export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
               totals: indicadorsPartides,
             })
           );
+          dispatch(add({ loadingDetails: false }));
         })
         .catch((error) => {
           console.log(error);
+          dispatch(add({ loadingDetails: false }));
         })
-        .finally(() => {});
-    } catch (error) {}
+        .finally(() => {
+          dispatch(add({ loadingDetails: false }));
+        });
+    } catch (error) {
+      dispatch(add({ loadingDetails: false }));
+    }
   };
 };
 
@@ -110,7 +117,8 @@ const initialState = {
   loading: false,
   kpis: [],
   details: [],
-  selectedTab: 0
+  selectedTab: 0,
+  loadingDetails: false,
   
 };
 

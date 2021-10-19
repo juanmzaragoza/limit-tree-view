@@ -23,7 +23,8 @@ import {
   getRows,
   getDetails,
   getTotals,
-  getTabIndex
+  getTabIndex,
+  getIsLoadingDetails,
 } from "redux/project/selectors";
 import { getSelectedProject } from "redux/project-selector/selectors";
 import { selectAndExpandNode } from "redux/project-tree";
@@ -32,7 +33,11 @@ import { getSelectedPeriod } from "redux/period/selectors";
 
 import { entitiesStyles } from "utils/helper";
 import { formatCurrencyWithIntl } from "utils/formats";
-import { PROJECT_TYPE, CONTROL_UNIT_TYPE, PARTIDA_TYPE } from "constants/business-types";
+import {
+  PROJECT_TYPE,
+  CONTROL_UNIT_TYPE,
+  PARTIDA_TYPE,
+} from "constants/business-types";
 
 import {
   getIndicators,
@@ -40,7 +45,6 @@ import {
   columnsSubTotal,
   groups,
 } from "./configuration";
-
 
 const KPIS_TAB_INDEX = 0;
 const DETAIL_TAB_INDEX = 1;
@@ -55,7 +59,8 @@ const ProjectDetailedContent = ({
   details,
   totals,
   actions,
-  tab
+  tab,
+  loadingDetails,
 }) => {
   const intl = useIntl();
   const [headerProject, setHeaderProject] = React.useState({});
@@ -73,7 +78,6 @@ const ProjectDetailedContent = ({
       period.id && actions.loadDetails({ id: period.id });
     },
   };
-
 
   React.useEffect(() => {
     onChangeIndexExecutor[tabIndex]();
@@ -97,7 +101,6 @@ const ProjectDetailedContent = ({
         </>
       ),
       renderCell: (cellValues) => {
-        
         return (
           <IconButton
             variant="outlined"
@@ -176,7 +179,7 @@ const ProjectDetailedContent = ({
       {
         field: "Pen. Año",
         value: kpis.obraPendentAny,
-        colorValue: getKpisColorValue({ value: kpis.obraPendentAny  }),
+        colorValue: getKpisColorValue({ value: kpis.obraPendentAny }),
       },
     ]);
   }, [kpis, project, intl]);
@@ -228,7 +231,6 @@ const ProjectDetailedContent = ({
             columns={columns}
             rows={rows}
             disableInlineEdition={!isPeriodOpen({ period })}
-          
           />
         )}
         {tabIndex === KPIS_TAB_INDEX && (
@@ -242,16 +244,16 @@ const ProjectDetailedContent = ({
         )}
         {tabIndex === DETAIL_TAB_INDEX && (
           <MaterialTable
+            loadingTable={loadingDetails}
             content={details}
             contentTotal={totals}
             columns={columnsIndicatorsPartida(intl)}
             columnsSubTotal={columnsSubTotal(intl)}
             groups={groups}
-            onDoubleClick={(row) =>{
+            onDoubleClick={(row) => {
               actions.selectTab({ value: DETAIL_TAB_INDEX });
-              actions.selectNode({ ids: row.unitatControlId })
-            }
-          }
+              actions.selectNode({ ids: row.unitatControlId });
+            }}
           />
         )}
       </Grid>
@@ -270,6 +272,7 @@ const mapStateToProps = (state, props) => {
     details: getDetails(state),
     totals: getTotals(state),
     tab: getTabIndex(state),
+    loadingDetails: getIsLoadingDetails(state),
   };
 };
 
@@ -279,7 +282,7 @@ const mapDispatchToProps = (dispatch, props) => {
     resetKpis: bindActionCreators(resetKpis, dispatch),
     selectNode: bindActionCreators(selectAndExpandNode, dispatch),
     loadDetails: bindActionCreators(loadDetails, dispatch),
-    selectTab:  bindActionCreators(selectTab, dispatch),
+    selectTab: bindActionCreators(selectTab, dispatch),
   };
   return { actions };
 };

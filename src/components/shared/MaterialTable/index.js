@@ -112,13 +112,7 @@ const MaterialTable = ({
     </Stack>
   ) : (
     <Paper sx={{ width: "100%" }}>
-      {!content.length ? (
-        <TableRow hover>
-          <TableCell align="center" colSpan={5}>
-            No hay información.
-          </TableCell>
-        </TableRow>
-      ) : (
+      {content.length > 0 && (
         <TableContainer className={classes.stickyActionsColumn}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -276,7 +270,8 @@ const MaterialTable = ({
             </TableBody>
           </Table>
         </TableContainer>
-      )}
+      )}{" "}
+     
     </Paper>
   );
 };
