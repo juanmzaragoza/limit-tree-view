@@ -113,8 +113,8 @@ const ProjectDetailedContent = ({
         value: kpisUnitatControl.produccioOrigen,
       },
       {
-        field: "Pen. Origen",
-        value: kpisUnitatControl.obraPendentOrigen,
+        field: "Desv. Origen",
+        value: kpisUnitatControl.desviacioOrigen,
       },
      
       {
@@ -134,10 +134,10 @@ const ProjectDetailedContent = ({
      
 
       {
-        field: "Pen. Año",
-        value: kpisUnitatControl.obraPendentAny,
+        field: "Desv. Año",
+        value: kpisUnitatControl.desviacioAny,
         colorValue: getKpisColorValue({
-          value: kpisUnitatControl.obraPendentAny,
+          value: kpisUnitatControl.desviacioAny ,
         }),
       },
     ]);
@@ -156,8 +156,8 @@ const ProjectDetailedContent = ({
         value: kpisPartida.produccioOrigen,
       },
       {
-        field: "Pen. Origen",
-        value: kpisPartida.obraPendentOrigen,
+        field: "Desv. Origen",
+        value: kpisPartida.desviacioOrigen,
       },
       {
         field: "Benef. Año",
@@ -172,9 +172,9 @@ const ProjectDetailedContent = ({
      
 
       {
-        field: "Pen. Año",
-        value: kpisPartida.obraPendentAny,
-        colorValue: getKpisColorValue({ value: kpisPartida.obraPendentAny }),
+        field: "Desv. Año",
+        value: kpisPartida.desviacioAny,
+        colorValue: getKpisColorValue({ value: kpisPartida.desviacioAny }),
       },
       
     ]);

@@ -131,8 +131,8 @@ const ControlUnitDetailedContent = ({
         value: kpisUnitatControl.produccioOrigen,
       },
       {
-        field: "Pen. Origen",
-        value: kpisUnitatControl.obraPendentOrigen,
+        field: "Desv. Origen",
+        value: kpisUnitatControl.desviacioOrigen,
       },
      
       {
@@ -152,10 +152,10 @@ const ControlUnitDetailedContent = ({
      
 
       {
-        field: "Pen. Año",
-        value: kpisUnitatControl.obraPendentAny,
+        field: "Desv. Año",
+        value: kpisUnitatControl.desviacioAny,
         colorValue: getKpisColorValue({
-          value: kpisUnitatControl.obraPendentAny ,
+          value: kpisUnitatControl.desviacioAny ,
         }),
       },
     ]);
