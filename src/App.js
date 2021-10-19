@@ -34,7 +34,7 @@ function App() {
   return (
     <div data-testid="App" className="App">
       <ThemeProvider theme={theme}>
-        <IntlProvider locale={'es'}>
+        <IntlProvider locale={'de'}>
           <Routes />
         </IntlProvider>
       </ThemeProvider>
