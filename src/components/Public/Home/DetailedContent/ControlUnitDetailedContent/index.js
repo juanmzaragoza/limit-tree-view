@@ -249,17 +249,6 @@ const ControlUnitDetailedContent = ({
       </Grid>
 
       <Grid item xs={12}>
-        {tabIndex === PARTIDAS_TAB_INDEX && (
-          <MaterialDataGrid
-            columns={columns}
-            getRowId={(row) => row.id}
-            rows={rows}
-            loading={loading}
-            onCellEditCommit={handleCellChange}
-            disableInlineEdition={!isPeriodOpen({ period: selectedPeriod })}
-            // onRowDoubleClick={(row) => actions.selectNode({ ids: row.id })}
-          />
-        )}
         {tabIndex === KPIS_TAB_INDEX && (
           <Grid container spacing={2}>
             <MaterialCardIndicator
@@ -278,9 +267,20 @@ const ControlUnitDetailedContent = ({
             groups={groups}
             onDoubleClick={(row) => {
               actions.selectTab({ value: KPIS_TAB_INDEX});
-              actions.selectNode({ ids: row.id });
+              actions.selectNode({ ids: getTreeId(row) });
             }}
             loadingTable={loadingDetails}
+          />
+        )}
+        {tabIndex === PARTIDAS_TAB_INDEX && (
+          <MaterialDataGrid
+            columns={columns}
+            getRowId={(row) => row.id}
+            rows={rows}
+            loading={loading}
+            onCellEditCommit={handleCellChange}
+            disableInlineEdition={!isPeriodOpen({ period: selectedPeriod })}
+            // onRowDoubleClick={(row) => actions.selectNode({ ids: row.id })}
           />
         )}
       </Grid>
