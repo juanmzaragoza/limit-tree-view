@@ -55,8 +55,24 @@ export const loadData = ({ url = URL, periodId }) => {
                 }))
               }))
             }))
-          }
-          dispatch(add({ formattedData, data: _embedded }));
+          };
+          const data = {
+            ..._embedded,
+            treeId: _embedded.codi,
+            unitatsControl: _embedded['unitatsControl'].map(controlUnit => ({
+              ...controlUnit,
+              treeId: `${_embedded.codi}_${controlUnit.codi}`,
+              partides: controlUnit['partides']?.map(partida => ({
+                ...partida,
+                treeId: `${_embedded.codi}_${controlUnit.codi}_${partida.codi}`,
+                recursos: partida['recursos']?.map(resource => ({
+                  ...resource,
+                  treeId: `${_embedded.codi}_${controlUnit.codi}_${partida.codi}_${resource.codi}`,
+                }))
+              }))
+            }))
+          };
+          dispatch(add({ formattedData, data }));
           dispatch(add({ loading: false }));
         })
         .catch(error => {

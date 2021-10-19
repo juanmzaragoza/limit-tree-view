@@ -29,7 +29,7 @@ import { selectAndExpandNode } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
-import { entitiesStyles } from "utils/helper";
+import { entitiesStyles, getTreeId } from "utils/helper";
 import { formatCurrencyWithIntl } from "utils/formats";
 import { PROJECT_TYPE, CONTROL_UNIT_TYPE, PARTIDA_TYPE } from "constants/business-types";
 
@@ -71,7 +71,6 @@ const ProjectDetailedContent = ({
     },
   };
 
-
   React.useEffect(() => {
     onChangeIndexExecutor[tabIndex]();
   }, [tabIndex, project]);
@@ -94,7 +93,6 @@ const ProjectDetailedContent = ({
         </>
       ),
       renderCell: (cellValues) => {
-        
         return (
           <IconButton
             variant="outlined"
@@ -188,7 +186,7 @@ const ProjectDetailedContent = ({
     <Grid container spacing={1}>
       <Grid item xs={12}>
         <DetailedHeader
-          id={tree.id}
+          id={getTreeId(tree)}
           header={headerProject}
           body={projectFields}
           breakpoints={detailedHeaderBreakpoints}
