@@ -17,7 +17,7 @@ import {
   Tooltip,
 } from "@mui/material";
 
-import EuroIcon from '@mui/icons-material/Euro';
+import EuroIcon from "@mui/icons-material/Euro";
 import SpeedIcon from "@mui/icons-material/Speed";
 import DialogCostes from "./DialogCostes";
 import { loadCostes } from "redux/partida";
@@ -99,7 +99,7 @@ const MaterialTable = ({
       actions.loadData({ id: unitControl.id });
       actions.findPartida({ ids: getPartidaInfo.id });
       setOpenMediciones(false);
-      
+
       // update related data
     } catch (e) {
       // handle errors
@@ -112,68 +112,75 @@ const MaterialTable = ({
     </Stack>
   ) : (
     <Paper sx={{ width: "100%" }}>
-      <TableContainer className={classes.stickyActionsColumn}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow className="tableRowBorder">
-              {groups.map((column, index) => {
-                return (
+      {!content.length ? (
+        <TableRow hover>
+          <TableCell align="center" colSpan={5}>
+            No hay información.
+          </TableCell>
+        </TableRow>
+      ) : (
+        <TableContainer className={classes.stickyActionsColumn}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow className="tableRowBorder">
+                {groups.map((column, index) => {
+                  return (
+                    <TableCell
+                      align="center"
+                      colSpan={column.colSpan}
+                      sx={{ fontWeight: "bold" }}
+                      key={index}
+                      className={column.className}
+                    >
+                      {column.label}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+              <TableRow sx={{}}>
+                {columns.map((column, index) => (
                   <TableCell
-                    align="center"
-                    colSpan={column.colSpan}
-                    sx={{ fontWeight: "bold" }}
                     key={index}
+                    style={{
+                      top: 57,
+                      minWidth: column.minWidth,
+                      fontWeight: "bold",
+                    }}
+                    align={column.numeric ? "right" : "left"}
                     className={column.className}
                   >
                     {column.label}
                   </TableCell>
-                );
-              })}
-            </TableRow>
-            <TableRow sx={{}}>
-              {columns.map((column, index) => (
-                <TableCell
-                  key={index}
-                  style={{
-                    top: 57,
-                    minWidth: column.minWidth,
-                    fontWeight: "bold",
-                  }}
-                  align={column.numeric ? "right" : "left"}
-                  className={column.className}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {content.map((row, index) => {
-              return (
-                <TableRow
-                  hover
-                  tabIndex={-1}
-                  key={index}
-                  onDoubleClick={(e) => onDoubleClick(row)}
-                >
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    const value2 = row[column.id2];
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {content.map((row, index) => {
+                return (
+                  <TableRow
+                    hover
+                    tabIndex={-1}
+                    key={index}
+                    onDoubleClick={(e) => onDoubleClick(row)}
+                  >
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      const value2 = row[column.id2];
 
-                    return (
-                      <TableCell
-                        key={column.id}
-                        align={column.numeric ? "right" : "left"}
-                        className={column.className}
-                      >
-                         {column.buttonMedicion && (
+                      return (
+                        <TableCell
+                          key={column.id}
+                          align={column.numeric ? "right" : "left"}
+                          className={column.className}
+                        >
+                          {column.buttonMedicion && (
                             <React.Fragment>
                               <Tooltip title="Mediciones" arrow>
                                 <IconButton
                                   aria-label="mediciones"
                                   onClick={() => handleClickMediciones(row.id)}
                                   color={"info"}
-                                  sx={{padding: 0}}
+                                  sx={{ padding: 0 }}
                                 >
                                   <SpeedIcon />
                                 </IconButton>
@@ -185,8 +192,7 @@ const MaterialTable = ({
                               <Tooltip title="Costes Reales" arrow>
                                 <IconButton
                                   aria-label="costes-reales"
-                                  sx={{padding: 0, mr:1}}
-                               
+                                  sx={{ padding: 0, mr: 1 }}
                                   onClick={() => handleClick(row.id)}
                                   color={"info"}
                                 >
@@ -195,6 +201,57 @@ const MaterialTable = ({
                               </Tooltip>
                             </React.Fragment>
                           )}
+                          {value === undefined && "---"}
+                          <span
+                            className={
+                              column.colorValue
+                                ? value > 0
+                                  ? classes.colorGreen
+                                  : value < 0
+                                  ? classes.colorRed
+                                  : ""
+                                : ""
+                            }
+                          >
+                            {column.format && typeof value === "number"
+                              ? column.format(value)
+                              : value}{" "}
+                          </span>
+                          {value2
+                            ? column.format && typeof value === "number"
+                              ? column.format(value2)
+                              : ` - ${value2}`
+                            : ""}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
+              <DialogCostes
+                open={open}
+                onClose={() => setOpen(false)}
+                contentDialog={costs}
+                loading={loading}
+              />
+              <DialogMediciones
+                open={openMediciones}
+                onClose={() => setOpenMediciones(false)}
+                contentDialog={getPartidaInfo}
+                loading={loading}
+                handleUpdateMediciones={handleUpdateMediciones}
+              />
+              <TableRow>
+                <TableCell sx={{ fontWeight: "bold" }}>TOTAL</TableCell>
+                {columnsSubTotal.map((column) => {
+                  const value = contentTotal[column.id];
+                  return (
+                    <TableCell
+                      key={column.id}
+                      align={column.numeric ? "right" : "left"}
+                      className={column.className}
+                    >
+                      <strong>
                         {value === undefined && "---"}
                         <span
                           className={
@@ -209,69 +266,17 @@ const MaterialTable = ({
                         >
                           {column.format && typeof value === "number"
                             ? column.format(value)
-                            : value}{" "}
+                            : value}
                         </span>
-                        {value2
-                          ? column.format && typeof value === "number"
-                            ? column.format(value2)
-                            : ` - ${value2}`
-                          : ""}
-                 
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
-            <DialogCostes
-              open={open}
-              onClose={() => setOpen(false)}
-              contentDialog={costs}
-              loading={loading}
-            />
-            <DialogMediciones
-              open={openMediciones}
-              onClose={() => setOpenMediciones(false)}
-              contentDialog={getPartidaInfo}
-              loading={loading}
-              handleUpdateMediciones={handleUpdateMediciones}
-         
-            />
-            <TableRow>
-              <TableCell sx={{ fontWeight: "bold" }}>TOTAL</TableCell>
-              {columnsSubTotal.map((column) => {
-                const value = contentTotal[column.id];
-                return (
-                  <TableCell
-                    key={column.id}
-                    align={column.numeric ? "right" : "left"}
-                    className={column.className}
-                  >
-                    <strong>
-                      {value === undefined && "---"}
-                      <span
-                        className={
-                          column.colorValue
-                            ? value > 0
-                              ? classes.colorGreen
-                              : value < 0
-                              ? classes.colorRed
-                              : ""
-                            : ""
-                        }
-                      >
-                        {column.format && typeof value === "number"
-                          ? column.format(value)
-                          : value}
-                      </span>
-                    </strong>
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
+                      </strong>
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </Paper>
   );
 };
