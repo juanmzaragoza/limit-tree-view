@@ -21,7 +21,13 @@ export const loadData = ({ url = URL, id }) => {
       apiCall()
         .then(({ data }) => data)
         .then(({ _embedded }) => {
-          dispatch(add({ rows: _embedded?.liniaEstudis ?? [] }));
+          const rows = _embedded?.liniaEstudis ?? [];
+          dispatch(add({
+            rows: rows.map(row => ({
+              ...row,
+              treeId: `${row?.estudiProjecte?.pk?.codi}_${row.unitatControlEstudi.description}_${row.codi}`
+            })
+          )}));
           dispatch(add({ loading: false }));
         })
         .catch((error) => {
@@ -122,7 +128,10 @@ export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
         .then(({ indicadorsPartides, indicadorsPartidesDesglossats }) => {
           dispatch(
             add({
-              details: indicadorsPartidesDesglossats,
+              details: indicadorsPartidesDesglossats.map(indicadorPartidesDesglossats => ({
+                ...indicadorPartidesDesglossats,
+                treeId: `${indicadorPartidesDesglossats?.estudiProjecteCodi}_${indicadorPartidesDesglossats.codi}`
+              })),
               totals: indicadorsPartides,
             })
           );
