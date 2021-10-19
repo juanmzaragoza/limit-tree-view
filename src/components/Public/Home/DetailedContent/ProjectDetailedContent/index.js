@@ -23,6 +23,7 @@ import {
   getRows,
   getDetails,
   getTotals,
+  getTabIndex
 } from "redux/project/selectors";
 import { getSelectedProject } from "redux/project-selector/selectors";
 import { selectAndExpandNode } from "redux/project-tree";
@@ -40,6 +41,7 @@ import {
   groups,
 } from "./configuration";
 
+
 const KPIS_TAB_INDEX = 0;
 const DETAIL_TAB_INDEX = 1;
 const PROJECTS_TAB_INDEX = 2;
@@ -53,12 +55,13 @@ const ProjectDetailedContent = ({
   details,
   totals,
   actions,
+  tab
 }) => {
   const intl = useIntl();
   const [headerProject, setHeaderProject] = React.useState({});
   const [projectFields, setProjectFields] = React.useState([]);
   const [indicadores, setIndicadores] = React.useState();
-  const [tabIndex, setTabIndex] = React.useState(KPIS_TAB_INDEX);
+  const [tabIndex, setTabIndex] = React.useState(tab);
   const colorUnit = entitiesStyles[PARTIDA_TYPE].iconColor;
 
   const onChangeIndexExecutor = {
@@ -266,6 +269,7 @@ const mapStateToProps = (state, props) => {
     kpis: getKpis(state),
     details: getDetails(state),
     totals: getTotals(state),
+    tab: getTabIndex(state),
   };
 };
 

@@ -22,13 +22,19 @@ import {
   getPartida,
   getRows,
 } from "redux/partida/selectors";
-import { getKpis as getKpisProjecte, getTabIndex } from "redux/project/selectors";
+import {
+  getKpis as getKpisProjecte,
+  getTabIndex,
+} from "redux/project/selectors";
 import { loadHeader as loadUnitControlHeader } from "redux/unit-control";
 import {
   getUnitControl,
   getKpis as getKpisUC,
 } from "redux/unit-control/selectors";
-import { loadData as loadTreeData, selectAndExpandNode } from "redux/project-tree";
+import {
+  loadData as loadTreeData,
+  selectAndExpandNode,
+} from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
@@ -39,10 +45,12 @@ import {
   PROJECT_TYPE,
 } from "constants/business-types";
 
-import {getIndicators} from "./configuration";
+import { getIndicators } from "./configuration";
+import { selectTab } from "redux/project";
 
 const KPIS_TAB_INDEX = 0;
 const RESOURCES_TAB_INDEX = 1;
+const TAB_INDEX_UP_TREE = 2;
 
 const ProjectDetailedContent = ({
   rows,
@@ -107,7 +115,7 @@ const ProjectDetailedContent = ({
         field: "Benef. Origen",
         value: kpisUnitatControl.beneficiOrigen,
       },
-  
+
       {
         field: "Prod. Origen",
         value: kpisUnitatControl.produccioOrigen,
@@ -116,7 +124,7 @@ const ProjectDetailedContent = ({
         field: "Desv. Origen",
         value: kpisUnitatControl.desviacioOrigen,
       },
-     
+
       {
         field: "Benef. Año",
         value: kpisUnitatControl.beneficiAny,
@@ -128,16 +136,15 @@ const ProjectDetailedContent = ({
         field: "Prod. Año",
         value: kpisUnitatControl.produccioAny,
         colorValue: getKpisColorValue({
-          value: kpisUnitatControl.produccioAny ,
+          value: kpisUnitatControl.produccioAny,
         }),
       },
-     
 
       {
         field: "Desv. Año",
         value: kpisUnitatControl.desviacioAny,
         colorValue: getKpisColorValue({
-          value: kpisUnitatControl.desviacioAny ,
+          value: kpisUnitatControl.desviacioAny,
         }),
       },
     ]);
@@ -150,7 +157,7 @@ const ProjectDetailedContent = ({
         field: "Benef. Origen",
         value: kpisPartida.beneficiOrigen,
       },
-      
+
       {
         field: "Prod. Origen",
         value: kpisPartida.produccioOrigen,
@@ -167,28 +174,25 @@ const ProjectDetailedContent = ({
       {
         field: "Prod. Año",
         value: kpisPartida.produccioAny,
-        colorValue: getKpisColorValue({ value: kpisPartida.produccioAny}),
+        colorValue: getKpisColorValue({ value: kpisPartida.produccioAny }),
       },
-     
 
       {
         field: "Desv. Año",
         value: kpisPartida.desviacioAny,
         colorValue: getKpisColorValue({ value: kpisPartida.desviacioAny }),
       },
-      
     ]);
   }, [kpisPartida, partida, intl]);
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
     setHeaderProjectFields([
-
       {
         field: "Benef. Origen",
         value: kpisProjecte.beneficiOrigen,
       },
-      
+
       {
         field: "Prod. Origen",
         value: kpisProjecte.produccioOrigen,
@@ -205,14 +209,13 @@ const ProjectDetailedContent = ({
       {
         field: "Prod. Año",
         value: kpisProjecte.produccioAny,
-        colorValue: getKpisColorValue({ value: kpisProjecte.produccioAny  }),
+        colorValue: getKpisColorValue({ value: kpisProjecte.produccioAny }),
       },
-     
 
       {
         field: "Pen. Año",
         value: kpisProjecte.obraPendentAny,
-        colorValue: getKpisColorValue({ value: kpisProjecte.obraPendentAny  }),
+        colorValue: getKpisColorValue({ value: kpisProjecte.obraPendentAny }),
       },
     ]);
   }, [kpisProjecte, tree, intl]);
@@ -242,7 +245,10 @@ const ProjectDetailedContent = ({
           body={headerProjectFields}
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[PROJECT_TYPE]}
-          onClick={(id) => actions.selectNode({ ids: id })}
+          onClick={(id) => {
+            actions.selectTab({ value:  tabIndex === 1 ? 2 : 0  });
+            actions.selectNode({ ids: id });
+          }}
         />
       </Grid>
       <Grid item xs={4}>
@@ -252,7 +258,10 @@ const ProjectDetailedContent = ({
           body={headerControlUnitFields}
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[CONTROL_UNIT_TYPE]}
-          onClick={(id) => actions.selectNode({ ids: id })}
+          onClick={(id) => {
+            actions.selectTab({ value: tabIndex === 1 ? 2 : 0 });
+            actions.selectNode({ ids: id });
+          }}
         />
       </Grid>
       <Grid item xs={4}>
@@ -280,7 +289,7 @@ const ProjectDetailedContent = ({
             </Tabs>
           </Grid>
           <Grid item xs={2}>
-            <CardTotal body={content} breakPoint={12}/>
+            <CardTotal body={content} breakPoint={12} />
           </Grid>
         </Grid>
       </Grid>
@@ -321,7 +330,7 @@ const mapStateToProps = (state, props) => {
     kpisPartida: getKpisPartida(state),
     kpisUnitatControl: getKpisUC(state),
     kpisProjecte: getKpisProjecte(state),
-    tab: getTabIndex(state)
+    tab: getTabIndex(state),
   };
 };
 
@@ -334,6 +343,7 @@ const mapDispatchToProps = (dispatch, props) => {
     loadKpis: bindActionCreators(loadKpis, dispatch),
     resetKpis: bindActionCreators(resetKpis, dispatch),
     selectNode: bindActionCreators(selectAndExpandNode, dispatch),
+    selectTab:  bindActionCreators(selectTab, dispatch),
   };
   return { actions };
 };

@@ -222,7 +222,10 @@ const ControlUnitDetailedContent = ({
           body={headerProjectFields}
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[PROJECT_TYPE]}
-          onClick={(id) => actions.selectNode({ ids: id })}
+          onClick={(id) => {
+            actions.selectTab({ value: tabIndex });
+            actions.selectNode({ ids: id });
+          }}
 
         />
       </Grid>
