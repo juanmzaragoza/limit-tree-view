@@ -53,10 +53,11 @@ const PeriodsManagement = ({
     }
   }, [project]);
 
-  const getDate = (value) => { const data = new Date(value)
-    return data.toLocaleDateString()};
+  const getDate = (value) => {
+    const data = new Date(value);
+    return data.toLocaleDateString();
+  };
 
-  
   React.useEffect(() => {
     setIsEmptyRows(rows.length === 0);
     setPeriods(
@@ -74,23 +75,22 @@ const PeriodsManagement = ({
     const data = dateEnd;
     try {
       await actions.addPeriod({ id: periodSelected.id, codiAccio, data });
-      if(openNewPeriod){
+      if (openNewPeriod) {
         openNew();
+        setReload(true);
+      }else{
+        setReload(true);
       }
-      
       setOpen(false);
-  
-    } catch (e) {
-  
-    }
-    setReload(true);
+    } catch (e) {}
+    
   };
 
   const openNew = () => {
     const codiAccio = "ETP_NOUPER";
     actions.openNewPeriod({ id: periodSelected.id, codiAccio });
     setOpenNewPeriod(false);
-   
+
   };
 
   const openPeriod = () => {
@@ -105,45 +105,51 @@ const PeriodsManagement = ({
   }, [reload]);
 
   const renderPeriodStatus = () => {
-    if(isEmptyRows) return "";
-    if(tancat) {
-      return <Chip
-        variant="filled"
-        label="Cerrado"
-        color="warning"
-        icon={<Lock />}
-        sx={{ mr: 2, fontSize: "14px" }}
-      />
-    } else{
-      return <Chip
-        variant="filled"
-        label="Abierto"
-        color="success"
-        icon={<LockOpen />}
-        sx={{ mr: 2, fontSize: "14px" }}
-      />
+    if (isEmptyRows) return "";
+    if (tancat) {
+      return (
+        <Chip
+          variant="filled"
+          label="Cerrado"
+          color="warning"
+          icon={<Lock />}
+          sx={{ mr: 2, fontSize: "14px" }}
+        />
+      );
+    } else {
+      return (
+        <Chip
+          variant="filled"
+          label="Abierto"
+          color="success"
+          icon={<LockOpen />}
+          sx={{ mr: 2, fontSize: "14px" }}
+        />
+      );
     }
   };
 
   const renderChangePeriodButton = () => {
-    if(isEmptyRows) {
-      return <Button variant={"outlined"}>
-        Crear Período
-      </Button>;
+    if (isEmptyRows) {
+      return <Button variant={"outlined"}>Crear Período</Button>;
     }
-    if(tancat) {
-      return <Button variant={"outlined"} onClick={(e) => openPeriod()}>
-        Abrir Período
-      </Button>;
-    } else{
-      return <Button
-        variant={"outlined"}
-        onClick={() => {
-          setOpen(true);
-        }}
-      >
-        Cerrar Período
-      </Button>;
+    if (tancat) {
+      return (
+        <Button variant={"outlined"} onClick={(e) => openPeriod()}>
+          Abrir Período
+        </Button>
+      );
+    } else {
+      return (
+        <Button
+          variant={"outlined"}
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          Cerrar Período
+        </Button>
+      );
     }
   };
 
@@ -154,7 +160,7 @@ const PeriodsManagement = ({
           id={"period"}
           items={periods}
           onChange={(e) => {
-            actions.setPeriod({period: e});
+            actions.setPeriod({ period: e });
             setTancat(e.tancat);
           }}
           disabled={disabled}
@@ -178,7 +184,7 @@ const PeriodsManagement = ({
       </Grid>
       <Grid item xs={12} md={12} lg={12}>
         {renderPeriodStatus()}
-        <MaterialCheckbox items={statuses}/>
+        <MaterialCheckbox items={statuses} />
       </Grid>
     </Grid>
   );
