@@ -166,6 +166,35 @@ const MaterialTable = ({
                         align={column.numeric ? "right" : "left"}
                         className={column.className}
                       >
+                         {column.buttonMedicion && (
+                            <React.Fragment>
+                              <Tooltip title="Mediciones" arrow>
+                                <IconButton
+                                  aria-label="mediciones"
+                                  onClick={() => handleClickMediciones(row.id)}
+                                  color={"info"}
+                                  sx={{padding: 0}}
+                                >
+                                  <SpeedIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </React.Fragment>
+                          )}
+                          {column.button && (
+                            <React.Fragment>
+                              <Tooltip title="Costes Reales" arrow>
+                                <IconButton
+                                  aria-label="costes-reales"
+                                  sx={{padding: 0, mr:1}}
+                               
+                                  onClick={() => handleClick(row.id)}
+                                  color={"info"}
+                                >
+                                  <EuroIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </React.Fragment>
+                          )}
                         {value === undefined && "---"}
                         <span
                           className={
@@ -187,36 +216,7 @@ const MaterialTable = ({
                             ? column.format(value2)
                             : ` - ${value2}`
                           : ""}
-                        <span style={{ float: "right" }}>
-                          {column.buttonMedicion && (
-                            <React.Fragment>
-                              <Tooltip title="Mediciones" arrow>
-                                <IconButton
-                                  aria-label="medicones"
-                                  component="span"
-                                  onClick={() => handleClickMediciones(row.id)}
-                                  color={"info"}
-                                >
-                                  <SpeedIcon />
-                                </IconButton>
-                              </Tooltip>
-                            </React.Fragment>
-                          )}
-                          {column.button && (
-                            <React.Fragment>
-                              <Tooltip title="Costes Reales" arrow>
-                                <IconButton
-                                  aria-label="costes-reales"
-                                  component="span"
-                                  onClick={() => handleClick(row.id)}
-                                  color={"info"}
-                                >
-                                  <EuroIcon />
-                                </IconButton>
-                              </Tooltip>
-                            </React.Fragment>
-                          )}
-                        </span>
+                 
                       </TableCell>
                     );
                   })}
