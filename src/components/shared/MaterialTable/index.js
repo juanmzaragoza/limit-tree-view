@@ -16,7 +16,8 @@ import {
   CircularProgress,
   Tooltip,
 } from "@mui/material";
-import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+
+import EuroIcon from '@mui/icons-material/Euro';
 import SpeedIcon from "@mui/icons-material/Speed";
 import DialogCostes from "./DialogCostes";
 import { loadCostes } from "redux/partida";
@@ -210,7 +211,7 @@ const MaterialTable = ({
                                   onClick={() => handleClick(row.id)}
                                   color={"info"}
                                 >
-                                  <MonetizationOnIcon />
+                                  <EuroIcon />
                                 </IconButton>
                               </Tooltip>
                             </React.Fragment>

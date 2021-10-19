@@ -95,7 +95,7 @@ export default function MaterialCardIndicator({
                   {indicators?.map(({ field, value, breakpoints }, index) => {
                     return (
 
-                      <Grid item xs={breakpoints ? breakpoints : lg} key={index} >
+                      <Grid item xs={lg} key={index} >
 
                         {field}: <br />
                         <strong>

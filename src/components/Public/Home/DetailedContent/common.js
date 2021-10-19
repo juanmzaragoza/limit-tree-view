@@ -180,7 +180,7 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
       headerName: "Medición",
       type: "number",
       minWidth: 140,
-      editable: !number,
+      editable: true,
     },
     {
       field: "unitatTipus",
@@ -196,7 +196,7 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
       valueFormatter: (params) => {
         return formatCurrencyWithIntl(params.row.costUnitat ?? 0, intl);
       },
-      editable: !number,
+      editable: true,
     },
     {
       field: "costTotal",

@@ -14,32 +14,32 @@ import { Avatar, Button } from "@mui/material";
 
 export const getIndicators = (kpisUnitatControl) => [
   {
-    title: "Produccion",
+    title: "Producción",
     icon: <Engineering />,
     lg: 2,
     indicators: [
       {
-        field: "Producción Anterior",
+        field: "Anterior",
         value: kpisUnitatControl.produccioAnterior,
         breakpoints: 3,
       },
       {
-        field: "Producción Período",
+        field: "Período",
         value: kpisUnitatControl.produccioPeriode,
         breakpoints: 2,
       },
       {
-        field: "Producción Año Natural",
+        field: "Año Natural",
         value: kpisUnitatControl.produccioAny,
         breakpoints: 3,
       },
       {
-        field: "Producción a Origen",
+        field: "Origen",
         value: kpisUnitatControl.produccioOrigen,
         breakpoints: 2,
       },
       {
-        field: "Producción Pendiente",
+        field: "Pendiente",
         value: kpisUnitatControl.produccioPendent,
         breakpoints: 2,
       },
@@ -51,27 +51,27 @@ export const getIndicators = (kpisUnitatControl) => [
     lg: 2,
     indicators: [
       {
-        field: "Coste Teórico Anterior",
+        field: "Anterior",
         value: kpisUnitatControl.costTeoricAnterior,
         breakpoints: 3,
       },
       {
-        field: "Coste Teórico Período",
+        field: "Período",
         value: kpisUnitatControl.costTeoricPeriode,
         breakpoints: 2,
       },
       {
-        field: "Coste Teórico Año Natural",
+        field: "Año Natural",
         value: kpisUnitatControl.costTeoricAny,
         breakpoints: 3,
       },
       {
-        field: "Coste Teórico a Origen",
+        field: "Origen",
         value: kpisUnitatControl.costTeoricOrigen,
         breakpoints: 2,
       },
       {
-        field: "Coste Teórico Pendiente",
+        field: "Pendiente",
         value: kpisUnitatControl.costTeoricPendent,
         breakpoints: 2,
       },
@@ -80,25 +80,25 @@ export const getIndicators = (kpisUnitatControl) => [
   {
     title: "Coste Real",
     icon: <StackedBarChart />,
-    lg: 3,
+    lg: 2,
     indicators: [
       {
-        field: "Coste Real Anterior",
+        field: "Anterior",
         value: kpisUnitatControl.costRealAnterior,
         icon: <StackedBarChart />,
       },
       {
-        field: "Coste Real Período",
+        field: "Período",
         value: kpisUnitatControl.costRealPeriode,
         icon: <StackedBarChart />,
       },
       {
-        field: "Coste Real año Natural",
+        field: "Año Natural",
         value: kpisUnitatControl.costRealAny,
         icon: <StackedBarChart />,
       },
       {
-        field: "Coste Real Origen",
+        field: "Origen",
         value: kpisUnitatControl.costRealOrigen,
         icon: <StackedBarChart />,
       },
@@ -107,22 +107,22 @@ export const getIndicators = (kpisUnitatControl) => [
   {
     title: "Beneficios",
     icon: <Euro />,
-    lg: 3,
+    lg: 2,
     indicators: [
       {
-        field: "Beneficio Anterior",
+        field: "Anterior",
         value: kpisUnitatControl.beneficiAnterior,
       },
       {
-        field: "Beneficio Período",
+        field: "Período",
         value: kpisUnitatControl.beneficiPeriode,
       },
       {
-        field: "Beneficio año Natural",
+        field: "Año Natural",
         value: kpisUnitatControl.beneficiAny,
       },
       {
-        field: "Beneficio Origen",
+        field: "Origen",
         value: kpisUnitatControl.beneficiOrigen,
       },
     ],
@@ -130,50 +130,28 @@ export const getIndicators = (kpisUnitatControl) => [
   {
     title: "Desviación",
     icon: <CallMissedOutgoing />,
-    lg: 3,
+    lg: 2,
     indicators: [
       {
-        field: "Desviación Anterior",
+        field: "Anterior",
         value: kpisUnitatControl.desviacioCostAnterior,
       },
       {
-        field: "Desviación Período",
+        field: "Período",
         value: kpisUnitatControl.desviacioPeriode,
       },
       {
-        field: "Desviación año Natural",
+        field: "Año Natural",
         value: kpisUnitatControl.desviacioAny,
       },
 
       {
-        field: "Desviación Origen",
+        field: "Origen",
         value: kpisUnitatControl.desviacioOrigen,
       },
     ],
   },
-  {
-    title: "Obra Pendiente Período",
-    icon: <Construction />,
-    lg: 3,
-    indicators: [
-      {
-        field: "Obra Pendiente Anterior",
-        value: kpisUnitatControl.obraPendentAnterior,
-      },
-      {
-        field: "Obra Pendiente Período",
-        value: kpisUnitatControl.obraPendentPeriode,
-      },
-      {
-        field: "Obra Pendiente año Natural",
-        value: kpisUnitatControl.obraPendentAny,
-      },
-      {
-        field: "Obra Pendiente Origen",
-        value: kpisUnitatControl.obraPendentOrigen,
-      },
-    ],
-  },
+ 
 ];
 
 export const columnsIndicatorsPartida = (intl) => [
@@ -356,35 +334,7 @@ export const columnsIndicatorsPartida = (intl) => [
     numeric: true,
     colorValue: true,
   },
-  {
-    label: "Anterior",
-    id: "obraPendentAnterior",
-    minWidth: 140,
-    format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
-    numeric: true,
-    className: "borderLeft",
-  },
-  {
-    label: "Período",
-    id: "obraPendentPeriode",
-    minWidth: 140,
-    format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
-    numeric: true,
-  },
-  {
-    label: "Año",
-    id: "obraPendentAny",
-    minWidth: 140,
-    format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
-    numeric: true,
-  },
-  {
-    label: "Origen",
-    id: "obraPendentOrigen",
-    minWidth: 140,
-    format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
-    numeric: true,
-  },
+ 
 ];
 
 export const columnsSubTotal = (intl) => [
@@ -536,31 +486,7 @@ export const columnsSubTotal = (intl) => [
     numeric: true,
     colorValue: true,
   },
-  {
-    id: "obraPendentAnterior",
-    minWidth: 140,
-    format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
-    numeric: true,
-    className: "borderLeft",
-  },
-  {
-    id: "obraPendentPeriode",
-    minWidth: 140,
-    format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
-    numeric: true,
-  },
-  {
-    id: "obraPendentAny",
-    minWidth: 140,
-    format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
-    numeric: true,
-  },
-  {
-    id: "obraPendentOrigen",
-    minWidth: 140,
-    format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
-    numeric: true,
-  },
+ 
 ];
 
 export const groups = [
@@ -588,5 +514,5 @@ export const groups = [
   { label: "Coste Real", colSpan: 4, className: "borderLeft" },
   { label: "Beneficios", colSpan: 4, className: "borderLeft" },
   { label: "Desviación", colSpan: 4, className: "borderLeft" },
-  { label: "Obra Pendiente", colSpan: 4, className: "borderLeft" },
+
 ];
