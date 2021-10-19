@@ -8,8 +8,7 @@ const SELECT_TAB = "SELECT_TAB";
 const URL =
   'api/estp/unitatsControlEstudi?query=estudiProjecte.id=="{id}"&sort=codi';
 const LOAD_KPIS_URL = "api/estp/estudisProjecte/{id}/indicadors";
-const LOAD_DETAILS_URL =
-  "api/estp/estudisProjecte/{id}/indicadors?desglossat=true";
+const LOAD_DETAILS_URL = "api/estp/estudisProjecte/{id}/indicadors?desglossat=true";
 
 //Functions
 export const loadData = ({ url = URL, id }) => {

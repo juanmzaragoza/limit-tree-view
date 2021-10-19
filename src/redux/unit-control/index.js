@@ -11,7 +11,6 @@ const HEADER_URL = "api/estp/unitatsControlEstudi";
 const UPDATE_PARTIDA_URL = "api/estp/liniesEstudi";
 const LOAD_KPIS_URL = "api/estp/unitatsControlEstudi/{id}/indicadors";
 const LOAD_DETAILS_URL = "api/estp/unitatsControlEstudi/{id}/indicadors?desglossat=true";
-const LOAD_COSTES_URL = "api/estp/unitatsControlEstudi/{id}/costReal";
 
 //Functions
 export const loadData = ({ url = URL, id }) => {
@@ -49,7 +48,12 @@ export const loadHeader = ({ url = HEADER_URL, id }) => {
       apiCall()
         .then(({ data }) => data)
         .then((_embedded) => {
-          dispatch(add({ unitControl: _embedded }));
+          dispatch(add({
+            unitControl: {
+              ..._embedded,
+              treeId: `${_embedded?.estudiProjecte?.pk?.codi}_${_embedded.codi}`
+            }
+          }));
           //dispatch(add({ loading: false }));
         })
         .catch((error) => {

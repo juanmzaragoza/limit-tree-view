@@ -59,22 +59,8 @@ const ProjectDetailedContent = ({
   const [projectFields, setProjectFields] = React.useState([]);
   const [indicadores, setIndicadores] = React.useState();
   const [tabIndex, setTabIndex] = React.useState(KPIS_TAB_INDEX);
+
   const colorUnit = entitiesStyles[PARTIDA_TYPE].iconColor;
-
-  const onChangeIndexExecutor = {
-    [PROJECTS_TAB_INDEX]: () => {},
-    [KPIS_TAB_INDEX]: () => {
-      period.id && actions.loadKpis({ id: period.id });
-    },
-    [DETAIL_TAB_INDEX]: () => {
-      period.id && actions.loadDetails({ id: period.id });
-    },
-  };
-
-  React.useEffect(() => {
-    onChangeIndexExecutor[tabIndex]();
-  }, [tabIndex, project]);
-
   const [columns] = React.useState([
     {
       field: "id",
@@ -137,6 +123,20 @@ const ProjectDetailedContent = ({
       minWidth: 220,
     },
   ]);
+
+  const onChangeIndexExecutor = {
+    [PROJECTS_TAB_INDEX]: () => {},
+    [KPIS_TAB_INDEX]: () => {
+      period.id && actions.loadKpis({ id: period.id });
+    },
+    [DETAIL_TAB_INDEX]: () => {
+      period.id && actions.loadDetails({ id: period.id });
+    },
+  };
+
+  React.useEffect(() => {
+    onChangeIndexExecutor[tabIndex]();
+  }, [tabIndex, project]);
 
   React.useEffect(() => {
     setIndicadores(getIndicators(kpis));
@@ -223,7 +223,6 @@ const ProjectDetailedContent = ({
             columns={columns}
             rows={rows}
             disableInlineEdition={!isPeriodOpen({ period })}
-          
           />
         )}
         {tabIndex === KPIS_TAB_INDEX && (
@@ -242,11 +241,11 @@ const ProjectDetailedContent = ({
             columns={columnsIndicatorsPartida(intl)}
             columnsSubTotal={columnsSubTotal(intl)}
             groups={groups}
-            onDoubleClick={(row) =>{
+            onDoubleClick={(row) => {
+              console.log(row)
               actions.selectTab({ value: DETAIL_TAB_INDEX });
               actions.selectNode({ ids: row.unitatControlId })
-            }
-          }
+            }}
           />
         )}
       </Grid>
