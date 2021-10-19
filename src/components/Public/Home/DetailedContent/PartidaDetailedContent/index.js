@@ -76,7 +76,7 @@ const ProjectDetailedContent = ({
   const onChangeIndexExecutor = {
     [RESOURCES_TAB_INDEX]: () => {},
     [KPIS_TAB_INDEX]: () => {
-      partida.id && actions.loadKpis({ id: partida.id });
+      partida.id && actions.loadKpis({ id: props.id });
     },
   };
   React.useEffect(() => {
@@ -97,6 +97,7 @@ const ProjectDetailedContent = ({
   const loadHeader = () => actions.loadHeader({ id: props.id });
   React.useEffect(() => {
     loadHeader();
+    partida.id && actions.loadKpis({ id: props.id });
   }, [props.id]);
 
   React.useEffect(() => {
