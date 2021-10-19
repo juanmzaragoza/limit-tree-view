@@ -132,7 +132,7 @@ export const getIndicators = (kpis) => [
     indicators: [
       {
         field: "Anterior",
-        value: kpis.desviacioCostAnterior,
+        value: kpis.desviacioAnterior,
       },
       {
         field: "Período",
@@ -150,7 +150,7 @@ export const getIndicators = (kpis) => [
     ],
   },
   {
-    title: "Obra Pendiente Periodo",
+    title: "Obra Pendiente Facturar",
     icon: <Construction />,
     lg: 2,
     indicators: [
@@ -346,7 +346,7 @@ export const columnsIndicatorsPartida = (intl) => [
   },
   {
     label: "Anterior",
-    id: "desviacioCostAnterior",
+    id: "desviacioAnterior",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
@@ -500,7 +500,7 @@ export const columnsSubTotal = (intl) => [
     colorValue: true,
   },
   {
-    id: "desviacioCostAnterior",
+    id: "desviacioAnterior",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,

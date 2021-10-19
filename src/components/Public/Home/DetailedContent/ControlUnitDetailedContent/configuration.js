@@ -134,7 +134,7 @@ export const getIndicators = (kpisUnitatControl) => [
     indicators: [
       {
         field: "Anterior",
-        value: kpisUnitatControl.desviacioCostAnterior,
+        value: kpisUnitatControl.desviacioAnterior,
       },
       {
         field: "Período",
@@ -303,7 +303,7 @@ export const columnsIndicatorsPartida = (intl) => [
   },
   {
     label: "Anterior",
-    id: "desviacioCostAnterior",
+    id: "desviacioAnterior",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
@@ -458,7 +458,7 @@ export const columnsSubTotal = (intl) => [
     colorValue: true,
   },
   {
-    id: "desviacioCostAnterior",
+    id: "desviacioAnterior",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,

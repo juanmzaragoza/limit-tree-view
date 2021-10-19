@@ -130,7 +130,7 @@ export const getIndicators = (kpisPartida) => [
     indicators: [
       {
         field: "Anterior",
-        value: kpisPartida.desviacioCostAnterior,
+        value: kpisPartida.desviacioAnterior,
       },
       {
         field: "Período",
