@@ -98,8 +98,11 @@ export const getPartidaColumnsByPeriod = ({ period, intl, actions }) => {
     {
       field: "unitatTipus",
       headerName: "Tipo Unidad",
-      valueGetter: (params) => `${params.value?.description || ""}`,
+      align: 'center',
+      headerAlign: 'center',
       minWidth: 100,
+      valueGetter: (params) => `${params.value?.description || ""}`,
+    
     },
     {
       field: "unitatsAnterior",
@@ -172,7 +175,7 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
     {
       field: "descripcio",
       headerName: "Descripción",
-      minWidth: 490,
+      minWidth: 510,
       editable: !number,
     },
     {
@@ -185,8 +188,11 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
     {
       field: "unitatTipus",
       headerName: "Tipo Unidad",
-      minWidth: 140,
+      minWidth: 120,
+      align: 'center',
+      headerAlign: 'center',
       valueGetter: (params) => `${params.value?.description || ""}`,
+      
     },
     {
       field: "costUnitat",

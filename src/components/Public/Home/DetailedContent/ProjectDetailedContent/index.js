@@ -119,7 +119,7 @@ const ProjectDetailedContent = ({
       field: "descripcio",
       headerName: "Descripción",
       editable: true,
-      minWidth: 650,
+      minWidth: 500,
     },
     {
       field: "importTotal",

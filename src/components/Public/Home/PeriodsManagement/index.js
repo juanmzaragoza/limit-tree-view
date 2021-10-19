@@ -70,6 +70,7 @@ const PeriodsManagement = ({
     );
   }, [rows]);
 
+
   const closePeriod = async () => {
     const codiAccio = "ETP_TANCAR";
     const data = dateEnd;
@@ -77,20 +78,20 @@ const PeriodsManagement = ({
       await actions.addPeriod({ id: periodSelected.id, codiAccio, data });
       if (openNewPeriod) {
         openNew();
-        setReload(true);
-      }else{
-        setReload(true);
       }
       setOpen(false);
+      setReload(true);
     } catch (e) {}
-    
   };
 
-  const openNew = () => {
-    const codiAccio = "ETP_NOUPER";
-    actions.openNewPeriod({ id: periodSelected.id, codiAccio });
-    setOpenNewPeriod(false);
 
+  const openNew = async () => {
+    const codiAccio = "ETP_NOUPER";
+    try {
+      await actions.openNewPeriod({ id: periodSelected.id, codiAccio });
+      setOpenNewPeriod(false);
+      setReload(true);
+    } catch (e) {}
   };
 
   const openPeriod = () => {
