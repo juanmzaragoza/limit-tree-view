@@ -32,7 +32,7 @@ import { loadData as loadTreeData, selectAndExpandNode } from "redux/project-tre
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
-import { entitiesStyles } from "utils/helper";
+import { entitiesStyles, getTreeId } from "utils/helper";
 import {
   CONTROL_UNIT_TYPE,
   PARTIDA_TYPE,
@@ -232,7 +232,7 @@ const ProjectDetailedContent = ({
     <Grid container spacing={1}>
       <Grid item xs={4}>
         <DetailedHeader
-          id={selectedPeriod.id}
+          id={getTreeId(tree)}
           header={headerProject}
           body={headerProjectFields}
           breakpoints={detailedHeaderBreakpoints}
@@ -242,7 +242,7 @@ const ProjectDetailedContent = ({
       </Grid>
       <Grid item xs={4}>
         <DetailedHeader
-          id={unitControl.id}
+          id={getTreeId(unitControl)}
           header={headerControlUnit}
           body={headerControlUnitFields}
           breakpoints={detailedHeaderBreakpoints}
@@ -252,7 +252,7 @@ const ProjectDetailedContent = ({
       </Grid>
       <Grid item xs={4}>
         <DetailedHeader
-          id={partida.id}
+          id={getTreeId(partida)}
           header={headerPartida}
           body={headerPartidaFields}
           breakpoints={detailedHeaderBreakpoints}

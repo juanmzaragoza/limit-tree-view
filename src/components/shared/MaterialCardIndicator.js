@@ -59,9 +59,7 @@ export default function MaterialCardIndicator({
       )}
       {content?.map(({ title, indicators, lg, icon }, index) => {
         return (
-
           <Grid item xs={12} className={theme.cardContent} key={index} >
-
             <Card className={theme.card}>
               <CardHeader
                 avatar={
@@ -89,15 +87,13 @@ export default function MaterialCardIndicator({
                 }}
                 className={theme.cardHeader}
               />
-
               <CardContent>
                 <Grid container spacing={2}>
                   {indicators?.map(({ field, value, breakpoints }, index) => {
                     return (
-
                       <Grid item xs={breakpoints ? breakpoints : lg} key={index} >
-
-                        {field}: <br />
+                        {field}:
+                        <br />
                         <strong>
                           {value === undefined
                             ? "---"

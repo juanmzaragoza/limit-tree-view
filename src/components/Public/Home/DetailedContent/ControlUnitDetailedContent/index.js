@@ -33,7 +33,7 @@ import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 import { getKpis, getTabIndex } from "redux/project/selectors";
 
-import { entitiesStyles } from "utils/helper";
+import { entitiesStyles, getTreeId } from "utils/helper";
 import { CONTROL_UNIT_TYPE, PROJECT_TYPE } from "constants/business-types";
 import { selectTab } from "redux/project";
 
@@ -208,7 +208,7 @@ const ControlUnitDetailedContent = ({
     <Grid container spacing={1}>
       <Grid item xs={6}>
         <DetailedHeader
-          id={selectedPeriod.id}
+          id={getTreeId(tree)}
           header={headerProject}
           body={headerProjectFields}
           breakpoints={detailedHeaderBreakpoints}
@@ -219,7 +219,7 @@ const ControlUnitDetailedContent = ({
       </Grid>
       <Grid item xs={6}>
         <DetailedHeader
-          id={unitControl.id}
+          id={getTreeId(unitControl)}
           header={headerControlUnit}
           body={headerControlUnitFields}
           breakpoints={detailedHeaderBreakpoints}
