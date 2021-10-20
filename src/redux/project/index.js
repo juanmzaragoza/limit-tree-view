@@ -43,10 +43,8 @@ export const loadKpis = ({ url = LOAD_KPIS_URL, id }) => {
     const apiCall = () => Axios.get(url.replace("{id}", id));
     try {
       apiCall()
-        .then(({ data }) => data)
-        .then(({ indicadorsPartides }) => {
-          dispatch(add({ kpis: indicadorsPartides }));
-        })
+        .then(({ data }) => { dispatch(add({ kpisFact: data, kpis: data['indicadorsPartides'] }));})
+       
         .catch((error) => {
           console.log(error);
         })
@@ -124,6 +122,7 @@ const initialState = {
   details: [],
   selectedTab: 0,
   loadingDetails: false,
+  kpisFact:{}
   
 };
 

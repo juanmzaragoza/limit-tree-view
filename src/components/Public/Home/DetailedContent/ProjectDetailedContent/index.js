@@ -25,6 +25,7 @@ import {
   getTotals,
   getTabIndex,
   getIsLoadingDetails,
+  getKpisFact
 } from "redux/project/selectors";
 import { getSelectedProject } from "redux/project-selector/selectors";
 import { selectAndExpandNode } from "redux/project-tree";
@@ -56,6 +57,7 @@ const ProjectDetailedContent = ({
   tree,
   period,
   kpis,
+  kpisFact,
   details,
   totals,
   actions,
@@ -143,7 +145,7 @@ const ProjectDetailedContent = ({
   }, [tabIndex, project]);
 
   React.useEffect(() => {
-    setIndicadores(getIndicators(kpis));
+    setIndicadores(getIndicators(kpis, kpisFact));
   }, [kpis]);
 
   React.useEffect(() => {
@@ -269,6 +271,7 @@ const mapStateToProps = (state, props) => {
     totals: getTotals(state),
     tab: getTabIndex(state),
     loadingDetails: getIsLoadingDetails(state),
+    kpisFact: getKpisFact(state)
   };
 };
 

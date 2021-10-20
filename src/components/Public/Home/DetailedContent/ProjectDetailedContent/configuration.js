@@ -13,7 +13,7 @@ import { entitiesStyles } from "utils/helper";
 import { CONTROL_UNIT_TYPE } from "constants/business-types";
 import { Avatar } from "@mui/material";
 
-export const getIndicators = (kpis) => [
+export const getIndicators = (kpis, kpisFact) => [
 
   {
     title: "Produccion",
@@ -179,19 +179,19 @@ export const getIndicators = (kpis) => [
     indicators: [
       {
         field: "Anterior",
-        value: kpis.facturacioRealAnterior,
+        value: kpisFact.facturacioRealAnterior,
       },
       {
         field: "Periodo",
-        value: kpis.facturacioRealPeriode,
+        value: kpisFact.facturacioRealPeriode,
       },
       {
         field: "Año Natural",
-        value: kpis.facturacioRealAny,
+        value: kpisFact.facturacioRealAny,
       },
       {
         field: "Origen",
-        value: kpis.facturacioRealOrigen,
+        value: kpisFact.facturacioRealOrigen,
       },
     ],
   },

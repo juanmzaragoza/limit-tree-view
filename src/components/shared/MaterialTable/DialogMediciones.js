@@ -9,7 +9,6 @@ import {
   Stack,
   TextField,
   Grid,
-
 } from "@mui/material";
 import { formatCurrencyWithIntl, formatNumberWithIntl } from "utils/formats";
 import { useIntl } from "react-intl";
@@ -20,11 +19,9 @@ const DialogMediciones = ({
   contentDialog,
   loading,
   handleUpdateMediciones = () => {},
-  actions
+  actions,
 }) => {
-
   const [dataMedicion, setDataMedicion] = React.useState([
-    
     { field: "unitatsActual", value: contentDialog?.unitatsActual },
     { field: "medicioOrigen", value: contentDialog?.medicioOrigen },
   ]);
@@ -73,7 +70,8 @@ const DialogMediciones = ({
                   onChange={(e) => {
                     const data = dataMedicion;
                     data[0].value = e.target.value;
-                    setDataMedicion(data)}}
+                    setDataMedicion(data);
+                  }}
                   fullWidth
                 />
               </Grid>
@@ -91,7 +89,8 @@ const DialogMediciones = ({
                   onChange={(e) => {
                     const data = dataMedicion;
                     data[1].value = e.target.value;
-                    setDataMedicion(data)}}
+                    setDataMedicion(data);
+                  }}
                   fullWidth
                 />
               </Grid>
@@ -104,7 +103,9 @@ const DialogMediciones = ({
                     shrink: true,
                   }}
                   defaultValue={`${
-                    contentDialog ? `${contentDialog?.unitats}` : ""
+                    contentDialog
+                      ? formatNumberWithIntl(contentDialog?.unitats, intl)
+                      : ""
                   }`}
                   disabled
                   variant="standard"
@@ -120,7 +121,12 @@ const DialogMediciones = ({
                     shrink: true,
                   }}
                   defaultValue={`${
-                    contentDialog ? `${contentDialog?.unitatsAnterior}` : ""
+                    contentDialog
+                      ? formatNumberWithIntl(
+                          contentDialog?.unitatsAnterior,
+                          intl
+                        )
+                      : ""
                   }`}
                   disabled
                   variant="standard"
@@ -136,7 +142,9 @@ const DialogMediciones = ({
                     shrink: true,
                   }}
                   defaultValue={`${
-                    contentDialog ? formatNumberWithIntl(contentDialog?.obraPendent, intl) : ""
+                    contentDialog
+                      ? formatNumberWithIntl(contentDialog?.obraPendent, intl)
+                      : ""
                   }`}
                   disabled
                   variant="standard"
@@ -154,7 +162,7 @@ const DialogMediciones = ({
                   defaultValue={`${
                     contentDialog?.unitatsPress === undefined
                       ? ""
-                      : contentDialog?.unitatsPress
+                      : formatNumberWithIntl(contentDialog?.unitatsPress, intl)
                   }`}
                   disabled
                   variant="standard"
@@ -170,7 +178,10 @@ const DialogMediciones = ({
                     shrink: true,
                   }}
                   defaultValue={
-                    contentDialog ? formatCurrencyWithIntl(contentDialog?.preu, intl) : ""}
+                    contentDialog
+                      ? formatCurrencyWithIntl(contentDialog?.preu, intl)
+                      : ""
+                  }
                   disabled
                   variant="standard"
                   fullWidth
@@ -185,7 +196,10 @@ const DialogMediciones = ({
                     shrink: true,
                   }}
                   defaultValue={
-                    contentDialog ? formatCurrencyWithIntl(contentDialog?.preuNet, intl) : ""}
+                    contentDialog
+                      ? formatCurrencyWithIntl(contentDialog?.preuNet, intl)
+                      : ""
+                  }
                   disabled
                   variant="standard"
                   fullWidth
@@ -200,7 +214,10 @@ const DialogMediciones = ({
                     shrink: true,
                   }}
                   defaultValue={
-                    contentDialog ? formatCurrencyWithIntl(contentDialog?.importTotal, intl) : ""}
+                    contentDialog
+                      ? formatCurrencyWithIntl(contentDialog?.importTotal, intl)
+                      : ""
+                  }
                   disabled
                   variant="standard"
                   fullWidth
@@ -215,7 +232,10 @@ const DialogMediciones = ({
                     shrink: true,
                   }}
                   defaultValue={
-                    contentDialog ? formatCurrencyWithIntl(contentDialog?.costUni, intl) : ""}
+                    contentDialog
+                      ? formatCurrencyWithIntl(contentDialog?.costUni, intl)
+                      : ""
+                  }
                   disabled
                   variant="standard"
                   fullWidth
@@ -230,7 +250,10 @@ const DialogMediciones = ({
                     shrink: true,
                   }}
                   defaultValue={
-                    contentDialog ? formatCurrencyWithIntl(contentDialog?.costTotal, intl) : ""}
+                    contentDialog
+                      ? formatCurrencyWithIntl(contentDialog?.costTotal, intl)
+                      : ""
+                  }
                   disabled
                   variant="standard"
                   fullWidth
