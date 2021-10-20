@@ -96,6 +96,7 @@ const ControlUnitDetailedContent = ({
   }, [tabIndex, unitControl]);
 
   React.useEffect(() => {
+
     loadHeader();
     unitControl.id && actions.loadKpis({ id: props.id });
   }, [props.id,]);
@@ -197,13 +198,14 @@ const ControlUnitDetailedContent = ({
   const handleCellChange = async (params, event, details) => {
     const { id, field, value } = params;
     const data = rows.find((row) => row.id === id);
-    console.log(params);
+
     data[field] = value;
     try {
       await actions.updatePartida({ id, data });
       // update related data
       loadHeader();
       actions.loadTreeData({ periodId: selectedPeriod.id });
+      actions.loadKpis({ id: props.id });
     } catch (e) {
       // handle errors
     }
@@ -275,6 +277,7 @@ const ControlUnitDetailedContent = ({
             columnsSubTotal={columnsSubTotal(intl)}
             groups={groups}
             onDoubleClick={(row) => {
+              console.log(row)
               actions.selectTab({ value: KPIS_TAB_INDEX});
               actions.selectNode({ ids: getTreeId(row) });
             }}

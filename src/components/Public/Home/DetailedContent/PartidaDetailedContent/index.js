@@ -26,7 +26,7 @@ import {
   getKpis as getKpisProjecte,
   getTabIndex,
 } from "redux/project/selectors";
-import { loadHeader as loadUnitControlHeader } from "redux/unit-control";
+import { loadHeader as loadUnitControlHeader, loadKpis as loadKpisUC } from "redux/unit-control";
 import {
   getUnitControl,
   getKpis as getKpisUC,
@@ -88,6 +88,16 @@ const ProjectDetailedContent = ({
   React.useEffect(() => {
     onChangeIndexExecutor[tabIndex]();
   }, [tabIndex, partida]);
+
+  React.useEffect(() => {
+    
+    partida.id && actions.loadKpis({ id: props.id });
+    partida.unitatControlEstudi && actions.loadKpisUC({ id:  partida.unitatControlEstudi.id });
+    if(partida.unitatControlEstudi !== undefined){
+      actions.loadUnitControlHeader({ id: partida.unitatControlEstudi?.id });
+    }
+    
+  }, [partida]);
 
   const content = [
     {
@@ -307,7 +317,7 @@ const ProjectDetailedContent = ({
             <MaterialCardIndicator
               loading={isEmpty(indicadores)}
               content={indicadores}
-              onUnmount={() => actions.resetKpis()}
+              // onUnmount={() => actions.resetKpis()}
             />
           </Grid>
         )}
@@ -341,6 +351,7 @@ const mapDispatchToProps = (dispatch, props) => {
     resetKpis: bindActionCreators(resetKpis, dispatch),
     selectNode: bindActionCreators(selectAndExpandNode, dispatch),
     selectTab:  bindActionCreators(selectTab, dispatch),
+    loadKpisUC : bindActionCreators(loadKpisUC, dispatch),
   };
   return { actions };
 };

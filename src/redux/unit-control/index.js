@@ -135,7 +135,7 @@ export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
             add({
               details: indicadorsPartidesDesglossats.map(indicadorPartidesDesglossats => ({
                 ...indicadorPartidesDesglossats,
-                treeId: `${indicadorPartidesDesglossats?.estudiProjecteCodi}_${indicadorPartidesDesglossats.codi}`
+                treeId: `${indicadorPartidesDesglossats?.estudiProjecteCodi}_${indicadorPartidesDesglossats.unitatControlCodi}_${indicadorPartidesDesglossats.codi}`
               })),
               totals: indicadorsPartides,
             })
