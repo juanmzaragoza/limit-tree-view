@@ -11,7 +11,7 @@ import {
   Grid,
 
 } from "@mui/material";
-import { formatCurrencyWithIntl } from "utils/formats";
+import { formatCurrencyWithIntl, formatNumberWithIntl } from "utils/formats";
 import { useIntl } from "react-intl";
 
 const DialogMediciones = ({
@@ -136,7 +136,7 @@ const DialogMediciones = ({
                     shrink: true,
                   }}
                   defaultValue={`${
-                    contentDialog ? `${contentDialog?.obraPendent}` : ""
+                    contentDialog ? formatNumberWithIntl(contentDialog?.obraPendent, intl) : ""
                   }`}
                   disabled
                   variant="standard"

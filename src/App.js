@@ -5,7 +5,8 @@ import {IntlProvider} from "react-intl";
 import 'App.css';
 import Routes from "router";
 import { primaryColor, resourcesColor, secondaryColor } from "utils/helper";
-import {login} from "./utils/before-login-helper";
+import {login, refresh} from "./utils/before-login-helper";
+
 
 function App() {
   let theme = createTheme({
@@ -31,6 +32,8 @@ function App() {
     
   });
   login();
+  refresh();
+ 
   return (
     <div data-testid="App" className="App">
       <ThemeProvider theme={theme}>
