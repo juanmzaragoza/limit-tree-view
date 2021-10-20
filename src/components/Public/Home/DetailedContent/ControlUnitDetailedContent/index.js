@@ -111,12 +111,12 @@ const ControlUnitDetailedContent = ({
   React.useEffect(() => {
     setHeaderControlUnit({ title: unitControl.descripcio });
     setHeaderControlUnitFields(getHeaderControlUnitFields(kpisUnitatControl));
-  }, [kpisUnitatControl, unitControl, intl]);
+  }, [kpisUnitatControl, unitControl]);
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
     setHeaderProjectFields(getHeaderProjectFields(kpis));
-  }, [kpis, tree, intl]);
+  }, [kpis, tree]);
 
   const handleCellChange = async (params, event, details) => {
     const { id, field, value } = params;

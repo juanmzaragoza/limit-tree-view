@@ -7,6 +7,7 @@ import {
   StackedBarChart,
   StackedLineChart
 } from "@mui/icons-material";
+import {getKpisColorValue} from "../common";
 
 export const getIndicators = (kpisPartida) => [
   {
@@ -147,5 +148,102 @@ export const getIndicators = (kpisPartida) => [
       },
     ],
   },
-  
 ];
+
+export const getHeaderControlUnitFields = (kpisUnitatControl) => ([
+  {
+    field: "Benef. Origen",
+    value: kpisUnitatControl.beneficiOrigen,
+  },
+
+  {
+    field: "Prod. Origen",
+    value: kpisUnitatControl.produccioOrigen,
+  },
+  {
+    field: "Desv. Origen",
+    value: kpisUnitatControl.desviacioOrigen,
+  },
+
+  {
+    field: "Benef. Año",
+    value: kpisUnitatControl.beneficiAny,
+    colorValue: getKpisColorValue({
+      value: kpisUnitatControl.beneficiAny,
+    }),
+  },
+  {
+    field: "Prod. Año",
+    value: kpisUnitatControl.produccioAny,
+    colorValue: getKpisColorValue({
+      value: kpisUnitatControl.produccioAny,
+    }),
+  },
+  {
+    field: "Desv. Año",
+    value: kpisUnitatControl.desviacioAny,
+    colorValue: getKpisColorValue({
+      value: kpisUnitatControl.desviacioAny,
+    }),
+  },
+]);
+
+export const getHeaderPartidaFields = (kpisPartida) => ([
+  {
+    field: "Benef. Origen",
+    value: kpisPartida.beneficiOrigen,
+  },
+  {
+    field: "Prod. Origen",
+    value: kpisPartida.produccioOrigen,
+  },
+  {
+    field: "Desv. Origen",
+    value: kpisPartida.desviacioOrigen,
+  },
+  {
+    field: "Benef. Año",
+    value: kpisPartida.beneficiAny,
+    colorValue: getKpisColorValue({ value: kpisPartida.beneficiAny }),
+  },
+  {
+    field: "Prod. Año",
+    value: kpisPartida.produccioAny,
+    colorValue: getKpisColorValue({ value: kpisPartida.produccioAny }),
+  },
+  {
+    field: "Desv. Año",
+    value: kpisPartida.desviacioAny,
+    colorValue: getKpisColorValue({ value: kpisPartida.desviacioAny }),
+  },
+]);
+
+export const getHeaderProjectFields = (kpisProjecte) => ([
+  {
+    field: "Benef. Origen",
+    value: kpisProjecte.beneficiOrigen,
+  },
+  {
+    field: "Prod. Origen",
+    value: kpisProjecte.produccioOrigen,
+  },
+  {
+    field: "Pen. Origen",
+    value: kpisProjecte.obraPendentOrigen,
+  },
+  {
+    field: "Benef. Año",
+    value: kpisProjecte.beneficiAny,
+    colorValue: getKpisColorValue({ value: kpisProjecte.beneficiAny }),
+  },
+  {
+    field: "Prod. Año",
+    value: kpisProjecte.produccioAny,
+    colorValue: getKpisColorValue({ value: kpisProjecte.produccioAny }),
+  },
+  {
+    field: "Pen. Año",
+    value: kpisProjecte.obraPendentAny,
+    colorValue: getKpisColorValue({ value: kpisProjecte.obraPendentAny }),
+  },
+]);
