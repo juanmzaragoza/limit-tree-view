@@ -93,6 +93,7 @@ const ClosePeriodDialog = ({
               InputLabelProps={{
                 shrink: true,
               }}
+              required
               onChange={(e) => setDateEnd(e.target.value)}
             />
           </Grid>

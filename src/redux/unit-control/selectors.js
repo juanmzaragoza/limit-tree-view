@@ -8,3 +8,4 @@ export const getIsLoadingDetails = state => get(state, "unitControl.loadingDetai
 export const getUnitControl = state => get(state, "unitControl.unitControl", {});
 export const getKpis = state => get(state, "unitControl.kpis", []);
 export const getTabIndex = state => get(state, "unitControl.tab", []);
+export const getPartidaInfo = state => get(state, "unitControl.partidaSelected", []);

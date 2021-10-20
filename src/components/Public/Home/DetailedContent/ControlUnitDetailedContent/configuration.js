@@ -1,46 +1,46 @@
 import * as React from "react";
 import {
   CallMissedOutgoing,
-  Construction,
   Engineering,
   Euro,
   StackedBarChart,
   StackedLineChart,
 } from "@mui/icons-material";
-import { Avatar } from "@mui/material";
+import {Avatar, IconButton} from "@mui/material";
 
 import { formatCurrencyWithIntl } from "utils/formats";
-import { entitiesStyles } from "utils/helper";
-import { PARTIDA_TYPE } from "constants/business-types";
+import { entitiesStyles, getTreeId } from "utils/helper";
+import { PARTIDA_TYPE, RESOURCE_TYPE } from "constants/business-types";
+import {getKpisColorValue} from "../common";
 
 export const getIndicators = (kpisUnitatControl) => [
   {
-    title: "Produccion",
+    title: "Producción",
     icon: <Engineering />,
     lg: 2,
     indicators: [
       {
-        field: "Producción Anterior",
+        field: "Anterior",
         value: kpisUnitatControl.produccioAnterior,
         breakpoints: 3,
       },
       {
-        field: "Producción Período",
+        field: "Período",
         value: kpisUnitatControl.produccioPeriode,
         breakpoints: 2,
       },
       {
-        field: "Producción Año Natural",
+        field: "Año Natural",
         value: kpisUnitatControl.produccioAny,
         breakpoints: 3,
       },
       {
-        field: "Producción a Origen",
+        field: "Origen",
         value: kpisUnitatControl.produccioOrigen,
         breakpoints: 2,
       },
       {
-        field: "Producción Pendiente",
+        field: "Pendiente",
         value: kpisUnitatControl.produccioPendent,
         breakpoints: 2,
       },
@@ -52,27 +52,27 @@ export const getIndicators = (kpisUnitatControl) => [
     lg: 2,
     indicators: [
       {
-        field: "Coste Teórico Anterior",
+        field: "Anterior",
         value: kpisUnitatControl.costTeoricAnterior,
         breakpoints: 3,
       },
       {
-        field: "Coste Teórico Período",
+        field: "Período",
         value: kpisUnitatControl.costTeoricPeriode,
         breakpoints: 2,
       },
       {
-        field: "Coste Teórico Año Natural",
+        field: "Año Natural",
         value: kpisUnitatControl.costTeoricAny,
         breakpoints: 3,
       },
       {
-        field: "Coste Teórico a Origen",
+        field: "Origen",
         value: kpisUnitatControl.costTeoricOrigen,
         breakpoints: 2,
       },
       {
-        field: "Coste Teórico Pendiente",
+        field: "Pendiente",
         value: kpisUnitatControl.costTeoricPendent,
         breakpoints: 2,
       },
@@ -81,25 +81,25 @@ export const getIndicators = (kpisUnitatControl) => [
   {
     title: "Coste Real",
     icon: <StackedBarChart />,
-    lg: 3,
+    lg: 2,
     indicators: [
       {
-        field: "Coste Real Anterior",
+        field: "Anterior",
         value: kpisUnitatControl.costRealAnterior,
         icon: <StackedBarChart />,
       },
       {
-        field: "Coste Real Período",
+        field: "Período",
         value: kpisUnitatControl.costRealPeriode,
         icon: <StackedBarChart />,
       },
       {
-        field: "Coste Real año Natural",
+        field: "Año Natural",
         value: kpisUnitatControl.costRealAny,
         icon: <StackedBarChart />,
       },
       {
-        field: "Coste Real Origen",
+        field: "Origen",
         value: kpisUnitatControl.costRealOrigen,
         icon: <StackedBarChart />,
       },
@@ -108,22 +108,22 @@ export const getIndicators = (kpisUnitatControl) => [
   {
     title: "Beneficios",
     icon: <Euro />,
-    lg: 3,
+    lg: 2,
     indicators: [
       {
-        field: "Beneficio Anterior",
+        field: "Anterior",
         value: kpisUnitatControl.beneficiAnterior,
       },
       {
-        field: "Beneficio Período",
+        field: "Período",
         value: kpisUnitatControl.beneficiPeriode,
       },
       {
-        field: "Beneficio año Natural",
+        field: "Año Natural",
         value: kpisUnitatControl.beneficiAny,
       },
       {
-        field: "Beneficio Origen",
+        field: "Origen",
         value: kpisUnitatControl.beneficiOrigen,
       },
     ],
@@ -131,50 +131,28 @@ export const getIndicators = (kpisUnitatControl) => [
   {
     title: "Desviación",
     icon: <CallMissedOutgoing />,
-    lg: 3,
+    lg: 2,
     indicators: [
       {
-        field: "Desviación Anterior",
-        value: kpisUnitatControl.desviacioCostAnterior,
+        field: "Anterior",
+        value: kpisUnitatControl.desviacioAnterior,
       },
       {
-        field: "Desviación Período",
+        field: "Período",
         value: kpisUnitatControl.desviacioPeriode,
       },
       {
-        field: "Desviación año Natural",
+        field: "Año Natural",
         value: kpisUnitatControl.desviacioAny,
       },
 
       {
-        field: "Desviación Origen",
+        field: "Origen",
         value: kpisUnitatControl.desviacioOrigen,
       },
     ],
   },
-  {
-    title: "Obra Pendiente Período",
-    icon: <Construction />,
-    lg: 3,
-    indicators: [
-      {
-        field: "Obra Pendiente Anterior",
-        value: kpisUnitatControl.obraPendentAnterior,
-      },
-      {
-        field: "Obra Pendiente Período",
-        value: kpisUnitatControl.obraPendentPeriode,
-      },
-      {
-        field: "Obra Pendiente año Natural",
-        value: kpisUnitatControl.obraPendentAny,
-      },
-      {
-        field: "Obra Pendiente Origen",
-        value: kpisUnitatControl.obraPendentOrigen,
-      },
-    ],
-  },
+ 
 ];
 
 export const columnsIndicatorsPartida = (intl) => [
@@ -185,8 +163,8 @@ export const columnsIndicatorsPartida = (intl) => [
     minWidth: 400,
     className: "borderRight",
     button : true,
+    buttonMedicion: true,
   },
-
   {
     label: "Anterior",
     id: "produccioAnterior",
@@ -325,7 +303,7 @@ export const columnsIndicatorsPartida = (intl) => [
   },
   {
     label: "Anterior",
-    id: "desviacioCostAnterior",
+    id: "desviacioAnterior",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
@@ -356,35 +334,7 @@ export const columnsIndicatorsPartida = (intl) => [
     numeric: true,
     colorValue: true,
   },
-  {
-    label: "Anterior",
-    id: "obraPendentAnterior",
-    minWidth: 140,
-    format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
-    numeric: true,
-    className: "borderLeft",
-  },
-  {
-    label: "Período",
-    id: "obraPendentPeriode",
-    minWidth: 140,
-    format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
-    numeric: true,
-  },
-  {
-    label: "Año",
-    id: "obraPendentAny",
-    minWidth: 140,
-    format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
-    numeric: true,
-  },
-  {
-    label: "Origen",
-    id: "obraPendentOrigen",
-    minWidth: 140,
-    format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
-    numeric: true,
-  },
+ 
 ];
 
 export const columnsSubTotal = (intl) => [
@@ -508,7 +458,7 @@ export const columnsSubTotal = (intl) => [
     colorValue: true,
   },
   {
-    id: "desviacioCostAnterior",
+    id: "desviacioAnterior",
     minWidth: 140,
     format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
     numeric: true,
@@ -536,31 +486,7 @@ export const columnsSubTotal = (intl) => [
     numeric: true,
     colorValue: true,
   },
-  {
-    id: "obraPendentAnterior",
-    minWidth: 140,
-    format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
-    numeric: true,
-    className: "borderLeft",
-  },
-  {
-    id: "obraPendentPeriode",
-    minWidth: 140,
-    format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
-    numeric: true,
-  },
-  {
-    id: "obraPendentAny",
-    minWidth: 140,
-    format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
-    numeric: true,
-  },
-  {
-    id: "obraPendentOrigen",
-    minWidth: 140,
-    format: (value) => formatCurrencyWithIntl(value ?? 0, intl),
-    numeric: true,
-  },
+ 
 ];
 
 export const groups = [
@@ -582,11 +508,214 @@ export const groups = [
     colSpan: 1,
     className: "borderRight",
   },
-
   { label: "Producción", colSpan: 5, className: "borderLeft" },
   { label: "Coste Teórico", colSpan: 5, className: "borderLeft" },
   { label: "Coste Real", colSpan: 4, className: "borderLeft" },
   { label: "Beneficios", colSpan: 4, className: "borderLeft" },
   { label: "Desviación", colSpan: 4, className: "borderLeft" },
-  { label: "Obra Pendiente", colSpan: 4, className: "borderLeft" },
 ];
+
+export const getPartidaColumnsByPeriod = ({ period, intl, actions }) => {
+  const number = period.numero;
+  const numberIsZero = !number;
+  const numberIsNotZero = !!number;
+  return [
+    {
+      field: "id",
+      headerName: (
+        <Avatar
+          aria-label="recipe"
+          sx={{
+            bgcolor: entitiesStyles[PARTIDA_TYPE].iconColor,
+            color: "white",
+          }}
+        >
+          {entitiesStyles[PARTIDA_TYPE].icon}
+        </Avatar>
+      ),
+      renderCell: (cellValues) => {
+        return (
+          <IconButton
+            variant="outlined"
+            onClick={() => {
+              actions.selectTab({ value: 1 });
+              actions.selectNode({ ids: getTreeId(cellValues.row) });
+            }}
+            style={{ color: entitiesStyles[RESOURCE_TYPE].iconColor }}
+          >
+            {entitiesStyles[RESOURCE_TYPE].icon}
+          </IconButton>
+        );
+      },
+      minWidth: 30,
+      editable: false,
+    },
+    { field: "codi", headerName: "Cód.", minWidth: 90 },
+    {
+      field: "descripcioReduc",
+      headerName: "Descripción",
+      minWidth: 350,
+      editable: numberIsZero,
+    },
+
+    {
+      field: "unitatsActual",
+      headerName: "Med. hecha período",
+      type: "number",
+      minWidth: 140,
+      editable: numberIsNotZero,
+    },
+    {
+      field: "medicioOrigen",
+      headerName: "Med. Origen",
+      type: "number",
+      minWidth: 140,
+      editable: numberIsNotZero,
+    },
+
+    {
+      field: "unitats",
+      headerName: "Med. Prevista",
+      type: "number",
+      minWidth: 140,
+      editable: numberIsZero,
+    },
+    {
+      field: "unitatTipus",
+      headerName: "Tipo Unidad",
+      align: 'center',
+      headerAlign: 'center',
+      minWidth: 100,
+      valueGetter: (params) => `${params.value?.description || ""}`,
+
+    },
+    {
+      field: "unitatsAnterior",
+      headerName: "Med. Orig. Anterior",
+      type: "number",
+      minWidth: 140,
+    },
+    {
+      field: "obraPendent",
+      headerName: "Med. pendiente",
+      type: "number",
+      minWidth: 140,
+    },
+    {
+      field: "unitatsPress",
+      headerName: "Med. Presupuestada",
+      type: "number",
+      minWidth: 140,
+      editable: numberIsZero,
+    },
+    {
+      field: "preu",
+      headerName: "Pvp Bruto",
+      type: "number",
+      valueFormatter: (params) =>
+        formatCurrencyWithIntl(params.row.preu ?? 0, intl),
+      minWidth: 140,
+      editable: numberIsZero,
+    },
+    {
+      field: "preuNet",
+      headerName: "Pvp Neto",
+      type: "number",
+      valueFormatter: (params) =>
+        formatCurrencyWithIntl(params.row.preuNet ?? 0, intl),
+      minWidth: 140,
+    },
+    {
+      field: "importTotal",
+      headerName: "Imp. Tot. Pres.",
+      type: "number",
+      valueFormatter: (params) =>
+        formatCurrencyWithIntl(params.row.importTotal ?? 0, intl),
+      minWidth: 140,
+    },
+    {
+      field: "costUni",
+      headerName: "Coste Unit. Total",
+      type: "number",
+      valueFormatter: (params) =>
+        formatCurrencyWithIntl(params.row.costUni ?? 0, intl),
+      minWidth: 140,
+      editable: false,
+    },
+    {
+      field: "costTotal",
+      headerName: "Coste Total Prev.",
+      type: "number",
+      valueFormatter: (params) =>
+        formatCurrencyWithIntl(params.row.costTotal ?? 0, intl),
+      minWidth: 140,
+    },
+  ];
+};
+
+export const getHeaderControlUnitFields = (kpisUnitatControl) => ([
+  {
+    field: "Benef. Origen",
+    value: kpisUnitatControl.beneficiOrigen,
+  },
+
+  {
+    field: "Prod. Origen",
+    value: kpisUnitatControl.produccioOrigen,
+  },
+  {
+    field: "Desv. Origen",
+    value: kpisUnitatControl.desviacioOrigen,
+  },
+  {
+    field: "Benef. Año",
+    value: kpisUnitatControl.beneficiAny,
+    colorValue: getKpisColorValue({
+      value: kpisUnitatControl.beneficiAny,
+    }),
+  },
+  {
+    field: "Prod. Año",
+    value: kpisUnitatControl.produccioAny,
+    colorValue: getKpisColorValue({
+      value: kpisUnitatControl.produccioAny ,
+    }),
+  },
+  {
+    field: "Desv. Año",
+    value: kpisUnitatControl.desviacioAny,
+    colorValue: getKpisColorValue({
+      value: kpisUnitatControl.desviacioAny ,
+    }),
+  },
+]);
+
+export const getHeaderProjectFields = (kpis) => ([
+  {
+    field: "Benef. Origen",
+    value: kpis.beneficiOrigen,
+  },
+  {
+    field: "Prod. Origen",
+    value: kpis.produccioOrigen,
+  },
+  {
+    field: "Pen. Origen",
+    value: kpis.obraPendentOrigen,
+  },
+  {
+    field: "Benef. Año",
+    value: kpis.beneficiAny,
+    colorValue: getKpisColorValue({ value: kpis.beneficiAny  }),
+  },
+  {
+    field: "Prod. Año",
+    value: kpis.produccioAny,
+    colorValue: getKpisColorValue({ value: kpis.produccioAny }),
+  },
+  {
+    field: "Pen. Año",
+    value: kpis.obraPendentAny,
+    colorValue: getKpisColorValue({ value: kpis.obraPendentAny  }),
+  },
+]);

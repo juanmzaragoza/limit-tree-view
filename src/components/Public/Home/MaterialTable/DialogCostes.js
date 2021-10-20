@@ -22,32 +22,53 @@ export const columns = [
     id: "familiaArticleDescripcio",
     id2: "familiaArticleCodi",
     label: "Familia artículo",
-    minWidth: 270,
+    minWidth: 200,
   },
   {
     id: "articleDescripcio",
     id2: "articleCodi",
     label: "Artículo",
-    minWidth: 270,
+    minWidth: 200,
   },
 
   {
     label: "Unidades",
-    id: "unitats",
+    id: "unitatsPeriode",
     minWidth: 140,
     numeric: true,
   },
   {
     label: "Precio",
-    id: "preu",
+    id: "preuPeriode",
     minWidth: 140,
     numeric: true,
     format: (value) => formatCurrency(value ?? 0),
   },
   {
-    label: "Importe",
-    id: "importt",
-    minWidth: 140,
+    label: "Importe Anterior",
+    id: "importAnterior",
+    minWidth: 150,
+    numeric: true,
+    format: (value) => formatCurrency(value ?? 0),
+  },
+  {
+    label: "Importe Período",
+    id: "importPeriode",
+    minWidth: 150,
+    numeric: true,
+    format: (value) => formatCurrency(value ?? 0),
+  },
+  {
+    label: "Importe Año",
+    id: "importAny",
+    minWidth: 150,
+    numeric: true,
+    format: (value) => formatCurrency(value ?? 0),
+  },
+  {
+    label: "Importe Origen",
+    id: "importOrigen",
+    minWidth: 150,
     numeric: true,
     format: (value) => formatCurrency(value ?? 0),
   },
@@ -87,7 +108,7 @@ const DialogCostes = ({ open, onClose, contentDialog, loading }) => {
                 <TableBody>
                   {!contentDialog.length && (
                     <TableRow hover>
-                      <TableCell align="center" colSpan={5}>
+                      <TableCell align="center" colSpan={7}>
                         No hay costes reales para esta partida.
                       </TableCell>
                     </TableRow>

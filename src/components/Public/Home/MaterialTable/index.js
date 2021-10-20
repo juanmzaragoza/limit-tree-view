@@ -1,8 +1,9 @@
 import * as React from "react";
-
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { forEach } from "lodash";
 import { makeStyles } from "@material-ui/styles";
 
-import { greenColor, redColor } from "utils/helper";
 import {
   TableRow,
   TableHead,
@@ -14,14 +15,22 @@ import {
   IconButton,
   Stack,
   CircularProgress,
+  Tooltip,
 } from "@mui/material";
-import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
-import DialogCostes from "./DialogCostes";
+import EuroIcon from "@mui/icons-material/Euro";
+import SpeedIcon from "@mui/icons-material/Speed";
+
 import { loadCostes } from "redux/partida";
+import { selectPartida, updatePartida, loadData } from "redux/unit-control";
 import { getCost, getIsLoading } from "redux/partida/selectors";
-import "../TableStyle.css"
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { getPartidaInfo, getUnitControl } from "redux/unit-control/selectors";
+
+import { greenColor, redColor } from "utils/helper";
+
+import DialogCostes from "./DialogCostes";
+import DialogMediciones from "./DialogMediciones";
+
+import "./TableStyle.css";
 
 const useStyles = makeStyles({
   stickyActionsColumn: {
@@ -61,25 +70,70 @@ const MaterialTable = ({
   actions,
   costs,
   loading,
-  loadingTable
+  loadingTable,
+  partidaInfo,
+  unitControl,
 }) => {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
+  const [openMediciones, setOpenMediciones] = React.useState(false);
 
   const handleClick = (idRow) => {
     actions.loadCost({ id: idRow });
     setOpen(true);
   };
 
-  return (
-    loadingTable ? (
-      <Stack sx={{ color: "grey.500", alignItems: "center", marginTop:"130px" }}>
-        <CircularProgress color="inherit" />
-      </Stack>
-    ) : (
+  const handleClickMediciones = (idRow) => {
+    actions.selectPartida({ ids: idRow });
+    setOpenMediciones(true);
+  };
+
+  const handleUpdateMediciones = async (id, dataMedicion) => {
+    // prepare data
+    forEach(dataMedicion, (data) => {
+      if (data.value !== undefined) {
+        partidaInfo[data.field] = data.value;
+      }
+    });
+    // update data
+    try {
+      await actions.updatePartida({ id, data: partidaInfo });
+      actions.loadData({ id: unitControl.id });
+      actions.selectPartida({ ids: partidaInfo.id });
+      setOpenMediciones(false);
+      // update related data
+    } catch (e) {
+      // handle errors
+    }
+  };
+
+  const renderDialogCostes = React.useCallback(() => (
+    <DialogCostes
+      open={open}
+      onClose={() => setOpen(false)}
+      contentDialog={costs}
+      loading={loading}
+    />
+  ),[open, costs, loading]);
+
+  const renderDialogMediciones = React.useCallback(() => (
+    <DialogMediciones
+      open={openMediciones}
+      onClose={() => setOpenMediciones(false)}
+      contentDialog={partidaInfo}
+      loading={loading}
+      handleUpdateMediciones={handleUpdateMediciones}
+    />
+  ),[openMediciones, loading, partidaInfo]);
+
+  return loadingTable ? (
+    <Stack sx={{ color: "grey.500", alignItems: "center", marginTop: "130px" }}>
+      <CircularProgress color="inherit" />
+    </Stack>
+  ) : (
     <Paper sx={{ width: "100%" }}>
-  
+      {content.length > 0 && (
         <TableContainer className={classes.stickyActionsColumn}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -134,6 +188,34 @@ const MaterialTable = ({
                           align={column.numeric ? "right" : "left"}
                           className={column.className}
                         >
+                          {column.buttonMedicion && (
+                            <React.Fragment>
+                              <Tooltip title="Mediciones" arrow>
+                                <IconButton
+                                  aria-label="mediciones"
+                                  onClick={() => handleClickMediciones(row.id)}
+                                  color={"info"}
+                                  sx={{ padding: 0 }}
+                                >
+                                  <SpeedIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </React.Fragment>
+                          )}
+                          {column.button && (
+                            <React.Fragment>
+                              <Tooltip title="Costes Reales" arrow>
+                                <IconButton
+                                  aria-label="costes-reales"
+                                  sx={{ padding: 0, mr: 1 }}
+                                  onClick={() => handleClick(row.id)}
+                                  color={"info"}
+                                >
+                                  <EuroIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </React.Fragment>
+                          )}
                           {value === undefined && "---"}
                           <span
                             className={
@@ -155,32 +237,12 @@ const MaterialTable = ({
                               ? column.format(value2)
                               : ` - ${value2}`
                             : ""}
-                          <span style={{ float: "right" }}>
-                            {column.button && (
-                              <React.Fragment>
-                                <IconButton
-                                  aria-label="upload picture"
-                                  component="span"
-                                  onClick={() => handleClick(row.id)}
-                                  color={"info"}
-                                >
-                                  <MonetizationOnIcon />
-                                </IconButton>
-                              </React.Fragment>
-                            )}
-                          </span>
                         </TableCell>
                       );
                     })}
                   </TableRow>
                 );
               })}
-              <DialogCostes
-                open={open}
-                onClose={() => setOpen(false)}
-                contentDialog={costs}
-                loading={loading}
-              />
               <TableRow>
                 <TableCell sx={{ fontWeight: "bold" }}>TOTAL</TableCell>
                 {columnsSubTotal.map((column) => {
@@ -216,9 +278,10 @@ const MaterialTable = ({
             </TableBody>
           </Table>
         </TableContainer>
-      
+      )}
+      {renderDialogCostes()}
+      {renderDialogMediciones()}
     </Paper>
-    )
   );
 };
 
@@ -226,13 +289,17 @@ const mapStateToProps = (state, props) => {
   return {
     costs: getCost(state),
     loading: getIsLoading(state),
-   
+    partidaInfo: getPartidaInfo(state),
+    unitControl: getUnitControl(state),
   };
 };
 
 const mapDispatchToProps = (dispatch, props) => {
   const actions = {
     loadCost: bindActionCreators(loadCostes, dispatch),
+    selectPartida: bindActionCreators(selectPartida, dispatch),
+    updatePartida: bindActionCreators(updatePartida, dispatch),
+    loadData: bindActionCreators(loadData, dispatch),
   };
   return { actions };
 };

@@ -7,10 +7,9 @@ import { isEmpty } from "lodash";
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
-import MaterialTable from "components/shared/MaterialTable/index";
-
 import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
 import CardTotal from "components/shared/CardTotal";
+import MaterialTable from "components/Public/Home/MaterialTable";
 
 import {
   getIsLoading,
@@ -37,17 +36,16 @@ import { entitiesStyles, getTreeId } from "utils/helper";
 import { CONTROL_UNIT_TYPE, PROJECT_TYPE } from "constants/business-types";
 import { selectTab } from "redux/project";
 
-import {
-  getKpisColorValue,
-  getPartidaColumnsByPeriod,
-  isPeriodOpen,
-} from "../common";
+import { isPeriodOpen } from "../common";
 
 import {
   getIndicators,
   columnsIndicatorsPartida,
   columnsSubTotal,
-  groups
+  groups,
+  getPartidaColumnsByPeriod,
+  getHeaderControlUnitFields,
+  getHeaderProjectFields,
 } from "./configuration";
 
 const KPIS_TAB_INDEX = 0;
@@ -71,16 +69,7 @@ const ControlUnitDetailedContent = ({
   ...props
 }) => {
   const intl = useIntl();
-  const [headerProject, setHeaderProject] = React.useState({});
-  const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
-  const [headerControlUnit, setHeaderControlUnit] = React.useState({});
-  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
-  const [columns] = React.useState(
-    getPartidaColumnsByPeriod({ period: selectedPeriod, intl, actions })
-  );
-  const [tabIndex, setTabIndex] = React.useState(tab);
   const loadHeader = () => actions.loadHeader({ id: props.id });
-  const [indicadores, setIndicadores] = React.useState();
   const onChangeIndexExecutor = {
     [PARTIDAS_TAB_INDEX]: () => {},
     [KPIS_TAB_INDEX]: () => {
@@ -90,21 +79,29 @@ const ControlUnitDetailedContent = ({
       unitControl.id && actions.loadDetails({ id: unitControl.id });
     },
   };
+  const content = [
+    { field: "Importe Total", value: unitControl.importTotal },
+    { field: "Coste Total", value: unitControl.costTotal },
+  ];
+
+  const [headerProject, setHeaderProject] = React.useState({});
+  const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
+  const [headerControlUnit, setHeaderControlUnit] = React.useState({});
+  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
+  const [columns] = React.useState(
+    getPartidaColumnsByPeriod({ period: selectedPeriod, intl, actions })
+  );
+  const [tabIndex, setTabIndex] = React.useState(tab);
+  const [indicadores, setIndicadores] = React.useState();
+
   React.useEffect(() => {
     onChangeIndexExecutor[tabIndex]();
   }, [tabIndex, unitControl]);
 
   React.useEffect(() => {
     loadHeader();
-  }, [props.id]);
-
-  const content = [
-    { field: "Importe Total", value: unitControl.importTotal },
-    {
-      field: "Coste Total",
-      value: unitControl.costTotal,
-    },
-  ];
+    unitControl.id && actions.loadKpis({ id: props.id });
+  }, [props.id,]);
 
   React.useEffect(() => {
     setIndicadores(getIndicators(kpisUnitatControl));
@@ -112,92 +109,25 @@ const ControlUnitDetailedContent = ({
 
   React.useEffect(() => {
     setHeaderControlUnit({ title: unitControl.descripcio });
-    setHeaderControlUnitFields([
-      {
-        field: "Benef. Origen",
-        value: kpisUnitatControl.beneficiOrigen,
-      },
-  
-      {
-        field: "Prod. Origen",
-        value: kpisUnitatControl.produccioOrigen,
-      },
-      {
-        field: "Pen. Origen",
-        value: kpisUnitatControl.obraPendentOrigen,
-      },
-     
-      {
-        field: "Benef. Año",
-        value: kpisUnitatControl.beneficiAny,
-        colorValue: getKpisColorValue({
-          value: kpisUnitatControl.beneficiAny,
-        }),
-      },
-      {
-        field: "Prod. Año",
-        value: kpisUnitatControl.produccioAny,
-        colorValue: getKpisColorValue({
-          value: kpisUnitatControl.produccioAny ,
-        }),
-      },
-     
-
-      {
-        field: "Pen. Año",
-        value: kpisUnitatControl.obraPendentAny,
-        colorValue: getKpisColorValue({
-          value: kpisUnitatControl.obraPendentAny ,
-        }),
-      },
-    ]);
-  }, [kpisUnitatControl, unitControl, intl]);
+    setHeaderControlUnitFields(getHeaderControlUnitFields(kpisUnitatControl));
+  }, [kpisUnitatControl, unitControl]);
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
-    setHeaderProjectFields([
-      {
-        field: "Benef. Origen",
-        value: kpis.beneficiOrigen,
-      },
-      
-      {
-        field: "Prod. Origen",
-        value: kpis.produccioOrigen,
-      },
-      {
-        field: "Pen. Origen",
-        value: kpis.obraPendentOrigen,
-      },
-      {
-        field: "Benef. Año",
-        value: kpis.beneficiAny,
-        colorValue: getKpisColorValue({ value: kpis.beneficiAny  }),
-      },
-      {
-        field: "Prod. Año",
-        value: kpis.produccioAny,
-        colorValue: getKpisColorValue({ value: kpis.produccioAny }),
-      },
-     
-
-      {
-        field: "Pen. Año",
-        value: kpis.obraPendentAny,
-        colorValue: getKpisColorValue({ value: kpis.obraPendentAny  }),
-      },
-    ]);
-  }, [kpis, tree, intl]);
+    setHeaderProjectFields(getHeaderProjectFields(kpis));
+  }, [kpis, tree]);
 
   const handleCellChange = async (params, event, details) => {
     const { id, field, value } = params;
     const data = rows.find((row) => row.id === id);
+
     data[field] = value;
     try {
       await actions.updatePartida({ id, data });
       // update related data
       loadHeader();
       actions.loadTreeData({ periodId: selectedPeriod.id });
+      actions.loadKpis({ id: props.id });
     } catch (e) {
       // handle errors
     }
@@ -213,7 +143,10 @@ const ControlUnitDetailedContent = ({
           body={headerProjectFields}
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[PROJECT_TYPE]}
-          onClick={(id) => actions.selectNode({ ids: id })}
+          onClick={(id) => {
+            actions.selectTab({ value: tabIndex });
+            actions.selectNode({ ids: id });
+          }}
 
         />
       </Grid>

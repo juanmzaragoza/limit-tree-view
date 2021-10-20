@@ -1,12 +1,8 @@
-import { Avatar, IconButton } from "@mui/material";
-import { PARTIDA_TYPE, RESOURCE_TYPE } from "constants/business-types";
 import { formatCurrencyWithIntl } from "utils/formats";
 import {
-  entitiesStyles,
   greenColor,
   redColor,
   inheritColor,
-  getTreeId,
 } from "utils/helper";
 
 export const isPeriodOpen = ({ period }) => {
@@ -27,142 +23,6 @@ export const getKpisColorValue = ({ value }) => {
   }
 };
 
-export const getPartidaColumnsByPeriod = ({ period, intl, actions }) => {
-  const number = period.numero;
-  const numberIsZero = !number;
-  const numberIsNotZero = !!number;
-
-  return [
-    {
-      field: "id",
-      headerName: (
-        <Avatar
-          aria-label="recipe"
-          sx={{
-            bgcolor: entitiesStyles[PARTIDA_TYPE].iconColor,
-            color: "white",
-          }}
-        >
-          {entitiesStyles[PARTIDA_TYPE].icon}
-        </Avatar>
-      ),
-      renderCell: (cellValues) => {
-        return (
-          <IconButton
-            variant="outlined"
-            onClick={() => {
-              actions.selectTab({ value: 1 });
-              actions.selectNode({ ids: getTreeId(cellValues.row) });
-            }}
-            style={{ color: entitiesStyles[RESOURCE_TYPE].iconColor }}
-          >
-            {entitiesStyles[RESOURCE_TYPE].icon}
-          </IconButton>
-        );
-      },
-      minWidth: 30,
-      editable: false,
-    },
-    { field: "codi", headerName: "Cód.", minWidth: 90 },
-    {
-      field: "descripcioReduc",
-      headerName: "Descripción",
-      minWidth: 350,
-      editable: numberIsZero,
-    },
-
-    {
-      field: "unitatsActual",
-      headerName: "Med. hecha período",
-      type: "number",
-      minWidth: 140,
-      editable: numberIsNotZero,
-    },
-    {
-      field: "medicioOrigen",
-      headerName: "Med. Origen",
-      type: "number",
-      minWidth: 140,
-      editable: numberIsNotZero,
-    },
-
-    {
-      field: "unitats",
-      headerName: "Med. Prevista",
-      type: "number",
-      minWidth: 140,
-      editable: numberIsZero,
-    },
-    {
-      field: "unitatTipus",
-      headerName: "Tipo Unidad",
-      valueGetter: (params) => `${params.value?.description || ""}`,
-      minWidth: 100,
-    },
-    {
-      field: "unitatsAnterior",
-      headerName: "Med. Orig. Anterior",
-      type: "number",
-      minWidth: 140,
-    },
-    {
-      field: "obraPendent",
-      headerName: "Med. pendiente",
-      type: "number",
-      minWidth: 140,
-    },
-    {
-      field: "unitatsPress",
-      headerName: "Med. Presupuestada",
-      type: "number",
-      minWidth: 140,
-      editable: numberIsZero,
-    },
-    {
-      field: "preu",
-      headerName: "Pvp Bruto",
-      type: "number",
-      valueFormatter: (params) =>
-        formatCurrencyWithIntl(params.row.preu ?? 0, intl),
-      minWidth: 140,
-      editable: numberIsZero,
-    },
-    {
-      field: "preuNet",
-      headerName: "Pvp Neto",
-      type: "number",
-      valueFormatter: (params) =>
-        formatCurrencyWithIntl(params.row.preuNet ?? 0, intl),
-      minWidth: 140,
-    },
-    {
-      field: "importTotal",
-      headerName: "Imp. Tot. Pres.",
-      type: "number",
-      valueFormatter: (params) =>
-        formatCurrencyWithIntl(params.row.importTotal ?? 0, intl),
-      minWidth: 140,
-    },
-    {
-      field: "costUni",
-      headerName: "Coste Unit. Total",
-      type: "number",
-      valueFormatter: (params) =>
-        formatCurrencyWithIntl(params.row.costUni ?? 0, intl),
-      minWidth: 140,
-      editable: false,
-    },
-    {
-      field: "costTotal",
-      headerName: "Coste Total Prev.",
-      type: "number",
-      valueFormatter: (params) =>
-        formatCurrencyWithIntl(params.row.costTotal ?? 0, intl),
-      minWidth: 140,
-    },
-  ];
-};
-
 export const getResourceColumnsByPeriod = ({ period, intl }) => {
   const  number  = period.numero;
   return [
@@ -170,7 +30,7 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
     {
       field: "descripcio",
       headerName: "Descripción",
-      minWidth: 490,
+      minWidth: 510,
       editable: !number,
     },
     {
@@ -178,13 +38,16 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
       headerName: "Medición",
       type: "number",
       minWidth: 140,
-      editable: !number,
+      editable: true,
     },
     {
       field: "unitatTipus",
       headerName: "Tipo Unidad",
-      minWidth: 140,
+      minWidth: 120,
+      align: 'center',
+      headerAlign: 'center',
       valueGetter: (params) => `${params.value?.description || ""}`,
+      
     },
     {
       field: "costUnitat",
@@ -194,7 +57,7 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
       valueFormatter: (params) => {
         return formatCurrencyWithIntl(params.row.costUnitat ?? 0, intl);
       },
-      editable: !number,
+      editable: true,
     },
     {
       field: "costTotal",

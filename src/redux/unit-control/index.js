@@ -1,9 +1,12 @@
 import Axios from "Axios";
+import { findPartida } from "./helpers";
 
 //Action types
 const ADD = "ADD_TO_UC";
 const REPLACE = "REPLACE_TO_UC";
 const RESET_KPIS = "RESET_KPIS_TO_PARTIDA";
+const SELECT_PARTIDA = "SELECT_PARTIDA";
+const RESET_PARTIDA = "RESET_PARTIDA"
 
 // Constants
 const URL = 'api/estp/liniesEstudi?query=unitatControlEstudi.id=="{id}"&sort=codi';
@@ -16,6 +19,7 @@ const LOAD_DETAILS_URL = "api/estp/unitatsControlEstudi/{id}/indicadors?desgloss
 export const loadData = ({ url = URL, id }) => {
   return async (dispatch) => {
     const apiCall = () => Axios.get(url.replace("{id}", id));
+    const getTreeId = (node) => `${node?.estudiProjecte?.pk?.codi}_${node?.unitatControlEstudi?.description}_${node?.codi}`;
     try {
       dispatch(add({ loading: true }));
       apiCall()
@@ -25,7 +29,7 @@ export const loadData = ({ url = URL, id }) => {
           dispatch(add({
             rows: rows.map(row => ({
               ...row,
-              treeId: `${row?.estudiProjecte?.pk?.codi}_${row.unitatControlEstudi.description}_${row.codi}`
+              treeId: getTreeId(row)
             })
           )}));
           dispatch(add({ loading: false }));
@@ -121,6 +125,7 @@ export const loadKpis = ({ url = LOAD_KPIS_URL, id }) => {
 export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
   return async (dispatch) => {
     const apiCall = () => Axios.get(url.replace("{id}", id));
+    const getTreeId = (node) => `${node?.estudiProjecteCodi}_${node.unitatControlCodi}_${node.codi}`;
     try {
       dispatch(add({ loadingDetails: true }));
       apiCall()
@@ -128,9 +133,9 @@ export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
         .then(({ indicadorsPartides, indicadorsPartidesDesglossats }) => {
           dispatch(
             add({
-              details: indicadorsPartidesDesglossats.map(indicadorPartidesDesglossats => ({
-                ...indicadorPartidesDesglossats,
-                treeId: `${indicadorPartidesDesglossats?.estudiProjecteCodi}_${indicadorPartidesDesglossats.codi}`
+              details: indicadorsPartidesDesglossats.map(detail => ({
+                ...detail,
+                treeId: getTreeId(detail)
               })),
               totals: indicadorsPartides,
             })
@@ -163,9 +168,22 @@ export const replace = (payload) => {
   };
 };
 
+export const selectPartida = (payload) => {
+  return {
+    type: SELECT_PARTIDA,
+    payload,
+  };
+};
+
 export const resetKpis = () => {
   return {
     type: RESET_KPIS,
+  };
+};
+
+export const resetPartida = () => {
+  return {
+    type: RESET_PARTIDA,
   };
 };
 
@@ -174,11 +192,12 @@ const initialState = {
   unitControl: {},
   rows: [],
   loading: false,
-  kpis:[],
-  details:[],
-  totals:[],
-  costesUC:[],
+  kpis: [],
+  details: [],
+  totals: [],
+  costesUC: [],
   loadingDetails: false,
+  partidaSelected: {},
 };
 
 const reducer = (state = initialState, action) => {
@@ -190,8 +209,17 @@ const reducer = (state = initialState, action) => {
         row.id === action.payload.id ? action.payload : row
       );
       return { ...state, rows: changedRows };
+    case SELECT_PARTIDA:
+      const { ids } = action.payload;
+      const partidaSelected = findPartida({ id: ids, partidas: state.rows });
+      return {
+        ...state,
+        partidaSelected,
+      };
     case RESET_KPIS:
       return { ...state, kpis: [] };
+    case RESET_PARTIDA:
+      return { ...state, partidaSelected: [] };
     case "RESET":
       return initialState;
     default:

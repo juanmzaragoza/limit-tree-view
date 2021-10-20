@@ -4,6 +4,7 @@ import Axios from "Axios";
 const ADD = "ADD_TO_PROJECT";
 const RESET_KPIS = "RESET_KPIS_TO_PROJECT";
 const SELECT_TAB = "SELECT_TAB";
+
 // Constants
 const URL = 'api/estp/unitatsControlEstudi?query=estudiProjecte.id=="{id}"&sort=codi';
 const LOAD_KPIS_URL = "api/estp/estudisProjecte/{id}/indicadors";
@@ -13,14 +14,16 @@ const LOAD_DETAILS_URL = "api/estp/estudisProjecte/{id}/indicadors?desglossat=tr
 export const loadData = ({ url = URL, id }) => {
   return async (dispatch) => {
     const apiCall = () => Axios.get(url.replace("{id}", id));
+    const getTreeId = (node) => `${node?.estudiProjecte?.pk?.codi}_${node.codi}`;
     try {
       dispatch(add({ loading: true }));
       apiCall()
         .then(({ data }) => data)
         .then(({ _embedded }) => {
-          dispatch(add({ rows: _embedded["unitatControlEstudis"].map(unitatControlEstudi => ({
-              ...unitatControlEstudi,
-              treeId: `${unitatControlEstudi?.estudiProjecte?.pk?.codi}_${unitatControlEstudi.codi}`
+          dispatch(add({ rows: _embedded["unitatControlEstudis"].map(row => (
+            {
+              ...row,
+              treeId: getTreeId(row)
             })
           )}));
           dispatch(add({ loading: false }));
@@ -58,25 +61,33 @@ export const loadKpis = ({ url = LOAD_KPIS_URL, id }) => {
 export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
   return async (dispatch) => {
     const apiCall = () => Axios.get(url.replace("{id}", id));
+    const getTreeId = (node) => `${node?.estudiProjecteCodi}_${node?.unitatControlCodi}`;
     try {
+      dispatch(add({ loadingDetails: true }));
       apiCall()
         .then(({ data }) => data)
         .then(({ indicadorsPartides, indicadorsPartidesDesglossats }) => {
           dispatch(
             add({
-              details: indicadorsPartidesDesglossats.map(indicadorPartidesDesglossats => ({
-                ...indicadorPartidesDesglossats,
-                treeId: `${indicadorPartidesDesglossats.estudiProjecteCodi}_${indicadorPartidesDesglossats.unitatControlCodi}`
+              details: indicadorsPartidesDesglossats.map(indicador => ({
+                ...indicador,
+                treeId: getTreeId(indicador)
               })),
               totals: indicadorsPartides,
             })
           );
+          dispatch(add({ loadingDetails: false }));
         })
         .catch((error) => {
           console.log(error);
+          dispatch(add({ loadingDetails: false }));
         })
-        .finally(() => {});
-    } catch (error) {}
+        .finally(() => {
+          dispatch(add({ loadingDetails: false }));
+        });
+    } catch (error) {
+      dispatch(add({ loadingDetails: false }));
+    }
   };
 };
 
@@ -101,21 +112,14 @@ export const selectTab = (payload) => {
   }
 }
 
-
-const getSelected = ({ value }) => {
-
-  // update selected
-  const selectedTab =   value ;
-  return selectedTab;
-}
-
 //Reducers
 const initialState = {
   rows: [],
   loading: false,
   kpis: [],
   details: [],
-  selectedTab: 0
+  selectedTab: 0,
+  loadingDetails: false,
   
 };
 
@@ -126,10 +130,10 @@ const reducer = (state = initialState, action) => {
     case RESET_KPIS:
       return { ...state, kpis: [] };
     case SELECT_TAB:
-      const { value } = action.payload;
+      const { value: selectedTab } = action.payload;
       return {
         ...state,
-        selectedTab: getSelected({ value }),
+        selectedTab,
       };
     case "RESET":
       return initialState;

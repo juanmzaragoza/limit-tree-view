@@ -10,7 +10,6 @@ import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
 import CardTotal from "components/shared/CardTotal";
 import {
-  getKpisColorValue,
   getResourceColumnsByPeriod,
   isPeriodOpen,
 } from "components/Public/Home/DetailedContent/common";
@@ -22,13 +21,23 @@ import {
   getPartida,
   getRows,
 } from "redux/partida/selectors";
-import { getKpis as getKpisProjecte, getTabIndex } from "redux/project/selectors";
-import { loadHeader as loadUnitControlHeader } from "redux/unit-control";
+import { selectTab } from "redux/project";
+import {
+  getKpis as getKpisProjecte,
+  getTabIndex,
+} from "redux/project/selectors";
+import {
+  loadHeader as loadUnitControlHeader,
+  loadKpis as loadKpisUC
+} from "redux/unit-control";
 import {
   getUnitControl,
   getKpis as getKpisUC,
 } from "redux/unit-control/selectors";
-import { loadData as loadTreeData, selectAndExpandNode } from "redux/project-tree";
+import {
+  loadData as loadTreeData,
+  selectAndExpandNode,
+} from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
@@ -39,7 +48,12 @@ import {
   PROJECT_TYPE,
 } from "constants/business-types";
 
-import {getIndicators} from "./configuration";
+import {
+  getHeaderControlUnitFields,
+  getHeaderPartidaFields,
+  getHeaderProjectFields,
+  getIndicators
+} from "./configuration";
 
 const KPIS_TAB_INDEX = 0;
 const RESOURCES_TAB_INDEX = 1;
@@ -59,158 +73,63 @@ const ProjectDetailedContent = ({
   ...props
 }) => {
   const intl = useIntl();
+  const content = [{ field: "Coste Total", value: partida.costUni }];
+  const onChangeIndexExecutor = {
+    [RESOURCES_TAB_INDEX]: () => {},
+    [KPIS_TAB_INDEX]: () => {
+      partida.id && actions.loadKpis({ id: props.id });
+    },
+  };
+  const loadHeader = () => actions.loadHeader({ id: props.id });
+
   const [headerProject, setHeaderProject] = React.useState({});
   const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
   const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
   const [headerPartida, setHeaderPartida] = React.useState({});
   const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
+  //TODO() qué significa esto (tab === 2 ? 1 : tab)?
   const [tabIndex, setTabIndex] = React.useState(tab === 2 ? 1 : tab);
   const [indicadores, setIndicadores] = React.useState();
   const [columns] = React.useState(
     getResourceColumnsByPeriod({ period: selectedPeriod, intl })
   );
 
-  const onChangeIndexExecutor = {
-    [RESOURCES_TAB_INDEX]: () => {},
-    [KPIS_TAB_INDEX]: () => {
-      partida.id && actions.loadKpis({ id: partida.id });
-    },
-  };
   React.useEffect(() => {
     onChangeIndexExecutor[tabIndex]();
   }, [tabIndex, partida]);
 
-  const content = [
-    {
-      field: "Coste Total",
-      value: partida.costUni,
-    },
-  ];
+  React.useEffect(() => {
+    partida.id && actions.loadKpis({ id: props.id });
+    partida.unitatControlEstudi && actions.loadKpisUC({ id:  partida.unitatControlEstudi.id });
+    if(partida.unitatControlEstudi !== undefined){
+      actions.loadUnitControlHeader({ id: partida.unitatControlEstudi?.id });
+    }
+  }, [partida]);
 
   React.useEffect(() => {
     setIndicadores(getIndicators(kpisPartida));
   }, [kpisPartida]);
 
-  const loadHeader = () => actions.loadHeader({ id: props.id });
   React.useEffect(() => {
     loadHeader();
+    partida.id && actions.loadKpis({ id: props.id });
   }, [props.id]);
 
   React.useEffect(() => {
     setHeaderControlUnit({ title: unitControl.descripcio });
-    setHeaderControlUnitFields([
-      {
-        field: "Benef. Origen",
-        value: kpisUnitatControl.beneficiOrigen,
-      },
-  
-      {
-        field: "Prod. Origen",
-        value: kpisUnitatControl.produccioOrigen,
-      },
-      {
-        field: "Pen. Origen",
-        value: kpisUnitatControl.obraPendentOrigen,
-      },
-     
-      {
-        field: "Benef. Año",
-        value: kpisUnitatControl.beneficiAny,
-        colorValue: getKpisColorValue({
-          value: kpisUnitatControl.beneficiAny,
-        }),
-      },
-      {
-        field: "Prod. Año",
-        value: kpisUnitatControl.produccioAny,
-        colorValue: getKpisColorValue({
-          value: kpisUnitatControl.produccioAny ,
-        }),
-      },
-      {
-        field: "Pen. Año",
-        value: kpisUnitatControl.obraPendentAny,
-        colorValue: getKpisColorValue({
-          value: kpisUnitatControl.obraPendentAny,
-        }),
-      },
-    ]);
-  }, [kpisUnitatControl, unitControl, intl]);
+    setHeaderControlUnitFields(getHeaderControlUnitFields(kpisUnitatControl));
+  }, [kpisUnitatControl, unitControl]);
 
   React.useEffect(() => {
     setHeaderPartida({ title: partida.descripcioReduc });
-    setHeaderPartidaFields([
-      {
-        field: "Benef. Origen",
-        value: kpisPartida.beneficiOrigen,
-      },
-      
-      {
-        field: "Prod. Origen",
-        value: kpisPartida.produccioOrigen,
-      },
-      {
-        field: "Pen. Origen",
-        value: kpisPartida.obraPendentOrigen,
-      },
-      {
-        field: "Benef. Año",
-        value: kpisPartida.beneficiAny,
-        colorValue: getKpisColorValue({ value: kpisPartida.beneficiAny }),
-      },
-      {
-        field: "Prod. Año",
-        value: kpisPartida.produccioAny,
-        colorValue: getKpisColorValue({ value: kpisPartida.produccioAny}),
-      },
-     
-
-      {
-        field: "Pen. Año",
-        value: kpisPartida.obraPendentAny,
-        colorValue: getKpisColorValue({ value: kpisPartida.obraPendentAny }),
-      },
-      
-    ]);
-  }, [kpisPartida, partida, intl]);
+    setHeaderPartidaFields(getHeaderPartidaFields(kpisPartida));
+  }, [kpisPartida, partida]);
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
-    setHeaderProjectFields([
-
-      {
-        field: "Benef. Origen",
-        value: kpisProjecte.beneficiOrigen,
-      },
-      
-      {
-        field: "Prod. Origen",
-        value: kpisProjecte.produccioOrigen,
-      },
-      {
-        field: "Pen. Origen",
-        value: kpisProjecte.obraPendentOrigen,
-      },
-      {
-        field: "Benef. Año",
-        value: kpisProjecte.beneficiAny,
-        colorValue: getKpisColorValue({ value: kpisProjecte.beneficiAny }),
-      },
-      {
-        field: "Prod. Año",
-        value: kpisProjecte.produccioAny,
-        colorValue: getKpisColorValue({ value: kpisProjecte.produccioAny  }),
-      },
-     
-
-      {
-        field: "Pen. Año",
-        value: kpisProjecte.obraPendentAny,
-        colorValue: getKpisColorValue({ value: kpisProjecte.obraPendentAny  }),
-      },
-    ]);
-  }, [kpisProjecte, tree, intl]);
+    setHeaderProjectFields(getHeaderProjectFields(kpisProjecte));
+  }, [kpisProjecte, tree]);
 
   const handleCellChange = async (params, event, details) => {
     const { id, field, value } = params;
@@ -237,7 +156,11 @@ const ProjectDetailedContent = ({
           body={headerProjectFields}
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[PROJECT_TYPE]}
-          onClick={(id) => actions.selectNode({ ids: id })}
+          onClick={(id) => {
+            //TODO() ??
+            actions.selectTab({ value:  tabIndex === 1 ? 2 : 0  });
+            actions.selectNode({ ids: id });
+          }}
         />
       </Grid>
       <Grid item xs={4}>
@@ -247,7 +170,11 @@ const ProjectDetailedContent = ({
           body={headerControlUnitFields}
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[CONTROL_UNIT_TYPE]}
-          onClick={(id) => actions.selectNode({ ids: id })}
+          onClick={(id) => {
+            //TODO() ??
+            actions.selectTab({ value: tabIndex === 1 ? 2 : 0 });
+            actions.selectNode({ ids: id });
+          }}
         />
       </Grid>
       <Grid item xs={4}>
@@ -275,7 +202,7 @@ const ProjectDetailedContent = ({
             </Tabs>
           </Grid>
           <Grid item xs={2}>
-            <CardTotal body={content} breakPoint={12}/>
+            <CardTotal body={content} breakPoint={12} />
           </Grid>
         </Grid>
       </Grid>
@@ -295,7 +222,7 @@ const ProjectDetailedContent = ({
             <MaterialCardIndicator
               loading={isEmpty(indicadores)}
               content={indicadores}
-              onUnmount={() => actions.resetKpis()}
+              // onUnmount={() => actions.resetKpis()}
             />
           </Grid>
         )}
@@ -315,7 +242,7 @@ const mapStateToProps = (state, props) => {
     kpisPartida: getKpisPartida(state),
     kpisUnitatControl: getKpisUC(state),
     kpisProjecte: getKpisProjecte(state),
-    tab: getTabIndex(state)
+    tab: getTabIndex(state),
   };
 };
 
@@ -328,6 +255,8 @@ const mapDispatchToProps = (dispatch, props) => {
     loadKpis: bindActionCreators(loadKpis, dispatch),
     resetKpis: bindActionCreators(resetKpis, dispatch),
     selectNode: bindActionCreators(selectAndExpandNode, dispatch),
+    selectTab:  bindActionCreators(selectTab, dispatch),
+    loadKpisUC : bindActionCreators(loadKpisUC, dispatch),
   };
   return { actions };
 };
