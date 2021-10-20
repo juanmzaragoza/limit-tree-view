@@ -1,12 +1,8 @@
-import { Avatar, IconButton } from "@mui/material";
-import { PARTIDA_TYPE, RESOURCE_TYPE } from "constants/business-types";
 import { formatCurrencyWithIntl } from "utils/formats";
 import {
-  entitiesStyles,
   greenColor,
   redColor,
   inheritColor,
-  getTreeId,
 } from "utils/helper";
 
 export const isPeriodOpen = ({ period }) => {

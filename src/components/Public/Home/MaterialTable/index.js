@@ -1,6 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { forEach } from "lodash";
 import { makeStyles } from "@material-ui/styles";
 
 import {
@@ -89,12 +90,13 @@ const MaterialTable = ({
   };
 
   const handleUpdateMediciones = async (id, dataMedicion) => {
-    dataMedicion.map((data) => {
+    // prepare data
+    forEach(dataMedicion, (data) => {
       if (data.value !== undefined) {
         partidaInfo[data.field] = data.value;
       }
     });
-
+    // update data
     try {
       await actions.updatePartida({ id, data: partidaInfo });
       actions.loadData({ id: unitControl.id });

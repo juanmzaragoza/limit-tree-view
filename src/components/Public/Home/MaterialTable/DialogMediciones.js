@@ -25,7 +25,6 @@ const DialogMediciones = ({
   const [dataMedicion, setDataMedicion] = React.useState([]);
 
   React.useEffect(() => {
-    console.log(contentDialog)
     setDataMedicion([
       { field: "unitatsActual", value: contentDialog?.unitatsActual },
       { field: "medicioOrigen", value: contentDialog?.medicioOrigen },

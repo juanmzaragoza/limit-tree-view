@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
   CallMissedOutgoing,
-  Construction,
   Engineering,
   Euro,
   StackedBarChart,
