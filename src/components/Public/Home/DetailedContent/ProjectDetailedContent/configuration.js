@@ -8,13 +8,15 @@ import {
   StackedLineChart,
   Assignment,
 } from "@mui/icons-material";
+import { Avatar } from "@mui/material";
+
 import { formatCurrencyWithIntl } from "utils/formats";
 import { entitiesStyles } from "utils/helper";
 import { CONTROL_UNIT_TYPE } from "constants/business-types";
-import { Avatar } from "@mui/material";
+
+import {getKpisColorValue} from "../common";
 
 export const getIndicators = (kpis) => [
-
   {
     title: "Produccion",
     icon: <Engineering />,
@@ -198,7 +200,6 @@ export const getIndicators = (kpis) => [
 ];
 
 export const columnsIndicatorsPartida = (intl) => [
-
   {
     id: "unitatControlCodi",
     id2: "unitatControlDescripcio",
@@ -207,7 +208,6 @@ export const columnsIndicatorsPartida = (intl) => [
     className: "borderRight",
    
   },
-
   {
     label: "Anterior",
     id: "produccioAnterior",
@@ -550,11 +550,40 @@ export const groups = [
     colSpan: 1,
     className: "borderRight",
   },
-
   { label: "Producción", colSpan: 5, className: "borderLeft" },
   { label: "Coste Teórico", colSpan: 5, className: "borderLeft" },
   { label: "Coste Real", colSpan: 4, className: "borderLeft" },
   { label: "Beneficios", colSpan: 4, className: "borderLeft" },
   { label: "Desviación", colSpan: 4, className: "borderLeft" },
-  
 ];
+
+export const getProjectFields = (kpis) => ([
+  {
+    field: "Benef. Origen",
+    value: kpis.beneficiOrigen,
+  },
+  {
+    field: "Benef. Año",
+    value: kpis.beneficiAny,
+    colorValue: getKpisColorValue({ value: kpis.beneficiAny }),
+  },
+  {
+    field: "Prod. Origen",
+    value: kpis.produccioOrigen,
+  },
+  {
+    field: "Prod. Año",
+    value: kpis.produccioAny,
+    colorValue: getKpisColorValue({ value: kpis.produccioAny }),
+  },
+  {
+    field: "Pen. Origen",
+    value: kpis.obraPendentOrigen,
+  },
+
+  {
+    field: "Pen. Año",
+    value: kpis.obraPendentAny,
+    colorValue: getKpisColorValue({ value: kpis.obraPendentAny }),
+  },
+]);
