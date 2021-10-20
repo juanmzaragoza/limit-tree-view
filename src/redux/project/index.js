@@ -5,11 +5,9 @@ const ADD = "ADD_TO_PROJECT";
 const RESET_KPIS = "RESET_KPIS_TO_PROJECT";
 const SELECT_TAB = "SELECT_TAB";
 // Constants
-const URL =
-  'api/estp/unitatsControlEstudi?query=estudiProjecte.id=="{id}"&sort=codi';
+const URL = 'api/estp/unitatsControlEstudi?query=estudiProjecte.id=="{id}"&sort=codi';
 const LOAD_KPIS_URL = "api/estp/estudisProjecte/{id}/indicadors";
-const LOAD_DETAILS_URL =
-  "api/estp/estudisProjecte/{id}/indicadors?desglossat=true";
+const LOAD_DETAILS_URL = "api/estp/estudisProjecte/{id}/indicadors?desglossat=true";
 
 //Functions
 export const loadData = ({ url = URL, id }) => {
@@ -20,7 +18,11 @@ export const loadData = ({ url = URL, id }) => {
       apiCall()
         .then(({ data }) => data)
         .then(({ _embedded }) => {
-          dispatch(add({ rows: _embedded["unitatControlEstudis"] }));
+          dispatch(add({ rows: _embedded["unitatControlEstudis"].map(unitatControlEstudi => ({
+              ...unitatControlEstudi,
+              treeId: `${unitatControlEstudi?.estudiProjecte?.pk?.codi}_${unitatControlEstudi.codi}`
+            })
+          )}));
           dispatch(add({ loading: false }));
         })
         .catch((error) => {
@@ -63,7 +65,10 @@ export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
         .then(({ indicadorsPartides, indicadorsPartidesDesglossats }) => {
           dispatch(
             add({
-              details: indicadorsPartidesDesglossats,
+              details: indicadorsPartidesDesglossats.map(indicadorPartidesDesglossats => ({
+                ...indicadorPartidesDesglossats,
+                treeId: `${indicadorPartidesDesglossats.estudiProjecteCodi}_${indicadorPartidesDesglossats.unitatControlCodi}`
+              })),
               totals: indicadorsPartides,
             })
           );

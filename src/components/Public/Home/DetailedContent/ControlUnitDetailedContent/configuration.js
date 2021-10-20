@@ -7,10 +7,11 @@ import {
   StackedBarChart,
   StackedLineChart,
 } from "@mui/icons-material";
+import { Avatar } from "@mui/material";
+
 import { formatCurrencyWithIntl } from "utils/formats";
 import { entitiesStyles } from "utils/helper";
 import { PARTIDA_TYPE } from "constants/business-types";
-import { Avatar, Button } from "@mui/material";
 
 export const getIndicators = (kpisUnitatControl) => [
   {

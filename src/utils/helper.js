@@ -16,15 +16,11 @@ export const primaryColor = '#3a9198';
 export const secondaryColor = '#4468a0';
 export const greenColor = 'green';
 export const redColor = 'red';
-
 export const resourcesColor = '#a250f5';
-
 export const inheritColor =  'rgba(0, 0, 0, 0.87)';
-
 
 export const entitiesStyles = {
   [PROJECT_TYPE]: {
-
     colorBackground: "rgba(16, 118, 49, 0.30)",
     icon: <Business />,
     iconColor: "#107631",
@@ -44,7 +40,6 @@ export const entitiesStyles = {
     icon: <People />,
     iconColor: "#6CA0B0",
   }
-
-
-  
 }
+
+export const getTreeId = (node) => node?.treeId;

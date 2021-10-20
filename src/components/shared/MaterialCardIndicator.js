@@ -1,11 +1,6 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
-import {
-  Avatar,
-  CardContent,
-  CardHeader,
-  Grid,
-} from "@mui/material";
+import { Avatar, CardContent, CardHeader, Grid } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import { primaryColor } from "utils/helper";
 import { formatCurrencyWithIntl } from "utils/formats";
@@ -59,9 +54,7 @@ export default function MaterialCardIndicator({
       )}
       {content?.map(({ title, indicators, lg, icon }, index) => {
         return (
-
-          <Grid item xs={12} className={theme.cardContent} key={index} >
-
+          <Grid item xs={12} className={theme.cardContent} key={index}>
             <Card className={theme.card}>
               <CardHeader
                 avatar={
@@ -89,14 +82,11 @@ export default function MaterialCardIndicator({
                 }}
                 className={theme.cardHeader}
               />
-
               <CardContent>
                 <Grid container spacing={2}>
                   {indicators?.map(({ field, value, breakpoints }, index) => {
                     return (
-
-                      <Grid item xs={lg} key={index} >
-
+                      <Grid item xs={lg} key={index}>
                         {field}: <br />
                         <strong>
                           {value === undefined

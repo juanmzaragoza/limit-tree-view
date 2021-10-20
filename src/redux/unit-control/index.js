@@ -7,9 +7,9 @@ const REPLACE = "REPLACE_TO_UC";
 const RESET_KPIS = "RESET_KPIS_TO_PARTIDA";
 const SELECT_PARTIDA = "SELECT_PARTIDA";
 const RESET_PARTIDA = "RESET_PARTIDA"
+
 // Constants
-const URL =
-  'api/estp/liniesEstudi?query=unitatControlEstudi.id=="{id}"&sort=codi';
+const URL = 'api/estp/liniesEstudi?query=unitatControlEstudi.id=="{id}"&sort=codi';
 const HEADER_URL = "api/estp/unitatsControlEstudi";
 const UPDATE_PARTIDA_URL = "api/estp/liniesEstudi";
 const LOAD_KPIS_URL = "api/estp/unitatsControlEstudi/{id}/indicadors";
@@ -26,7 +26,13 @@ export const loadData = ({ url = URL, id }) => {
       apiCall()
         .then(({ data }) => data)
         .then(({ _embedded }) => {
-          dispatch(add({ rows: _embedded?.liniaEstudis ?? [] }));
+          const rows = _embedded?.liniaEstudis ?? [];
+          dispatch(add({
+            rows: rows.map(row => ({
+              ...row,
+              treeId: `${row?.estudiProjecte?.pk?.codi}_${row.unitatControlEstudi.description}_${row.codi}`
+            })
+          )}));
           dispatch(add({ loading: false }));
         })
         .catch((error) => {
@@ -53,7 +59,12 @@ export const loadHeader = ({ url = HEADER_URL, id }) => {
       apiCall()
         .then(({ data }) => data)
         .then((_embedded) => {
-          dispatch(add({ unitControl: _embedded }));
+          dispatch(add({
+            unitControl: {
+              ..._embedded,
+              treeId: `${_embedded?.estudiProjecte?.pk?.codi}_${_embedded.codi}`
+            }
+          }));
           //dispatch(add({ loading: false }));
         })
         .catch((error) => {
@@ -122,7 +133,10 @@ export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
         .then(({ indicadorsPartides, indicadorsPartidesDesglossats }) => {
           dispatch(
             add({
-              details: indicadorsPartidesDesglossats,
+              details: indicadorsPartidesDesglossats.map(indicadorPartidesDesglossats => ({
+                ...indicadorPartidesDesglossats,
+                treeId: `${indicadorPartidesDesglossats?.estudiProjecteCodi}_${indicadorPartidesDesglossats.codi}`
+              })),
               totals: indicadorsPartides,
             })
           );
@@ -138,6 +152,7 @@ export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
     } catch (error) {}
   };
 };
+
 
 export const loadCostes = ({ url = LOAD_COSTES_URL, id }) => {
   return async (dispatch) => {
@@ -155,6 +170,7 @@ export const loadCostes = ({ url = LOAD_COSTES_URL, id }) => {
     } catch (error) {}
   };
 };
+
 
 //Action creators
 export const add = (payload) => {
@@ -207,6 +223,7 @@ const initialState = {
   costesUC: [],
   loadingDetails: false,
   partidaSelected: {},
+
 };
 
 const reducer = (state = initialState, action) => {
@@ -219,12 +236,14 @@ const reducer = (state = initialState, action) => {
       );
       return { ...state, rows: changedRows };
 
+
     case SELECT_PARTIDA:
       const { ids } = action.payload;
       return {
         ...state,
         partidaSelected: getPartidaSelected({ ids, state }),
       };
+
 
     case RESET_KPIS:
       return { ...state, kpis: [] };

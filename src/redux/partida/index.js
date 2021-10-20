@@ -52,7 +52,12 @@ export const loadHeader = ({ url = HEADER_URL, id }) => {
       apiCall()
         .then(({data}) => data)
         .then((_embedded) => {
-          dispatch(add({ partida: _embedded }));
+          dispatch(add({
+            partida: {
+              ..._embedded,
+              treeId: `${_embedded?.estudiProjecte?.pk?.codi}_${_embedded?.unitatControlEstudi?.description}_${_embedded.codi}`
+            }
+          }));
           //dispatch(add({ loading: false }));
         })
         .catch(error => {

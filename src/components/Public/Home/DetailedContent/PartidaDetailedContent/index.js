@@ -38,7 +38,7 @@ import {
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
-import { entitiesStyles } from "utils/helper";
+import { entitiesStyles, getTreeId } from "utils/helper";
 import {
   CONTROL_UNIT_TYPE,
   PARTIDA_TYPE,
@@ -70,9 +70,7 @@ const ProjectDetailedContent = ({
   const [headerProject, setHeaderProject] = React.useState({});
   const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
-  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState(
-    []
-  );
+  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
   const [headerPartida, setHeaderPartida] = React.useState({});
   const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
   const [tabIndex, setTabIndex] = React.useState(tab === 2 ? 1 : tab);
@@ -240,7 +238,7 @@ const ProjectDetailedContent = ({
     <Grid container spacing={1}>
       <Grid item xs={4}>
         <DetailedHeader
-          id={selectedPeriod.id}
+          id={getTreeId(tree)}
           header={headerProject}
           body={headerProjectFields}
           breakpoints={detailedHeaderBreakpoints}
@@ -253,7 +251,7 @@ const ProjectDetailedContent = ({
       </Grid>
       <Grid item xs={4}>
         <DetailedHeader
-          id={unitControl.id}
+          id={getTreeId(unitControl)}
           header={headerControlUnit}
           body={headerControlUnitFields}
           breakpoints={detailedHeaderBreakpoints}
@@ -266,7 +264,7 @@ const ProjectDetailedContent = ({
       </Grid>
       <Grid item xs={4}>
         <DetailedHeader
-          id={partida.id}
+          id={getTreeId(partida)}
           header={headerPartida}
           body={headerPartidaFields}
           breakpoints={detailedHeaderBreakpoints}
@@ -293,7 +291,6 @@ const ProjectDetailedContent = ({
           </Grid>
         </Grid>
       </Grid>
-
       <Grid item xs={12}>
         {tabIndex === RESOURCES_TAB_INDEX && (
           <MaterialDataGrid

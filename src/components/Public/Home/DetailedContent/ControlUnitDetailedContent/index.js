@@ -33,7 +33,7 @@ import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 import { getKpis, getTabIndex } from "redux/project/selectors";
 
-import { entitiesStyles } from "utils/helper";
+import { entitiesStyles, getTreeId } from "utils/helper";
 import { CONTROL_UNIT_TYPE, PROJECT_TYPE } from "constants/business-types";
 import { selectTab } from "redux/project";
 
@@ -74,9 +74,7 @@ const ControlUnitDetailedContent = ({
   const [headerProject, setHeaderProject] = React.useState({});
   const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
-  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState(
-    []
-  );
+  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
   const [columns] = React.useState(
     getPartidaColumnsByPeriod({ period: selectedPeriod, intl, actions })
   );
@@ -90,7 +88,6 @@ const ControlUnitDetailedContent = ({
     },
     [DETAIL_TAB_INDEX]: () => {
       unitControl.id && actions.loadDetails({ id: unitControl.id });
-
     },
   };
   React.useEffect(() => {
@@ -217,7 +214,7 @@ const ControlUnitDetailedContent = ({
     <Grid container spacing={1}>
       <Grid item xs={6}>
         <DetailedHeader
-          id={selectedPeriod.id}
+          id={getTreeId(tree)}
           header={headerProject}
           body={headerProjectFields}
           breakpoints={detailedHeaderBreakpoints}
@@ -231,7 +228,7 @@ const ControlUnitDetailedContent = ({
       </Grid>
       <Grid item xs={6}>
         <DetailedHeader
-          id={unitControl.id}
+          id={getTreeId(unitControl)}
           header={headerControlUnit}
           body={headerControlUnitFields}
           breakpoints={detailedHeaderBreakpoints}
@@ -261,17 +258,6 @@ const ControlUnitDetailedContent = ({
       </Grid>
 
       <Grid item xs={12}>
-        {tabIndex === PARTIDAS_TAB_INDEX && (
-          <MaterialDataGrid
-            columns={columns}
-            getRowId={(row) => row.id}
-            rows={rows}
-            loading={loading}
-            onCellEditCommit={handleCellChange}
-            disableInlineEdition={!isPeriodOpen({ period: selectedPeriod })}
-            // onRowDoubleClick={(row) => actions.selectNode({ ids: row.id })}
-          />
-        )}
         {tabIndex === KPIS_TAB_INDEX && (
           <Grid container spacing={2}>
             <MaterialCardIndicator
@@ -288,9 +274,22 @@ const ControlUnitDetailedContent = ({
             columns={columnsIndicatorsPartida(intl)}
             columnsSubTotal={columnsSubTotal(intl)}
             groups={groups}
-            onDoubleClick={(row) => { actions.selectTab({ value: KPIS_TAB_INDEX});
-            actions.selectNode({ ids: row.id })}}
+            onDoubleClick={(row) => {
+              actions.selectTab({ value: KPIS_TAB_INDEX});
+              actions.selectNode({ ids: getTreeId(row) });
+            }}
             loadingTable={loadingDetails}
+          />
+        )}
+        {tabIndex === PARTIDAS_TAB_INDEX && (
+          <MaterialDataGrid
+            columns={columns}
+            getRowId={(row) => row.id}
+            rows={rows}
+            loading={loading}
+            onCellEditCommit={handleCellChange}
+            disableInlineEdition={!isPeriodOpen({ period: selectedPeriod })}
+            // onRowDoubleClick={(row) => actions.selectNode({ ids: row.id })}
           />
         )}
       </Grid>

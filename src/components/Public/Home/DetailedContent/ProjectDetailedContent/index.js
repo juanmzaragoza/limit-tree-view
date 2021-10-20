@@ -31,7 +31,7 @@ import { selectAndExpandNode } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
-import { entitiesStyles } from "utils/helper";
+import { entitiesStyles, getTreeId } from "utils/helper";
 import { formatCurrencyWithIntl } from "utils/formats";
 import {
   PROJECT_TYPE,
@@ -68,37 +68,19 @@ const ProjectDetailedContent = ({
   const [indicadores, setIndicadores] = React.useState();
   const [tabIndex, setTabIndex] = React.useState(tab);
   const colorUnit = entitiesStyles[PARTIDA_TYPE].iconColor;
-
-  const onChangeIndexExecutor = {
-    [PROJECTS_TAB_INDEX]: () => {},
-    [KPIS_TAB_INDEX]: () => {
-      period.id && actions.loadKpis({ id: period.id });
-    },
-    [DETAIL_TAB_INDEX]: () => {
-      period.id && actions.loadDetails({ id: period.id });
-    },
-  };
-
-  React.useEffect(() => {
-    onChangeIndexExecutor[tabIndex]();
-  }, [tabIndex, project]);
-
   const [columns] = React.useState([
     {
       field: "id",
       headerName: (
-        <>
-          {" "}
-          <Avatar
-            aria-label="recipe"
-            sx={{
-              bgcolor: entitiesStyles[CONTROL_UNIT_TYPE].iconColor,
-              color: "white",
-            }}
-          >
-            {entitiesStyles[CONTROL_UNIT_TYPE].icon}
-          </Avatar>
-        </>
+        <Avatar
+          aria-label="recipe"
+          sx={{
+            bgcolor: entitiesStyles[CONTROL_UNIT_TYPE].iconColor,
+            color: "white",
+          }}
+        >
+          {entitiesStyles[CONTROL_UNIT_TYPE].icon}
+        </Avatar>
       ),
       renderCell: (cellValues) => {
         return (
@@ -106,7 +88,7 @@ const ProjectDetailedContent = ({
             variant="outlined"
             onClick={() => {
               actions.selectTab({ value: PROJECTS_TAB_INDEX });
-              actions.selectNode({ ids: cellValues.row.id });
+              actions.selectNode({ ids: getTreeId(cellValues.row) });
             }}
             style={{ color: colorUnit }}
           >
@@ -145,6 +127,20 @@ const ProjectDetailedContent = ({
       minWidth: 220,
     },
   ]);
+
+  const onChangeIndexExecutor = {
+    [PROJECTS_TAB_INDEX]: () => {},
+    [KPIS_TAB_INDEX]: () => {
+      period.id && actions.loadKpis({ id: period.id });
+    },
+    [DETAIL_TAB_INDEX]: () => {
+      period.id && actions.loadDetails({ id: period.id });
+    },
+  };
+
+  React.useEffect(() => {
+    onChangeIndexExecutor[tabIndex]();
+  }, [tabIndex, project]);
 
   React.useEffect(() => {
     setIndicadores(getIndicators(kpis));
@@ -194,7 +190,7 @@ const ProjectDetailedContent = ({
     <Grid container spacing={1}>
       <Grid item xs={12}>
         <DetailedHeader
-          id={tree.id}
+          id={getTreeId(tree)}
           header={headerProject}
           body={projectFields}
           breakpoints={detailedHeaderBreakpoints}
@@ -226,13 +222,6 @@ const ProjectDetailedContent = ({
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        {tabIndex === PROJECTS_TAB_INDEX && (
-          <MaterialDataGrid
-            columns={columns}
-            rows={rows}
-            disableInlineEdition={!isPeriodOpen({ period })}
-          />
-        )}
         {tabIndex === KPIS_TAB_INDEX && (
           <Grid container spacing={2}>
             <MaterialCardIndicator
@@ -252,8 +241,15 @@ const ProjectDetailedContent = ({
             groups={groups}
             onDoubleClick={(row) => {
               actions.selectTab({ value: DETAIL_TAB_INDEX });
-              actions.selectNode({ ids: row.unitatControlId });
+              actions.selectNode({ ids: getTreeId(row) });
             }}
+          />
+        )}
+        {tabIndex === PROJECTS_TAB_INDEX && (
+          <MaterialDataGrid
+            columns={columns}
+            rows={rows}
+            disableInlineEdition={!isPeriodOpen({ period })}
           />
         )}
       </Grid>

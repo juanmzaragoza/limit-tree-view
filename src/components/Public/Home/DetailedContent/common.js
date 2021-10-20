@@ -6,7 +6,8 @@ import {
   greenColor,
   redColor,
   inheritColor,
-} from "../../../../utils/helper";
+  getTreeId,
+} from "utils/helper";
 
 export const isPeriodOpen = ({ period }) => {
   return !period.tancat;
@@ -35,18 +36,15 @@ export const getPartidaColumnsByPeriod = ({ period, intl, actions }) => {
     {
       field: "id",
       headerName: (
-        <>
-          {" "}
-          <Avatar
-            aria-label="recipe"
-            sx={{
-              bgcolor: entitiesStyles[PARTIDA_TYPE].iconColor,
-              color: "white",
-            }}
-          >
-            {entitiesStyles[PARTIDA_TYPE].icon}
-          </Avatar>
-        </>
+        <Avatar
+          aria-label="recipe"
+          sx={{
+            bgcolor: entitiesStyles[PARTIDA_TYPE].iconColor,
+            color: "white",
+          }}
+        >
+          {entitiesStyles[PARTIDA_TYPE].icon}
+        </Avatar>
       ),
       renderCell: (cellValues) => {
         return (
@@ -54,7 +52,7 @@ export const getPartidaColumnsByPeriod = ({ period, intl, actions }) => {
             variant="outlined"
             onClick={() => {
               actions.selectTab({ value: 1 });
-              actions.selectNode({ ids: cellValues.row.id });
+              actions.selectNode({ ids: getTreeId(cellValues.row) });
             }}
             style={{ color: entitiesStyles[RESOURCE_TYPE].iconColor }}
           >
