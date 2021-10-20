@@ -37,17 +37,16 @@ import { entitiesStyles, getTreeId } from "utils/helper";
 import { CONTROL_UNIT_TYPE, PROJECT_TYPE } from "constants/business-types";
 import { selectTab } from "redux/project";
 
-import {
-  getKpisColorValue,
-  getPartidaColumnsByPeriod,
-  isPeriodOpen,
-} from "../common";
+import { isPeriodOpen } from "../common";
 
 import {
   getIndicators,
   columnsIndicatorsPartida,
   columnsSubTotal,
-  groups
+  groups,
+  getPartidaColumnsByPeriod,
+  getHeaderControlUnitFields,
+  getHeaderProjectFields,
 } from "./configuration";
 
 const KPIS_TAB_INDEX = 0;
@@ -71,16 +70,7 @@ const ControlUnitDetailedContent = ({
   ...props
 }) => {
   const intl = useIntl();
-  const [headerProject, setHeaderProject] = React.useState({});
-  const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
-  const [headerControlUnit, setHeaderControlUnit] = React.useState({});
-  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
-  const [columns] = React.useState(
-    getPartidaColumnsByPeriod({ period: selectedPeriod, intl, actions })
-  );
-  const [tabIndex, setTabIndex] = React.useState(tab);
   const loadHeader = () => actions.loadHeader({ id: props.id });
-  const [indicadores, setIndicadores] = React.useState();
   const onChangeIndexExecutor = {
     [PARTIDAS_TAB_INDEX]: () => {},
     [KPIS_TAB_INDEX]: () => {
@@ -90,27 +80,29 @@ const ControlUnitDetailedContent = ({
       unitControl.id && actions.loadDetails({ id: unitControl.id });
     },
   };
+  const content = [
+    { field: "Importe Total", value: unitControl.importTotal },
+    { field: "Coste Total", value: unitControl.costTotal },
+  ];
+
+  const [headerProject, setHeaderProject] = React.useState({});
+  const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
+  const [headerControlUnit, setHeaderControlUnit] = React.useState({});
+  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
+  const [columns] = React.useState(
+    getPartidaColumnsByPeriod({ period: selectedPeriod, intl, actions })
+  );
+  const [tabIndex, setTabIndex] = React.useState(tab);
+  const [indicadores, setIndicadores] = React.useState();
+
   React.useEffect(() => {
     onChangeIndexExecutor[tabIndex]();
-   
   }, [tabIndex, unitControl]);
 
   React.useEffect(() => {
-
     loadHeader();
     unitControl.id && actions.loadKpis({ id: props.id });
   }, [props.id,]);
-
-
-
-
-  const content = [
-    { field: "Importe Total", value: unitControl.importTotal },
-    {
-      field: "Coste Total",
-      value: unitControl.costTotal,
-    },
-  ];
 
   React.useEffect(() => {
     setIndicadores(getIndicators(kpisUnitatControl));
@@ -118,81 +110,12 @@ const ControlUnitDetailedContent = ({
 
   React.useEffect(() => {
     setHeaderControlUnit({ title: unitControl.descripcio });
-    setHeaderControlUnitFields([
-      {
-        field: "Benef. Origen",
-        value: kpisUnitatControl.beneficiOrigen,
-      },
-  
-      {
-        field: "Prod. Origen",
-        value: kpisUnitatControl.produccioOrigen,
-      },
-      {
-        field: "Desv. Origen",
-        value: kpisUnitatControl.desviacioOrigen,
-      },
-     
-      {
-        field: "Benef. Año",
-        value: kpisUnitatControl.beneficiAny,
-        colorValue: getKpisColorValue({
-          value: kpisUnitatControl.beneficiAny,
-        }),
-      },
-      {
-        field: "Prod. Año",
-        value: kpisUnitatControl.produccioAny,
-        colorValue: getKpisColorValue({
-          value: kpisUnitatControl.produccioAny ,
-        }),
-      },
-     
-
-      {
-        field: "Desv. Año",
-        value: kpisUnitatControl.desviacioAny,
-        colorValue: getKpisColorValue({
-          value: kpisUnitatControl.desviacioAny ,
-        }),
-      },
-    ]);
+    setHeaderControlUnitFields(getHeaderControlUnitFields(kpisUnitatControl));
   }, [kpisUnitatControl, unitControl, intl]);
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
-    setHeaderProjectFields([
-      {
-        field: "Benef. Origen",
-        value: kpis.beneficiOrigen,
-      },
-      
-      {
-        field: "Prod. Origen",
-        value: kpis.produccioOrigen,
-      },
-      {
-        field: "Pen. Origen",
-        value: kpis.obraPendentOrigen,
-      },
-      {
-        field: "Benef. Año",
-        value: kpis.beneficiAny,
-        colorValue: getKpisColorValue({ value: kpis.beneficiAny  }),
-      },
-      {
-        field: "Prod. Año",
-        value: kpis.produccioAny,
-        colorValue: getKpisColorValue({ value: kpis.produccioAny }),
-      },
-     
-
-      {
-        field: "Pen. Año",
-        value: kpis.obraPendentAny,
-        colorValue: getKpisColorValue({ value: kpis.obraPendentAny  }),
-      },
-    ]);
+    setHeaderProjectFields(getHeaderProjectFields(kpis));
   }, [kpis, tree, intl]);
 
   const handleCellChange = async (params, event, details) => {
@@ -277,7 +200,6 @@ const ControlUnitDetailedContent = ({
             columnsSubTotal={columnsSubTotal(intl)}
             groups={groups}
             onDoubleClick={(row) => {
-              console.log(row)
               actions.selectTab({ value: KPIS_TAB_INDEX});
               actions.selectNode({ ids: getTreeId(row) });
             }}
