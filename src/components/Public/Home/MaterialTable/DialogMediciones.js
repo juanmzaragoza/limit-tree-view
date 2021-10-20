@@ -20,14 +20,17 @@ const DialogMediciones = ({
   contentDialog,
   loading,
   handleUpdateMediciones = () => {},
-  actions
 }) => {
 
-  const [dataMedicion, setDataMedicion] = React.useState([
-    
-    { field: "unitatsActual", value: contentDialog?.unitatsActual },
-    { field: "medicioOrigen", value: contentDialog?.medicioOrigen },
-  ]);
+  const [dataMedicion, setDataMedicion] = React.useState([]);
+
+  React.useEffect(() => {
+    console.log(contentDialog)
+    setDataMedicion([
+      { field: "unitatsActual", value: contentDialog?.unitatsActual },
+      { field: "medicioOrigen", value: contentDialog?.medicioOrigen },
+    ]);
+  },[contentDialog]);
 
   const intl = useIntl();
   return (

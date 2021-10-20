@@ -7,10 +7,9 @@ import { isEmpty } from "lodash";
 
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
-import MaterialTable from "components/shared/MaterialTable/index";
-
 import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
 import CardTotal from "components/shared/CardTotal";
+import MaterialTable from "components/Public/Home/MaterialTable";
 
 import {
   getIsLoading,

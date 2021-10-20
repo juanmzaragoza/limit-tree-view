@@ -165,7 +165,6 @@ export const columnsIndicatorsPartida = (intl) => [
     button : true,
     buttonMedicion: true,
   },
-
   {
     label: "Anterior",
     id: "produccioAnterior",
