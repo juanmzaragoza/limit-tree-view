@@ -26,8 +26,8 @@ const DetailedHeader = ({
 }) => {
   const intl = useIntl();
   const cutTitle = () => {
-    if(header.title.length > 50){
-      return `${header.title.substring(0,50)}...`;
+    if(header.title.length > 40){
+      return `${header.title.substring(0,40)}...`;
     }else{
       return header.title;
     }
