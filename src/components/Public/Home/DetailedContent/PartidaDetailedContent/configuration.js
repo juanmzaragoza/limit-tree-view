@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
   CallMissedOutgoing,
-  Construction,
   Engineering,
   Euro,
   StackedBarChart,
@@ -42,7 +41,7 @@ export const getIndicators = (kpisPartida) => [
     ],
   },
   {
-    title: "Coste Teórico",
+    title: "Coste Teórico Producción Hecha",
     icon: <StackedLineChart />,
     lg: 2,
     indicators: [
@@ -74,7 +73,7 @@ export const getIndicators = (kpisPartida) => [
     ],
   },
   {
-    title: "Coste Real",
+    title: "Coste Real Producción Hecha",
     icon: <StackedBarChart />,
     lg: 2,
     indicators: [
@@ -101,7 +100,7 @@ export const getIndicators = (kpisPartida) => [
     ],
   },
   {
-    title: "Beneficios",
+    title: "Beneficios Producción Hecha",
     icon: <Euro />,
     lg: 2,
     indicators: [
@@ -124,7 +123,7 @@ export const getIndicators = (kpisPartida) => [
     ],
   },
   {
-    title: "Desviación",
+    title: "Desviación Teórico - Real Coste",
     icon: <CallMissedOutgoing />,
     lg: 2,
     indicators: [

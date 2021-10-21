@@ -21,15 +21,18 @@ import {
   getKpis as getKpisPartida,
   getPartida,
   getRows,
+  getIsLoadingKpis
 } from "redux/partida/selectors";
 import {
   getKpis as getKpisProjecte,
   getTabIndex,
+  getIsLoadingKpis as loadingKpisProject
 } from "redux/project/selectors";
 import { loadHeader as loadUnitControlHeader, loadKpis as loadKpisUC } from "redux/unit-control";
 import {
   getUnitControl,
   getKpis as getKpisUC,
+  getIsLoadingKpis as loadingKpisUC
 } from "redux/unit-control/selectors";
 import {
   loadData as loadTreeData,
@@ -50,7 +53,7 @@ import { selectTab } from "redux/project";
 
 const KPIS_TAB_INDEX = 0;
 const RESOURCES_TAB_INDEX = 1;
-const TAB_INDEX_UP_TREE = 2;
+
 
 const ProjectDetailedContent = ({
   rows,
@@ -64,6 +67,9 @@ const ProjectDetailedContent = ({
   kpisUnitatControl,
   actions,
   tab,
+  loadingKpisUC,
+  loadingKpisProject,
+  loadingKpis,
   ...props
 }) => {
   const intl = useIntl();
@@ -82,7 +88,7 @@ const ProjectDetailedContent = ({
   const onChangeIndexExecutor = {
     [RESOURCES_TAB_INDEX]: () => {},
     [KPIS_TAB_INDEX]: () => {
-      partida.id && actions.loadKpis({ id: props.id });
+      // partida.id && actions.loadKpis({ id: props.id });
     },
   };
   React.useEffect(() => {
@@ -93,7 +99,9 @@ const ProjectDetailedContent = ({
     
     partida.id && actions.loadKpis({ id: props.id });
     partida.unitatControlEstudi && actions.loadKpisUC({ id:  partida.unitatControlEstudi.id });
+    
     if(partida.unitatControlEstudi !== undefined){
+      
       actions.loadUnitControlHeader({ id: partida.unitatControlEstudi?.id });
     }
     
@@ -101,10 +109,11 @@ const ProjectDetailedContent = ({
 
   const content = [
     {
-      field: "Coste Total",
+      field: "Coste Final Planificado",
       value: partida.costUni,
     },
   ];
+
 
   React.useEffect(() => {
     setIndicadores(getIndicators(kpisPartida));
@@ -113,14 +122,16 @@ const ProjectDetailedContent = ({
   const loadHeader = () => actions.loadHeader({ id: props.id });
   React.useEffect(() => {
     loadHeader();
-    partida.id && actions.loadKpis({ id: props.id });
+    // partida.id && actions.loadKpis({ id: props.id });
+
+
   }, [props.id]);
 
   React.useEffect(() => {
     setHeaderControlUnit({ title: unitControl.descripcio });
     setHeaderControlUnitFields([
       {
-        field: "Benef. Origen",
+        field: "Res. Bru. Orig.",
         value: kpisUnitatControl.beneficiOrigen,
       },
 
@@ -134,7 +145,7 @@ const ProjectDetailedContent = ({
       },
 
       {
-        field: "Benef. Año",
+        field: "Res. Bru. Año",
         value: kpisUnitatControl.beneficiAny,
         colorValue: getKpisColorValue({
           value: kpisUnitatControl.beneficiAny,
@@ -162,7 +173,7 @@ const ProjectDetailedContent = ({
     setHeaderPartida({ title: partida.descripcioReduc });
     setHeaderPartidaFields([
       {
-        field: "Benef. Origen",
+        field: "Res. Bru. Orig.",
         value: kpisPartida.beneficiOrigen,
       },
 
@@ -175,7 +186,7 @@ const ProjectDetailedContent = ({
         value: kpisPartida.desviacioOrigen,
       },
       {
-        field: "Benef. Año",
+        field: "Res. Bru. Año",
         value: kpisPartida.beneficiAny,
         colorValue: getKpisColorValue({ value: kpisPartida.beneficiAny }),
       },
@@ -197,7 +208,7 @@ const ProjectDetailedContent = ({
     setHeaderProject({ title: tree.descripcio });
     setHeaderProjectFields([
       {
-        field: "Benef. Origen",
+        field: "Res. Bru. Orig.",
         value: kpisProjecte.beneficiOrigen,
       },
 
@@ -206,11 +217,11 @@ const ProjectDetailedContent = ({
         value: kpisProjecte.produccioOrigen,
       },
       {
-        field: "Pen. Origen",
+        field: "Pen. Fac. Orig.",
         value: kpisProjecte.obraPendentOrigen,
       },
       {
-        field: "Benef. Año",
+        field: "Res. Bru. Año",
         value: kpisProjecte.beneficiAny,
         colorValue: getKpisColorValue({ value: kpisProjecte.beneficiAny }),
       },
@@ -221,7 +232,7 @@ const ProjectDetailedContent = ({
       },
 
       {
-        field: "Pen. Año",
+        field: "Pen. Fac. Año",
         value: kpisProjecte.obraPendentAny,
         colorValue: getKpisColorValue({ value: kpisProjecte.obraPendentAny }),
       },
@@ -257,6 +268,7 @@ const ProjectDetailedContent = ({
             actions.selectTab({ value:  tabIndex === 1 ? 2 : 0  });
             actions.selectNode({ ids: id });
           }}
+          loadingData={loadingKpisProject}
         />
       </Grid>
       <Grid item xs={4}>
@@ -270,6 +282,7 @@ const ProjectDetailedContent = ({
             actions.selectTab({ value: tabIndex === 1 ? 2 : 0 });
             actions.selectNode({ ids: id });
           }}
+          loadingData={loadingKpisUC}
         />
       </Grid>
       <Grid item xs={4}>
@@ -280,6 +293,7 @@ const ProjectDetailedContent = ({
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[PARTIDA_TYPE]}
           onClick={(id) => actions.selectNode({ ids: id })}
+          loadingData={loadingKpis}
         />
       </Grid>
       <Grid item xs={12}>
@@ -338,6 +352,9 @@ const mapStateToProps = (state, props) => {
     kpisUnitatControl: getKpisUC(state),
     kpisProjecte: getKpisProjecte(state),
     tab: getTabIndex(state),
+    loadingKpisUC: loadingKpisUC(state),
+    loadingKpisProject: loadingKpisProject(state),
+    loadingKpis: getIsLoadingKpis(state)
   };
 };
 
@@ -352,6 +369,7 @@ const mapDispatchToProps = (dispatch, props) => {
     selectNode: bindActionCreators(selectAndExpandNode, dispatch),
     selectTab:  bindActionCreators(selectTab, dispatch),
     loadKpisUC : bindActionCreators(loadKpisUC, dispatch),
+    
   };
   return { actions };
 };

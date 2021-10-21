@@ -103,6 +103,7 @@ export const loadKpis = ({ url = LOAD_KPIS_URL, id }) => {
   return async dispatch => {
     const apiCall = () => Axios.get(url.replace('{id}',id));
     try {
+      dispatch(add({ loadingkpis: true }));
       apiCall()
         .then(({data}) => data)
         .then((data) => {
@@ -114,11 +115,14 @@ export const loadKpis = ({ url = LOAD_KPIS_URL, id }) => {
             //   }
             // })
           }));
+          dispatch(add({ loadingkpis: false }));
         })
         .catch(error => {
           console.log(error);
+          dispatch(add({ loadingkpis: false }));
         })
         .finally(() => {
+          dispatch(add({ loadingkpis: false }));
         });
     } catch (error) {
     }
@@ -174,7 +178,8 @@ const initialState = {
   rows: [],
   loading: false,
   kpis: [],
-  costesPartida : []
+  costesPartida : [],
+  loadingkpis: false,
 };
 
 const reducer = (state = initialState, action) => {

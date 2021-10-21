@@ -70,7 +70,22 @@ export const getPartidaColumnsByPeriod = ({ period, intl, actions }) => {
       minWidth: 350,
       editable: numberIsZero,
     },
-
+    {
+      field: "unitatTipus",
+      headerName: "Tipo Unidad",
+      align: 'center',
+      headerAlign: 'center',
+      minWidth: 100,
+      valueGetter: (params) => `${params.value?.description || ""}`,
+    
+    },
+    {
+      field: "unitatsAnterior",
+      headerName: "Med. Anterior Orig.",
+      type: "number",
+      minWidth: 140,
+    },
+  
     {
       field: "unitatsActual",
       headerName: "Med. hecha período",
@@ -88,26 +103,13 @@ export const getPartidaColumnsByPeriod = ({ period, intl, actions }) => {
 
     {
       field: "unitats",
-      headerName: "Med. Prevista",
+      headerName: "Med. Planificada",
       type: "number",
       minWidth: 140,
       editable: numberIsZero,
     },
-    {
-      field: "unitatTipus",
-      headerName: "Tipo Unidad",
-      align: 'center',
-      headerAlign: 'center',
-      minWidth: 100,
-      valueGetter: (params) => `${params.value?.description || ""}`,
-    
-    },
-    {
-      field: "unitatsAnterior",
-      headerName: "Med. Orig. Anterior",
-      type: "number",
-      minWidth: 140,
-    },
+   
+ 
     {
       field: "obraPendent",
       headerName: "Med. pendiente",
@@ -140,7 +142,7 @@ export const getPartidaColumnsByPeriod = ({ period, intl, actions }) => {
     },
     {
       field: "importTotal",
-      headerName: "Imp. Tot. Pres.",
+      headerName: "Imp. Final Planif.",
       type: "number",
       valueFormatter: (params) =>
         formatCurrencyWithIntl(params.row.importTotal ?? 0, intl),
@@ -157,7 +159,7 @@ export const getPartidaColumnsByPeriod = ({ period, intl, actions }) => {
     },
     {
       field: "costTotal",
-      headerName: "Coste Total Prev.",
+      headerName: "Coste Final Planif.",
       type: "number",
       valueFormatter: (params) =>
         formatCurrencyWithIntl(params.row.costTotal ?? 0, intl),
@@ -177,13 +179,6 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
       editable: !number,
     },
     {
-      field: "unitats",
-      headerName: "Medición",
-      type: "number",
-      minWidth: 140,
-      editable: true,
-    },
-    {
       field: "unitatTipus",
       headerName: "Tipo Unidad",
       minWidth: 120,
@@ -192,6 +187,14 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
       valueGetter: (params) => `${params.value?.description || ""}`,
       
     },
+    {
+      field: "unitats",
+      headerName: "Medición",
+      type: "number",
+      minWidth: 140,
+      editable: true,
+    },
+
     {
       field: "costUnitat",
       headerName: "Coste Unitario",
@@ -204,7 +207,7 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
     },
     {
       field: "costTotal",
-      headerName: "Coste Total",
+      headerName: "Coste Final Planif.",
       minWidth: 140,
       type: "number",
       valueFormatter: (params) => {

@@ -47,7 +47,7 @@ export const getIndicators = (kpisUnitatControl) => [
     ],
   },
   {
-    title: "Coste Teórico",
+    title: "Coste Teórico Producción Hecha",
     icon: <StackedLineChart />,
     lg: 2,
     indicators: [
@@ -79,7 +79,7 @@ export const getIndicators = (kpisUnitatControl) => [
     ],
   },
   {
-    title: "Coste Real",
+    title: "Coste Real Producción Hecha",
     icon: <StackedBarChart />,
     lg: 2,
     indicators: [
@@ -106,7 +106,7 @@ export const getIndicators = (kpisUnitatControl) => [
     ],
   },
   {
-    title: "Beneficios",
+    title: "Beneficios Producción Hecha",
     icon: <Euro />,
     lg: 2,
     indicators: [
@@ -129,7 +129,7 @@ export const getIndicators = (kpisUnitatControl) => [
     ],
   },
   {
-    title: "Desviación",
+    title: "Desviación Teórico - Real Coste",
     icon: <CallMissedOutgoing />,
     lg: 2,
     indicators: [
@@ -511,9 +511,9 @@ export const groups = [
   },
 
   { label: "Producción", colSpan: 5, className: "borderLeft" },
-  { label: "Coste Teórico", colSpan: 5, className: "borderLeft" },
-  { label: "Coste Real", colSpan: 4, className: "borderLeft" },
-  { label: "Beneficios", colSpan: 4, className: "borderLeft" },
-  { label: "Desviación", colSpan: 4, className: "borderLeft" },
+  { label: "Coste Teórico Producción Hecha", colSpan: 5, className: "borderLeft" },
+  { label: "Coste Real Producción Hecha", colSpan: 4, className: "borderLeft" },
+  { label: "Beneficios Producción Hecha", colSpan: 4, className: "borderLeft" },
+  { label: "Desviación Teórico - Real Coste", colSpan: 4, className: "borderLeft" },
 
 ];

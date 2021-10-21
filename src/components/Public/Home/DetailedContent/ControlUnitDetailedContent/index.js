@@ -20,6 +20,7 @@ import {
   getKpis as getKpisUC,
   getTotals,
   getIsLoadingDetails,
+  getIsLoadingKpis as loadingKpisUC
 } from "redux/unit-control/selectors";
 import {
   loadHeader,
@@ -31,7 +32,7 @@ import {
 import { loadData as loadTreeData, selectAndExpandNode } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
-import { getKpis, getTabIndex } from "redux/project/selectors";
+import { getKpis, getTabIndex,   getIsLoadingKpis as loadingKpisProject } from "redux/project/selectors";
 
 import { entitiesStyles, getTreeId } from "utils/helper";
 import { CONTROL_UNIT_TYPE, PROJECT_TYPE } from "constants/business-types";
@@ -68,6 +69,8 @@ const ControlUnitDetailedContent = ({
   totals,
   tab,
   loadingDetails,
+  loadingKpisUC,
+  loadingKpisProject,
   ...props
 }) => {
   const intl = useIntl();
@@ -84,7 +87,7 @@ const ControlUnitDetailedContent = ({
   const onChangeIndexExecutor = {
     [PARTIDAS_TAB_INDEX]: () => {},
     [KPIS_TAB_INDEX]: () => {
-      unitControl.id && actions.loadKpis({ id: unitControl.id });
+      // unitControl.id && actions.loadKpis({ id: unitControl.id });
     },
     [DETAIL_TAB_INDEX]: () => {
       unitControl.id && actions.loadDetails({ id: unitControl.id });
@@ -96,21 +99,21 @@ const ControlUnitDetailedContent = ({
   }, [tabIndex, unitControl]);
 
   React.useEffect(() => {
-
     loadHeader();
-    unitControl.id && actions.loadKpis({ id: props.id });
+    // unitControl.id && actions.loadKpis({ id: props.id });
   }, [props.id,]);
 
 
 
 
   const content = [
-    { field: "Importe Total", value: unitControl.importTotal },
+    { field: "Imp. Final Planif.", value: unitControl.importTotal },
     {
-      field: "Coste Total",
+      field: "Coste Final Planif.",
       value: unitControl.costTotal,
     },
   ];
+
 
   React.useEffect(() => {
     setIndicadores(getIndicators(kpisUnitatControl));
@@ -120,7 +123,7 @@ const ControlUnitDetailedContent = ({
     setHeaderControlUnit({ title: unitControl.descripcio });
     setHeaderControlUnitFields([
       {
-        field: "Benef. Origen",
+        field: "Resul. Bruto Origen",
         value: kpisUnitatControl.beneficiOrigen,
       },
   
@@ -134,7 +137,7 @@ const ControlUnitDetailedContent = ({
       },
      
       {
-        field: "Benef. Año",
+        field: "Resul. Bruto Año",
         value: kpisUnitatControl.beneficiAny,
         colorValue: getKpisColorValue({
           value: kpisUnitatControl.beneficiAny,
@@ -163,7 +166,7 @@ const ControlUnitDetailedContent = ({
     setHeaderProject({ title: tree.descripcio });
     setHeaderProjectFields([
       {
-        field: "Benef. Origen",
+        field: "Resul. Bruto Origen",
         value: kpis.beneficiOrigen,
       },
       
@@ -172,11 +175,11 @@ const ControlUnitDetailedContent = ({
         value: kpis.produccioOrigen,
       },
       {
-        field: "Pen. Origen",
+        field: "Pen. Fact. Origen",
         value: kpis.obraPendentOrigen,
       },
       {
-        field: "Benef. Año",
+        field: "Resul. Bruto Año",
         value: kpis.beneficiAny,
         colorValue: getKpisColorValue({ value: kpis.beneficiAny  }),
       },
@@ -188,7 +191,7 @@ const ControlUnitDetailedContent = ({
      
 
       {
-        field: "Pen. Año",
+        field: "Pen. Fact. Año",
         value: kpis.obraPendentAny,
         colorValue: getKpisColorValue({ value: kpis.obraPendentAny  }),
       },
@@ -225,6 +228,7 @@ const ControlUnitDetailedContent = ({
             actions.selectTab({ value: tabIndex });
             actions.selectNode({ ids: id });
           }}
+          loadingData={loadingKpisProject}
 
         />
       </Grid>
@@ -236,6 +240,7 @@ const ControlUnitDetailedContent = ({
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[CONTROL_UNIT_TYPE]}
           onClick={(id) => actions.selectNode({ ids: id })}
+          loadingData={loadingKpisUC}
         />
       </Grid>
       <Grid item xs={12}>
@@ -312,7 +317,9 @@ const mapStateToProps = (state, props) => {
     details: getDetails(state),
     totals: getTotals(state),
     tab: getTabIndex(state),
-    loadingDetails : getIsLoadingDetails(state)
+    loadingDetails : getIsLoadingDetails(state),
+    loadingKpisUC: loadingKpisUC(state),
+    loadingKpisProject: loadingKpisProject(state)
   };
 };
 

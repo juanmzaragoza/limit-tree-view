@@ -110,15 +110,20 @@ export const loadKpis = ({ url = LOAD_KPIS_URL, id }) => {
   return async (dispatch) => {
     const apiCall = () => Axios.get(url.replace("{id}", id));
     try {
+      dispatch(add({ loadingKpis: true }));
       apiCall()
         .then(({ data }) => data)
         .then(({ indicadorsPartides }) => {
           dispatch(add({ kpis: indicadorsPartides }));
+          dispatch(add({ loadingKpis: false }));
         })
         .catch((error) => {
           console.log(error);
+          dispatch(add({ loadingKpis: false }));
         })
-        .finally(() => {});
+        .finally(() => {
+          dispatch(add({ loadingKpis: false }));
+        });
     } catch (error) {}
   };
 };
@@ -223,6 +228,7 @@ const initialState = {
   costesUC: [],
   loadingDetails: false,
   partidaSelected: {},
+  loadingKpis: false,
 
 };
 

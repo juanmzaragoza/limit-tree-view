@@ -14,7 +14,10 @@ import ControlUnitDetailedContent from "./ControlUnitDetailedContent";
 import PartidaDetailedContent from "./PartidaDetailedContent";
 
 import { loadData as loadUnitControlData, loadKpis } from "redux/project";
-import { loadData as loadPartidaData, loadKpis as loadKpisUC } from "redux/unit-control";
+import {
+  loadData as loadPartidaData,
+  loadKpis as loadKpisUC,
+} from "redux/unit-control";
 import { loadData as loadResourceData } from "redux/partida";
 import { getTreeId } from "utils/helper";
 import { getSelectedPeriod } from "redux/period/selectors";
@@ -53,7 +56,7 @@ const DetailedContent = ({
       if (selectedNode.type === "PARTIDA") {
         const codi = getTreeId(partida);
         actions.getSelectedNode({ ids: codi });
-        setControlId(partida.unitatControlEstudi.id)
+        setControlId(partida.unitatControlEstudi.id);
       }
       if (selectedNode.type === "CONTROL_UNIT") {
         const codi = getTreeId(unitControl);
@@ -65,34 +68,29 @@ const DetailedContent = ({
   const loader = {
     [PROJECT_TYPE]: () => {
       actions.getUnitControlData({ id: dataTree.id });
-      actions.loadKpis({ id: dataTree.id });
     },
     [CONTROL_UNIT_TYPE]: () => {
       if (selectedNode === null) {
         actions.getPartidaData({ id: data.id });
       } else {
         actions.getPartidaData({ id: selectedNode.id });
-        actions.loadKpis({ id: dataTree.id });
+        actions.loadKpisUC({ id: selectedNode.id });
+        actions.loadKpis({id: dataTree.id})
       }
     },
 
     [PARTIDA_TYPE]: () => {
-   
       if (selectedNode === null) {
-        
         actions.getResources({ id: data.id });
-        
       } else {
         actions.getResources({ id: selectedNode.id });
         actions.loadKpis({ id: dataTree.id });
-    
       }
     },
   };
 
   const layout = {
     [PROJECT_TYPE]: () => {
-      
       return <ProjectDetailedContent />;
     },
     [CONTROL_UNIT_TYPE]: () => {
@@ -129,7 +127,7 @@ const mapDispatchToProps = (dispatch, props) => {
     getResources: bindActionCreators(loadResourceData, dispatch),
     getSelectedNode: bindActionCreators(selectNode, dispatch),
     loadKpis: bindActionCreators(loadKpis, dispatch),
-    loadKpisUC : bindActionCreators(loadKpisUC, dispatch),
+    loadKpisUC: bindActionCreators(loadKpisUC, dispatch),
   };
   return { actions };
 };

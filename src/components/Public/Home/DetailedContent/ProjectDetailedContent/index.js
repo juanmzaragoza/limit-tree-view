@@ -25,7 +25,8 @@ import {
   getTotals,
   getTabIndex,
   getIsLoadingDetails,
-  getKpisFact
+  getKpisFact,
+  getIsLoadingKpis
 } from "redux/project/selectors";
 import { getSelectedProject } from "redux/project-selector/selectors";
 import { selectAndExpandNode } from "redux/project-tree";
@@ -63,6 +64,7 @@ const ProjectDetailedContent = ({
   actions,
   tab,
   loadingDetails,
+  loadingKpis
 }) => {
   const intl = useIntl();
   const [headerProject, setHeaderProject] = React.useState({});
@@ -110,7 +112,7 @@ const ProjectDetailedContent = ({
     },
     {
       field: "importTotal",
-      headerName: "Importe Total",
+      headerName: "Importe Final Planif.",
       type: "number",
       valueFormatter: (params) => {
         return formatCurrencyWithIntl(params.row.importTotal ?? 0, intl);
@@ -120,7 +122,7 @@ const ProjectDetailedContent = ({
     },
     {
       field: "costTotal",
-      headerName: "Coste Total",
+      headerName: "Coste Final Planif.",
       type: "number",
       valueFormatter: (params) => {
         return formatCurrencyWithIntl(params.row.costTotal ?? 0, intl);
@@ -133,12 +135,15 @@ const ProjectDetailedContent = ({
   const onChangeIndexExecutor = {
     [PROJECTS_TAB_INDEX]: () => {},
     [KPIS_TAB_INDEX]: () => {
-      period.id && actions.loadKpis({ id: period.id });
+      actions.loadKpis({ id: period.id });
     },
     [DETAIL_TAB_INDEX]: () => {
-      period.id && actions.loadDetails({ id: period.id });
+      actions.loadDetails({id: period.id});
     },
   };
+
+
+
 
   React.useEffect(() => {
     onChangeIndexExecutor[tabIndex]();
@@ -152,11 +157,11 @@ const ProjectDetailedContent = ({
     setHeaderProject({ title: tree.descripcio });
     setProjectFields([
       {
-        field: "Benef. Origen",
+        field: "Resul. Bruto Origen",
         value: kpis.beneficiOrigen,
       },
       {
-        field: "Benef. Año",
+        field: "Resul. Bruto Año",
         value: kpis.beneficiAny,
         colorValue: getKpisColorValue({ value: kpis.beneficiAny }),
       },
@@ -170,12 +175,12 @@ const ProjectDetailedContent = ({
         colorValue: getKpisColorValue({ value: kpis.produccioAny }),
       },
       {
-        field: "Pen. Origen",
+        field: "Pen. Fact. Origen",
         value: kpis.obraPendentOrigen,
       },
 
       {
-        field: "Pen. Año",
+        field: "Pen. Fact. Año",
         value: kpis.obraPendentAny,
         colorValue: getKpisColorValue({ value: kpis.obraPendentAny }),
       },
@@ -183,10 +188,13 @@ const ProjectDetailedContent = ({
   }, [kpis, project, intl]);
 
   const content = [
-    { field: "Importe Total", value: tree.importTotal },
-    { field: "Coste Total", value: tree.costTotal },
-  ];
 
+    { field: "Imp. Final Planif.", value: tree.importTotal },
+    {
+      field: "Coste Final Planif.",
+      value: tree.costTotal,
+    },
+  ];
   const detailedHeaderBreakpoints = { xs: 2 };
   return (
     <Grid container spacing={1}>
@@ -198,6 +206,7 @@ const ProjectDetailedContent = ({
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[PROJECT_TYPE]}
           onClick={(id) => actions.selectNode({ ids: id })}
+         loadingData={loadingKpis}
         />
       </Grid>
       <Grid item xs={12}>
@@ -271,7 +280,8 @@ const mapStateToProps = (state, props) => {
     totals: getTotals(state),
     tab: getTabIndex(state),
     loadingDetails: getIsLoadingDetails(state),
-    kpisFact: getKpisFact(state)
+    kpisFact: getKpisFact(state),
+    loadingKpis: getIsLoadingKpis(state)
   };
 };
 
@@ -282,6 +292,7 @@ const mapDispatchToProps = (dispatch, props) => {
     selectNode: bindActionCreators(selectAndExpandNode, dispatch),
     loadDetails: bindActionCreators(loadDetails, dispatch),
     selectTab: bindActionCreators(selectTab, dispatch),
+    
   };
   return { actions };
 };
