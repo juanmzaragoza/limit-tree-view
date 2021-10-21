@@ -51,7 +51,7 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={`${
+                  value={`${
                     contentDialog
                       ? `${contentDialog?.descripcioReduc} (${contentDialog?.codi})`
                       : ""
@@ -69,13 +69,13 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={`${
-                    contentDialog ? `${contentDialog?.unitatsActual}` : ""
-                  }`}
+                  value={contentDialog?.unitatsActual ?? ""}
                   onChange={(e) => {
                     const data = dataMedicion;
                     data[0].value = e.target.value;
-                    setDataMedicion(data)}}
+                    setDataMedicion(data);
+                    handleUpdateMediciones(contentDialog.id, data);
+                  }}
                   fullWidth
                 />
               </Grid>
@@ -87,13 +87,13 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={`${
-                    contentDialog ? `${contentDialog?.medicioOrigen}` : ""
-                  }`}
+                  value={contentDialog?.medicioOrigen ?? ""}
                   onChange={(e) => {
                     const data = dataMedicion;
                     data[1].value = e.target.value;
-                    setDataMedicion(data)}}
+                    setDataMedicion(data);
+                    handleUpdateMediciones(contentDialog.id, data);
+                  }}
                   fullWidth
                 />
               </Grid>
@@ -105,9 +105,7 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={`${
-                    contentDialog ? `${contentDialog?.unitats}` : ""
-                  }`}
+                  value={contentDialog?.unitats ?? ""}
                   disabled
                   variant="standard"
                   fullWidth
@@ -121,9 +119,7 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={`${
-                    contentDialog ? `${contentDialog?.unitatsAnterior}` : ""
-                  }`}
+                  value={contentDialog?.unitatsAnterior ?? ""}
                   disabled
                   variant="standard"
                   fullWidth
@@ -137,9 +133,7 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={`${
-                    contentDialog ? `${contentDialog?.obraPendent}` : ""
-                  }`}
+                  value={contentDialog?.obraPendent ?? ""}
                   disabled
                   variant="standard"
                   fullWidth
@@ -153,11 +147,7 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={`${
-                    contentDialog?.unitatsPress === undefined
-                      ? ""
-                      : contentDialog?.unitatsPress
-                  }`}
+                  value={contentDialog?.unitatsPress ?? ""}
                   disabled
                   variant="standard"
                   fullWidth
@@ -171,8 +161,7 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={
-                    contentDialog ? formatCurrencyWithIntl(contentDialog?.preu, intl) : ""}
+                  value={contentDialog? formatCurrencyWithIntl(contentDialog?.preu, intl) : ""}
                   disabled
                   variant="standard"
                   fullWidth
@@ -186,8 +175,7 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={
-                    contentDialog ? formatCurrencyWithIntl(contentDialog?.preuNet, intl) : ""}
+                  value={contentDialog? formatCurrencyWithIntl(contentDialog?.preuNet, intl) : ""}
                   disabled
                   variant="standard"
                   fullWidth
@@ -201,8 +189,7 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={
-                    contentDialog ? formatCurrencyWithIntl(contentDialog?.importTotal, intl) : ""}
+                  value={contentDialog? formatCurrencyWithIntl(contentDialog?.importTotal, intl) : ""}
                   disabled
                   variant="standard"
                   fullWidth
@@ -216,8 +203,7 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={
-                    contentDialog ? formatCurrencyWithIntl(contentDialog?.costUni, intl) : ""}
+                  value={contentDialog? formatCurrencyWithIntl(contentDialog?.costUni, intl) : ""}
                   disabled
                   variant="standard"
                   fullWidth
@@ -231,8 +217,7 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={
-                    contentDialog ? formatCurrencyWithIntl(contentDialog?.costTotal, intl) : ""}
+                  value={contentDialog? formatCurrencyWithIntl(contentDialog?.costTotal, intl) : ""}
                   disabled
                   variant="standard"
                   fullWidth
@@ -246,14 +231,6 @@ const DialogMediciones = ({
       <DialogActions>
         <Button onClick={onClose} variant="outlined">
           Cancelar
-        </Button>
-        <Button
-          onClick={() => {
-            handleUpdateMediciones(contentDialog.id, dataMedicion);
-          }}
-          variant="contained"
-        >
-          Guardar
         </Button>
       </DialogActions>
     </Dialog>

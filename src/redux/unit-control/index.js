@@ -88,6 +88,7 @@ export const updatePartida = ({ url = UPDATE_PARTIDA_URL, id, data }) => {
         Axios.put(queryString, JSON.stringify(data))
           .then(({ status, data, ...rest }) => {
             dispatch(replace({ id, ...data }));
+            dispatch(selectPartida({ ids: id }));
             dispatch(add({ loading: false }));
             resolve({ status, data, ...rest });
           })
@@ -219,7 +220,7 @@ const reducer = (state = initialState, action) => {
     case RESET_KPIS:
       return { ...state, kpis: [] };
     case RESET_PARTIDA:
-      return { ...state, partidaSelected: [] };
+      return { ...state, partidaSelected: {} };
     case "RESET":
       return initialState;
     default:

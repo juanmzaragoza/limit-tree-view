@@ -100,8 +100,6 @@ const MaterialTable = ({
     try {
       await actions.updatePartida({ id, data: partidaInfo });
       actions.loadData({ id: unitControl.id });
-      actions.selectPartida({ ids: partidaInfo.id });
-      setOpenMediciones(false);
       // update related data
     } catch (e) {
       // handle errors
