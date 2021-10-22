@@ -6,11 +6,14 @@ const SelectOne = () => {
     <Grid container>
       <Grid item lg={4}></Grid>
       <Grid item lg={4}>
-        <img alt="select-one-logo-limit" src={logoLimit} className="logoLimit" />
+        <img
+          alt="select-one-logo-limit"
+          src={logoLimit}
+          className="logoLimit"
+        />
       </Grid>
     </Grid>
   );
 };
-
 
 export default SelectOne;

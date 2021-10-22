@@ -19,6 +19,7 @@ import {
   getKpis as getKpisUC,
   getTotals,
   getIsLoadingDetails,
+  getIsLoadingKpis as loadingKpisUC,
 } from "redux/unit-control/selectors";
 import {
   loadHeader,
@@ -27,10 +28,17 @@ import {
   loadDetails,
   resetKpis,
 } from "redux/unit-control";
-import { loadData as loadTreeData, selectAndExpandNode } from "redux/project-tree";
+import {
+  loadData as loadTreeData,
+  selectAndExpandNode,
+} from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
-import { getKpis, getTabIndex } from "redux/project/selectors";
+import {
+  getKpis,
+  getTabIndex,
+  getIsLoadingKpis as loadingKpisProject,
+} from "redux/project/selectors";
 
 import { entitiesStyles, getTreeId } from "utils/helper";
 import { CONTROL_UNIT_TYPE, PROJECT_TYPE } from "constants/business-types";
@@ -57,7 +65,6 @@ const ControlUnitDetailedContent = ({
   loading,
   unitControl,
   actions,
-  project,
   tree,
   kpis,
   kpisUnitatControl,
@@ -66,6 +73,8 @@ const ControlUnitDetailedContent = ({
   totals,
   tab,
   loadingDetails,
+  loadingKpisUC,
+  loadingKpisProject,
   ...props
 }) => {
   const intl = useIntl();
@@ -73,21 +82,26 @@ const ControlUnitDetailedContent = ({
   const onChangeIndexExecutor = {
     [PARTIDAS_TAB_INDEX]: () => {},
     [KPIS_TAB_INDEX]: () => {
-      unitControl.id && actions.loadKpis({ id: unitControl.id });
+      // unitControl.id && actions.loadKpis({ id: unitControl.id });
     },
     [DETAIL_TAB_INDEX]: () => {
       unitControl.id && actions.loadDetails({ id: unitControl.id });
     },
   };
   const content = [
-    { field: "Importe Total", value: unitControl.importTotal },
-    { field: "Coste Total", value: unitControl.costTotal },
+    { field: "Imp. Final Planif.", value: unitControl.importTotal },
+    {
+      field: "Coste Final Planif.",
+      value: unitControl.costTotal,
+    },
   ];
 
   const [headerProject, setHeaderProject] = React.useState({});
   const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
-  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
+  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState(
+    []
+  );
   const [columns] = React.useState(
     getPartidaColumnsByPeriod({ period: selectedPeriod, intl, actions })
   );
@@ -100,8 +114,8 @@ const ControlUnitDetailedContent = ({
 
   React.useEffect(() => {
     loadHeader();
-    unitControl.id && actions.loadKpis({ id: props.id });
-  }, [props.id,]);
+    // unitControl.id && actions.loadKpis({ id: props.id });
+  }, [props.id]);
 
   React.useEffect(() => {
     setIndicadores(getIndicators(kpisUnitatControl));
@@ -117,7 +131,7 @@ const ControlUnitDetailedContent = ({
     setHeaderProjectFields(getHeaderProjectFields(kpis));
   }, [kpis, tree]);
 
-  const handleCellChange = async (params, event, details) => {
+  const handleCellChange = async (params) => {
     const { id, field, value } = params;
     const data = rows.find((row) => row.id === id);
 
@@ -134,6 +148,7 @@ const ControlUnitDetailedContent = ({
   };
 
   const detailedHeaderBreakpoints = { xs: 4 };
+  const heightLoadingCard = "100px";
   return (
     <Grid container spacing={1}>
       <Grid item xs={6}>
@@ -147,7 +162,8 @@ const ControlUnitDetailedContent = ({
             actions.selectTab({ value: tabIndex });
             actions.selectNode({ ids: id });
           }}
-
+          loadingData={loadingKpisProject}
+          heightLoadingCard={heightLoadingCard}
         />
       </Grid>
       <Grid item xs={6}>
@@ -158,6 +174,8 @@ const ControlUnitDetailedContent = ({
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[CONTROL_UNIT_TYPE]}
           onClick={(id) => actions.selectNode({ ids: id })}
+          loadingData={loadingKpisUC}
+          heightLoadingCard={heightLoadingCard}
         />
       </Grid>
       <Grid item xs={12}>
@@ -199,7 +217,7 @@ const ControlUnitDetailedContent = ({
             columnsSubTotal={columnsSubTotal(intl)}
             groups={groups}
             onDoubleClick={(row) => {
-              actions.selectTab({ value: KPIS_TAB_INDEX});
+              actions.selectTab({ value: KPIS_TAB_INDEX });
               actions.selectNode({ ids: getTreeId(row) });
             }}
             loadingTable={loadingDetails}
@@ -221,7 +239,7 @@ const ControlUnitDetailedContent = ({
   );
 };
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     rows: getRows(state),
     loading: getIsLoading(state),
@@ -233,11 +251,13 @@ const mapStateToProps = (state, props) => {
     details: getDetails(state),
     totals: getTotals(state),
     tab: getTabIndex(state),
-    loadingDetails : getIsLoadingDetails(state)
+    loadingDetails: getIsLoadingDetails(state),
+    loadingKpisUC: loadingKpisUC(state),
+    loadingKpisProject: loadingKpisProject(state),
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = (dispatch) => {
   const actions = {
     loadHeader: bindActionCreators(loadHeader, dispatch),
     updatePartida: bindActionCreators(updatePartida, dispatch),
@@ -246,7 +266,7 @@ const mapDispatchToProps = (dispatch, props) => {
     loadDetails: bindActionCreators(loadDetails, dispatch),
     resetKpis: bindActionCreators(resetKpis, dispatch),
     selectNode: bindActionCreators(selectAndExpandNode, dispatch),
-    selectTab:  bindActionCreators(selectTab, dispatch),
+    selectTab: bindActionCreators(selectTab, dispatch),
   };
   return { actions };
 };

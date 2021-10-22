@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  Router,
-  Redirect,
-  Switch
-} from "react-router";
+import { Router, Redirect, Switch } from "react-router";
 import { createBrowserHistory } from "history";
 
 import Public from "components/Layout/Public/PublicRoute";
@@ -16,8 +12,7 @@ const Routes = () => (
       <Redirect from="*" to={PATHNAME.INDEX} />
     </Switch>
   </Router>
-
-)
+);
 
 export const PATHNAME = {
   HOME: "/home",

@@ -1,11 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { SnackbarProvider } from "notistack";
 
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 import store from "./redux/store";
 import { SnackbarUtilsConfigurator } from "./utils/snackbar-function";
 
@@ -15,8 +15,8 @@ ReactDOM.render(
       <SnackbarProvider
         maxSnack={4}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
+          vertical: "bottom",
+          horizontal: "right",
         }}
         preventDuplicate={true}
       >
@@ -25,7 +25,7 @@ ReactDOM.render(
       </SnackbarProvider>
     </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

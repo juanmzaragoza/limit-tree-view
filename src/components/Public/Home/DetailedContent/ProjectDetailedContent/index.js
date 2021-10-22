@@ -21,6 +21,8 @@ import {
   getTotals,
   getTabIndex,
   getIsLoadingDetails,
+  getKpisFact,
+  getIsLoadingKpis,
 } from "redux/project/selectors";
 import { getSelectedProject } from "redux/project-selector/selectors";
 import { selectAndExpandNode } from "redux/project-tree";
@@ -53,26 +55,27 @@ const ProjectDetailedContent = ({
   tree,
   period,
   kpis,
+  kpisFact,
   details,
   totals,
   actions,
   tab,
   loadingDetails,
+  loadingKpis,
 }) => {
   const intl = useIntl();
   const content = [
-    { field: "Importe Total", value: tree.importTotal },
-    { field: "Coste Total", value: tree.costTotal },
+    { field: "Imp. Final Planif.", value: tree.importTotal },
+    {
+      field: "Coste Final Planif.",
+      value: tree.costTotal,
+    },
   ];
   const detailedHeaderBreakpoints = { xs: 2 };
   const onChangeIndexExecutor = {
     [PROJECTS_TAB_INDEX]: () => {},
-    [KPIS_TAB_INDEX]: () => {
-      period.id && actions.loadKpis({ id: period.id });
-    },
-    [DETAIL_TAB_INDEX]: () => {
-      period.id && actions.loadDetails({ id: period.id });
-    },
+    [KPIS_TAB_INDEX]: () => {},
+    [DETAIL_TAB_INDEX]: () => {},
   };
 
   const [headerProject, setHeaderProject] = React.useState({});
@@ -120,7 +123,7 @@ const ProjectDetailedContent = ({
     },
     {
       field: "importTotal",
-      headerName: "Importe Total",
+      headerName: "Importe Final Planif.",
       type: "number",
       valueFormatter: (params) => {
         return formatCurrencyWithIntl(params.row.importTotal ?? 0, intl);
@@ -130,7 +133,7 @@ const ProjectDetailedContent = ({
     },
     {
       field: "costTotal",
-      headerName: "Coste Total",
+      headerName: "Coste Final Planif.",
       type: "number",
       valueFormatter: (params) => {
         return formatCurrencyWithIntl(params.row.costTotal ?? 0, intl);
@@ -145,7 +148,7 @@ const ProjectDetailedContent = ({
   }, [tabIndex, project]);
 
   React.useEffect(() => {
-    setIndicadores(getIndicators(kpis));
+    setIndicadores(getIndicators(kpis, kpisFact));
   }, [kpis]);
 
   React.useEffect(() => {
@@ -163,6 +166,8 @@ const ProjectDetailedContent = ({
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[PROJECT_TYPE]}
           onClick={(id) => actions.selectNode({ ids: id })}
+          loadingData={loadingKpis}
+          heightLoadingCard={"50px"}
         />
       </Grid>
       <Grid item xs={12}>
@@ -224,7 +229,7 @@ const ProjectDetailedContent = ({
   );
 };
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     rows: getRows(state),
     loading: getIsLoading(state),
@@ -236,10 +241,12 @@ const mapStateToProps = (state, props) => {
     totals: getTotals(state),
     tab: getTabIndex(state),
     loadingDetails: getIsLoadingDetails(state),
+    kpisFact: getKpisFact(state),
+    loadingKpis: getIsLoadingKpis(state),
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = (dispatch) => {
   const actions = {
     loadKpis: bindActionCreators(loadKpis, dispatch),
     resetKpis: bindActionCreators(resetKpis, dispatch),

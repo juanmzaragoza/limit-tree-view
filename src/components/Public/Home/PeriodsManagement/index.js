@@ -70,7 +70,6 @@ const PeriodsManagement = ({
     );
   }, [rows]);
 
-
   const closePeriod = async () => {
     const codiAccio = "ETP_TANCAR";
     const data = dateEnd;
@@ -81,9 +80,10 @@ const PeriodsManagement = ({
       }
       setOpen(false);
       setReload(true);
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
-
 
   const openNew = async () => {
     const codiAccio = "ETP_NOUPER";
@@ -91,7 +91,9 @@ const PeriodsManagement = ({
       await actions.openNewPeriod({ id: periodSelected.id, codiAccio });
       setOpenNewPeriod(false);
       setReload(true);
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const openPeriod = () => {
@@ -136,7 +138,7 @@ const PeriodsManagement = ({
     }
     if (tancat) {
       return (
-        <Button variant={"outlined"} onClick={(e) => openPeriod()}>
+        <Button variant={"outlined"} onClick={() => openPeriod()}>
           Abrir Período
         </Button>
       );
@@ -191,7 +193,7 @@ const PeriodsManagement = ({
   );
 };
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     rows: getRows(state),
     loading: getIsLoading(state),
@@ -200,7 +202,7 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = (dispatch) => {
   const actions = {
     loadData: bindActionCreators(loadData, dispatch),
     setPeriod: bindActionCreators(setPeriod, dispatch),

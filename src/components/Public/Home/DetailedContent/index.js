@@ -10,8 +10,15 @@ import {
   PROJECT_TYPE,
 } from "constants/business-types";
 
-import { loadData as loadUnitControlData, loadKpis } from "redux/project";
-import { loadData as loadPartidaData, loadKpis as loadKpisUC } from "redux/unit-control";
+import {
+  loadData as loadUnitControlData,
+  loadKpis,
+  loadDetails,
+} from "redux/project";
+import {
+  loadData as loadPartidaData,
+  loadKpis as loadKpisUC,
+} from "redux/unit-control";
 import { loadData as loadResourceData } from "redux/partida";
 import {
   getSelectedNode,
@@ -37,15 +44,14 @@ const DetailedContent = ({
   partida,
   dataTree,
 }) => {
-
   React.useEffect(() => {
     !isEmpty(data) && !!loader[data.type] && loader[data.type]();
   }, [data]);
 
   React.useEffect(() => {
-    selectedNode !== null
-      && !!onLoadingTree[selectedNode.type]
-      && onLoadingTree[selectedNode.type]();
+    selectedNode !== null &&
+      !!onLoadingTree[selectedNode.type] &&
+      onLoadingTree[selectedNode.type]();
   }, [loadingTree]);
 
   const onLoadingTree = {
@@ -59,19 +65,21 @@ const DetailedContent = ({
     [PARTIDA_TYPE]: () => {
       const codi = getTreeId(partida);
       actions.getSelectedNode({ ids: codi });
-    }
+    },
   };
 
   const loader = {
     [PROJECT_TYPE]: () => {
       actions.getUnitControlData({ id: dataTree.id });
       actions.loadKpis({ id: dataTree.id });
+      actions.loadDetailsProject({ id: dataTree.id });
     },
     [CONTROL_UNIT_TYPE]: () => {
       if (selectedNode === null) {
         actions.getPartidaData({ id: data.id });
       } else {
         actions.getPartidaData({ id: selectedNode.id });
+        actions.loadKpisUC({ id: selectedNode.id });
         actions.loadKpis({ id: dataTree.id });
       }
     },
@@ -80,7 +88,7 @@ const DetailedContent = ({
         actions.getResources({ id: data.id });
       } else {
         actions.getResources({ id: selectedNode.id });
-        actions.loadKpis({ id: dataTree.id });
+        // actions.loadKpis({ id: dataTree.id });
       }
     },
   };
@@ -105,7 +113,7 @@ const DetailedContent = ({
   );
 };
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     selectedNode: getSelectedNode(state),
     unitControl: getUnitControl(state),
@@ -115,14 +123,15 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = (dispatch) => {
   const actions = {
     getUnitControlData: bindActionCreators(loadUnitControlData, dispatch),
     getPartidaData: bindActionCreators(loadPartidaData, dispatch),
     getResources: bindActionCreators(loadResourceData, dispatch),
     getSelectedNode: bindActionCreators(selectNode, dispatch),
     loadKpis: bindActionCreators(loadKpis, dispatch),
-    loadKpisUC : bindActionCreators(loadKpisUC, dispatch),
+    loadKpisUC: bindActionCreators(loadKpisUC, dispatch),
+    loadDetailsProject: bindActionCreators(loadDetails, dispatch),
   };
   return { actions };
 };

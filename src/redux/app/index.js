@@ -7,8 +7,8 @@ const RESET_ALL = "RESET";
 export const resetAll = (payload) => {
   return {
     type: RESET_ALL,
-    payload
+    payload,
   };
-}
+};
 
 //Reducers

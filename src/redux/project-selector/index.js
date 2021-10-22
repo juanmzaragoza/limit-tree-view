@@ -10,18 +10,18 @@ const URL = "api/estp/projectes?page=0&size=40&sort=codi";
 
 //Functions
 export const loadData = ({ url = URL, query }) => {
-  return async dispatch => {
+  return async (dispatch) => {
     const q = buildQuery({ query });
-    const apiCall = () => Axios.get(`${url}${isEmpty(q)? "":`&${q}`}`);
+    const apiCall = () => Axios.get(`${url}${isEmpty(q) ? "" : `&${q}`}`);
     try {
       dispatch(add({ loading: true }));
       apiCall()
-        .then(({data}) => data)
+        .then(({ data }) => data)
         .then(({ _embedded }) => {
-          dispatch(add({ rows: _embedded['projectes'] }));
+          dispatch(add({ rows: _embedded["projectes"] }));
           dispatch(add({ loading: false }));
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           dispatch(add({ loading: false }));
         })
@@ -35,24 +35,24 @@ export const loadData = ({ url = URL, query }) => {
 };
 
 export const setProject = ({ project }) => {
-  return async dispatch => {
+  return async (dispatch) => {
     dispatch(add({ selectedProject: project }));
-  }
-}
+  };
+};
 
 //Action creators
 export const add = (payload) => {
   return {
     type: ADD,
-    payload
+    payload,
   };
-}
+};
 
 //Reducers
 const initialState = {
   rows: [],
   loading: false,
-  selectedProject: null
+  selectedProject: null,
 };
 
 const reducer = (state = initialState, action) => {
