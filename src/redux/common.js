@@ -20,11 +20,13 @@ export const getFormedURL = ({
   page,
   sorting = [],
   search,
-  query = [{
-    columnName: 'project.codi',
-    value: 'ESPRO2',
-    exact: true
-  }],
+  query = [
+    {
+      columnName: "project.codi",
+      value: "ESPRO2",
+      exact: true,
+    },
+  ],
 }) => {
   const pagination = `&page=${!page ? 0 : page}`;
   const sort = `&sort=${

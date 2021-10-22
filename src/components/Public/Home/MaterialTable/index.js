@@ -31,6 +31,9 @@ import DialogCostes from "./DialogCostes";
 import DialogMediciones from "./DialogMediciones";
 
 import "./TableStyle.css";
+import { loadData as loadTreeData } from "redux/project-tree";
+
+import { getSelectedPeriod } from "redux/period/selectors";
 
 const useStyles = makeStyles({
   stickyActionsColumn: {
@@ -66,13 +69,14 @@ const MaterialTable = ({
   columns,
   columnsSubTotal,
   groups,
-  onDoubleClick = (row) => {},
+  onDoubleClick = () => {},
   actions,
   costs,
   loading,
   loadingTable,
   partidaInfo,
   unitControl,
+  selectedPeriod,
 }) => {
   const classes = useStyles();
 
@@ -100,32 +104,38 @@ const MaterialTable = ({
     try {
       await actions.updatePartida({ id, data: partidaInfo });
       actions.loadData({ id: unitControl.id });
-      actions.selectPartida({ ids: partidaInfo.id });
-      setOpenMediciones(false);
+      actions.loadTreeData({ periodId: selectedPeriod.id });
+      // actions.loadKpis({ id: props.id });
       // update related data
     } catch (e) {
       // handle errors
     }
   };
 
-  const renderDialogCostes = React.useCallback(() => (
-    <DialogCostes
-      open={open}
-      onClose={() => setOpen(false)}
-      contentDialog={costs}
-      loading={loading}
-    />
-  ),[open, costs, loading]);
+  const renderDialogCostes = React.useCallback(
+    () => (
+      <DialogCostes
+        open={open}
+        onClose={() => setOpen(false)}
+        contentDialog={costs}
+        loading={loading}
+      />
+    ),
+    [open, costs, loading]
+  );
 
-  const renderDialogMediciones = React.useCallback(() => (
-    <DialogMediciones
-      open={openMediciones}
-      onClose={() => setOpenMediciones(false)}
-      contentDialog={partidaInfo}
-      loading={loading}
-      handleUpdateMediciones={handleUpdateMediciones}
-    />
-  ),[openMediciones, loading, partidaInfo]);
+  const renderDialogMediciones = React.useCallback(
+    () => (
+      <DialogMediciones
+        open={openMediciones}
+        onClose={() => setOpenMediciones(false)}
+        contentDialog={partidaInfo}
+        loading={loading}
+        handleUpdateMediciones={handleUpdateMediciones}
+      />
+    ),
+    [openMediciones, loading, partidaInfo]
+  );
 
   return loadingTable ? (
     <Stack sx={{ color: "grey.500", alignItems: "center", marginTop: "130px" }}>
@@ -176,7 +186,7 @@ const MaterialTable = ({
                     hover
                     tabIndex={-1}
                     key={index}
-                    onDoubleClick={(e) => onDoubleClick(row)}
+                    onDoubleClick={() => onDoubleClick(row)}
                   >
                     {columns.map((column) => {
                       const value = row[column.id];
@@ -285,21 +295,23 @@ const MaterialTable = ({
   );
 };
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     costs: getCost(state),
     loading: getIsLoading(state),
     partidaInfo: getPartidaInfo(state),
     unitControl: getUnitControl(state),
+    selectedPeriod: getSelectedPeriod(state),
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = (dispatch) => {
   const actions = {
     loadCost: bindActionCreators(loadCostes, dispatch),
     selectPartida: bindActionCreators(selectPartida, dispatch),
     updatePartida: bindActionCreators(updatePartida, dispatch),
     loadData: bindActionCreators(loadData, dispatch),
+    loadTreeData: bindActionCreators(loadTreeData, dispatch),
   };
   return { actions };
 };

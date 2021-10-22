@@ -4,7 +4,7 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import TreeItem, { treeItemClasses } from "@mui/lab/TreeItem";
 
-import PeopleIcon from '@mui/icons-material/People';
+import PeopleIcon from "@mui/icons-material/People";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
@@ -18,19 +18,18 @@ const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
     borderBottomRightRadius: theme.spacing(2),
     paddingRight: theme.spacing(1),
     fontWeight: theme.typography.fontWeightMedium,
-    '&.Mui-expanded': {
+    "&.Mui-expanded": {
       fontWeight: theme.typography.fontWeightRegular,
     },
-    '&:hover': {
+    "&:hover": {
       backgroundColor: theme.palette.secondary.hover,
     },
-    '&.Mui-focused, &.Mui-selected, &.Mui-selected.Mui-focused': {
+    "&.Mui-focused, &.Mui-selected, &.Mui-selected.Mui-focused": {
       backgroundColor: `var(--tree-view-bg-color,  rgba(58, 145, 152, 0.08))`,
-
     },
     [`& .${treeItemClasses.label}`]: {
-      fontWeight: 'inherit',
-      color: 'inherit',
+      fontWeight: "inherit",
+      color: "inherit",
     },
   },
   [`& .${treeItemClasses.group}`]: {
@@ -54,9 +53,12 @@ const StyledTreeItem = (props) => {
   return (
     <StyledTreeItemRoot
       label={
-        <Box sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
-          <Box component={props => labelIcon} color="inherit" sx={{ mr: 1 }} />
-          <Typography variant="body2" sx={{ fontWeight: 'inherit', flexGrow: 1 }}>
+        <Box sx={{ display: "flex", alignItems: "center", p: 0.5, pr: 0 }}>
+          <Box component={() => labelIcon} color="inherit" sx={{ mr: 1 }} />
+          <Typography
+            variant="body2"
+            sx={{ fontWeight: "inherit", flexGrow: 1 }}
+          >
             {labelText}
           </Typography>
           <Typography variant="caption" color="inherit">
@@ -65,13 +67,13 @@ const StyledTreeItem = (props) => {
         </Box>
       }
       style={{
-        '--tree-view-color': color,
-        '--tree-view-bg-color': bgColor,
+        "--tree-view-color": color,
+        "--tree-view-bg-color": bgColor,
       }}
       {...other}
     />
   );
-}
+};
 
 StyledTreeItem.propTypes = {
   bgColor: PropTypes.string,

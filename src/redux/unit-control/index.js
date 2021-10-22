@@ -6,32 +6,37 @@ const ADD = "ADD_TO_UC";
 const REPLACE = "REPLACE_TO_UC";
 const RESET_KPIS = "RESET_KPIS_TO_PARTIDA";
 const SELECT_PARTIDA = "SELECT_PARTIDA";
-const RESET_PARTIDA = "RESET_PARTIDA"
+const RESET_PARTIDA = "RESET_PARTIDA";
 
 // Constants
-const URL = 'api/estp/liniesEstudi?query=unitatControlEstudi.id=="{id}"&sort=codi';
+const URL =
+  'api/estp/liniesEstudi?query=unitatControlEstudi.id=="{id}"&sort=codi';
 const HEADER_URL = "api/estp/unitatsControlEstudi";
 const UPDATE_PARTIDA_URL = "api/estp/liniesEstudi";
 const LOAD_KPIS_URL = "api/estp/unitatsControlEstudi/{id}/indicadors";
-const LOAD_DETAILS_URL = "api/estp/unitatsControlEstudi/{id}/indicadors?desglossat=true";
+const LOAD_DETAILS_URL =
+  "api/estp/unitatsControlEstudi/{id}/indicadors?desglossat=true";
 
 //Functions
 export const loadData = ({ url = URL, id }) => {
   return async (dispatch) => {
     const apiCall = () => Axios.get(url.replace("{id}", id));
-    const getTreeId = (node) => `${node?.estudiProjecte?.pk?.codi}_${node?.unitatControlEstudi?.description}_${node?.codi}`;
+    const getTreeId = (node) =>
+      `${node?.estudiProjecte?.pk?.codi}_${node?.unitatControlEstudi?.description}_${node?.codi}`;
     try {
       dispatch(add({ loading: true }));
       apiCall()
         .then(({ data }) => data)
         .then(({ _embedded }) => {
           const rows = _embedded?.liniaEstudis ?? [];
-          dispatch(add({
-            rows: rows.map(row => ({
-              ...row,
-              treeId: getTreeId(row)
+          dispatch(
+            add({
+              rows: rows.map((row) => ({
+                ...row,
+                treeId: getTreeId(row),
+              })),
             })
-          )}));
+          );
           dispatch(add({ loading: false }));
         })
         .catch((error) => {
@@ -58,12 +63,14 @@ export const loadHeader = ({ url = HEADER_URL, id }) => {
       apiCall()
         .then(({ data }) => data)
         .then((_embedded) => {
-          dispatch(add({
-            unitControl: {
-              ..._embedded,
-              treeId: `${_embedded?.estudiProjecte?.pk?.codi}_${_embedded.codi}`
-            }
-          }));
+          dispatch(
+            add({
+              unitControl: {
+                ..._embedded,
+                treeId: `${_embedded?.estudiProjecte?.pk?.codi}_${_embedded.codi}`,
+              },
+            })
+          );
           //dispatch(add({ loading: false }));
         })
         .catch((error) => {
@@ -88,6 +95,7 @@ export const updatePartida = ({ url = UPDATE_PARTIDA_URL, id, data }) => {
         Axios.put(queryString, JSON.stringify(data))
           .then(({ status, data, ...rest }) => {
             dispatch(replace({ id, ...data }));
+            dispatch(selectPartida({ ids: id }));
             dispatch(add({ loading: false }));
             resolve({ status, data, ...rest });
           })
@@ -109,23 +117,31 @@ export const loadKpis = ({ url = LOAD_KPIS_URL, id }) => {
   return async (dispatch) => {
     const apiCall = () => Axios.get(url.replace("{id}", id));
     try {
+      dispatch(add({ loadingKpis: true }));
       apiCall()
         .then(({ data }) => data)
         .then(({ indicadorsPartides }) => {
           dispatch(add({ kpis: indicadorsPartides }));
+          dispatch(add({ loadingKpis: false }));
         })
         .catch((error) => {
           console.log(error);
+          dispatch(add({ loadingKpis: false }));
         })
-        .finally(() => {});
-    } catch (error) {}
+        .finally(() => {
+          dispatch(add({ loadingKpis: false }));
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
 export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
   return async (dispatch) => {
     const apiCall = () => Axios.get(url.replace("{id}", id));
-    const getTreeId = (node) => `${node?.estudiProjecteCodi}_${node.unitatControlCodi}_${node.codi}`;
+    const getTreeId = (node) =>
+      `${node?.estudiProjecteCodi}_${node.unitatControlCodi}_${node.codi}`;
     try {
       dispatch(add({ loadingDetails: true }));
       apiCall()
@@ -133,9 +149,9 @@ export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
         .then(({ indicadorsPartides, indicadorsPartidesDesglossats }) => {
           dispatch(
             add({
-              details: indicadorsPartidesDesglossats.map(detail => ({
+              details: indicadorsPartidesDesglossats.map((detail) => ({
                 ...detail,
-                treeId: getTreeId(detail)
+                treeId: getTreeId(detail),
               })),
               totals: indicadorsPartides,
             })
@@ -149,7 +165,9 @@ export const loadDetails = ({ url = LOAD_DETAILS_URL, id }) => {
         .finally(() => {
           dispatch(add({ loadingDetails: false }));
         });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
@@ -198,28 +216,31 @@ const initialState = {
   costesUC: [],
   loadingDetails: false,
   partidaSelected: {},
+  loadingKpis: false,
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD:
       return { ...state, ...action.payload };
-    case REPLACE:
+    case REPLACE: {
       const changedRows = state.rows.map((row) =>
         row.id === action.payload.id ? action.payload : row
       );
       return { ...state, rows: changedRows };
-    case SELECT_PARTIDA:
+    }
+    case SELECT_PARTIDA: {
       const { ids } = action.payload;
       const partidaSelected = findPartida({ id: ids, partidas: state.rows });
       return {
         ...state,
         partidaSelected,
       };
+    }
     case RESET_KPIS:
       return { ...state, kpis: [] };
     case RESET_PARTIDA:
-      return { ...state, partidaSelected: [] };
+      return { ...state, partidaSelected: {} };
     case "RESET":
       return initialState;
     default:

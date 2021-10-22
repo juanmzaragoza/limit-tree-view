@@ -20,19 +20,21 @@ import {
   getKpis as getKpisPartida,
   getPartida,
   getRows,
+  getIsLoadingKpis,
 } from "redux/partida/selectors";
-import { selectTab } from "redux/project";
 import {
   getKpis as getKpisProjecte,
   getTabIndex,
+  getIsLoadingKpis as loadingKpisProject,
 } from "redux/project/selectors";
 import {
   loadHeader as loadUnitControlHeader,
-  loadKpis as loadKpisUC
+  loadKpis as loadKpisUC,
 } from "redux/unit-control";
 import {
   getUnitControl,
   getKpis as getKpisUC,
+  getIsLoadingKpis as loadingKpisUC,
 } from "redux/unit-control/selectors";
 import {
   loadData as loadTreeData,
@@ -48,11 +50,13 @@ import {
   PROJECT_TYPE,
 } from "constants/business-types";
 
+import { selectTab, loadKpis as loadKpisProject } from "redux/project";
+
 import {
   getHeaderControlUnitFields,
   getHeaderPartidaFields,
   getHeaderProjectFields,
-  getIndicators
+  getIndicators,
 } from "./configuration";
 
 const KPIS_TAB_INDEX = 0;
@@ -70,14 +74,22 @@ const ProjectDetailedContent = ({
   kpisUnitatControl,
   actions,
   tab,
+  loadingKpisUC,
+  loadingKpisProject,
+  loadingKpis,
   ...props
 }) => {
   const intl = useIntl();
-  const content = [{ field: "Coste Total", value: partida.costUni }];
+  const content = [
+    {
+      field: "Coste Final Planificado",
+      value: partida.costUni,
+    },
+  ];
   const onChangeIndexExecutor = {
     [RESOURCES_TAB_INDEX]: () => {},
     [KPIS_TAB_INDEX]: () => {
-      partida.id && actions.loadKpis({ id: props.id });
+      // partida.id && actions.loadKpis({ id: props.id });
     },
   };
   const loadHeader = () => actions.loadHeader({ id: props.id });
@@ -85,7 +97,9 @@ const ProjectDetailedContent = ({
   const [headerProject, setHeaderProject] = React.useState({});
   const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
-  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
+  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState(
+    []
+  );
   const [headerPartida, setHeaderPartida] = React.useState({});
   const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
   //TODO() qué significa esto (tab === 2 ? 1 : tab)?
@@ -97,14 +111,17 @@ const ProjectDetailedContent = ({
 
   React.useEffect(() => {
     onChangeIndexExecutor[tabIndex]();
-  }, [tabIndex, partida]);
+  }, [tabIndex]);
 
   React.useEffect(() => {
+    actions.loadKpisProject({ id: tree.id });
+
     partida.id && actions.loadKpis({ id: props.id });
-    partida.unitatControlEstudi && actions.loadKpisUC({ id:  partida.unitatControlEstudi.id });
-    if(partida.unitatControlEstudi !== undefined){
+
+    partida.unitatControlEstudi &&
+      actions.loadKpisUC({ id: partida.unitatControlEstudi.id });
+    partida.unitatControlEstudi &&
       actions.loadUnitControlHeader({ id: partida.unitatControlEstudi?.id });
-    }
   }, [partida]);
 
   React.useEffect(() => {
@@ -113,7 +130,7 @@ const ProjectDetailedContent = ({
 
   React.useEffect(() => {
     loadHeader();
-    partida.id && actions.loadKpis({ id: props.id });
+    // partida.id && actions.loadKpis({ id: props.id });
   }, [props.id]);
 
   React.useEffect(() => {
@@ -131,7 +148,7 @@ const ProjectDetailedContent = ({
     setHeaderProjectFields(getHeaderProjectFields(kpisProjecte));
   }, [kpisProjecte, tree]);
 
-  const handleCellChange = async (params, event, details) => {
+  const handleCellChange = async (params) => {
     const { id, field, value } = params;
     const data = rows.find((row) => row.id === id);
     data[field] = value;
@@ -147,6 +164,7 @@ const ProjectDetailedContent = ({
   };
 
   const detailedHeaderBreakpoints = { xs: 4 };
+  const heightLoadingCard = "120px";
   return (
     <Grid container spacing={1}>
       <Grid item xs={4}>
@@ -157,10 +175,12 @@ const ProjectDetailedContent = ({
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[PROJECT_TYPE]}
           onClick={(id) => {
-            //TODO() ??
-            actions.selectTab({ value:  tabIndex === 1 ? 2 : 0  });
+            actions.selectTab({ value: tabIndex === 1 ? 2 : 0 });
+
             actions.selectNode({ ids: id });
           }}
+          loadingData={loadingKpisProject}
+          heightLoadingCard={heightLoadingCard}
         />
       </Grid>
       <Grid item xs={4}>
@@ -175,6 +195,8 @@ const ProjectDetailedContent = ({
             actions.selectTab({ value: tabIndex === 1 ? 2 : 0 });
             actions.selectNode({ ids: id });
           }}
+          loadingData={loadingKpisUC}
+          heightLoadingCard={heightLoadingCard}
         />
       </Grid>
       <Grid item xs={4}>
@@ -185,6 +207,8 @@ const ProjectDetailedContent = ({
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[PARTIDA_TYPE]}
           onClick={(id) => actions.selectNode({ ids: id })}
+          loadingData={loadingKpis}
+          heightLoadingCard={heightLoadingCard}
         />
       </Grid>
       <Grid item xs={12}>
@@ -231,7 +255,7 @@ const ProjectDetailedContent = ({
   );
 };
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     rows: getRows(state),
     loading: getIsLoading(state),
@@ -243,10 +267,13 @@ const mapStateToProps = (state, props) => {
     kpisUnitatControl: getKpisUC(state),
     kpisProjecte: getKpisProjecte(state),
     tab: getTabIndex(state),
+    loadingKpisUC: loadingKpisUC(state),
+    loadingKpisProject: loadingKpisProject(state),
+    loadingKpis: getIsLoadingKpis(state),
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = (dispatch) => {
   const actions = {
     loadHeader: bindActionCreators(loadHeader, dispatch),
     updateResource: bindActionCreators(update, dispatch),
@@ -255,8 +282,9 @@ const mapDispatchToProps = (dispatch, props) => {
     loadKpis: bindActionCreators(loadKpis, dispatch),
     resetKpis: bindActionCreators(resetKpis, dispatch),
     selectNode: bindActionCreators(selectAndExpandNode, dispatch),
-    selectTab:  bindActionCreators(selectTab, dispatch),
-    loadKpisUC : bindActionCreators(loadKpisUC, dispatch),
+    selectTab: bindActionCreators(selectTab, dispatch),
+    loadKpisUC: bindActionCreators(loadKpisUC, dispatch),
+    loadKpisProject: bindActionCreators(loadKpisProject, dispatch),
   };
   return { actions };
 };

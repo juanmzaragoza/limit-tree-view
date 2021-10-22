@@ -4,9 +4,9 @@ import {
   Engineering,
   Euro,
   StackedBarChart,
-  StackedLineChart
+  StackedLineChart,
 } from "@mui/icons-material";
-import {getKpisColorValue} from "../common";
+import { getKpisColorValue } from "../common";
 
 export const getIndicators = (kpisPartida) => [
   {
@@ -42,7 +42,7 @@ export const getIndicators = (kpisPartida) => [
     ],
   },
   {
-    title: "Coste Teórico",
+    title: "Coste Teórico Producción Hecha",
     icon: <StackedLineChart />,
     lg: 2,
     indicators: [
@@ -74,7 +74,7 @@ export const getIndicators = (kpisPartida) => [
     ],
   },
   {
-    title: "Coste Real",
+    title: "Coste Real Producción Hecha",
     icon: <StackedBarChart />,
     lg: 2,
     indicators: [
@@ -101,7 +101,7 @@ export const getIndicators = (kpisPartida) => [
     ],
   },
   {
-    title: "Beneficios",
+    title: "Beneficios Producción Hecha",
     icon: <Euro />,
     lg: 2,
     indicators: [
@@ -124,7 +124,7 @@ export const getIndicators = (kpisPartida) => [
     ],
   },
   {
-    title: "Desviación",
+    title: "Desviación Teórico - Real Coste",
     icon: <CallMissedOutgoing />,
     lg: 2,
     indicators: [
@@ -149,12 +149,11 @@ export const getIndicators = (kpisPartida) => [
   },
 ];
 
-export const getHeaderControlUnitFields = (kpisUnitatControl) => ([
+export const getHeaderControlUnitFields = (kpisUnitatControl) => [
   {
-    field: "Benef. Origen",
+    field: "Res. Bru. Ori.",
     value: kpisUnitatControl.beneficiOrigen,
   },
-
   {
     field: "Prod. Origen",
     value: kpisUnitatControl.produccioOrigen,
@@ -163,9 +162,8 @@ export const getHeaderControlUnitFields = (kpisUnitatControl) => ([
     field: "Desv. Origen",
     value: kpisUnitatControl.desviacioOrigen,
   },
-
   {
-    field: "Benef. Año",
+    field: "Res. Bru. Año",
     value: kpisUnitatControl.beneficiAny,
     colorValue: getKpisColorValue({
       value: kpisUnitatControl.beneficiAny,
@@ -185,11 +183,11 @@ export const getHeaderControlUnitFields = (kpisUnitatControl) => ([
       value: kpisUnitatControl.desviacioAny,
     }),
   },
-]);
+];
 
-export const getHeaderPartidaFields = (kpisPartida) => ([
+export const getHeaderPartidaFields = (kpisPartida) => [
   {
-    field: "Benef. Origen",
+    field: "Res. Bru. Ori.",
     value: kpisPartida.beneficiOrigen,
   },
   {
@@ -201,7 +199,7 @@ export const getHeaderPartidaFields = (kpisPartida) => ([
     value: kpisPartida.desviacioOrigen,
   },
   {
-    field: "Benef. Año",
+    field: "Res. Bru. Año",
     value: kpisPartida.beneficiAny,
     colorValue: getKpisColorValue({ value: kpisPartida.beneficiAny }),
   },
@@ -215,11 +213,11 @@ export const getHeaderPartidaFields = (kpisPartida) => ([
     value: kpisPartida.desviacioAny,
     colorValue: getKpisColorValue({ value: kpisPartida.desviacioAny }),
   },
-]);
+];
 
-export const getHeaderProjectFields = (kpisProjecte) => ([
+export const getHeaderProjectFields = (kpisProjecte) => [
   {
-    field: "Benef. Origen",
+    field: "Res. Bru. Ori.",
     value: kpisProjecte.beneficiOrigen,
   },
   {
@@ -227,11 +225,11 @@ export const getHeaderProjectFields = (kpisProjecte) => ([
     value: kpisProjecte.produccioOrigen,
   },
   {
-    field: "Pen. Origen",
+    field: "Pen. Fac. Ori.",
     value: kpisProjecte.obraPendentOrigen,
   },
   {
-    field: "Benef. Año",
+    field: "Res. Bru. Año",
     value: kpisProjecte.beneficiAny,
     colorValue: getKpisColorValue({ value: kpisProjecte.beneficiAny }),
   },
@@ -241,8 +239,8 @@ export const getHeaderProjectFields = (kpisProjecte) => ([
     colorValue: getKpisColorValue({ value: kpisProjecte.produccioAny }),
   },
   {
-    field: "Pen. Año",
+    field: "Pen. Fac. Año",
     value: kpisProjecte.obraPendentAny,
     colorValue: getKpisColorValue({ value: kpisProjecte.obraPendentAny }),
   },
-]);
+];

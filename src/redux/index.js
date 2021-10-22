@@ -12,12 +12,12 @@ export default combineReducers({
   unitControl,
   partida,
   projectSelector,
-  period
+  period,
 });
 
 //Global action to reset the store
 export function resetStore() {
   return {
-    type: "RESET"
+    type: "RESET",
   };
 }

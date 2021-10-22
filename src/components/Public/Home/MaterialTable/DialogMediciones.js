@@ -9,9 +9,8 @@ import {
   Stack,
   TextField,
   Grid,
-
 } from "@mui/material";
-import { formatCurrencyWithIntl } from "utils/formats";
+import { formatCurrencyWithIntl, formatNumberWithIntl } from "utils/formats";
 import { useIntl } from "react-intl";
 
 const DialogMediciones = ({
@@ -21,7 +20,6 @@ const DialogMediciones = ({
   loading,
   handleUpdateMediciones = () => {},
 }) => {
-
   const [dataMedicion, setDataMedicion] = React.useState([]);
 
   React.useEffect(() => {
@@ -29,7 +27,7 @@ const DialogMediciones = ({
       { field: "unitatsActual", value: contentDialog?.unitatsActual },
       { field: "medicioOrigen", value: contentDialog?.medicioOrigen },
     ]);
-  },[contentDialog]);
+  }, [contentDialog]);
 
   const intl = useIntl();
   return (
@@ -51,7 +49,7 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={`${
+                  value={`${
                     contentDialog
                       ? `${contentDialog?.descripcioReduc} (${contentDialog?.codi})`
                       : ""
@@ -63,19 +61,59 @@ const DialogMediciones = ({
               </Grid>
               <Grid item lg={2} sm={12}>
                 <TextField
+                  id="unitatTipus"
+                  label="Tipo Unidad"
+                  type="input"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={`${
+                    contentDialog?.unitatTipus?.description
+                      ? contentDialog?.unitatTipus?.description
+                      : ""
+                  }`}
+                  disabled
+                  variant="standard"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item lg={2} sm={12}>
+                <TextField
+                  id="unitatsAnterior"
+                  label="Medición Anterior Origen"
+                  type="input"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={`${
+                    contentDialog
+                      ? formatNumberWithIntl(
+                          contentDialog?.unitatsAnterior,
+                          intl
+                        )
+                      : ""
+                  }`}
+                  disabled
+                  variant="standard"
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid item lg={2} sm={12}>
+                <TextField
                   id="unitatsActual"
                   label="Medición hecha periodo"
                   type="number"
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={`${
-                    contentDialog ? `${contentDialog?.unitatsActual}` : ""
-                  }`}
+                  value={contentDialog?.unitatsActual ?? ""}
                   onChange={(e) => {
                     const data = dataMedicion;
                     data[0].value = e.target.value;
-                    setDataMedicion(data)}}
+                    setDataMedicion(data);
+                    handleUpdateMediciones(contentDialog.id, data);
+                  }}
                   fullWidth
                 />
               </Grid>
@@ -87,43 +125,25 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={`${
-                    contentDialog ? `${contentDialog?.medicioOrigen}` : ""
-                  }`}
+                  value={contentDialog?.medicioOrigen ?? ""}
                   onChange={(e) => {
                     const data = dataMedicion;
                     data[1].value = e.target.value;
-                    setDataMedicion(data)}}
+                    setDataMedicion(data);
+                    handleUpdateMediciones(contentDialog.id, data);
+                  }}
                   fullWidth
                 />
               </Grid>
               <Grid item lg={2} sm={12}>
                 <TextField
                   id="unitats"
-                  label="Medición Prevista"
+                  label="Medición Planificada"
                   type="input"
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={`${
-                    contentDialog ? `${contentDialog?.unitats}` : ""
-                  }`}
-                  disabled
-                  variant="standard"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item lg={2} sm={12}>
-                <TextField
-                  id="unitatsAnterior"
-                  label="Medición Origen Anterior"
-                  type="input"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  defaultValue={`${
-                    contentDialog ? `${contentDialog?.unitatsAnterior}` : ""
-                  }`}
+                  value={contentDialog?.unitats ?? ""}
                   disabled
                   variant="standard"
                   fullWidth
@@ -137,9 +157,7 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={`${
-                    contentDialog ? `${contentDialog?.obraPendent}` : ""
-                  }`}
+                  value={contentDialog?.obraPendent ?? ""}
                   disabled
                   variant="standard"
                   fullWidth
@@ -153,11 +171,7 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={`${
-                    contentDialog?.unitatsPress === undefined
-                      ? ""
-                      : contentDialog?.unitatsPress
-                  }`}
+                  value={contentDialog?.unitatsPress ?? ""}
                   disabled
                   variant="standard"
                   fullWidth
@@ -171,8 +185,11 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={
-                    contentDialog ? formatCurrencyWithIntl(contentDialog?.preu, intl) : ""}
+                  value={
+                    contentDialog
+                      ? formatCurrencyWithIntl(contentDialog?.preu, intl)
+                      : ""
+                  }
                   disabled
                   variant="standard"
                   fullWidth
@@ -186,8 +203,11 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={
-                    contentDialog ? formatCurrencyWithIntl(contentDialog?.preuNet, intl) : ""}
+                  value={
+                    contentDialog
+                      ? formatCurrencyWithIntl(contentDialog?.preuNet, intl)
+                      : ""
+                  }
                   disabled
                   variant="standard"
                   fullWidth
@@ -196,13 +216,16 @@ const DialogMediciones = ({
               <Grid item lg={2} sm={12}>
                 <TextField
                   id="importTotal"
-                  label="Import Total"
+                  label="Importe Final Planificado"
                   type="input"
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={
-                    contentDialog ? formatCurrencyWithIntl(contentDialog?.importTotal, intl) : ""}
+                  value={
+                    contentDialog
+                      ? formatCurrencyWithIntl(contentDialog?.importTotal, intl)
+                      : ""
+                  }
                   disabled
                   variant="standard"
                   fullWidth
@@ -216,8 +239,11 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={
-                    contentDialog ? formatCurrencyWithIntl(contentDialog?.costUni, intl) : ""}
+                  value={
+                    contentDialog
+                      ? formatCurrencyWithIntl(contentDialog?.costUni, intl)
+                      : ""
+                  }
                   disabled
                   variant="standard"
                   fullWidth
@@ -226,13 +252,16 @@ const DialogMediciones = ({
               <Grid item lg={2} sm={12}>
                 <TextField
                   id="costTotal"
-                  label="Coste Total Previsto"
+                  label="Coste Final Planificado"
                   type="input"
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={
-                    contentDialog ? formatCurrencyWithIntl(contentDialog?.costTotal, intl) : ""}
+                  value={
+                    contentDialog
+                      ? formatCurrencyWithIntl(contentDialog?.costTotal, intl)
+                      : ""
+                  }
                   disabled
                   variant="standard"
                   fullWidth
@@ -245,15 +274,7 @@ const DialogMediciones = ({
 
       <DialogActions>
         <Button onClick={onClose} variant="outlined">
-          Cancelar
-        </Button>
-        <Button
-          onClick={() => {
-            handleUpdateMediciones(contentDialog.id, dataMedicion);
-          }}
-          variant="contained"
-        >
-          Guardar
+          Cerrar
         </Button>
       </DialogActions>
     </Dialog>

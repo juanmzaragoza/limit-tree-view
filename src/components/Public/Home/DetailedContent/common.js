@@ -1,9 +1,5 @@
 import { formatCurrencyWithIntl } from "utils/formats";
-import {
-  greenColor,
-  redColor,
-  inheritColor,
-} from "utils/helper";
+import { greenColor, redColor, inheritColor } from "utils/helper";
 
 export const isPeriodOpen = ({ period }) => {
   return !period.tancat;
@@ -24,7 +20,7 @@ export const getKpisColorValue = ({ value }) => {
 };
 
 export const getResourceColumnsByPeriod = ({ period, intl }) => {
-  const  number  = period.numero;
+  const number = period.numero;
   return [
     { field: "codi", headerName: "Código", minWidth: 110 },
     {
@@ -34,21 +30,21 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
       editable: !number,
     },
     {
+      field: "unitatTipus",
+      headerName: "Tipo Unidad",
+      minWidth: 120,
+      align: "center",
+      headerAlign: "center",
+      valueGetter: (params) => `${params.value?.description || ""}`,
+    },
+    {
       field: "unitats",
       headerName: "Medición",
       type: "number",
       minWidth: 140,
       editable: true,
     },
-    {
-      field: "unitatTipus",
-      headerName: "Tipo Unidad",
-      minWidth: 120,
-      align: 'center',
-      headerAlign: 'center',
-      valueGetter: (params) => `${params.value?.description || ""}`,
-      
-    },
+
     {
       field: "costUnitat",
       headerName: "Coste Unitario",
@@ -61,7 +57,7 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
     },
     {
       field: "costTotal",
-      headerName: "Coste Total",
+      headerName: "Coste Final Planif.",
       minWidth: 140,
       type: "number",
       valueFormatter: (params) => {
