@@ -76,10 +76,10 @@ const ProjectDetailedContent = ({
   const onChangeIndexExecutor = {
     [PROJECTS_TAB_INDEX]: () => {},
     [KPIS_TAB_INDEX]: () => {
-      period.id && actions.loadKpis({ id: period.id });
+  
     },
     [DETAIL_TAB_INDEX]: () => {
-      period.id && actions.loadDetails({ id: period.id });
+      
     },
   };
 

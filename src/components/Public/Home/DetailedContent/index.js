@@ -10,7 +10,7 @@ import {
   PROJECT_TYPE,
 } from "constants/business-types";
 
-import { loadData as loadUnitControlData, loadKpis } from "redux/project";
+import { loadData as loadUnitControlData, loadKpis , loadDetails } from "redux/project";
 import {
   loadData as loadPartidaData,
   loadKpis as loadKpisUC,
@@ -69,6 +69,8 @@ const DetailedContent = ({
   const loader = {
     [PROJECT_TYPE]: () => {
       actions.getUnitControlData({ id: dataTree.id });
+      actions.loadKpis({ id: dataTree.id });
+      actions.loadDetailsProject({ id: dataTree.id });
     },
     [CONTROL_UNIT_TYPE]: () => {
       if (selectedNode === null) {
@@ -129,6 +131,7 @@ const mapDispatchToProps = (dispatch, props) => {
     getSelectedNode: bindActionCreators(selectNode, dispatch),
     loadKpis: bindActionCreators(loadKpis, dispatch),
     loadKpisUC: bindActionCreators(loadKpisUC, dispatch),
+    loadDetailsProject: bindActionCreators(loadDetails, dispatch),
   };
   return { actions };
 };
