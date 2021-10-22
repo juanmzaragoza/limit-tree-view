@@ -47,6 +47,7 @@ export const loadHeader = ({ url = HEADER_URL, id }) => {
   const formedURL = () => `${url}/${id}`;
   return async dispatch => {
     const apiCall = () => Axios.get(formedURL());
+    const getTreeId = (node) => `${node?.estudiProjecte?.pk?.codi}_${node?.unitatControlEstudi?.description}_${node?.codi}`;
     try {
       //dispatch(add({ loading: true }));
       apiCall()
@@ -55,7 +56,7 @@ export const loadHeader = ({ url = HEADER_URL, id }) => {
           dispatch(add({
             partida: {
               ..._embedded,
-              treeId: `${_embedded?.estudiProjecte?.pk?.codi}_${_embedded?.unitatControlEstudi?.description}_${_embedded.codi}`
+              treeId: getTreeId(_embedded)
             }
           }));
           //dispatch(add({ loading: false }));
@@ -107,15 +108,9 @@ export const loadKpis = ({ url = LOAD_KPIS_URL, id }) => {
       apiCall()
         .then(({data}) => data)
         .then((data) => {
-          dispatch(add({kpis: data
-            // kpis: Object.keys(data).map((key, index) => {
-            //   return {
-            //     field: key,
-            //     value: data[key]
-            //   }
-            // })
-          }));
-          dispatch(add({ loadingkpis: false }));
+
+          dispatch(add({ kpis: data }));
+
         })
         .catch(error => {
           console.log(error);

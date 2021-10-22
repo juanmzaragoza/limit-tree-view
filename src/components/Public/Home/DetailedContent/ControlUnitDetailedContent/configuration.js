@@ -1,17 +1,17 @@
 import * as React from "react";
 import {
   CallMissedOutgoing,
-  Construction,
   Engineering,
   Euro,
   StackedBarChart,
   StackedLineChart,
 } from "@mui/icons-material";
-import { Avatar } from "@mui/material";
+import {Avatar, IconButton} from "@mui/material";
 
 import { formatCurrencyWithIntl } from "utils/formats";
-import { entitiesStyles } from "utils/helper";
-import { PARTIDA_TYPE } from "constants/business-types";
+import { entitiesStyles, getTreeId } from "utils/helper";
+import { PARTIDA_TYPE, RESOURCE_TYPE } from "constants/business-types";
+import {getKpisColorValue} from "../common";
 
 export const getIndicators = (kpisUnitatControl) => [
   {
@@ -165,7 +165,6 @@ export const columnsIndicatorsPartida = (intl) => [
     button : true,
     buttonMedicion: true,
   },
-
   {
     label: "Anterior",
     id: "produccioAnterior",
@@ -509,11 +508,226 @@ export const groups = [
     colSpan: 1,
     className: "borderRight",
   },
-
   { label: "Producción", colSpan: 5, className: "borderLeft" },
   { label: "Coste Teórico Producción Hecha", colSpan: 5, className: "borderLeft" },
   { label: "Coste Real Producción Hecha", colSpan: 4, className: "borderLeft" },
   { label: "Beneficios Producción Hecha", colSpan: 4, className: "borderLeft" },
   { label: "Desviación Teórico - Real Coste", colSpan: 4, className: "borderLeft" },
 
+
 ];
+export const getPartidaColumnsByPeriod = ({ period, intl, actions }) => {
+  const number = period.numero;
+  const numberIsZero = !number;
+  const numberIsNotZero = !!number;
+
+  return [
+    {
+      field: "id",
+      headerName: (
+        <Avatar
+          aria-label="recipe"
+          sx={{
+            bgcolor: entitiesStyles[PARTIDA_TYPE].iconColor,
+            color: "white",
+          }}
+        >
+          {entitiesStyles[PARTIDA_TYPE].icon}
+        </Avatar>
+      ),
+      renderCell: (cellValues) => {
+        return (
+          <IconButton
+            variant="outlined"
+            onClick={() => {
+              actions.selectTab({ value: 1 });
+              actions.selectNode({ ids: getTreeId(cellValues.row) });
+            }}
+            style={{ color: entitiesStyles[RESOURCE_TYPE].iconColor }}
+          >
+            {entitiesStyles[RESOURCE_TYPE].icon}
+          </IconButton>
+        );
+      },
+      minWidth: 30,
+      editable: false,
+    },
+    { field: "codi", headerName: "Cód.", minWidth: 90 },
+    {
+      field: "descripcioReduc",
+      headerName: "Descripción",
+      minWidth: 350,
+      editable: numberIsZero,
+    },
+    {
+      field: "unitatTipus",
+      headerName: "Tipo Unidad",
+      align: 'center',
+      headerAlign: 'center',
+      minWidth: 100,
+      valueGetter: (params) => `${params.value?.description || ""}`,
+    
+    },
+    {
+      field: "unitatsAnterior",
+      headerName: "Med. Anterior Orig.",
+      type: "number",
+      minWidth: 140,
+    },
+  
+    {
+      field: "unitatsActual",
+      headerName: "Med. hecha período",
+      type: "number",
+      minWidth: 140,
+      editable: numberIsNotZero,
+    },
+    {
+      field: "medicioOrigen",
+      headerName: "Med. Origen",
+      type: "number",
+      minWidth: 140,
+      editable: numberIsNotZero,
+    },
+
+    {
+      field: "unitats",
+      headerName: "Med. Planificada",
+      type: "number",
+      minWidth: 140,
+      editable: numberIsZero,
+    },
+   
+ 
+    {
+      field: "obraPendent",
+      headerName: "Med. pendiente",
+      type: "number",
+      minWidth: 140,
+    },
+    {
+      field: "unitatsPress",
+      headerName: "Med. Presupuestada",
+      type: "number",
+      minWidth: 140,
+      editable: numberIsZero,
+    },
+    {
+      field: "preu",
+      headerName: "Pvp Bruto",
+      type: "number",
+      valueFormatter: (params) =>
+        formatCurrencyWithIntl(params.row.preu ?? 0, intl),
+      minWidth: 140,
+      editable: numberIsZero,
+    },
+    {
+      field: "preuNet",
+      headerName: "Pvp Neto",
+      type: "number",
+      valueFormatter: (params) =>
+        formatCurrencyWithIntl(params.row.preuNet ?? 0, intl),
+      minWidth: 140,
+    },
+    {
+      field: "importTotal",
+      headerName: "Imp. Final Planif.",
+      type: "number",
+      valueFormatter: (params) =>
+        formatCurrencyWithIntl(params.row.importTotal ?? 0, intl),
+      minWidth: 140,
+    },
+    {
+      field: "costUni",
+      headerName: "Coste Unit. Total",
+      type: "number",
+      valueFormatter: (params) =>
+        formatCurrencyWithIntl(params.row.costUni ?? 0, intl),
+      minWidth: 140,
+      editable: false,
+    },
+    {
+      field: "costTotal",
+      headerName: "Coste Final Planif.",
+      type: "number",
+      valueFormatter: (params) =>
+        formatCurrencyWithIntl(params.row.costTotal ?? 0, intl),
+      minWidth: 140,
+    },
+  ];
+};
+
+export const getHeaderControlUnitFields = (kpisUnitatControl) => ([
+  {
+    field: "Resul. Bruto Origen",
+    value: kpisUnitatControl.beneficiOrigen,
+  },
+
+  {
+    field: "Prod. Origen",
+    value: kpisUnitatControl.produccioOrigen,
+  },
+  {
+    field: "Desv. Origen",
+    value: kpisUnitatControl.desviacioOrigen,
+  },
+ 
+  {
+    field: "Resul. Bruto Año",
+    value: kpisUnitatControl.beneficiAny,
+    colorValue: getKpisColorValue({
+      value: kpisUnitatControl.beneficiAny,
+    }),
+  },
+  {
+    field: "Prod. Año",
+    value: kpisUnitatControl.produccioAny,
+    colorValue: getKpisColorValue({
+      value: kpisUnitatControl.produccioAny ,
+    }),
+  },
+ 
+
+  {
+    field: "Desv. Año",
+    value: kpisUnitatControl.desviacioAny,
+    colorValue: getKpisColorValue({
+      value: kpisUnitatControl.desviacioAny ,
+    }),
+  },
+
+ 
+]);
+
+export const getHeaderProjectFields = (kpis) => ([
+  {
+    field: "Resul. Bruto Origen",
+    value: kpis.beneficiOrigen,
+  },
+  
+  {
+    field: "Prod. Origen",
+    value: kpis.produccioOrigen,
+  },
+  {
+    field: "Pen. Fact. Origen",
+    value: kpis.obraPendentOrigen,
+  },
+  {
+    field: "Resul. Bruto Año",
+    value: kpis.beneficiAny,
+    colorValue: getKpisColorValue({ value: kpis.beneficiAny  }),
+  },
+  {
+    field: "Prod. Año",
+    value: kpis.produccioAny,
+    colorValue: getKpisColorValue({ value: kpis.produccioAny }),
+  },
+ 
+
+  {
+    field: "Pen. Fact. Año",
+    value: kpis.obraPendentAny,
+    colorValue: getKpisColorValue({ value: kpis.obraPendentAny  }),
+  },
+]);

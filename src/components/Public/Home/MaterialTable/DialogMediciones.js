@@ -19,12 +19,15 @@ const DialogMediciones = ({
   contentDialog,
   loading,
   handleUpdateMediciones = () => {},
-  actions,
 }) => {
-  const [dataMedicion, setDataMedicion] = React.useState([
-    { field: "unitatsActual", value: contentDialog?.unitatsActual },
-    { field: "medicioOrigen", value: contentDialog?.medicioOrigen },
-  ]);
+  const [dataMedicion, setDataMedicion] = React.useState([]);
+
+  React.useEffect(() => {
+    setDataMedicion([
+      { field: "unitatsActual", value: contentDialog?.unitatsActual },
+      { field: "medicioOrigen", value: contentDialog?.medicioOrigen },
+    ]);
+  }, [contentDialog]);
 
   const intl = useIntl();
   return (
@@ -65,7 +68,9 @@ const DialogMediciones = ({
                     shrink: true,
                   }}
                   defaultValue={`${
-                     contentDialog?.unitatTipus?.description ? contentDialog?.unitatTipus?.description : ""
+                    contentDialog?.unitatTipus?.description
+                      ? contentDialog?.unitatTipus?.description
+                      : ""
                   }`}
                   disabled
                   variant="standard"
@@ -93,7 +98,7 @@ const DialogMediciones = ({
                   fullWidth
                 />
               </Grid>
-            
+
               <Grid item lg={2} sm={12}>
                 <TextField
                   id="unitatsActual"

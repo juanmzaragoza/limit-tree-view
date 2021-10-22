@@ -9,9 +9,6 @@ import {
   PARTIDA_TYPE,
   PROJECT_TYPE,
 } from "constants/business-types";
-import ProjectDetailedContent from "./ProjectDetailedContent";
-import ControlUnitDetailedContent from "./ControlUnitDetailedContent";
-import PartidaDetailedContent from "./PartidaDetailedContent";
 
 import { loadData as loadUnitControlData, loadKpis } from "redux/project";
 import {
@@ -19,8 +16,6 @@ import {
   loadKpis as loadKpisUC,
 } from "redux/unit-control";
 import { loadData as loadResourceData } from "redux/partida";
-import { getTreeId } from "utils/helper";
-import { getSelectedPeriod } from "redux/period/selectors";
 import {
   getSelectedNode,
   getData,
@@ -30,40 +25,46 @@ import { getUnitControl } from "redux/unit-control/selectors";
 import { getPartida } from "redux/partida/selectors";
 import { selectNode } from "redux/project-tree";
 
+import { getTreeId } from "utils/helper";
+
+import ProjectDetailedContent from "./ProjectDetailedContent";
+import ControlUnitDetailedContent from "./ControlUnitDetailedContent";
+import PartidaDetailedContent from "./PartidaDetailedContent";
+
 const DetailedContent = ({
   data,
   actions,
   unitControl,
   selectedNode,
-  selectedPeriod,
   loadingTree,
   partida,
   dataTree,
 }) => {
+
   React.useEffect(() => {
-    (!isEmpty(data) && !!loader[data.type] && loader[data.type]()) ||
-      console.log("Tipo inexistente");
+    !isEmpty(data) && !!loader[data.type] && loader[data.type]();
   }, [data]);
 
-  const [controlId, setControlId] = React.useState({});
-
   React.useEffect(() => {
-    if (selectedNode !== null) {
-      if (selectedNode.type === "PROJECT") {
-        loader[PROJECT_TYPE]();
-      }
-
-      if (selectedNode.type === "PARTIDA") {
-        const codi = getTreeId(partida);
-        actions.getSelectedNode({ ids: codi });
-        setControlId(partida.unitatControlEstudi.id);
-      }
-      if (selectedNode.type === "CONTROL_UNIT") {
-        const codi = getTreeId(unitControl);
-        actions.getSelectedNode({ ids: codi });
-      }
-    }
+    selectedNode !== null
+      && !!onLoadingTree[selectedNode.type]
+      && onLoadingTree[selectedNode.type]();
   }, [loadingTree]);
+
+
+  const onLoadingTree = {
+    [PROJECT_TYPE]: () => {
+      loader[PROJECT_TYPE]();
+    },
+    [CONTROL_UNIT_TYPE]: () => {
+      const codi = getTreeId(unitControl);
+      actions.getSelectedNode({ ids: codi });
+    },
+    [PARTIDA_TYPE]: () => {
+      const codi = getTreeId(partida);
+      actions.getSelectedNode({ ids: codi });
+    }
+  };
 
   const loader = {
     [PROJECT_TYPE]: () => {
@@ -78,13 +79,14 @@ const DetailedContent = ({
         actions.loadKpis({id: dataTree.id})
       }
     },
-
     [PARTIDA_TYPE]: () => {
       if (selectedNode === null) {
         actions.getResources({ id: data.id });
       } else {
         actions.getResources({ id: selectedNode.id });
-        
+
+        // actions.loadKpis({ id: dataTree.id });
+
       }
     },
   };
@@ -111,7 +113,6 @@ const DetailedContent = ({
 
 const mapStateToProps = (state, props) => {
   return {
-    selectedPeriod: getSelectedPeriod(state),
     selectedNode: getSelectedNode(state),
     unitControl: getUnitControl(state),
     loadingTree: getData(state),

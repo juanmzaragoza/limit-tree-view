@@ -3,18 +3,14 @@ import { connect } from "react-redux";
 import { useIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import { isEmpty } from "lodash";
-
 import { Grid, IconButton, Tab, Tabs, Avatar } from "@mui/material";
 
 import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
-import MaterialTable from "components/shared/MaterialTable/index";
 import CardTotal from "components/shared/CardTotal";
-import {
-  getKpisColorValue,
-  isPeriodOpen,
-} from "components/Public/Home/DetailedContent/common";
+import MaterialTable from "components/Public/Home/MaterialTable";
+import { isPeriodOpen } from "components/Public/Home/DetailedContent/common";
 
 import { loadKpis, resetKpis, loadDetails, selectTab } from "redux/project";
 import {
@@ -46,6 +42,7 @@ import {
   columnsIndicatorsPartida,
   columnsSubTotal,
   groups,
+  getProjectFields,
 } from "./configuration";
 
 const KPIS_TAB_INDEX = 0;
@@ -67,6 +64,25 @@ const ProjectDetailedContent = ({
   loadingKpis
 }) => {
   const intl = useIntl();
+  const content = [
+
+    { field: "Imp. Final Planif.", value: tree.importTotal },
+    {
+      field: "Coste Final Planif.",
+      value: tree.costTotal,
+    },
+  ];
+  const detailedHeaderBreakpoints = { xs: 2 };
+  const onChangeIndexExecutor = {
+    [PROJECTS_TAB_INDEX]: () => {},
+    [KPIS_TAB_INDEX]: () => {
+      period.id && actions.loadKpis({ id: period.id });
+    },
+    [DETAIL_TAB_INDEX]: () => {
+      period.id && actions.loadDetails({ id: period.id });
+    },
+  };
+
   const [headerProject, setHeaderProject] = React.useState({});
   const [projectFields, setProjectFields] = React.useState([]);
   const [indicadores, setIndicadores] = React.useState();
@@ -132,19 +148,6 @@ const ProjectDetailedContent = ({
     },
   ]);
 
-  const onChangeIndexExecutor = {
-    [PROJECTS_TAB_INDEX]: () => {},
-    [KPIS_TAB_INDEX]: () => {
-      actions.loadKpis({ id: period.id });
-    },
-    [DETAIL_TAB_INDEX]: () => {
-      actions.loadDetails({id: period.id});
-    },
-  };
-
-
-
-
   React.useEffect(() => {
     onChangeIndexExecutor[tabIndex]();
   }, [tabIndex, project]);
@@ -155,47 +158,10 @@ const ProjectDetailedContent = ({
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
-    setProjectFields([
-      {
-        field: "Resul. Bruto Origen",
-        value: kpis.beneficiOrigen,
-      },
-      {
-        field: "Resul. Bruto Año",
-        value: kpis.beneficiAny,
-        colorValue: getKpisColorValue({ value: kpis.beneficiAny }),
-      },
-      {
-        field: "Prod. Origen",
-        value: kpis.produccioOrigen,
-      },
-      {
-        field: "Prod. Año",
-        value: kpis.produccioAny,
-        colorValue: getKpisColorValue({ value: kpis.produccioAny }),
-      },
-      {
-        field: "Pen. Fact. Origen",
-        value: kpis.obraPendentOrigen,
-      },
+    setProjectFields(getProjectFields(kpis));
+  }, [kpis, project]);
 
-      {
-        field: "Pen. Fact. Año",
-        value: kpis.obraPendentAny,
-        colorValue: getKpisColorValue({ value: kpis.obraPendentAny }),
-      },
-    ]);
-  }, [kpis, project, intl]);
 
-  const content = [
-
-    { field: "Imp. Final Planif.", value: tree.importTotal },
-    {
-      field: "Coste Final Planif.",
-      value: tree.costTotal,
-    },
-  ];
-  const detailedHeaderBreakpoints = { xs: 2 };
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
