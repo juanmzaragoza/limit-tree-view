@@ -53,11 +53,11 @@ const DetailedContent = ({
       loader[PROJECT_TYPE]();
     },
     [CONTROL_UNIT_TYPE]: () => {
-      const codi = getTreeId(partida);
+      const codi = getTreeId(unitControl);
       actions.getSelectedNode({ ids: codi });
     },
     [PARTIDA_TYPE]: () => {
-      const codi = getTreeId(unitControl);
+      const codi = getTreeId(partida);
       actions.getSelectedNode({ ids: codi });
     }
   };
