@@ -21,24 +21,27 @@ import {
   getKpis as getKpisPartida,
   getPartida,
   getRows,
-  getIsLoadingKpis
+  getIsLoadingKpis,
 } from "redux/partida/selectors";
 import {
   getKpis as getKpisProjecte,
   getTabIndex,
-  getIsLoadingKpis as loadingKpisProject
+  getIsLoadingKpis as loadingKpisProject,
 } from "redux/project/selectors";
-import { loadHeader as loadUnitControlHeader, loadKpis as loadKpisUC } from "redux/unit-control";
+import {
+  loadHeader as loadUnitControlHeader,
+  loadKpis as loadKpisUC,
+} from "redux/unit-control";
 import {
   getUnitControl,
   getKpis as getKpisUC,
-  getIsLoadingKpis as loadingKpisUC
+  getIsLoadingKpis as loadingKpisUC,
 } from "redux/unit-control/selectors";
 import {
   loadData as loadTreeData,
   selectAndExpandNode,
 } from "redux/project-tree";
-import { getData } from "redux/project-tree/selectors";
+import { getData, getSelectedNode } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
 import { entitiesStyles, getTreeId } from "utils/helper";
@@ -49,11 +52,10 @@ import {
 } from "constants/business-types";
 
 import { getIndicators } from "./configuration";
-import { selectTab } from "redux/project";
+import { selectTab, loadKpis as loadKpisProject } from "redux/project";
 
 const KPIS_TAB_INDEX = 0;
 const RESOURCES_TAB_INDEX = 1;
-
 
 const ProjectDetailedContent = ({
   rows,
@@ -70,13 +72,16 @@ const ProjectDetailedContent = ({
   loadingKpisUC,
   loadingKpisProject,
   loadingKpis,
+  selectedNode,
   ...props
 }) => {
   const intl = useIntl();
   const [headerProject, setHeaderProject] = React.useState({});
   const [headerProjectFields, setHeaderProjectFields] = React.useState([]);
   const [headerControlUnit, setHeaderControlUnit] = React.useState({});
-  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState([]);
+  const [headerControlUnitFields, setHeaderControlUnitFields] = React.useState(
+    []
+  );
   const [headerPartida, setHeaderPartida] = React.useState({});
   const [headerPartidaFields, setHeaderPartidaFields] = React.useState([]);
   const [tabIndex, setTabIndex] = React.useState(tab === 2 ? 1 : tab);
@@ -93,18 +98,16 @@ const ProjectDetailedContent = ({
   };
   React.useEffect(() => {
     onChangeIndexExecutor[tabIndex]();
-  }, [tabIndex, partida]);
+  }, [tabIndex]);
 
   React.useEffect(() => {
-    
+    actions.loadKpisProject({ id: tree.id });
     partida.id && actions.loadKpis({ id: props.id });
-    partida.unitatControlEstudi && actions.loadKpisUC({ id:  partida.unitatControlEstudi.id });
-    
-    if(partida.unitatControlEstudi !== undefined){
-      
+   
+    partida.unitatControlEstudi &&
+      actions.loadKpisUC({ id: partida.unitatControlEstudi.id });
+    partida.unitatControlEstudi &&
       actions.loadUnitControlHeader({ id: partida.unitatControlEstudi?.id });
-    }
-    
   }, [partida]);
 
   const content = [
@@ -114,7 +117,6 @@ const ProjectDetailedContent = ({
     },
   ];
 
-
   React.useEffect(() => {
     setIndicadores(getIndicators(kpisPartida));
   }, [kpisPartida]);
@@ -123,8 +125,6 @@ const ProjectDetailedContent = ({
   React.useEffect(() => {
     loadHeader();
     // partida.id && actions.loadKpis({ id: props.id });
-
-
   }, [props.id]);
 
   React.useEffect(() => {
@@ -265,7 +265,7 @@ const ProjectDetailedContent = ({
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[PROJECT_TYPE]}
           onClick={(id) => {
-            actions.selectTab({ value:  tabIndex === 1 ? 2 : 0  });
+            actions.selectTab({ value: tabIndex === 1 ? 2 : 0 });
             actions.selectNode({ ids: id });
           }}
           loadingData={loadingKpisProject}
@@ -354,7 +354,8 @@ const mapStateToProps = (state, props) => {
     tab: getTabIndex(state),
     loadingKpisUC: loadingKpisUC(state),
     loadingKpisProject: loadingKpisProject(state),
-    loadingKpis: getIsLoadingKpis(state)
+    loadingKpis: getIsLoadingKpis(state),
+    selectedNode: getSelectedNode(state),
   };
 };
 
@@ -367,9 +368,9 @@ const mapDispatchToProps = (dispatch, props) => {
     loadKpis: bindActionCreators(loadKpis, dispatch),
     resetKpis: bindActionCreators(resetKpis, dispatch),
     selectNode: bindActionCreators(selectAndExpandNode, dispatch),
-    selectTab:  bindActionCreators(selectTab, dispatch),
-    loadKpisUC : bindActionCreators(loadKpisUC, dispatch),
-    
+    selectTab: bindActionCreators(selectTab, dispatch),
+    loadKpisUC: bindActionCreators(loadKpisUC, dispatch),
+    loadKpisProject: bindActionCreators(loadKpisProject, dispatch),
   };
   return { actions };
 };

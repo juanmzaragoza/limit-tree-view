@@ -84,7 +84,7 @@ const DetailedContent = ({
         actions.getResources({ id: data.id });
       } else {
         actions.getResources({ id: selectedNode.id });
-        actions.loadKpis({ id: dataTree.id });
+        
       }
     },
   };
