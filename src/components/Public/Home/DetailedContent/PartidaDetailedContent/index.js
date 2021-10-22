@@ -255,6 +255,7 @@ const ProjectDetailedContent = ({
   };
 
   const detailedHeaderBreakpoints = { xs: 4 };
+  const heightLoadingCard= "120px";
   return (
     <Grid container spacing={1}>
       <Grid item xs={4}>
@@ -269,6 +270,7 @@ const ProjectDetailedContent = ({
             actions.selectNode({ ids: id });
           }}
           loadingData={loadingKpisProject}
+          heightLoadingCard={heightLoadingCard}
         />
       </Grid>
       <Grid item xs={4}>
@@ -283,6 +285,7 @@ const ProjectDetailedContent = ({
             actions.selectNode({ ids: id });
           }}
           loadingData={loadingKpisUC}
+          heightLoadingCard={heightLoadingCard}
         />
       </Grid>
       <Grid item xs={4}>
@@ -294,6 +297,7 @@ const ProjectDetailedContent = ({
           {...entitiesStyles[PARTIDA_TYPE]}
           onClick={(id) => actions.selectNode({ ids: id })}
           loadingData={loadingKpis}
+          heightLoadingCard={heightLoadingCard}
         />
       </Grid>
       <Grid item xs={12}>

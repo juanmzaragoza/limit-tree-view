@@ -215,6 +215,7 @@ const ControlUnitDetailedContent = ({
   };
 
   const detailedHeaderBreakpoints = { xs: 4 };
+  const heightLoadingCard= "100px";
   return (
     <Grid container spacing={1}>
       <Grid item xs={6}>
@@ -229,6 +230,7 @@ const ControlUnitDetailedContent = ({
             actions.selectNode({ ids: id });
           }}
           loadingData={loadingKpisProject}
+          heightLoadingCard={heightLoadingCard}
 
         />
       </Grid>
@@ -241,6 +243,7 @@ const ControlUnitDetailedContent = ({
           {...entitiesStyles[CONTROL_UNIT_TYPE]}
           onClick={(id) => actions.selectNode({ ids: id })}
           loadingData={loadingKpisUC}
+          heightLoadingCard={heightLoadingCard}
         />
       </Grid>
       <Grid item xs={12}>

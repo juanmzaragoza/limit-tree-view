@@ -207,6 +207,7 @@ const ProjectDetailedContent = ({
           {...entitiesStyles[PROJECT_TYPE]}
           onClick={(id) => actions.selectNode({ ids: id })}
          loadingData={loadingKpis}
+         heightLoadingCard={"50px"}
         />
       </Grid>
       <Grid item xs={12}>
