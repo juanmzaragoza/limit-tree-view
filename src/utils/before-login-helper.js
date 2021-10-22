@@ -11,7 +11,6 @@ export const login = () => {
     if (Date.now() < exp * 1000) return;
   }
   // generate token
-
   Axios.get("api/auth?user=admin&pass=admin", {
     headers: new Headers({
       Accept: "application/json",

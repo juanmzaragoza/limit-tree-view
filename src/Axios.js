@@ -3,7 +3,7 @@ import { getPlainFrom } from "./utils/storage";
 import SnackbarUtils from "./utils/snackbar-function";
 
 const Axios = axios.create();
-const authToken = () => `Bearer  ${getPlainFrom("token")}`;
+const authToken = () => `Bearer ${getPlainFrom("token")}`;
 Axios.defaults.baseURL = "https://10.35.3.44:8083/";
 
 Axios.interceptors.request.use(
