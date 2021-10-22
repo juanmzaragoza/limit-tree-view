@@ -40,7 +40,7 @@ import {
   loadData as loadTreeData,
   selectAndExpandNode,
 } from "redux/project-tree";
-import { getData, getSelectedNode } from "redux/project-tree/selectors";
+import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
 
 import { entitiesStyles, getTreeId } from "utils/helper";
@@ -77,7 +77,6 @@ const ProjectDetailedContent = ({
   loadingKpisUC,
   loadingKpisProject,
   loadingKpis,
-  selectedNode,
   ...props
 }) => {
   const intl = useIntl();
@@ -149,7 +148,7 @@ const ProjectDetailedContent = ({
     setHeaderProjectFields(getHeaderProjectFields(kpisProjecte));
   }, [kpisProjecte, tree]);
 
-  const handleCellChange = async (params, event, details) => {
+  const handleCellChange = async (params) => {
     const { id, field, value } = params;
     const data = rows.find((row) => row.id === id);
     data[field] = value;
@@ -256,7 +255,7 @@ const ProjectDetailedContent = ({
   );
 };
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     rows: getRows(state),
     loading: getIsLoading(state),
@@ -271,11 +270,10 @@ const mapStateToProps = (state, props) => {
     loadingKpisUC: loadingKpisUC(state),
     loadingKpisProject: loadingKpisProject(state),
     loadingKpis: getIsLoadingKpis(state),
-    selectedNode: getSelectedNode(state),
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = (dispatch) => {
   const actions = {
     loadHeader: bindActionCreators(loadHeader, dispatch),
     updateResource: bindActionCreators(update, dispatch),

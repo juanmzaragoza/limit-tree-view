@@ -2,10 +2,11 @@ import Axios from "Axios";
 
 //Action types
 const ADD = "ADD_TO_PERIODS";
-const RESET =  "RESET_PERIOD";
+const RESET = "RESET_PERIOD";
 
 // Constants
-const URL = "api/estp/estudisProjecte?query=projecte.codi=={codi}&sort=numero,desc";
+const URL =
+  "api/estp/estudisProjecte?query=projecte.codi=={codi}&sort=numero,desc";
 const ADD_PERIOD_URL = "api/estp/estudisProjecte";
 
 //Functions
@@ -41,7 +42,7 @@ export const addPeriord = ({ url = ADD_PERIOD_URL, id, codiAccio, data }) => {
         dispatch(add({ loading: true }));
         Axios.post(formedURL())
           .then(({ status, data, ...rest }) => {
-            if(status !== 200) {
+            if (status !== 200) {
               return reject({ message: "No se pude agregar perído" });
             }
             dispatch(add({ loading: false }));
@@ -102,9 +103,9 @@ export const add = (payload) => {
 
 export const reset = () => {
   return {
-    type: RESET
-  }
-}
+    type: RESET,
+  };
+};
 
 //Reducers
 const initialState = {

@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import * as React from "react";
+import { DataGrid } from "@mui/x-data-grid";
 
 const DetailedTable = ({
-  rootStyle = {  width: '100%' },
+  rootStyle = { width: "100%" },
   rows,
   columns,
   loading,
@@ -13,21 +13,20 @@ const DetailedTable = ({
   disableExtendRowFullWidth = true,
   disableInlineEdition = false,
   flexGrid,
-  onCellEditCommit = (params, event, details) => {},
-  onRowClick = (row) => {},
-  onRowDoubleClick = (row) => {},
-
+  onCellEditCommit = () => {},
+  onRowClick = () => {},
+  onRowDoubleClick = () => {},
 }) => {
   return (
     <div style={rootStyle}>
-      <div style={{ display: 'flex', height: '100%' }}>
-        <div style={{ flexGrow: 1}}>
+      <div style={{ display: "flex", height: "100%" }}>
+        <div style={{ flexGrow: 1 }}>
           <DataGrid
             rows={rows}
-            columns={columns.map(column => ({
+            columns={columns.map((column) => ({
               ...column,
-             flex: flexGrid ? flexGrid : "",
-              editable: disableInlineEdition? false:column.editable
+              flex: flexGrid ? flexGrid : "",
+              editable: disableInlineEdition ? false : column.editable,
             }))}
             getRowId={getRowId}
             loading={loading}
@@ -35,7 +34,7 @@ const DetailedTable = ({
             autoHeight={autoHeight}
             autoWidth={autoWidth}
             disableExtendRowFullWidth={disableExtendRowFullWidth}
-            style={{ backgroundColor: "white"}} 
+            style={{ backgroundColor: "white" }}
             classsName="bodyLabel"
             onCellEditCommit={onCellEditCommit}
             onRowClick={(e) => onRowClick(e.row)}
@@ -45,5 +44,5 @@ const DetailedTable = ({
       </div>
     </div>
   );
-}
+};
 export default DetailedTable;

@@ -10,7 +10,11 @@ import {
   PROJECT_TYPE,
 } from "constants/business-types";
 
-import { loadData as loadUnitControlData, loadKpis , loadDetails } from "redux/project";
+import {
+  loadData as loadUnitControlData,
+  loadKpis,
+  loadDetails,
+} from "redux/project";
 import {
   loadData as loadPartidaData,
   loadKpis as loadKpisUC,
@@ -40,17 +44,15 @@ const DetailedContent = ({
   partida,
   dataTree,
 }) => {
-
   React.useEffect(() => {
     !isEmpty(data) && !!loader[data.type] && loader[data.type]();
   }, [data]);
 
   React.useEffect(() => {
-    selectedNode !== null
-      && !!onLoadingTree[selectedNode.type]
-      && onLoadingTree[selectedNode.type]();
+    selectedNode !== null &&
+      !!onLoadingTree[selectedNode.type] &&
+      onLoadingTree[selectedNode.type]();
   }, [loadingTree]);
-
 
   const onLoadingTree = {
     [PROJECT_TYPE]: () => {
@@ -63,7 +65,7 @@ const DetailedContent = ({
     [PARTIDA_TYPE]: () => {
       const codi = getTreeId(partida);
       actions.getSelectedNode({ ids: codi });
-    }
+    },
   };
 
   const loader = {
@@ -78,7 +80,7 @@ const DetailedContent = ({
       } else {
         actions.getPartidaData({ id: selectedNode.id });
         actions.loadKpisUC({ id: selectedNode.id });
-        actions.loadKpis({id: dataTree.id})
+        actions.loadKpis({ id: dataTree.id });
       }
     },
     [PARTIDA_TYPE]: () => {
@@ -86,9 +88,7 @@ const DetailedContent = ({
         actions.getResources({ id: data.id });
       } else {
         actions.getResources({ id: selectedNode.id });
-
         // actions.loadKpis({ id: dataTree.id });
-
       }
     },
   };
@@ -113,7 +113,7 @@ const DetailedContent = ({
   );
 };
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     selectedNode: getSelectedNode(state),
     unitControl: getUnitControl(state),
@@ -123,7 +123,7 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = (dispatch) => {
   const actions = {
     getUnitControlData: bindActionCreators(loadUnitControlData, dispatch),
     getPartidaData: bindActionCreators(loadPartidaData, dispatch),

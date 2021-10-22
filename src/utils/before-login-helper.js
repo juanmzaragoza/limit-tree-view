@@ -18,10 +18,10 @@ export const login = () => {
       "Content-Type": "application/json",
     }),
   })
-    .then(({ status, data, ...rest }) => {
+    .then(({ data }) => {
       Axios.post(
         "api/auth/refresh",
-        { token: data.token,session:{"i":443,"e":987}, },
+        { token: data.token, session: { i: 443, e: 987 } },
         {
           headers: new Headers({
             Accept: "application/json",
@@ -30,18 +30,17 @@ export const login = () => {
           }),
         }
       )
-        .then(({ status, data, ...rest }) => {
+        .then(({ data }) => {
           setPlainOn("token", data.token);
         })
-        .catch((error) => {
+        .catch(() => {
           window.alert("NO SE PUDO REFRESCAR");
         });
     })
-    .catch((error) => {
+    .catch(() => {
       window.alert("NO SE PUDO OBTENER ADMIN/ADMIN");
     });
 };
-
 export const refresh = () => {
   setInterval(() => {
     Axios.get("api/auth?user=admin&pass=admin", {
@@ -50,11 +49,11 @@ export const refresh = () => {
         "Content-Type": "application/json",
       }),
     })
-      .then(({ status, data, ...rest }) => {
+      .then(({ data }) => {
         console.log("REFRESH");
         Axios.post(
           "api/auth/refresh",
-          { token: data.token, session:{"i":443,"e":987}, },
+          { token: data.token, session: { i: 443, e: 987 } },
           {
             headers: new Headers({
               Accept: "application/json",
@@ -63,14 +62,14 @@ export const refresh = () => {
             }),
           }
         )
-          .then(({ status, data, ...rest }) => {
+          .then(({ data }) => {
             setPlainOn("token", data.token);
           })
-          .catch((error) => {
+          .catch(() => {
             window.alert("NO SE PUDO REFRESCAR");
           });
       })
-      .catch((error) => {
+      .catch(() => {
         window.alert("NO SE PUDO OBTENER ADMIN/ADMIN");
       });
   }, 1800000);

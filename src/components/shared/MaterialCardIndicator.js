@@ -7,7 +7,7 @@ import { formatCurrencyWithIntl } from "utils/formats";
 import { useIntl } from "react-intl";
 import MaterialCardAvatarContentSkeleton from "./MaterialSkeleton/MaterialCardAvatarContentSkeleton";
 
-const cardUseStyles = makeStyles((theme) => ({
+const cardUseStyles = makeStyles(() => ({
   card: {
     height: "100%",
     display: "flex",
@@ -84,7 +84,7 @@ export default function MaterialCardIndicator({
               />
               <CardContent>
                 <Grid container spacing={2}>
-                  {indicators?.map(({ field, value, breakpoints }, index) => {
+                  {indicators?.map(({ field, value }, index) => {
                     return (
                       <Grid item xs={lg} key={index}>
                         {field}: <br />

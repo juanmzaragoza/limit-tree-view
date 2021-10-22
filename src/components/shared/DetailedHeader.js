@@ -15,7 +15,6 @@ import { formatCurrencyWithIntl } from "utils/formats";
 import { useIntl } from "react-intl";
 import { IconButton } from "@material-ui/core";
 
-
 const DetailedHeader = ({
   id,
   header,
@@ -26,7 +25,7 @@ const DetailedHeader = ({
   breakpoints = { xs: 6 },
   loadingData,
   heightLoadingCard = "60px",
-  onClick = (row) => {},
+  onClick = () => {},
 }) => {
   const intl = useIntl();
   const cutTitle = () => {
@@ -82,7 +81,7 @@ const DetailedHeader = ({
             >
               <LinearProgress color="inherit" />
             </Stack>
-            <Container style={{height: heightLoadingCard}}></Container>
+            <Container style={{ height: heightLoadingCard }}></Container>
           </>
         ) : (
           <Container>

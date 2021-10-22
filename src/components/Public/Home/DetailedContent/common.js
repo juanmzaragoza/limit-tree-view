@@ -1,9 +1,5 @@
 import { formatCurrencyWithIntl } from "utils/formats";
-import {
-  greenColor,
-  redColor,
-  inheritColor,
-} from "utils/helper";
+import { greenColor, redColor, inheritColor } from "utils/helper";
 
 export const isPeriodOpen = ({ period }) => {
   return !period.tancat;
@@ -23,9 +19,8 @@ export const getKpisColorValue = ({ value }) => {
   }
 };
 
-
 export const getResourceColumnsByPeriod = ({ period, intl }) => {
-  const  number  = period.numero;
+  const number = period.numero;
   return [
     { field: "codi", headerName: "Código", minWidth: 110 },
     {
@@ -38,10 +33,9 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
       field: "unitatTipus",
       headerName: "Tipo Unidad",
       minWidth: 120,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       valueGetter: (params) => `${params.value?.description || ""}`,
-      
     },
     {
       field: "unitats",

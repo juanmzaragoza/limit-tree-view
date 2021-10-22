@@ -65,7 +65,6 @@ const ControlUnitDetailedContent = ({
   loading,
   unitControl,
   actions,
-  project,
   tree,
   kpis,
   kpisUnitatControl,
@@ -132,7 +131,7 @@ const ControlUnitDetailedContent = ({
     setHeaderProjectFields(getHeaderProjectFields(kpis));
   }, [kpis, tree]);
 
-  const handleCellChange = async (params, event, details) => {
+  const handleCellChange = async (params) => {
     const { id, field, value } = params;
     const data = rows.find((row) => row.id === id);
 
@@ -240,7 +239,7 @@ const ControlUnitDetailedContent = ({
   );
 };
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     rows: getRows(state),
     loading: getIsLoading(state),
@@ -258,7 +257,7 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = (dispatch) => {
   const actions = {
     loadHeader: bindActionCreators(loadHeader, dispatch),
     updatePartida: bindActionCreators(updatePartida, dispatch),

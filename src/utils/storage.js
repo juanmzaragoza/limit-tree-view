@@ -4,7 +4,7 @@ export const setObjectOn = (key, data) => {
 
 export const getObjectFrom = (key) => {
   const data = localStorage.getItem(key);
-  return data? JSON.parse(data):data;
+  return data ? JSON.parse(data) : data;
 };
 
 export const setPlainOn = (key, data) => {
@@ -21,4 +21,4 @@ export const removeKey = (key) => {
 
 export const clearAll = () => {
   localStorage.clear();
-}
+};

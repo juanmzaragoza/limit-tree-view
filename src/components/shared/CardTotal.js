@@ -1,25 +1,14 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  Container,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, Container, Grid, Typography } from "@mui/material";
 import { formatCurrencyWithIntl } from "utils/formats";
 import { useIntl } from "react-intl";
 
-const CardTotal = ({
-  body,
-  breakPoint = 6,
-}) => {
+const CardTotal = ({ body, breakPoint = 6 }) => {
   const intl = useIntl();
-return(
-    <Card
-      className="importsTotals"
-    >
-      <CardContent  className="importsTotals"> 
-        <Container  className="importsTotals">
+  return (
+    <Card className="importsTotals">
+      <CardContent className="importsTotals">
+        <Container className="importsTotals">
           <Grid container spacing={1}>
             {body.map(({ field, value, colorValue = "inherit" }) => {
               const line = `${field}: ${value}`;
@@ -31,7 +20,9 @@ return(
                     align="center"
                     className="bodyLabel"
                   >
-                    <span style={{ fontSize: "14px" }}> <strong>{field}</strong></span>
+                    <span style={{ fontSize: "14px" }}>
+                      <strong>{field}</strong>
+                    </span>
                     <br />
                     <span style={{ color: colorValue, fontSize: "14px" }}>
                       {value === undefined
@@ -40,7 +31,6 @@ return(
                     </span>
                   </Typography>
                 </Grid>
-
               );
             })}
           </Grid>
@@ -48,8 +38,6 @@ return(
       </CardContent>
     </Card>
   );
-
-
 };
 
 export default CardTotal;

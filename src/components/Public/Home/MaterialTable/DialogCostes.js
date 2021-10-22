@@ -80,7 +80,7 @@ const DialogCostes = ({ open, onClose, contentDialog, loading }) => {
       <DialogTitle>Coste Real</DialogTitle>
       <DialogContent>
         {loading ? (
-          <Stack sx={{ color: "grey.500", alignItems: "center"}}>
+          <Stack sx={{ color: "grey.500", alignItems: "center" }}>
             <CircularProgress color="inherit" />
           </Stack>
         ) : (
@@ -146,7 +146,9 @@ const DialogCostes = ({ open, onClose, contentDialog, loading }) => {
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} variant="outlined">Cerrar</Button>
+        <Button onClick={onClose} variant="outlined">
+          Cerrar
+        </Button>
       </DialogActions>
     </Dialog>
   );

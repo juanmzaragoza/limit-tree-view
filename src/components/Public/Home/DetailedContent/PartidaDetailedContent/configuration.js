@@ -4,9 +4,9 @@ import {
   Engineering,
   Euro,
   StackedBarChart,
-  StackedLineChart
+  StackedLineChart,
 } from "@mui/icons-material";
-import {getKpisColorValue} from "../common";
+import { getKpisColorValue } from "../common";
 
 export const getIndicators = (kpisPartida) => [
   {
@@ -149,12 +149,11 @@ export const getIndicators = (kpisPartida) => [
   },
 ];
 
-export const getHeaderControlUnitFields = (kpisUnitatControl) => ([
+export const getHeaderControlUnitFields = (kpisUnitatControl) => [
   {
     field: "Res. Bru. Ori.",
     value: kpisUnitatControl.beneficiOrigen,
   },
-
   {
     field: "Prod. Origen",
     value: kpisUnitatControl.produccioOrigen,
@@ -163,7 +162,6 @@ export const getHeaderControlUnitFields = (kpisUnitatControl) => ([
     field: "Desv. Origen",
     value: kpisUnitatControl.desviacioOrigen,
   },
-
   {
     field: "Res. Bru. Año",
     value: kpisUnitatControl.beneficiAny,
@@ -178,7 +176,6 @@ export const getHeaderControlUnitFields = (kpisUnitatControl) => ([
       value: kpisUnitatControl.produccioAny,
     }),
   },
-
   {
     field: "Desv. Año",
     value: kpisUnitatControl.desviacioAny,
@@ -186,14 +183,13 @@ export const getHeaderControlUnitFields = (kpisUnitatControl) => ([
       value: kpisUnitatControl.desviacioAny,
     }),
   },
-]);
+];
 
-export const getHeaderPartidaFields = (kpisPartida) => ([
+export const getHeaderPartidaFields = (kpisPartida) => [
   {
     field: "Res. Bru. Ori.",
     value: kpisPartida.beneficiOrigen,
   },
-
   {
     field: "Prod. Origen",
     value: kpisPartida.produccioOrigen,
@@ -212,20 +208,18 @@ export const getHeaderPartidaFields = (kpisPartida) => ([
     value: kpisPartida.produccioAny,
     colorValue: getKpisColorValue({ value: kpisPartida.produccioAny }),
   },
-
   {
     field: "Desv. Año",
     value: kpisPartida.desviacioAny,
     colorValue: getKpisColorValue({ value: kpisPartida.desviacioAny }),
   },
-]);
+];
 
-export const getHeaderProjectFields = (kpisProjecte) => ([
+export const getHeaderProjectFields = (kpisProjecte) => [
   {
     field: "Res. Bru. Ori.",
     value: kpisProjecte.beneficiOrigen,
   },
-
   {
     field: "Prod. Origen",
     value: kpisProjecte.produccioOrigen,
@@ -244,10 +238,9 @@ export const getHeaderProjectFields = (kpisProjecte) => ([
     value: kpisProjecte.produccioAny,
     colorValue: getKpisColorValue({ value: kpisProjecte.produccioAny }),
   },
-
   {
     field: "Pen. Fac. Año",
     value: kpisProjecte.obraPendentAny,
     colorValue: getKpisColorValue({ value: kpisProjecte.obraPendentAny }),
   },
-]);
+];

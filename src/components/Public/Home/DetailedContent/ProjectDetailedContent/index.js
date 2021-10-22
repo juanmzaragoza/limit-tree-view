@@ -22,7 +22,7 @@ import {
   getTabIndex,
   getIsLoadingDetails,
   getKpisFact,
-  getIsLoadingKpis
+  getIsLoadingKpis,
 } from "redux/project/selectors";
 import { getSelectedProject } from "redux/project-selector/selectors";
 import { selectAndExpandNode } from "redux/project-tree";
@@ -61,11 +61,10 @@ const ProjectDetailedContent = ({
   actions,
   tab,
   loadingDetails,
-  loadingKpis
+  loadingKpis,
 }) => {
   const intl = useIntl();
   const content = [
-
     { field: "Imp. Final Planif.", value: tree.importTotal },
     {
       field: "Coste Final Planif.",
@@ -75,12 +74,8 @@ const ProjectDetailedContent = ({
   const detailedHeaderBreakpoints = { xs: 2 };
   const onChangeIndexExecutor = {
     [PROJECTS_TAB_INDEX]: () => {},
-    [KPIS_TAB_INDEX]: () => {
-  
-    },
-    [DETAIL_TAB_INDEX]: () => {
-      
-    },
+    [KPIS_TAB_INDEX]: () => {},
+    [DETAIL_TAB_INDEX]: () => {},
   };
 
   const [headerProject, setHeaderProject] = React.useState({});
@@ -161,7 +156,6 @@ const ProjectDetailedContent = ({
     setProjectFields(getProjectFields(kpis));
   }, [kpis, project]);
 
-
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
@@ -172,8 +166,8 @@ const ProjectDetailedContent = ({
           breakpoints={detailedHeaderBreakpoints}
           {...entitiesStyles[PROJECT_TYPE]}
           onClick={(id) => actions.selectNode({ ids: id })}
-         loadingData={loadingKpis}
-         heightLoadingCard={"50px"}
+          loadingData={loadingKpis}
+          heightLoadingCard={"50px"}
         />
       </Grid>
       <Grid item xs={12}>
@@ -235,7 +229,7 @@ const ProjectDetailedContent = ({
   );
 };
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     rows: getRows(state),
     loading: getIsLoading(state),
@@ -248,18 +242,17 @@ const mapStateToProps = (state, props) => {
     tab: getTabIndex(state),
     loadingDetails: getIsLoadingDetails(state),
     kpisFact: getKpisFact(state),
-    loadingKpis: getIsLoadingKpis(state)
+    loadingKpis: getIsLoadingKpis(state),
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = (dispatch) => {
   const actions = {
     loadKpis: bindActionCreators(loadKpis, dispatch),
     resetKpis: bindActionCreators(resetKpis, dispatch),
     selectNode: bindActionCreators(selectAndExpandNode, dispatch),
     loadDetails: bindActionCreators(loadDetails, dispatch),
     selectTab: bindActionCreators(selectTab, dispatch),
-    
   };
   return { actions };
 };

@@ -7,21 +7,26 @@ import {
   getIsLoading,
   getSelectedNode,
 } from "redux/project-tree/selectors";
-import {reset, selectNode, expandNode, selectAndExpandNode} from "redux/project-tree";
+import {
+  reset,
+  selectNode,
+  expandNode,
+  selectAndExpandNode,
+} from "redux/project-tree";
 
 import "./styles.css";
 import ProjectsTreeView from "./ProjectTreeView";
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     data: getFormattedData(state),
     loading: getIsLoading(state),
     expanded: getExpanded(state),
-    selectedNode: getSelectedNode(state)
+    selectedNode: getSelectedNode(state),
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = (dispatch) => {
   const actions = {
     reset: bindActionCreators(reset, dispatch),
     selectNode: bindActionCreators(selectNode, dispatch),
@@ -31,5 +36,8 @@ const mapDispatchToProps = (dispatch, props) => {
   return { actions };
 };
 
-const component = connect(mapStateToProps,mapDispatchToProps)(ProjectsTreeView);
+const component = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProjectsTreeView);
 export default component;
