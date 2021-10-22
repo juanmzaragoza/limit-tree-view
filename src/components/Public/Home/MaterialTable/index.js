@@ -31,6 +31,11 @@ import DialogCostes from "./DialogCostes";
 import DialogMediciones from "./DialogMediciones";
 
 import "./TableStyle.css";
+import {
+  loadData as loadTreeData,
+} from "redux/project-tree";
+
+import { getSelectedPeriod } from "redux/period/selectors";
 
 const useStyles = makeStyles({
   stickyActionsColumn: {
@@ -73,6 +78,7 @@ const MaterialTable = ({
   loadingTable,
   partidaInfo,
   unitControl,
+  selectedPeriod
 }) => {
   const classes = useStyles();
 
@@ -100,6 +106,8 @@ const MaterialTable = ({
     try {
       await actions.updatePartida({ id, data: partidaInfo });
       actions.loadData({ id: unitControl.id });
+      actions.loadTreeData({ periodId: selectedPeriod.id });
+      // actions.loadKpis({ id: props.id });
       // update related data
     } catch (e) {
       // handle errors
@@ -289,6 +297,7 @@ const mapStateToProps = (state, props) => {
     loading: getIsLoading(state),
     partidaInfo: getPartidaInfo(state),
     unitControl: getUnitControl(state),
+    selectedPeriod:  getSelectedPeriod(state)
   };
 };
 
@@ -298,6 +307,7 @@ const mapDispatchToProps = (dispatch, props) => {
     selectPartida: bindActionCreators(selectPartida, dispatch),
     updatePartida: bindActionCreators(updatePartida, dispatch),
     loadData: bindActionCreators(loadData, dispatch),
+    loadTreeData:bindActionCreators(loadTreeData, dispatch),
   };
   return { actions };
 };

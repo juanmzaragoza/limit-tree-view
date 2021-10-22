@@ -146,7 +146,7 @@ const DialogCostes = ({ open, onClose, contentDialog, loading }) => {
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancelar</Button>
+        <Button onClick={onClose} variant="outlined">Cerrar</Button>
       </DialogActions>
     </Dialog>
   );

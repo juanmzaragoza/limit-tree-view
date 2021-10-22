@@ -67,7 +67,7 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={`${
+                  value={`${
                     contentDialog?.unitatTipus?.description
                       ? contentDialog?.unitatTipus?.description
                       : ""
@@ -85,7 +85,7 @@ const DialogMediciones = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  defaultValue={`${
+                  value={`${
                     contentDialog
                       ? formatNumberWithIntl(
                           contentDialog?.unitatsAnterior,
@@ -266,7 +266,7 @@ const DialogMediciones = ({
 
       <DialogActions>
         <Button onClick={onClose} variant="outlined">
-          Cancelar
+          Cerrar
         </Button>
       </DialogActions>
     </Dialog>
