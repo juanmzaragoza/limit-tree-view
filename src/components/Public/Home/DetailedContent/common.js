@@ -23,6 +23,7 @@ export const getKpisColorValue = ({ value }) => {
   }
 };
 
+
 export const getResourceColumnsByPeriod = ({ period, intl }) => {
   const  number  = period.numero;
   return [
@@ -34,13 +35,6 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
       editable: !number,
     },
     {
-      field: "unitats",
-      headerName: "Medición",
-      type: "number",
-      minWidth: 140,
-      editable: true,
-    },
-    {
       field: "unitatTipus",
       headerName: "Tipo Unidad",
       minWidth: 120,
@@ -49,6 +43,14 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
       valueGetter: (params) => `${params.value?.description || ""}`,
       
     },
+    {
+      field: "unitats",
+      headerName: "Medición",
+      type: "number",
+      minWidth: 140,
+      editable: true,
+    },
+
     {
       field: "costUnitat",
       headerName: "Coste Unitario",
@@ -61,7 +63,7 @@ export const getResourceColumnsByPeriod = ({ period, intl }) => {
     },
     {
       field: "costTotal",
-      headerName: "Coste Total",
+      headerName: "Coste Final Planif.",
       minWidth: 140,
       type: "number",
       valueFormatter: (params) => {

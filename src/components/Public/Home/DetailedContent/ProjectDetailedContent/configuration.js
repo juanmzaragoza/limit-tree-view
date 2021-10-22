@@ -13,10 +13,10 @@ import { Avatar } from "@mui/material";
 import { formatCurrencyWithIntl } from "utils/formats";
 import { entitiesStyles } from "utils/helper";
 import { CONTROL_UNIT_TYPE } from "constants/business-types";
-
 import {getKpisColorValue} from "../common";
 
-export const getIndicators = (kpis) => [
+
+export const getIndicators = (kpis, kpisFact) => [
   {
     title: "Produccion",
     icon: <Engineering />,
@@ -50,7 +50,7 @@ export const getIndicators = (kpis) => [
     ],
   },
   {
-    title: "Coste Teórico",
+    title: "Coste Teórico Producción Hecha",
     icon: <StackedLineChart />,
     lg: 2,
     indicators: [
@@ -82,7 +82,7 @@ export const getIndicators = (kpis) => [
     ],
   },
   {
-    title: "Coste Real",
+    title: "Coste Real Producción Hecha",
     icon: <StackedBarChart />,
     lg: 2,
     indicators: [
@@ -105,7 +105,7 @@ export const getIndicators = (kpis) => [
     ],
   },
   {
-    title: "Beneficios",
+    title: "Beneficios Producción Hecha",
     icon: <Euro />,
     lg: 2,
     indicators: [
@@ -128,7 +128,7 @@ export const getIndicators = (kpis) => [
     ],
   },
   {
-    title: "Desviación",
+    title: "Desviación Teórico - Real Coste",
     icon: <CallMissedOutgoing />,
     lg: 2,
     indicators: [
@@ -181,19 +181,19 @@ export const getIndicators = (kpis) => [
     indicators: [
       {
         field: "Anterior",
-        value: kpis.facturacioRealAnterior,
+        value: kpisFact.facturacioRealAnterior,
       },
       {
         field: "Periodo",
-        value: kpis.facturacioRealPeriode,
+        value: kpisFact.facturacioRealPeriode,
       },
       {
         field: "Año Natural",
-        value: kpis.facturacioRealAny,
+        value: kpisFact.facturacioRealAny,
       },
       {
         field: "Origen",
-        value: kpis.facturacioRealOrigen,
+        value: kpisFact.facturacioRealOrigen,
       },
     ],
   },
@@ -551,19 +551,20 @@ export const groups = [
     className: "borderRight",
   },
   { label: "Producción", colSpan: 5, className: "borderLeft" },
-  { label: "Coste Teórico", colSpan: 5, className: "borderLeft" },
-  { label: "Coste Real", colSpan: 4, className: "borderLeft" },
-  { label: "Beneficios", colSpan: 4, className: "borderLeft" },
-  { label: "Desviación", colSpan: 4, className: "borderLeft" },
+  { label: "Coste Teórico Producción Hecha", colSpan: 5, className: "borderLeft" },
+  { label: "Coste Real Producción Hecha", colSpan: 4, className: "borderLeft" },
+  { label: "Beneficios Producción Hecha", colSpan: 4, className: "borderLeft" },
+  { label: "Desviación Teórico - Real Coste", colSpan: 4, className: "borderLeft" },
+  
 ];
 
 export const getProjectFields = (kpis) => ([
   {
-    field: "Benef. Origen",
+    field: "Resul. Bruto Origen",
     value: kpis.beneficiOrigen,
   },
   {
-    field: "Benef. Año",
+    field: "Resul. Bruto Año",
     value: kpis.beneficiAny,
     colorValue: getKpisColorValue({ value: kpis.beneficiAny }),
   },
@@ -577,12 +578,12 @@ export const getProjectFields = (kpis) => ([
     colorValue: getKpisColorValue({ value: kpis.produccioAny }),
   },
   {
-    field: "Pen. Origen",
+    field: "Pen. Fact. Origen",
     value: kpis.obraPendentOrigen,
   },
 
   {
-    field: "Pen. Año",
+    field: "Pen. Fact. Año",
     value: kpis.obraPendentAny,
     colorValue: getKpisColorValue({ value: kpis.obraPendentAny }),
   },

@@ -32,13 +32,13 @@ export const columns = [
   },
 
   {
-    label: "Unidades",
+    label: "Unidades Período",
     id: "unitatsPeriode",
     minWidth: 140,
     numeric: true,
   },
   {
-    label: "Precio",
+    label: "Precio Período",
     id: "preuPeriode",
     minWidth: 140,
     numeric: true,
@@ -76,7 +76,7 @@ export const columns = [
 
 const DialogCostes = ({ open, onClose, contentDialog, loading }) => {
   return (
-    <Dialog open={open} onClose={onClose} fullWidth={true} maxWidth={"lg"}>
+    <Dialog open={open} onClose={onClose} fullWidth={true} maxWidth={"xl"}>
       <DialogTitle>Coste Real</DialogTitle>
       <DialogContent>
         {loading ? (
@@ -108,7 +108,7 @@ const DialogCostes = ({ open, onClose, contentDialog, loading }) => {
                 <TableBody>
                   {!contentDialog.length && (
                     <TableRow hover>
-                      <TableCell align="center" colSpan={7}>
+                      <TableCell align="center" colSpan={9}>
                         No hay costes reales para esta partida.
                       </TableCell>
                     </TableRow>

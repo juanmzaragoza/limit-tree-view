@@ -43,17 +43,21 @@ export const loadData = ({ url = URL, id }) => {
 
 export const loadKpis = ({ url = LOAD_KPIS_URL, id }) => {
   return async (dispatch) => {
+    
     const apiCall = () => Axios.get(url.replace("{id}", id));
     try {
+      dispatch(add({ loadingKpis: true }));
       apiCall()
-        .then(({ data }) => data)
-        .then(({ indicadorsPartides }) => {
-          dispatch(add({ kpis: indicadorsPartides }));
-        })
+        .then(({ data }) => { dispatch(add({ kpisFact: data, kpis: data['indicadorsPartides'] }));
+        dispatch(add({ loadingKpis: false }));})
+       
         .catch((error) => {
           console.log(error);
+          dispatch(add({ loadingKpis: false }));
         })
-        .finally(() => {});
+        .finally(() => {
+          dispatch(add({ loadingKpis: false }));
+        });
     } catch (error) {}
   };
 };
@@ -120,6 +124,8 @@ const initialState = {
   details: [],
   selectedTab: 0,
   loadingDetails: false,
+  loadingKpis: false,
+  kpisFact:{}
   
 };
 
