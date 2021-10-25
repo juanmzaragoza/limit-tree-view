@@ -15,7 +15,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import useStyles from "./style";
 import { NavLink } from "react-router-dom";
 
-const PublicRoute = ({ component: Component, path, ...rest }) => {
+const PrivateRoute = ({ component: Component, path, ...rest }) => {
   const classes = useStyles();
 
   const footers = [
@@ -133,4 +133,4 @@ const PublicRoute = ({ component: Component, path, ...rest }) => {
   );
 };
 
-export default PublicRoute;
+export default PrivateRoute;

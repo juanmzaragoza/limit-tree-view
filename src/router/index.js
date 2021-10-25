@@ -2,8 +2,8 @@ import React from "react";
 import { Router, Redirect, Switch } from "react-router";
 import { createBrowserHistory } from "history";
 
-import Public from "components/Layout/Public/PublicRoute";
-import Home from "components/Public/Home";
+import Public from "components/Layout/Private/PrivateRoute";
+import Home from "components/Private/Home";
 
 const Routes = () => (
   <Router history={createBrowserHistory()}>
