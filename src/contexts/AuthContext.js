@@ -5,6 +5,14 @@ import Axios from "Axios";
 import { removeKey, setPlainOn, getPlainFrom } from "utils/storage";
 import { PATHNAME } from "router";
 
+export const logout = () => {
+  removeKey(TOKEN_LOCALSTORAGE_KEY);
+  window.location.replace(PATHNAME.LOGIN);
+};
+export const functions = {
+  logout,
+};
+
 const AuthContext = createContext({});
 
 export const TOKEN_LOCALSTORAGE_KEY = "token";
@@ -60,8 +68,7 @@ export const AuthProvider = ({ children, ...props }) => {
 
   const logout = async () => {
     return new Promise((resolve) => {
-      removeKey(TOKEN_LOCALSTORAGE_KEY);
-      window.location.replace(PATHNAME.LOGIN);
+      functions.logout();
       resolve(true);
     });
   };

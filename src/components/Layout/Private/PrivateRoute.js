@@ -15,7 +15,9 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { useAuth } from "contexts/AuthContext";
+
 import useStyles from "./style";
+import EnterpriseGroupSelect from "./EnterpriseGroupSelector";
 
 const PrivateRoute = ({ component: Component, path, ...rest }) => {
   const classes = useStyles();
@@ -68,6 +70,7 @@ const PrivateRoute = ({ component: Component, path, ...rest }) => {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Limit - Estudio de Proyectos
             </Typography>
+            <EnterpriseGroupSelect />
             <Button color="inherit" onClick={logout}>
               Logout
             </Button>
