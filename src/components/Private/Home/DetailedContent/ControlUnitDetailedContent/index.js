@@ -9,7 +9,7 @@ import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
 import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
 import CardTotal from "components/shared/CardTotal";
-import MaterialTable from "components/Public/Home/MaterialTable";
+import MaterialTable from "components/Private/Home/MaterialTable";
 
 import {
   getIsLoading,

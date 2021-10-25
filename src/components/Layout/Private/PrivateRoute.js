@@ -17,7 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useAuth } from "contexts/AuthContext";
 import useStyles from "./style";
 
-const PublicRoute = ({ component: Component, path, ...rest }) => {
+const PrivateRoute = ({ component: Component, path, ...rest }) => {
   const classes = useStyles();
   const { loading, isAuthenticated, logout } = useAuth();
 
@@ -146,4 +146,4 @@ const PublicRoute = ({ component: Component, path, ...rest }) => {
   );
 };
 
-export default PublicRoute;
+export default PrivateRoute;

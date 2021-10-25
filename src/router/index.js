@@ -2,9 +2,9 @@ import React from "react";
 import { Router, Redirect, Switch, Route } from "react-router";
 import { createBrowserHistory } from "history";
 
-import Public from "components/Layout/Public/PublicRoute";
+import Public from "components/Layout/Private/PrivateRoute";
+import Home from "components/Private/Home";
 import Login from "components/Login";
-import Home from "components/Public/Home";
 
 const Routes = () => (
   <Router history={createBrowserHistory()}>

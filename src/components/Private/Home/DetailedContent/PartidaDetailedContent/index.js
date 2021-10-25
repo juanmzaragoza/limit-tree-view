@@ -12,7 +12,7 @@ import CardTotal from "components/shared/CardTotal";
 import {
   getResourceColumnsByPeriod,
   isPeriodOpen,
-} from "components/Public/Home/DetailedContent/common";
+} from "components/Private/Home/DetailedContent/common";
 
 import { loadHeader, loadKpis, resetKpis, update } from "redux/partida";
 import {
