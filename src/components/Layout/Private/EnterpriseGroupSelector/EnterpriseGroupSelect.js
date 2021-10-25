@@ -80,8 +80,12 @@ const EnterpriseGroupSelect = ({
         console.log("TODO(): dispatch change enterprise");
         setSelectedValue(newValue);
       },
-      render: (option) => (
-        <div key={option.id} className={"enterprise-items-container"}>
+      render: (props, option) => (
+        <div
+          key={option.id}
+          {...props}
+          className={"enterprise-items-container"}
+        >
           <div>
             <Domain fontSize="small" />
           </div>
@@ -109,8 +113,8 @@ const EnterpriseGroupSelect = ({
         // and load modules
         setSelectedValue(newValue);
       },
-      render: (option) => (
-        <div key={option.id} className={"module-items-container"}>
+      render: (props, option) => (
+        <div key={option.id} className={"module-items-container"} {...props}>
           <div>{option.title}</div>
         </div>
       ),
@@ -127,22 +131,22 @@ const EnterpriseGroupSelect = ({
   return (
     <React.Fragment>
       <Autocomplete
+        id={"enterprise-group"}
+        className={"enterprise-selector-container"}
         handleHomeEndKeys
         disableClearable
         autoHighlight
-        id={"enterprise-group"}
-        className={"enterprise-selector-container"}
         options={opts}
         loading={loading}
         value={value}
         onChange={(e, newValue) => {
-          types[newValue.type].onChange(newValue);
+          return types[newValue.type].onChange(newValue);
         }}
         getOptionLabel={(option) => {
           return types[option.type].optionLabel(option);
         }}
-        renderOption={(e, option) => {
-          return types[option.type].render(option);
+        renderOption={(props, option) => {
+          return types[option.type].render(props, option);
         }}
         noOptionsText={"No hay opciones disponibles"}
         loadingText={"Cargando..."}
