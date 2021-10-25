@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getPlainFrom } from "./utils/storage";
 import SnackbarUtils from "./utils/snackbar-function";
+import { PATHNAME } from "./router";
 
 const Axios = axios.create();
 const authToken = () => `Bearer ${getPlainFrom("token")}`;
@@ -29,6 +30,7 @@ export const errorTypes = {
     SnackbarUtils.error("No posee los permisos suficientes ;(");
   },
   403: () => {
+    window.location.replace(PATHNAME.LOGIN);
     SnackbarUtils.error("Sesión expirada! Vuelva a iniciar sesión.");
   },
   404: () => {
