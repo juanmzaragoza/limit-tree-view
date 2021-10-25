@@ -4,24 +4,22 @@ import { injectIntl } from "react-intl";
 
 import EnterpriseGroupSelect from "./EnterpriseGroupSelect";
 import { getLoading, getTree } from "redux/enterpriseGroup/selectors";
-//import {getLoggedInUserTokenIsRefreshed} from "redux/app/selectors";
 import { searchTree } from "redux/enterpriseGroup";
-//import {refresh} from "redux/app";
-//import { searchModules } from "redux/modules";
+import { resetAll } from "redux/app";
+import { loadData } from "redux/project-selector";
 
 const mapStateToProps = (state) => {
   return {
     loading: getLoading(state),
     tree: getTree(state),
-    //isTokenRefreshed: getLoggedInUserTokenIsRefreshed(state)
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   const actions = {
     loadTree: bindActionCreators(searchTree, dispatch),
-    //refreshSession: bindActionCreators(refresh,dispatch),
-    //loadModules: bindActionCreators(searchModules,dispatch),
+    resetAll: bindActionCreators(resetAll, dispatch),
+    loadProjects: bindActionCreators(loadData, dispatch),
   };
   return { actions };
 };

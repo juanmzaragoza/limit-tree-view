@@ -2,7 +2,12 @@ import React from "react";
 import { createContext } from "react";
 
 import Axios from "Axios";
-import { removeKey, setPlainOn, getPlainFrom } from "utils/storage";
+import {
+  removeKey,
+  setPlainOn,
+  getPlainFrom,
+  setObjectOn,
+} from "utils/storage";
 import { PATHNAME } from "router";
 
 export const logout = () => {
@@ -16,9 +21,12 @@ export const functions = {
 const AuthContext = createContext({});
 
 export const TOKEN_LOCALSTORAGE_KEY = "token";
+export const SESSION_TO_REFRESH_LOCALSTORAGE_KEY = "session";
+
 export const AuthProvider = ({ children, ...props }) => {
   const [loading, setLoading] = React.useState(false);
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [isTokenRefreshed, setIsTokenRefreshed] = React.useState(false);
 
   React.useEffect(() => {
     const token = getPlainFrom(TOKEN_LOCALSTORAGE_KEY);
@@ -73,9 +81,53 @@ export const AuthProvider = ({ children, ...props }) => {
     });
   };
 
+  const refreshSession = async ({ id, enterprise }) => {
+    // session
+    let session = {};
+    if (id) session.i = id;
+    if (enterprise) session.e = enterprise;
+    // token
+    const token = getPlainFrom(TOKEN_LOCALSTORAGE_KEY);
+    return new Promise((resolve, reject) => {
+      try {
+        setIsTokenRefreshed(false);
+        Axios.post(
+          `api/auth/refresh?timestamp=${new Date().getTime()}`,
+          JSON.stringify({ token, session })
+        )
+          .then(({ data }) => {
+            setPlainOn(TOKEN_LOCALSTORAGE_KEY, data.token);
+            setObjectOn(SESSION_TO_REFRESH_LOCALSTORAGE_KEY, session);
+            setIsAuthenticated(true);
+            setIsTokenRefreshed(true);
+            resolve(data);
+          })
+          .catch((error) => {
+            console.log(error);
+            //logout();
+            reject(error);
+          })
+          .finally(() => {
+            //dispatch(add({ loading: false }));
+          });
+      } catch (error) {
+        removeKey(TOKEN_LOCALSTORAGE_KEY);
+        setIsAuthenticated(false);
+        reject(error);
+      }
+    });
+  };
+
   return (
     <AuthContext.Provider
-      value={{ login, logout, loading, isAuthenticated }}
+      value={{
+        login,
+        logout,
+        loading,
+        isAuthenticated,
+        refreshSession,
+        isTokenRefreshed,
+      }}
       {...props}
     >
       {children}

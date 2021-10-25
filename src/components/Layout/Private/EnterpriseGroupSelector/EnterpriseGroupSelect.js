@@ -7,19 +7,15 @@ import { TextField } from "@material-ui/core";
 import { Domain, Build } from "@mui/icons-material";
 
 import { getObjectFrom, setObjectOn } from "utils/storage";
+import { useAuth } from "contexts/AuthContext";
 import "./_styles.css";
 
 const ENTERPRISE_TYPE = "enterprise";
 const MODULE_TYPE = "module";
 const ENTERPRISE_GROUP_VALUE_LOCALSTORAGE_KEY = "enterprise_group";
 
-const EnterpriseGroupSelect = ({
-  loading,
-  tree,
-  isTokenRefreshed,
-  actions,
-  ...props
-}) => {
+const EnterpriseGroupSelect = ({ loading, tree, actions, ...props }) => {
+  const { refreshSession, isTokenRefreshed } = useAuth();
   const [value, setValue] = useState(null);
   const [opts, setOpts] = useState([]);
 
@@ -99,14 +95,14 @@ const EnterpriseGroupSelect = ({
       ),
       optionLabel: (option) => `${option.title} / _`,
       setValue: (option) => {
-        //TODO() -> start loading modules
         console.log(option);
+        actions.loadProjects({});
       },
     },
     [MODULE_TYPE]: {
       onChange: (newValue) => {
         // refresh token
-        actions.refreshSession({
+        refreshSession({
           id: newValue.enterprise.id,
           enterprise: newValue.value.id,
         });
@@ -121,9 +117,9 @@ const EnterpriseGroupSelect = ({
       optionLabel: (option) =>
         `${option.enterprise.descripcio} / ${option.title}`,
       setValue: (option) => {
-        // load modules
-        actions.loadModules();
+        // on select option -> do something
         console.log(option);
+        actions.loadProjects({});
       },
     },
   };
