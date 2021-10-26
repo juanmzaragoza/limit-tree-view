@@ -116,10 +116,12 @@ const EnterpriseGroupSelect = ({ loading, tree, actions, ...props }) => {
       ),
       optionLabel: (option) =>
         `${option.enterprise.descripcio} / ${option.title}`,
-      setValue: (option) => {
+      setValue: () => {
         // on select option -> do something
-        console.log(option);
         actions.loadProjects({});
+        actions.resetSelectedProject();
+        actions.resetPeriod();
+        actions.resetTree();
       },
     },
   };

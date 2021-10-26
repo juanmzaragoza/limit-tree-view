@@ -6,7 +6,9 @@ import EnterpriseGroupSelect from "./EnterpriseGroupSelect";
 import { getLoading, getTree } from "redux/enterpriseGroup/selectors";
 import { searchTree } from "redux/enterpriseGroup";
 import { resetAll } from "redux/app";
-import { loadData } from "redux/project-selector";
+import { loadData, resetSelectedProject } from "redux/project-selector";
+import { reset } from "redux/period";
+import { reset as resetTree } from "redux/project-tree";
 
 const mapStateToProps = (state) => {
   return {
@@ -20,6 +22,9 @@ const mapDispatchToProps = (dispatch) => {
     loadTree: bindActionCreators(searchTree, dispatch),
     resetAll: bindActionCreators(resetAll, dispatch),
     loadProjects: bindActionCreators(loadData, dispatch),
+    resetSelectedProject: bindActionCreators(resetSelectedProject, dispatch),
+    resetPeriod: bindActionCreators(reset, dispatch),
+    resetTree: bindActionCreators(resetTree, dispatch),
   };
   return { actions };
 };
