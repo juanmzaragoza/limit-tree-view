@@ -1,8 +1,12 @@
 .enterprise-selector-container {
   min-width: 300px;
   margin-right: 10px;
-  background-color: #ddd;
+  color: black;
+  background-color: white !important;
+  border-radius: 4px;
 }
+
+
 
 .enterprise-items-container {
   display: flex;
