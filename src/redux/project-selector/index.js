@@ -4,6 +4,7 @@ import { buildQuery } from "redux/common";
 
 //Action types
 const ADD = "ADD_TO_PROJECT_SELECTOR";
+const RESET_SELECTED_PROJECT = "RESET_SELECTED_PROJECT";
 
 // Constants
 const URL = "api/estp/projectes?page=0&size=40&sort=codi";
@@ -40,6 +41,12 @@ export const setProject = ({ project }) => {
   };
 };
 
+export const resetSelectedProject = () => {
+  return {
+    type: RESET_SELECTED_PROJECT,
+  };
+};
+
 //Action creators
 export const add = (payload) => {
   return {
@@ -61,6 +68,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, ...action.payload };
     case "RESET":
       return initialState;
+    case RESET_SELECTED_PROJECT:
+      return { ...state, selectedProject: null };
     default:
       return state;
   }

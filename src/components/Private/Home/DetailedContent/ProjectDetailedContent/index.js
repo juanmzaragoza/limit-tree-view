@@ -9,8 +9,8 @@ import MaterialCardIndicator from "components/shared/MaterialCardIndicator";
 import DetailedHeader from "components/shared/DetailedHeader";
 import MaterialDataGrid from "components/shared/MaterialDataGrid";
 import CardTotal from "components/shared/CardTotal";
-import MaterialTable from "components/Public/Home/MaterialTable";
-import { isPeriodOpen } from "components/Public/Home/DetailedContent/common";
+import MaterialTable from "components/Private/Home/MaterialTable";
+import { isPeriodOpen } from "components/Private/Home/DetailedContent/common";
 
 import { loadKpis, resetKpis, loadDetails, selectTab } from "redux/project";
 import {
