@@ -8,8 +8,13 @@ import { isEmpty } from "lodash";
 import OutlinedContainer from "components/shared/OutlinedContainer/OutlinedContainer";
 import MaterialAsyncAutocomplete from "components/shared/MaterialAutocomplete/MaterialAsyncAutocomplete";
 import { getIsLoading, getRows } from "redux/project-selector/selectors";
-import { loadData, setProject } from "redux/project-selector";
+import {
+  loadData,
+  setProject,
+  resetSelectedProject,
+} from "redux/project-selector";
 import { resetAll } from "redux/app";
+import { reset as resetTree } from "redux/project-tree";
 
 import "./styles.css";
 
@@ -28,6 +33,9 @@ const ProjectSelector = ({ onChange = () => {}, rows, loading, actions }) => {
     setItems(
       rows.map((row) => ({ name: `${row.codi} - ${row.nom}`, value: row }))
     );
+    actions.resetTree();
+    actions.setProject("");
+    actions.resetSelectedProject();
   }, [rows]);
 
   React.useEffect(() => {
@@ -39,7 +47,6 @@ const ProjectSelector = ({ onChange = () => {}, rows, loading, actions }) => {
   const handleChange = (e, v) => {
     const value = v?.value;
     if (value) {
-      actions.resetAll();
       actions.loadData({});
       setProject(value);
       actions.setProject({ project: value });
@@ -84,6 +91,7 @@ const ProjectSelector = ({ onChange = () => {}, rows, loading, actions }) => {
                 }))}
                 onChange={handleChange}
                 onSearch={handleSearch}
+                defaultValue={""}
               />
             </FormControl>
           </Grid>
@@ -144,6 +152,8 @@ const mapDispatchToProps = (dispatch) => {
     loadData: bindActionCreators(loadData, dispatch),
     setProject: bindActionCreators(setProject, dispatch),
     resetAll: bindActionCreators(resetAll, dispatch),
+    resetSelectedProject: bindActionCreators(resetSelectedProject, dispatch),
+    resetTree: bindActionCreators(resetTree, dispatch),
   };
   return { actions };
 };

@@ -8,6 +8,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import store from "./redux/store";
 import { SnackbarUtilsConfigurator } from "./utils/snackbar-function";
+import { AuthProvider } from "./contexts/AuthContext";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,8 +21,10 @@ ReactDOM.render(
         }}
         preventDuplicate={true}
       >
-        <SnackbarUtilsConfigurator />
-        <App />
+        <AuthProvider>
+          <SnackbarUtilsConfigurator />
+          <App />
+        </AuthProvider>
       </SnackbarProvider>
     </Provider>
   </React.StrictMode>,
