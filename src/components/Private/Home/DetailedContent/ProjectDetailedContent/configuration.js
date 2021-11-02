@@ -31,6 +31,7 @@ export const getIndicators = (kpis, kpisFact, updateAlmacenManual, period) => [
         value: period.magatzemManual ? period.magatzemManual : "",
         input: true,
         editFunction: updateAlmacenManual,
+        disabled: period.tancat,
       },
     ],
   },

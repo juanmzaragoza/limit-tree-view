@@ -45,7 +45,7 @@ export default function MaterialCardIndicator({
   const theme = cardUseStyles();
   const intl = useIntl();
 
-  const [inputValue, setInputValue] = React.useState();
+  const [inputValue, setInputValue] = React.useState("");
 
   React.useEffect(() => {
     return () => {
@@ -98,7 +98,10 @@ export default function MaterialCardIndicator({
               <CardContent>
                 <Grid container spacing={2}>
                   {indicators?.map(
-                    ({ field, value, input, editFunction }, index) => {
+                    (
+                      { field, value, input, editFunction, disabled },
+                      index
+                    ) => {
                       if (!input) {
                         return (
                           <Grid item xs={lg} key={index}>
@@ -125,7 +128,10 @@ export default function MaterialCardIndicator({
                                 id={field}
                                 type="number"
                                 value={inputValue ? inputValue : value}
-                                onChange={(e) => setInputValue(e.target.value)}
+                                onChange={(e) => {
+                                  setInputValue(e.target.value);
+                                }}
+                                disabled={disabled}
                                 endAdornment={
                                   <InputAdornment position="end">
                                     <IconButton
@@ -133,9 +139,15 @@ export default function MaterialCardIndicator({
                                         editFunction(
                                           inputValue ? inputValue : value
                                         );
+                                        setInputValue("");
                                       }}
                                       edge="end"
-                                      style={{ color: primaryColor }}
+                                      style={{
+                                        color: !disabled
+                                          ? primaryColor
+                                          : "inherit",
+                                      }}
+                                      disabled={disabled}
                                     >
                                       <SaveIcon />
                                     </IconButton>

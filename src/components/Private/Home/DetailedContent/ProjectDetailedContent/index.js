@@ -155,7 +155,7 @@ const ProjectDetailedContent = ({
 
   React.useEffect(() => {
     setIndicadores(getIndicators(kpis, kpisFact, updateAlmacenManual, period));
-  }, [kpis]);
+  }, [kpis, period]);
 
   React.useEffect(() => {
     setHeaderProject({ title: tree.descripcio });
