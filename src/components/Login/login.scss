@@ -1,0 +1,87 @@
+
+.auth-pages-layout {
+  text-align: center;
+  padding-top: 75px;
+  background: rgb(68, 104, 160);
+  background: linear-gradient(
+    90deg,
+    rgba(68, 104, 160, 1) 0%,
+    #3A9198 49%,
+    rgba(124, 174, 175, 1) 100%
+  );
+
+
+  .auth-card{
+    background:white;
+   
+    margin: 110px auto 20px auto;
+    display: flex;
+    padding: 50px;
+    border-radius: 10px;
+   // width: 360px;
+    flex-direction: column;
+    align-items: center;
+    //justify-content: center;
+    //font-size: calc(10px + 2vmin);
+    min-height: 370px;
+  }
+
+  .welcome-message{
+    h2{
+      align-items: center !important;
+      line-height: 36px;
+      color: rgba(0, 0, 0, 0.65);
+    }
+  }
+
+  .reset-link {
+   
+    font-size: 12px;
+    text-decoration: underline;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+  }
+  
+}
+
+form.auth-form {
+  display: flex;
+  flex-direction: column;
+  
+  .auth-inputs {
+    // width: 300px;
+    margin: 10px 0;
+    background: rgba(255, 255, 255, 0.2) !important;
+    transition: 0.3s ease-in;
+   
+
+    fieldset {
+      display: none;
+      border: 1px rgba(255, 255, 255, 0.2) solid !important;
+    }
+
+    &.Mui-focused{
+      background-color: #fff;
+      input{
+        color: #323232;
+      }
+    }
+  }
+}
+
+
+
+
+button.accessBtn {
+  color: #fff;
+  margin: 35px auto 10px auto;
+  display: block;
+  font-weight: 600;
+  line-height: 24px;
+  font-size: 16px;
+  cursor: pointer;
+  text-transform: unset;
+  padding: 5px 25px;
+  background: linear-gradient(60deg, #3f9597, #4468a0);
+}
