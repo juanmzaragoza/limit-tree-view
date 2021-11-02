@@ -1,11 +1,22 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
-import { Avatar, CardContent, CardHeader, Grid } from "@mui/material";
+import {
+  Avatar,
+  CardContent,
+  CardHeader,
+  Grid,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
+  InputLabel,
+} from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import { primaryColor } from "utils/helper";
 import { formatCurrencyWithIntl } from "utils/formats";
 import { useIntl } from "react-intl";
 import MaterialCardAvatarContentSkeleton from "./MaterialSkeleton/MaterialCardAvatarContentSkeleton";
+import SaveIcon from "@mui/icons-material/Save";
 
 const cardUseStyles = makeStyles(() => ({
   card: {
@@ -33,6 +44,8 @@ export default function MaterialCardIndicator({
 }) {
   const theme = cardUseStyles();
   const intl = useIntl();
+
+  const [inputValue, setInputValue] = React.useState();
 
   React.useEffect(() => {
     return () => {
@@ -84,18 +97,57 @@ export default function MaterialCardIndicator({
               />
               <CardContent>
                 <Grid container spacing={2}>
-                  {indicators?.map(({ field, value }, index) => {
-                    return (
-                      <Grid item xs={lg} key={index}>
-                        {field}: <br />
-                        <strong>
-                          {value === undefined
-                            ? "---"
-                            : formatCurrencyWithIntl(value, intl)}
-                        </strong>
-                      </Grid>
-                    );
-                  })}
+                  {indicators?.map(
+                    ({ field, value, input, editFunction }, index) => {
+                      if (!input) {
+                        return (
+                          <Grid item xs={lg} key={index}>
+                            {field}: <br />
+                            <strong>
+                              {value === undefined
+                                ? "---"
+                                : formatCurrencyWithIntl(value, intl)}
+                            </strong>
+                          </Grid>
+                        );
+                      } else {
+                        return (
+                          <Grid item xs={lg} key={index}>
+                            <FormControl>
+                              <InputLabel
+                                style={{ backgroundColor: "#fff", mb: 2 }}
+                                htmlFor="inputEditing"
+                                shrink
+                              >
+                                {field}
+                              </InputLabel>
+                              <OutlinedInput
+                                id={field}
+                                type="number"
+                                value={inputValue ? inputValue : value}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                endAdornment={
+                                  <InputAdornment position="end">
+                                    <IconButton
+                                      onClick={() => {
+                                        editFunction(
+                                          inputValue ? inputValue : value
+                                        );
+                                      }}
+                                      edge="end"
+                                      style={{ color: primaryColor }}
+                                    >
+                                      <SaveIcon />
+                                    </IconButton>
+                                  </InputAdornment>
+                                }
+                              />
+                            </FormControl>
+                          </Grid>
+                        );
+                      }
+                    }
+                  )}
                 </Grid>
               </CardContent>
             </Card>

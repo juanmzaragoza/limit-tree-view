@@ -28,6 +28,7 @@ import { getSelectedProject } from "redux/project-selector/selectors";
 import { selectAndExpandNode } from "redux/project-tree";
 import { getData } from "redux/project-tree/selectors";
 import { getSelectedPeriod } from "redux/period/selectors";
+import { updatePeriod } from "redux/period";
 
 import { entitiesStyles, getTreeId } from "utils/helper";
 import { formatCurrencyWithIntl } from "utils/formats";
@@ -147,8 +148,13 @@ const ProjectDetailedContent = ({
     onChangeIndexExecutor[tabIndex]();
   }, [tabIndex, project]);
 
+  const updateAlmacenManual = (value) => {
+    const data = { ...period, magatzemManual: value };
+    actions.updatePeriod({ id: period.id, data });
+  };
+
   React.useEffect(() => {
-    setIndicadores(getIndicators(kpis, kpisFact));
+    setIndicadores(getIndicators(kpis, kpisFact, updateAlmacenManual, period));
   }, [kpis]);
 
   React.useEffect(() => {
@@ -253,6 +259,7 @@ const mapDispatchToProps = (dispatch) => {
     selectNode: bindActionCreators(selectAndExpandNode, dispatch),
     loadDetails: bindActionCreators(loadDetails, dispatch),
     selectTab: bindActionCreators(selectTab, dispatch),
+    updatePeriod: bindActionCreators(updatePeriod, dispatch),
   };
   return { actions };
 };

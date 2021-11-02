@@ -7,6 +7,7 @@ import {
   StackedBarChart,
   StackedLineChart,
   Assignment,
+  LocalShipping,
 } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
 
@@ -15,7 +16,24 @@ import { entitiesStyles } from "utils/helper";
 import { CONTROL_UNIT_TYPE } from "constants/business-types";
 import { getKpisColorValue } from "../common";
 
-export const getIndicators = (kpis, kpisFact) => [
+export const getIndicators = (kpis, kpisFact, updateAlmacenManual, period) => [
+  {
+    title: "Existencias",
+    icon: <LocalShipping />,
+    lg: 6,
+    indicators: [
+      {
+        field: "Existencias de Almacén",
+        value: kpis.produccioAnterior,
+      },
+      {
+        field: "Almacén Manual",
+        value: period.magatzemManual ? period.magatzemManual : "",
+        input: true,
+        editFunction: updateAlmacenManual,
+      },
+    ],
+  },
   {
     title: "Produccion",
     icon: <Engineering />,
